@@ -1,0 +1,19 @@
+version: '2'
+services:
+    kransenzo-app:
+        image: kransenzo
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod,swagger
+            - SPRING_DATASOURCE_URL=jdbc:mysql://kransenzo-mysql:3306/kransenzo?useUnicode=true&characterEncoding=utf8&useSSL=false
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=kransenzo-elasticsearch:9300
+        ports:
+            - 8080:8080
+    kransenzo-mysql:
+        extends:
+            file: mysql.yml
+            service: kransenzo-mysql
+    kransenzo-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: kransenzo-elasticsearch
