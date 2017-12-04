@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
         this.registerAuthenticationSuccess();
         this.http.get( 'https://www.googleapis.com/books/v1/volumes?q=inauthor:Ernest+Hemingway' )
             .map( ( res: any ) => {
-                return res.json().items.forEach( () => this.items.push( new Product( 'http://via.placeholder.com/420x300' ) ) );
+                return res.json().items.forEach( () => this.items.push( new Product( ['http://via.placeholder.com/420x300'] ) ) );
             } )
             .subscribe( () => {
                 const chunk = 2;

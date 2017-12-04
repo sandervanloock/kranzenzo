@@ -5,14 +5,13 @@ import {KransenzoSharedModule} from '../shared';
 
 import {HOME_ROUTE, HomeComponent} from './';
 import {HomeProductComponent} from './home-product.component';
+import {ProductDetailComponent} from './product-detail.component';
 
 @NgModule({
     imports: [
-        KransenzoSharedModule,
-        RouterModule.forChild([ HOME_ROUTE ])
+        KransenzoSharedModule, RouterModule.forChild( HOME_ROUTE )
     ],
-    declarations: [
-        HomeComponent, HomeProductComponent
+    declarations: [HomeComponent, HomeProductComponent, ProductDetailComponent
     ],
     entryComponents: [
     ],

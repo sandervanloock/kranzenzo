@@ -15,6 +15,6 @@ export class HomeProductComponent implements OnInit {
 }
 
 export class Product {
-    constructor( public img?: string ) {
+    constructor( public images?: string[] ) {
     }
 }
