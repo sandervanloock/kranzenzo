@@ -8,7 +8,7 @@
             </div>
             <div class="stepper-step" ngClass="{{step===2 ? 'stepper-step-isValid' : ''}}" (click)="this.step=2">
                 <div class="stepper-stepContent">
-                    <span class="stepper-stepMarker">2</span>Bevestiging
+                    <span class="stepper-stepMarker">2</span>Bestelling
                 </div>
             </div>
             <div class="stepper-step" ngClass="{{step===3 ? 'stepper-step-isValid' : ''}}" (click)="this.step=3">
@@ -17,19 +17,141 @@
                 </div>
             </div>
         </div>
-        <div class="stepper-content" *ngIf="step===1">
-            <h2>Geef je gegevens</h2>
-        </div>
-        <div class="stepper-content" *ngIf="step===2">
-            <h2>Bestelling</h2>
-            <img src="http://placekitten.com/g/1600/600" alt=""/>
-            <div class="stepper-actions">
-                <a href="#" class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn">Back</a>
-                <a href="#" class="stepper-actionNext btn btn-info btn-lg btn-simple pull-right mbn">Continue</a>
+        <form>
+            <div class="stepper-content" *ngIf="step===1">
+                <h2>Geef je gegevens</h2>
+                <div class="form-group">
+                    <label for="lastName">Naam</label>
+                    <input required type="text" class="form-control" id="lastName" aria-describedby="lastName" placeholder="Naam">
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Voornaam</label>
+                    <input required type="text" class="form-control" id="firstName" aria-describedby="firstName" placeholder="Voornaam">
+                </div>
+                <div class="form-group">
+                    <label for="email">Emailadres</label>
+                    <input required type="email" class="form-control" id="email" aria-describedby="email" placeholder="Emailadres">
+                </div>
+                <div class="stepper-actions">
+                    <button type="submit" class="btn btn-primary" (click)="this.step=2">Verder</button>
+                </div>
             </div>
-        </div>
-        <div class="stepper-content" *ngIf="step===3">
-            <h2>Bevestiging</h2>
-        </div>
+            <div class="stepper-content" *ngIf="step===2">
+                <h2>Bestelling</h2>
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <img class="card-img-top" src="http://placekitten.com/g/320/180" alt=""/>
+                        <div class="card-body">
+                            <p class="card-text">
+                            <div class="row">
+                                <div class="col-md-10">Naam van bloemstuk!</div>
+                                <div class="col-md-2">€ 50</div>
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input required class="form-check-input" type="radio" name="deliveryType"
+                                           value="pickup" (change)="onSelectionChange('pickup')"
+                                           [checked]="this.deliveryType === 'pickup'">
+                                    Ik wil mijn stuk ophalen
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input required class="form-check-input" type="radio" name="deliveryType"
+                                           value="delivered" (change)="onSelectionChange('delivered')"
+                                           [checked]="this.deliveryType === 'delivered'">
+                                    Ik wil mijn stuk thuis bezorgd (€1 per km / max 10 km)
+                                </label>
+                                <small class="form-text text-muted">
+                                    Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
+                                </small>
+                            </div>
+
+                            <div *ngIf="this.deliveryType === 'delivered'">
+                                <h3>Geef je thuisadres</h3>
+                                <p>
+                                    Zodra het geld is overgemaakt zal het stuk worden geleverd.
+                                </p>
+                            </div>
+
+                            <div *ngIf="this.deliveryType === 'pickup'">
+                                <h3>Maak een afspraak</h3>
+                                <p>
+                                    Zodra het geld is zal je melding krijgen van KransEnzo om het een afspraak te maken
+                                    om
+                                    het
+                                    stuk te kunnen ophalen.
+                                </p>
+                            </div>
+                        </div>
+                        <!--end of delivery method-->
+                        <hr/>
+                        <div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" name="led"
+                                           value="1" (change)="toggleLed()">
+                                    Ik wil LED-verlichting - inclusief AA-batterij - bij mijn stuk gevoegd.
+                                </label>
+                            </div>
+                        </div>
+                        <!--end of led licht-->
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h2>Factuur</h2>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Beschrijving</th>
+                                <th scope="col">Prijs</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">0A43DF</th>
+                                <td>Bloemstuk</td>
+                                <td>€50</td>
+                            </tr>
+                            <tr *ngIf="led">
+                                <th scope="row">34F45G</th>
+                                <td>LED-licht</td>
+                                <td>€0.5</td>
+                            </tr>
+                            <tr *ngIf="deliveryType==='delivered'">
+                                <th scope="row">DV3WZE</th>
+                                <td>Levering</td>
+                                <td>€5</td>
+                            </tr>
+                            <tr class="table-active">
+                                <th></th>
+                                <td>Totaal</td>
+                                <td>€ {{this.price}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="stepper-actions">
+                    <a href="#" class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn" (click)="this.step=1">Terug</a>
+                    <button type="submit" class="btn btn-primary" (click)="this.step=3">Verder</button>
+                </div>
+            </div>
+            <div class="stepper-content" *ngIf="step===3">
+                <h2>Bevestiging</h2>
+                <p>Gelieve € {{this.price}} over te schrijven op <b>BE12 1234 4567 890</b></p>
+            </div>
+        </form>
     </div>
 </div>

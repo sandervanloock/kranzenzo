@@ -12,12 +12,34 @@ And leveraging the Creative Tim Material Bootstrap Library - http://demos.creati
             } )
 export class ProductOrderComponent implements OnInit {
     step: number;
+    deliveryType: string;
+    led: boolean;
+    price: number;
 
     constructor() {
     }
 
     ngOnInit() {
         this.step = 1;
+        this.price = 50;
+        this.deliveryType = 'pickup';
     }
 
+    onSelectionChange( type: string ) {
+        if ( this.deliveryType === 'pickup' && type === 'delivered' ) {
+            this.price += 5;
+        } else if ( this.deliveryType === 'delivered' && type === 'pickup' ) {
+            this.price -= 5;
+        }
+        this.deliveryType = type;
+    }
+
+    toggleLed() {
+        this.led = !this.led;
+        if ( this.led ) {
+            this.price += 0.5;
+        } else {
+            this.price -= 0.5;
+        }
+    }
 }
