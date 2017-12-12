@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiEventManager} from 'ng-jhipster';
 
-import {Account, LoginModalService, Principal} from '../shared';
+import {Account, LoginModalService, Principal, ResponseWrapper} from '../shared';
 import {Http} from '@angular/http';
-import {Product} from './home-product.component';
+import {Product, ProductService} from '../entities/product';
 
 @Component( {
                 selector: 'jhi-home', templateUrl: './home.component.html', styleUrls: ['home.css']
@@ -14,9 +14,13 @@ export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
     items: Product[] = [];
-    slicedItems: Product[][] = [];
 
-    constructor( private principal: Principal, private loginModalService: LoginModalService, private eventManager: JhiEventManager, private http: Http ) {
+    constructor(
+        private principal: Principal,
+        private loginModalService: LoginModalService,
+        private eventManager: JhiEventManager,
+        private http: Http,
+        private productService: ProductService ) {
     }
 
     ngOnInit() {
@@ -24,7 +28,9 @@ export class HomeComponent implements OnInit {
             this.account = account;
         } );
         this.registerAuthenticationSuccess();
-        this.http.get( 'https://www.googleapis.com/books/v1/volumes?q=inauthor:Ernest+Hemingway' )
+        this.productService.query()
+            .subscribe( ( data: ResponseWrapper ) => this.items = data.json );
+        /*this.http.get( 'https://www.googleapis.com/books/v1/volumes?q=inauthor:Ernest+Hemingway' )
             .map( ( res: any ) => {
                 return res.json().items.forEach( () => this.items.push( new Product( ['http://via.placeholder.com/420x300'] ) ) );
             } )
@@ -34,6 +40,7 @@ export class HomeComponent implements OnInit {
                     this.slicedItems.push( this.items.slice( i, i + chunk ) );
                 }
             } );
+            */
     }
 
     registerAuthenticationSuccess() {

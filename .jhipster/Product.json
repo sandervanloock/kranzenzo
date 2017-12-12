@@ -1,0 +1,50 @@
+{
+  "fluentMethods": true,
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "relationshipName": "images",
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "product"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "relationshipName": "orders",
+      "otherEntityName": "order",
+      "otherEntityRelationshipName": "product"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityRelationshipName": "tags",
+      "relationshipName": "tags",
+      "otherEntityName": "tag",
+      "otherEntityField": "name",
+      "ownerSide": true
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "Float",
+      "fieldValidateRules": [
+        "required"
+      ]
+    }
+  ],
+  "changelogDate": "20171212225537",
+  "entityTableName": "product",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass"
+}

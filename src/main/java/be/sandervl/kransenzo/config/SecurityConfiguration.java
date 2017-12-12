@@ -1,8 +1,8 @@
 package be.sandervl.kransenzo.config;
 
-import be.sandervl.kransenzo.security.*;
-import be.sandervl.kransenzo.security.jwt.*;
-
+import be.sandervl.kransenzo.security.AuthoritiesConstants;
+import be.sandervl.kransenzo.security.jwt.JWTConfigurer;
+import be.sandervl.kransenzo.security.jwt.TokenProvider;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -80,35 +80,36 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
-            .authenticationEntryPoint(problemSupport)
-            .accessDeniedHandler(problemSupport)
-        .and()
-            .csrf()
-            .disable()
-            .headers()
-            .frameOptions()
-            .disable()
-        .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .authorizeRequests()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/account/reset-password/init").permitAll()
-            .antMatchers("/api/account/reset-password/finish").permitAll()
-            .antMatchers("/api/profile-info").permitAll()
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/management/health").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/v2/api-docs/**").permitAll()
-            .antMatchers("/swagger-resources/configuration/ui").permitAll()
-            .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
-        .and()
-            .apply(securityConfigurerAdapter());
+		        .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+		        .exceptionHandling()
+		        .authenticationEntryPoint(problemSupport)
+		        .accessDeniedHandler(problemSupport)
+		        .and()
+		        .csrf()
+		        .disable()
+		        .headers()
+		        .frameOptions()
+		        .disable()
+		        .and()
+		        .sessionManagement()
+		        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		        .and()
+		        .authorizeRequests()
+		        .antMatchers("/api/register").permitAll()
+		        .antMatchers("/api/activate").permitAll()
+		        .antMatchers("/api/authenticate").permitAll()
+		        .antMatchers("/api/account/reset-password/init").permitAll()
+		        .antMatchers("/api/account/reset-password/finish").permitAll()
+		        .antMatchers("/api/profile-info").permitAll()
+		        .antMatchers( HttpMethod.GET, "/api/products" ).permitAll()
+		        .antMatchers("/api/**").authenticated()
+		        .antMatchers("/management/health").permitAll()
+		        .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+		        .antMatchers("/v2/api-docs/**").permitAll()
+		        .antMatchers("/swagger-resources/configuration/ui").permitAll()
+		        .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
+		        .and()
+		        .apply(securityConfigurerAdapter());
 
     }
 

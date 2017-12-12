@@ -1,0 +1,23 @@
+{
+  "kransenzoApp": {
+    "tag": {
+      "home": {
+        "title": "Tags",
+        "createLabel": "Maak een nieuwe Tag",
+        "createOrEditLabel": "Maak of wijzig een Tag",
+        "search": "Search for Tag"
+      },
+      "created": "A new Tag is created with identifier {{ param }}",
+      "updated": "A Tag is updated with identifier {{ param }}",
+      "deleted": "A Tag is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Tag {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Tag"
+      },
+      "name": "Name",
+      "tags": "Tags"
+    }
+  }
+}

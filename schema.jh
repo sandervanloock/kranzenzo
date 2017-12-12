@@ -1,0 +1,68 @@
+entity Product {
+    name String required
+    description String
+    price Float required
+}
+
+entity Image {
+    data ImageBlob required
+}
+
+entity Tag {
+	name String required
+}
+
+entity Customer {
+}
+
+entity Order{
+	created ZonedDateTime required
+    updated ZonedDateTime
+    state OrderState
+    deliveryType DeliveryType
+    led Boolean
+}
+
+entity Location{
+	latitude Float required
+    longitude Float required
+    description String
+}
+
+enum OrderState{
+	NEW, PAYED, CANCELLED, DELIVERED
+} 
+
+enum DeliveryType{
+	DELIVERED, PICKUP
+}
+
+relationship OneToOne{
+	Order{deliveryAddress} to Location
+}
+
+relationship OneToOne{
+	Customer{address} to Location
+}
+
+relationship ManyToMany {
+	Product{tags(name)} to Tag{tags(name)}
+}
+
+relationship OneToMany{
+	Product{images} to Image{product(name)}
+}
+
+relationship OneToMany{
+	Customer{orders} to Order
+}
+
+relationship OneToMany{
+	Product{orders} to Order{product(name) required}
+}
+
+
+dto * with mapstruct
+
+service Order with serviceClass
+service Product with serviceClass

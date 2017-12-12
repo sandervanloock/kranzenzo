@@ -1,0 +1,106 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myOrderLabel" jhiTranslate="kransenzoApp.order.home.createOrEditLabel">Create or
+            edit a Order</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;
+        </button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!order.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="order.id" readonly/>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="order.created"
+                       required/>
+            </div>
+            <div [hidden]="!(editForm.controls.created?.dirty && editForm.controls.created?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.created?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
+                </small>
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.created?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.updated" for="field_updated">Updated</label>
+            <div class="d-flex">
+                <input id="field_updated" type="datetime-local" class="form-control" name="updated" [(ngModel)]="order.updated"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.state" for="field_state">State</label>
+            <select class="form-control" name="state" [(ngModel)]="order.state" id="field_state">
+                <option value="NEW" jhiTranslate="kransenzoApp.OrderState.NEW">NEW</option>
+                <option value="PAYED" jhiTranslate="kransenzoApp.OrderState.PAYED">PAYED</option>
+                <option value="CANCELLED" jhiTranslate="kransenzoApp.OrderState.CANCELLED">CANCELLED</option>
+                <option value="DELIVERED" jhiTranslate="kransenzoApp.OrderState.DELIVERED">DELIVERED</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.deliveryType" for="field_deliveryType">Delivery
+                Type</label>
+            <select class="form-control" name="deliveryType" [(ngModel)]="order.deliveryType" id="field_deliveryType">
+                <option value="DELIVERED" jhiTranslate="kransenzoApp.DeliveryType.DELIVERED">DELIVERED</option>
+                <option value="PICKUP" jhiTranslate="kransenzoApp.DeliveryType.PICKUP">PICKUP</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.led" for="field_led">Led</label>
+            <input type="checkbox" class="form-control" name="led" id="field_led"
+                   [(ngModel)]="order.led"/>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="kransenzoApp.order.customer" for="field_customer">Customer</label>
+            <select class="form-control" id="field_customer" name="customer" [(ngModel)]="order.customerId">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackCustomerById">
+                    {{customerOption.id}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="kransenzoApp.order.deliveryAddress" for="field_deliveryAddress">Delivery
+                Address</label>
+            <select class="form-control" id="field_deliveryAddress" name="deliveryAddress" [(ngModel)]="order.deliveryAddressId">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="locationOption.id" *ngFor="let locationOption of deliveryaddresses; trackBy: trackLocationById">
+                    {{locationOption.id}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="kransenzoApp.order.product" for="field_product">Product</label>
+            <select class="form-control" id="field_product" name="product" [(ngModel)]="order.productId" required>
+                <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">
+                    {{productOption.name}}
+                </option>
+            </select>
+        </div>
+        <div [hidden]="!(editForm.controls.product?.dirty && editForm.controls.product?.invalid)">
+            <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.product?.errors?.required" jhiTranslate="entity.validation.required">
+                This field is required.
+            </small>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

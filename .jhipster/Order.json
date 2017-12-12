@@ -1,0 +1,58 @@
+{
+  "fluentMethods": true,
+  "relationships": [
+    {
+      "relationshipName": "customer",
+      "otherEntityName": "customer",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "relationshipName": "deliveryAddress",
+      "otherEntityName": "location",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "order"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required",
+      "relationshipName": "product",
+      "otherEntityName": "product",
+      "otherEntityField": "name"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "created",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "updated",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "OrderState",
+      "fieldValues": "NEW,PAYED,CANCELLED,DELIVERED"
+    },
+    {
+      "fieldName": "deliveryType",
+      "fieldType": "DeliveryType",
+      "fieldValues": "DELIVERED,PICKUP"
+    },
+    {
+      "fieldName": "led",
+      "fieldType": "Boolean"
+    }
+  ],
+  "changelogDate": "20171212225541",
+  "entityTableName": "order",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "serviceClass"
+}

@@ -1,10 +1,10 @@
 <div class="card">
-    <img class="card-img-top" src="{{item.images[0]}}" alt="Card image cap">
+    <img class="card-img-top" [src]="'data:' + item.images[0].dataContentType + ';base64,' + item.images[0].data">
     <div class="card-body">
-        <h4 class="card-title">Card title</h4>
+        <h4 class="card-title">{{item.name}}</h4>
         <p class="card-text">
-            Some quick example text to build on the card title and make up the bulk of the card's content.
+            {{item.description}}
         </p>
-        <a routerLink="product/1" routerLinkActive="active" class="btn btn-primary btn-lg btn-block">Go somewhere</a>
+        <a routerLink="product/{{item.id}}" routerLinkActive="active" class="btn btn-primary btn-lg btn-block">Bekijk</a>
     </div>
 </div>
