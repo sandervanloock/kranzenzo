@@ -16,7 +16,7 @@ export class ProductDetailComponent implements OnInit {
     ngOnInit() {
         this.product = new HomeProductComponent();
         this.product.item = new Product(
-            ['http://via.placeholder.com/1800x900', 'http://via.placeholder.com/1800x900', 'http://via.placeholder.com/1800x900', 'http://via.placeholder.com/1800x900'] );
+            ['http://placekitten.com/g/1800/900', 'http://placekitten.com/g/1800/900', 'http://placekitten.com/g/1800/900', 'http://placekitten.com/g/1800/900'] );
     }
 
 }

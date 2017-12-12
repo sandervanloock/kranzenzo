@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="stepper">
+        <div class="stepper-steps stepper-steps-isOffset">
+            <div class="stepper-step" ngClass="{{step===1 ? 'stepper-step-isValid' : ''}}" (click)="this.step=1">
+                <div class="stepper-stepContent">
+                    <span class="stepper-stepMarker">1</span>Gebruiker
+                </div>
+            </div>
+            <div class="stepper-step" ngClass="{{step===2 ? 'stepper-step-isValid' : ''}}" (click)="this.step=2">
+                <div class="stepper-stepContent">
+                    <span class="stepper-stepMarker">2</span>Bevestiging
+                </div>
+            </div>
+            <div class="stepper-step" ngClass="{{step===3 ? 'stepper-step-isValid' : ''}}" (click)="this.step=3">
+                <div class="stepper-stepContent">
+                    <span class="stepper-stepMarker">3</span>Klaar
+                </div>
+            </div>
+        </div>
+        <div class="stepper-content" *ngIf="step===1">
+            <h2>Geef je gegevens</h2>
+        </div>
+        <div class="stepper-content" *ngIf="step===2">
+            <h2>Bestelling</h2>
+            <img src="http://placekitten.com/g/1600/600" alt=""/>
+            <div class="stepper-actions">
+                <a href="#" class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn">Back</a>
+                <a href="#" class="stepper-actionNext btn btn-info btn-lg btn-simple pull-right mbn">Continue</a>
+            </div>
+        </div>
+        <div class="stepper-content" *ngIf="step===3">
+            <h2>Bevestiging</h2>
+        </div>
+    </div>
+</div>

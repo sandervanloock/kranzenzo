@@ -6,12 +6,12 @@ import {KransenzoSharedModule} from '../shared';
 import {HOME_ROUTE, HomeComponent} from './';
 import {HomeProductComponent} from './home-product.component';
 import {ProductDetailComponent} from './product-detail.component';
+import {ProductOrderComponent} from './product-order.component';
 
 @NgModule({
     imports: [
         KransenzoSharedModule, RouterModule.forChild( HOME_ROUTE )
-    ],
-    declarations: [HomeComponent, HomeProductComponent, ProductDetailComponent
+    ], declarations: [HomeComponent, HomeProductComponent, ProductDetailComponent, ProductOrderComponent
     ],
     entryComponents: [
     ],
