@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {HomeProductComponent, Product} from './home-product.component';
+import {Product, ProductService} from '../entities/product';
+import {JhiEventManager} from 'ng-jhipster';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Rx';
 
 // import {C} from '@ng-bootstrap/ng-bootstrap/carousel'
 
@@ -8,15 +11,38 @@ import {HomeProductComponent, Product} from './home-product.component';
             } )
 export class ProductDetailComponent implements OnInit {
 
-    product: HomeProductComponent;
+    product: Product;
+    private subscription: Subscription;
+    private eventSubscriber: Subscription;
 
-    constructor() {
+    constructor( private eventManager: JhiEventManager, private productService: ProductService, private route: ActivatedRoute ) {
     }
 
     ngOnInit() {
-        this.product = new HomeProductComponent();
-        this.product.item =
-            new Product( ['http://placekitten.com/g/1800/900', 'http://placekitten.com/g/1800/900', 'http://placekitten.com/g/1800/900', 'http://placekitten.com/g/1800/900'], 50 );
+        this.subscription = this.route.params.subscribe( ( params ) => {
+            this.load( params['id'] );
+        } );
+        this.registerChangeInProducts();
+
+    }
+
+    load( id ) {
+        this.productService.find( id ).subscribe( ( product ) => {
+            this.product = product;
+        } );
+    }
+
+    previousState() {
+        window.history.back();
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+        this.eventManager.destroy( this.eventSubscriber );
+    }
+
+    registerChangeInProducts() {
+        this.eventSubscriber = this.eventManager.subscribe( 'productListModification', ( response ) => this.load( this.product.id ) );
     }
 
 }

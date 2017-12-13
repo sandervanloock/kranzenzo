@@ -1,5 +1,5 @@
 <div class="card">
-    <img class="card-img-top" [src]="'data:' + item.images[0].dataContentType + ';base64,' + item.images[0].data">
+    <img class="card-img-top" *ngIf="item.images.length" [src]="'data:' + item.images[0].dataContentType + ';base64,' + item.images[0].data">
     <div class="card-body">
         <h4 class="card-title">{{item.name}}</h4>
         <p class="card-text">
