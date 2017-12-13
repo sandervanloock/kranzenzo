@@ -30,17 +30,6 @@ export class HomeComponent implements OnInit {
         this.registerAuthenticationSuccess();
         this.productService.query()
             .subscribe( ( data: ResponseWrapper ) => this.items = data.json );
-        /*this.http.get( 'https://www.googleapis.com/books/v1/volumes?q=inauthor:Ernest+Hemingway' )
-            .map( ( res: any ) => {
-                return res.json().items.forEach( () => this.items.push( new Product( ['http://via.placeholder.com/420x300'] ) ) );
-            } )
-            .subscribe( () => {
-                const chunk = 2;
-                for ( let i = 0; i < this.items.length; i += chunk ) {
-                    this.slicedItems.push( this.items.slice( i, i + chunk ) );
-                }
-            } );
-            */
     }
 
     registerAuthenticationSuccess() {
