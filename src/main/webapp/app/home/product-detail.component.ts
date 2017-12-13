@@ -32,10 +32,6 @@ export class ProductDetailComponent implements OnInit {
         } );
     }
 
-    previousState() {
-        window.history.back();
-    }
-
     ngOnDestroy() {
         this.subscription.unsubscribe();
         this.eventManager.destroy( this.eventSubscriber );
