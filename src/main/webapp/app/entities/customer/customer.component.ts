@@ -20,8 +20,7 @@ export class CustomerComponent implements OnInit, OnDestroy {
         private customerService: CustomerService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal ) {
+        private activatedRoute: ActivatedRoute, private principal: Principal ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
@@ -50,7 +49,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
         this.currentSearch = '';
         this.loadAll();
     }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then( ( account ) => {
@@ -66,7 +64,6 @@ export class CustomerComponent implements OnInit, OnDestroy {
     trackId( index: number, item: Customer ) {
         return item.id;
     }
-
     registerChangeInCustomers() {
         this.eventSubscriber = this.eventManager.subscribe( 'customerListModification', ( response ) => this.loadAll() );
     }

@@ -16,7 +16,30 @@
       "otherEntityRelationshipName": "customer"
     }
   ],
-  "fields": [],
+  "fields": [
+    {
+      "fieldName": "street",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "zipCode",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "min",
+        "max"
+      ],
+      "fieldValidateRulesMin": 1000,
+      "fieldValidateRulesMax": 9999
+    },
+    {
+      "fieldName": "province",
+      "fieldType": "String"
+    }
+  ],
   "changelogDate": "20171212225540",
   "entityTableName": "customer",
   "dto": "mapstruct",

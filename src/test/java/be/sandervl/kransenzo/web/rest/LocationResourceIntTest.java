@@ -39,11 +39,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class LocationResourceIntTest
 {
 
-	private static final Float DEFAULT_LATITUDE = 1F;
-	private static final Float UPDATED_LATITUDE = 2F;
+	private static final Float DEFAULT_LATITUDE = -90F;
+	private static final Float UPDATED_LATITUDE = -89F;
 
-	private static final Float DEFAULT_LONGITUDE = 1F;
-	private static final Float UPDATED_LONGITUDE = 2F;
+	private static final Float DEFAULT_LONGITUDE = -180F;
+	private static final Float UPDATED_LONGITUDE = -179F;
 
 	private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
 	private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";

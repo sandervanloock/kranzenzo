@@ -30,7 +30,6 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
             this.order = order;
         } );
     }
-
     previousState() {
         window.history.back();
     }

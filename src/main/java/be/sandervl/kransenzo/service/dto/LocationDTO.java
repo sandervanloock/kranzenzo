@@ -1,5 +1,7 @@
 package be.sandervl.kransenzo.service.dto;
 
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,9 +15,13 @@ public class LocationDTO implements Serializable
 	private Long id;
 
 	@NotNull
+	@DecimalMin(value = "-90")
+	@DecimalMax(value = "90")
 	private Float latitude;
 
 	@NotNull
+	@DecimalMin(value = "-180")
+	@DecimalMax(value = "180")
 	private Float longitude;
 
 	private String description;

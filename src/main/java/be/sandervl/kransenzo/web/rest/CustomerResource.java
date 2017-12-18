@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -55,7 +56,7 @@ public class CustomerResource
 	 */
 	@PostMapping("/customers")
 	@Timed
-	public ResponseEntity<CustomerDTO> createCustomer( @RequestBody CustomerDTO customerDTO ) throws URISyntaxException {
+	public ResponseEntity<CustomerDTO> createCustomer( @Valid @RequestBody CustomerDTO customerDTO ) throws URISyntaxException {
 		log.debug( "REST request to save Customer : {}", customerDTO );
 		if ( customerDTO.getId() != null ) {
 			return ResponseEntity.badRequest().headers( HeaderUtil.createFailureAlert( ENTITY_NAME, "idexists",
@@ -82,7 +83,7 @@ public class CustomerResource
 	 */
 	@PutMapping("/customers")
 	@Timed
-	public ResponseEntity<CustomerDTO> updateCustomer( @RequestBody CustomerDTO customerDTO ) throws URISyntaxException {
+	public ResponseEntity<CustomerDTO> updateCustomer( @Valid @RequestBody CustomerDTO customerDTO ) throws URISyntaxException {
 		log.debug( "REST request to update Customer : {}", customerDTO );
 		if ( customerDTO.getId() == null ) {
 			return createCustomer( customerDTO );

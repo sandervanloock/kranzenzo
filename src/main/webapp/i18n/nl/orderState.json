@@ -5,7 +5,7 @@
       "NEW": "NEW",
       "PAYED": "PAYED",
       "CANCELLED": "CANCELLED",
-      "DELIVERED": "DELIVERED"
+      "DONE": "DONE"
     }
   }
 }

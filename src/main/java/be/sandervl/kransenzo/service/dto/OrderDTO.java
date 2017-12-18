@@ -3,7 +3,6 @@ package be.sandervl.kransenzo.service.dto;
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
 
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -16,7 +15,6 @@ public class OrderDTO implements Serializable
 
 	private Long id;
 
-	@NotNull
 	private ZonedDateTime created;
 
 	private ZonedDateTime updated;
@@ -25,7 +23,7 @@ public class OrderDTO implements Serializable
 
 	private DeliveryType deliveryType;
 
-	private Boolean led;
+	private Boolean includeBatteries;
 
 	private Long customerId;
 
@@ -75,12 +73,12 @@ public class OrderDTO implements Serializable
 		this.deliveryType = deliveryType;
 	}
 
-	public Boolean isLed() {
-		return led;
+	public Boolean isIncludeBatteries() {
+		return includeBatteries;
 	}
 
-	public void setLed( Boolean led ) {
-		this.led = led;
+	public void setIncludeBatteries( Boolean includeBatteries ) {
+		this.includeBatteries = includeBatteries;
 	}
 
 	public Long getCustomerId() {
@@ -144,7 +142,7 @@ public class OrderDTO implements Serializable
 				", updated='" + getUpdated() + "'" +
 				", state='" + getState() + "'" +
 				", deliveryType='" + getDeliveryType() + "'" +
-				", led='" + isLed() + "'" +
+				", includeBatteries='" + isIncludeBatteries() + "'" +
 				"}";
 	}
 }

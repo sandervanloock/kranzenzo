@@ -20,8 +20,7 @@ export class OrderComponent implements OnInit, OnDestroy {
         private orderService: OrderService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal ) {
+        private activatedRoute: ActivatedRoute, private principal: Principal ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
@@ -50,7 +49,6 @@ export class OrderComponent implements OnInit, OnDestroy {
         this.currentSearch = '';
         this.loadAll();
     }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then( ( account ) => {
@@ -66,7 +64,6 @@ export class OrderComponent implements OnInit, OnDestroy {
     trackId( index: number, item: Order ) {
         return item.id;
     }
-
     registerChangeInOrders() {
         this.eventSubscriber = this.eventManager.subscribe( 'orderListModification', ( response ) => this.loadAll() );
     }

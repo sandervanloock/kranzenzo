@@ -20,7 +20,7 @@
       "updated": "Updated",
       "state": "State",
       "deliveryType": "Delivery Type",
-      "led": "Led",
+      "includeBatteries": "Include Batteries",
       "customer": "Customer",
       "deliveryAddress": "Delivery Address",
       "product": "Product"

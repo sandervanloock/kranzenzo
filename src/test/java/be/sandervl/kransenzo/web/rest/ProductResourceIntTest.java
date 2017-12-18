@@ -43,11 +43,11 @@ public class ProductResourceIntTest
 	private static final String DEFAULT_NAME = "AAAAAAAAAA";
 	private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-	private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
-	private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
-
 	private static final Float DEFAULT_PRICE = 1F;
 	private static final Float UPDATED_PRICE = 2F;
+
+	private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+	private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -86,8 +86,8 @@ public class ProductResourceIntTest
 	public static Product createEntity( EntityManager em ) {
 		Product product = new Product()
 				.name( DEFAULT_NAME )
-				.description( DEFAULT_DESCRIPTION )
-				.price( DEFAULT_PRICE );
+				.price( DEFAULT_PRICE )
+				.description( DEFAULT_DESCRIPTION );
 		return product;
 	}
 
@@ -124,8 +124,8 @@ public class ProductResourceIntTest
 		assertThat( productList ).hasSize( databaseSizeBeforeCreate + 1 );
 		Product testProduct = productList.get( productList.size() - 1 );
 		assertThat( testProduct.getName() ).isEqualTo( DEFAULT_NAME );
-		assertThat( testProduct.getDescription() ).isEqualTo( DEFAULT_DESCRIPTION );
 		assertThat( testProduct.getPrice() ).isEqualTo( DEFAULT_PRICE );
+		assertThat( testProduct.getDescription() ).isEqualTo( DEFAULT_DESCRIPTION );
 
 		// Validate the Product in Elasticsearch
 		Product productEs = productSearchRepository.findOne( testProduct.getId() );
@@ -202,9 +202,9 @@ public class ProductResourceIntTest
 		                  .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
 		                  .andExpect( jsonPath( "$.[*].id" ).value( hasItem( product.getId().intValue() ) ) )
 		                  .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) )
+		                  .andExpect( jsonPath( "$.[*].price" ).value( hasItem( DEFAULT_PRICE.doubleValue() ) ) )
 		                  .andExpect(
-				                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) )
-		                  .andExpect( jsonPath( "$.[*].price" ).value( hasItem( DEFAULT_PRICE.doubleValue() ) ) );
+				                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
 	}
 
 	@Test
@@ -219,8 +219,8 @@ public class ProductResourceIntTest
 		                  .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
 		                  .andExpect( jsonPath( "$.id" ).value( product.getId().intValue() ) )
 		                  .andExpect( jsonPath( "$.name" ).value( DEFAULT_NAME.toString() ) )
-		                  .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) )
-		                  .andExpect( jsonPath( "$.price" ).value( DEFAULT_PRICE.doubleValue() ) );
+		                  .andExpect( jsonPath( "$.price" ).value( DEFAULT_PRICE.doubleValue() ) )
+		                  .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) );
 	}
 
 	@Test
@@ -243,8 +243,8 @@ public class ProductResourceIntTest
 		Product updatedProduct = productRepository.findOne( product.getId() );
 		updatedProduct
 				.name( UPDATED_NAME )
-				.description( UPDATED_DESCRIPTION )
-				.price( UPDATED_PRICE );
+				.price( UPDATED_PRICE )
+				.description( UPDATED_DESCRIPTION );
 		ProductDTO productDTO = productMapper.toDto( updatedProduct );
 
 		restProductMockMvc.perform( put( "/api/products" )
@@ -257,8 +257,8 @@ public class ProductResourceIntTest
 		assertThat( productList ).hasSize( databaseSizeBeforeUpdate );
 		Product testProduct = productList.get( productList.size() - 1 );
 		assertThat( testProduct.getName() ).isEqualTo( UPDATED_NAME );
-		assertThat( testProduct.getDescription() ).isEqualTo( UPDATED_DESCRIPTION );
 		assertThat( testProduct.getPrice() ).isEqualTo( UPDATED_PRICE );
+		assertThat( testProduct.getDescription() ).isEqualTo( UPDATED_DESCRIPTION );
 
 		// Validate the Product in Elasticsearch
 		Product productEs = productSearchRepository.findOne( testProduct.getId() );
@@ -319,9 +319,9 @@ public class ProductResourceIntTest
 		                  .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
 		                  .andExpect( jsonPath( "$.[*].id" ).value( hasItem( product.getId().intValue() ) ) )
 		                  .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) )
+		                  .andExpect( jsonPath( "$.[*].price" ).value( hasItem( DEFAULT_PRICE.doubleValue() ) ) )
 		                  .andExpect(
-				                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) )
-		                  .andExpect( jsonPath( "$.[*].price" ).value( hasItem( DEFAULT_PRICE.doubleValue() ) ) );
+				                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
 	}
 
 	@Test

@@ -1,5 +1,7 @@
 package be.sandervl.kransenzo.service.dto;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -11,6 +13,16 @@ public class CustomerDTO implements Serializable
 
 	private Long id;
 
+	private String street;
+
+	private String city;
+
+	@Min(value = 1000)
+	@Max(value = 9999)
+	private Integer zipCode;
+
+	private String province;
+
 	private Long addressId;
 
 	public Long getId() {
@@ -19,6 +31,38 @@ public class CustomerDTO implements Serializable
 
 	public void setId( Long id ) {
 		this.id = id;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet( String street ) {
+		this.street = street;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity( String city ) {
+		this.city = city;
+	}
+
+	public Integer getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode( Integer zipCode ) {
+		this.zipCode = zipCode;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince( String province ) {
+		this.province = province;
 	}
 
 	public Long getAddressId() {
@@ -54,6 +98,10 @@ public class CustomerDTO implements Serializable
 	public String toString() {
 		return "CustomerDTO{" +
 				"id=" + getId() +
+				", street='" + getStreet() + "'" +
+				", city='" + getCity() + "'" +
+				", zipCode='" + getZipCode() + "'" +
+				", province='" + getProvince() + "'" +
 				"}";
 	}
 }

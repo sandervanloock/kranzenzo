@@ -20,8 +20,7 @@ export class ProductComponent implements OnInit, OnDestroy {
         private productService: ProductService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal ) {
+        private activatedRoute: ActivatedRoute, private principal: Principal ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
@@ -50,7 +49,6 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.currentSearch = '';
         this.loadAll();
     }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then( ( account ) => {
@@ -66,7 +64,6 @@ export class ProductComponent implements OnInit, OnDestroy {
     trackId( index: number, item: Product ) {
         return item.id;
     }
-
     registerChangeInProducts() {
         this.eventSubscriber = this.eventManager.subscribe( 'productListModification', ( response ) => this.loadAll() );
     }

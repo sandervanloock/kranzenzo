@@ -20,8 +20,7 @@ export class LocationComponent implements OnInit, OnDestroy {
         private locationService: LocationService,
         private alertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal ) {
+        private activatedRoute: ActivatedRoute, private principal: Principal ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 
@@ -50,7 +49,6 @@ export class LocationComponent implements OnInit, OnDestroy {
         this.currentSearch = '';
         this.loadAll();
     }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then( ( account ) => {
@@ -66,7 +64,6 @@ export class LocationComponent implements OnInit, OnDestroy {
     trackId( index: number, item: Location ) {
         return item.id;
     }
-
     registerChangeInLocations() {
         this.eventSubscriber = this.eventManager.subscribe( 'locationListModification', ( response ) => this.loadAll() );
     }

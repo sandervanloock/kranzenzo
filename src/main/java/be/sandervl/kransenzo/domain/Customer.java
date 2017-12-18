@@ -6,6 +6,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -27,6 +29,20 @@ public class Customer implements Serializable
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@Column(name = "street")
+	private String street;
+
+	@Column(name = "city")
+	private String city;
+
+	@Min(value = 1000)
+	@Max(value = 9999)
+	@Column(name = "zip_code")
+	private Integer zipCode;
+
+	@Column(name = "province")
+	private String province;
+
 	@OneToOne
 	@JoinColumn(unique = true)
 	private Location address;
@@ -42,6 +58,58 @@ public class Customer implements Serializable
 
 	public void setId( Long id ) {
 		this.id = id;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet( String street ) {
+		this.street = street;
+	}
+
+	public Customer street( String street ) {
+		this.street = street;
+		return this;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity( String city ) {
+		this.city = city;
+	}
+
+	public Customer city( String city ) {
+		this.city = city;
+		return this;
+	}
+
+	public Integer getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode( Integer zipCode ) {
+		this.zipCode = zipCode;
+	}
+
+	public Customer zipCode( Integer zipCode ) {
+		this.zipCode = zipCode;
+		return this;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince( String province ) {
+		this.province = province;
+	}
+
+	public Customer province( String province ) {
+		this.province = province;
+		return this;
 	}
 
 	public Location getAddress() {
@@ -106,6 +174,10 @@ public class Customer implements Serializable
 	public String toString() {
 		return "Customer{" +
 				"id=" + getId() +
+				", street='" + getStreet() + "'" +
+				", city='" + getCity() + "'" +
+				", zipCode='" + getZipCode() + "'" +
+				", province='" + getProvince() + "'" +
 				"}";
 	}
 }

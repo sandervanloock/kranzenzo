@@ -30,7 +30,6 @@ export class CustomerDetailComponent implements OnInit, OnDestroy {
             this.customer = customer;
         } );
     }
-
     previousState() {
         window.history.back();
     }

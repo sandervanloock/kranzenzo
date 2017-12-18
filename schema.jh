@@ -1,7 +1,7 @@
 entity Product {
     name String required
-    description String
     price Float required
+    description String
 }
 
 entity Image {
@@ -13,24 +13,28 @@ entity Tag {
 }
 
 entity Customer {
+	street String
+    city String
+    zipCode Integer min(1000) max(9999)
+    province String
 }
 
 entity Order{
-	created ZonedDateTime required
+	created ZonedDateTime
     updated ZonedDateTime
     state OrderState
     deliveryType DeliveryType
-    led Boolean
+    includeBatteries Boolean
 }
 
 entity Location{
-	latitude Float required
-    longitude Float required
+	latitude Float required min(-90) max(90)
+    longitude Float required min(-180) max(180)
     description String
 }
 
 enum OrderState{
-	NEW, PAYED, CANCELLED, DELIVERED
+	NEW, PAYED, CANCELLED, DONE
 } 
 
 enum DeliveryType{

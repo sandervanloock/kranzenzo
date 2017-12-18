@@ -17,8 +17,8 @@
         "title": "Product"
       },
       "name": "Name",
-      "description": "Description",
       "price": "Price",
+      "description": "Description",
       "images": "Images",
       "orders": "Orders",
       "tags": "Tags"

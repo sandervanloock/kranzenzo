@@ -34,7 +34,7 @@
                 <th><span jhiTranslate="kransenzoApp.order.updated">Updated</span></th>
                 <th><span jhiTranslate="kransenzoApp.order.state">State</span></th>
                 <th><span jhiTranslate="kransenzoApp.order.deliveryType">Delivery Type</span></th>
-                <th><span jhiTranslate="kransenzoApp.order.led">Led</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.includeBatteries">Include Batteries</span></th>
                 <th><span jhiTranslate="kransenzoApp.order.customer">Customer</span></th>
                 <th><span jhiTranslate="kransenzoApp.order.deliveryAddress">Delivery Address</span></th>
                 <th><span jhiTranslate="kransenzoApp.order.product">Product</span></th>
@@ -48,7 +48,7 @@
                 <td>{{order.updated | date:'medium'}}</td>
                 <td jhiTranslate="{{'kransenzoApp.OrderState.' + order.state}}">{{order.state}}</td>
                 <td jhiTranslate="{{'kransenzoApp.DeliveryType.' + order.deliveryType}}">{{order.deliveryType}}</td>
-                <td>{{order.led}}</td>
+                <td>{{order.includeBatteries}}</td>
                 <td>
                     <div *ngIf="order.customerId">
                         <a [routerLink]="['../customer', order.customerId  ]">{{order.customerId}}</a>

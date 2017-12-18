@@ -31,15 +31,15 @@
       ]
     },
     {
-      "fieldName": "description",
-      "fieldType": "String"
-    },
-    {
       "fieldName": "price",
       "fieldType": "Float",
       "fieldValidateRules": [
         "required"
       ]
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
     }
   ],
   "changelogDate": "20171212225537",

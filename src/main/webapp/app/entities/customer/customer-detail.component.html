@@ -1,8 +1,25 @@
+
 <div *ngIf="customer">
     <h2><span jhiTranslate="kransenzoApp.customer.detail.title">Customer</span> {{customer.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kransenzoApp.customer.street">Street</span></dt>
+        <dd>
+            <span>{{customer.street}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.customer.city">City</span></dt>
+        <dd>
+            <span>{{customer.city}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.customer.zipCode">Zip Code</span></dt>
+        <dd>
+            <span>{{customer.zipCode}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.customer.province">Province</span></dt>
+        <dd>
+            <span>{{customer.province}}</span>
+        </dd>
         <dt><span jhiTranslate="kransenzoApp.customer.address">Address</span></dt>
         <dd>
             <div *ngIf="customer.addressId">

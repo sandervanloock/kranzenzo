@@ -28,8 +28,7 @@ public class Order implements Serializable
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull
-	@Column(name = "created", nullable = false)
+	@Column(name = "created")
 	private ZonedDateTime created;
 
 	@Column(name = "updated")
@@ -43,8 +42,8 @@ public class Order implements Serializable
 	@Column(name = "delivery_type")
 	private DeliveryType deliveryType;
 
-	@Column(name = "led")
-	private Boolean led;
+	@Column(name = "include_batteries")
+	private Boolean includeBatteries;
 
 	@ManyToOne
 	private Customer customer;
@@ -117,17 +116,17 @@ public class Order implements Serializable
 		return this;
 	}
 
-	public Boolean isLed() {
-		return led;
+	public Boolean isIncludeBatteries() {
+		return includeBatteries;
 	}
 
-	public Order led( Boolean led ) {
-		this.led = led;
+	public Order includeBatteries( Boolean includeBatteries ) {
+		this.includeBatteries = includeBatteries;
 		return this;
 	}
 
-	public void setLed( Boolean led ) {
-		this.led = led;
+	public void setIncludeBatteries( Boolean includeBatteries ) {
+		this.includeBatteries = includeBatteries;
 	}
 
 	public Customer getCustomer() {
@@ -197,7 +196,7 @@ public class Order implements Serializable
 				", updated='" + getUpdated() + "'" +
 				", state='" + getState() + "'" +
 				", deliveryType='" + getDeliveryType() + "'" +
-				", led='" + isLed() + "'" +
+				", includeBatteries='" + isIncludeBatteries() + "'" +
 				"}";
 	}
 }

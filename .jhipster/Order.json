@@ -26,10 +26,7 @@
   "fields": [
     {
       "fieldName": "created",
-      "fieldType": "ZonedDateTime",
-      "fieldValidateRules": [
-        "required"
-      ]
+      "fieldType": "ZonedDateTime"
     },
     {
       "fieldName": "updated",
@@ -38,7 +35,7 @@
     {
       "fieldName": "state",
       "fieldType": "OrderState",
-      "fieldValues": "NEW,PAYED,CANCELLED,DELIVERED"
+      "fieldValues": "NEW,PAYED,CANCELLED,DONE"
     },
     {
       "fieldName": "deliveryType",
@@ -46,7 +43,7 @@
       "fieldValues": "DELIVERED,PICKUP"
     },
     {
-      "fieldName": "led",
+      "fieldName": "includeBatteries",
       "fieldType": "Boolean"
     }
   ],

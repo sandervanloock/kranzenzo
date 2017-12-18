@@ -5,6 +5,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
@@ -26,10 +28,14 @@ public class Location implements Serializable
 	private Long id;
 
 	@NotNull
+	@DecimalMin(value = "-90")
+	@DecimalMax(value = "90")
 	@Column(name = "latitude", nullable = false)
 	private Float latitude;
 
 	@NotNull
+	@DecimalMin(value = "-180")
+	@DecimalMax(value = "180")
 	@Column(name = "longitude", nullable = false)
 	private Float longitude;
 

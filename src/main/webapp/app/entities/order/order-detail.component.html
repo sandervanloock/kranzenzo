@@ -1,3 +1,4 @@
+
 <div *ngIf="order">
     <h2><span jhiTranslate="kransenzoApp.order.detail.title">Order</span> {{order.id}}</h2>
     <hr>
@@ -19,9 +20,9 @@
         <dd>
             <span jhiTranslate="{{'kransenzoApp.DeliveryType.' + order.deliveryType}}">{{order.deliveryType}}</span>
         </dd>
-        <dt><span jhiTranslate="kransenzoApp.order.led">Led</span></dt>
+        <dt><span jhiTranslate="kransenzoApp.order.includeBatteries">Include Batteries</span></dt>
         <dd>
-            <span>{{order.led}}</span>
+            <span>{{order.includeBatteries}}</span>
         </dd>
         <dt><span jhiTranslate="kransenzoApp.order.customer">Customer</span></dt>
         <dd>

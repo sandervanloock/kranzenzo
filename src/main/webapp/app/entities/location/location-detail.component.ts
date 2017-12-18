@@ -30,7 +30,6 @@ export class LocationDetailComponent implements OnInit, OnDestroy {
             this.location = location;
         } );
     }
-
     previousState() {
         window.history.back();
     }

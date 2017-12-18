@@ -39,6 +39,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CustomerResourceIntTest
 {
 
+	private static final String DEFAULT_STREET = "AAAAAAAAAA";
+	private static final String UPDATED_STREET = "BBBBBBBBBB";
+
+	private static final String DEFAULT_CITY = "AAAAAAAAAA";
+	private static final String UPDATED_CITY = "BBBBBBBBBB";
+
+	private static final Integer DEFAULT_ZIP_CODE = 1000;
+	private static final Integer UPDATED_ZIP_CODE = 1001;
+
+	private static final String DEFAULT_PROVINCE = "AAAAAAAAAA";
+	private static final String UPDATED_PROVINCE = "BBBBBBBBBB";
+
 	@Autowired
 	private CustomerRepository customerRepository;
 
@@ -71,7 +83,11 @@ public class CustomerResourceIntTest
 	 * if they test an entity which requires the current entity.
 	 */
 	public static Customer createEntity( EntityManager em ) {
-		Customer customer = new Customer();
+		Customer customer = new Customer()
+				.street( DEFAULT_STREET )
+				.city( DEFAULT_CITY )
+				.zipCode( DEFAULT_ZIP_CODE )
+				.province( DEFAULT_PROVINCE );
 		return customer;
 	}
 
@@ -108,6 +124,10 @@ public class CustomerResourceIntTest
 		List<Customer> customerList = customerRepository.findAll();
 		assertThat( customerList ).hasSize( databaseSizeBeforeCreate + 1 );
 		Customer testCustomer = customerList.get( customerList.size() - 1 );
+		assertThat( testCustomer.getStreet() ).isEqualTo( DEFAULT_STREET );
+		assertThat( testCustomer.getCity() ).isEqualTo( DEFAULT_CITY );
+		assertThat( testCustomer.getZipCode() ).isEqualTo( DEFAULT_ZIP_CODE );
+		assertThat( testCustomer.getProvince() ).isEqualTo( DEFAULT_PROVINCE );
 
 		// Validate the Customer in Elasticsearch
 		Customer customerEs = customerSearchRepository.findOne( testCustomer.getId() );
@@ -144,7 +164,11 @@ public class CustomerResourceIntTest
 		restCustomerMockMvc.perform( get( "/api/customers?sort=id,desc" ) )
 		                   .andExpect( status().isOk() )
 		                   .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
-		                   .andExpect( jsonPath( "$.[*].id" ).value( hasItem( customer.getId().intValue() ) ) );
+		                   .andExpect( jsonPath( "$.[*].id" ).value( hasItem( customer.getId().intValue() ) ) )
+		                   .andExpect( jsonPath( "$.[*].street" ).value( hasItem( DEFAULT_STREET.toString() ) ) )
+		                   .andExpect( jsonPath( "$.[*].city" ).value( hasItem( DEFAULT_CITY.toString() ) ) )
+		                   .andExpect( jsonPath( "$.[*].zipCode" ).value( hasItem( DEFAULT_ZIP_CODE ) ) )
+		                   .andExpect( jsonPath( "$.[*].province" ).value( hasItem( DEFAULT_PROVINCE.toString() ) ) );
 	}
 
 	@Test
@@ -157,7 +181,11 @@ public class CustomerResourceIntTest
 		restCustomerMockMvc.perform( get( "/api/customers/{id}", customer.getId() ) )
 		                   .andExpect( status().isOk() )
 		                   .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
-		                   .andExpect( jsonPath( "$.id" ).value( customer.getId().intValue() ) );
+		                   .andExpect( jsonPath( "$.id" ).value( customer.getId().intValue() ) )
+		                   .andExpect( jsonPath( "$.street" ).value( DEFAULT_STREET.toString() ) )
+		                   .andExpect( jsonPath( "$.city" ).value( DEFAULT_CITY.toString() ) )
+		                   .andExpect( jsonPath( "$.zipCode" ).value( DEFAULT_ZIP_CODE ) )
+		                   .andExpect( jsonPath( "$.province" ).value( DEFAULT_PROVINCE.toString() ) );
 	}
 
 	@Test
@@ -178,6 +206,11 @@ public class CustomerResourceIntTest
 
 		// Update the customer
 		Customer updatedCustomer = customerRepository.findOne( customer.getId() );
+		updatedCustomer
+				.street( UPDATED_STREET )
+				.city( UPDATED_CITY )
+				.zipCode( UPDATED_ZIP_CODE )
+				.province( UPDATED_PROVINCE );
 		CustomerDTO customerDTO = customerMapper.toDto( updatedCustomer );
 
 		restCustomerMockMvc.perform( put( "/api/customers" )
@@ -189,6 +222,10 @@ public class CustomerResourceIntTest
 		List<Customer> customerList = customerRepository.findAll();
 		assertThat( customerList ).hasSize( databaseSizeBeforeUpdate );
 		Customer testCustomer = customerList.get( customerList.size() - 1 );
+		assertThat( testCustomer.getStreet() ).isEqualTo( UPDATED_STREET );
+		assertThat( testCustomer.getCity() ).isEqualTo( UPDATED_CITY );
+		assertThat( testCustomer.getZipCode() ).isEqualTo( UPDATED_ZIP_CODE );
+		assertThat( testCustomer.getProvince() ).isEqualTo( UPDATED_PROVINCE );
 
 		// Validate the Customer in Elasticsearch
 		Customer customerEs = customerSearchRepository.findOne( testCustomer.getId() );
@@ -247,7 +284,11 @@ public class CustomerResourceIntTest
 		restCustomerMockMvc.perform( get( "/api/_search/customers?query=id:" + customer.getId() ) )
 		                   .andExpect( status().isOk() )
 		                   .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
-		                   .andExpect( jsonPath( "$.[*].id" ).value( hasItem( customer.getId().intValue() ) ) );
+		                   .andExpect( jsonPath( "$.[*].id" ).value( hasItem( customer.getId().intValue() ) ) )
+		                   .andExpect( jsonPath( "$.[*].street" ).value( hasItem( DEFAULT_STREET.toString() ) ) )
+		                   .andExpect( jsonPath( "$.[*].city" ).value( hasItem( DEFAULT_CITY.toString() ) ) )
+		                   .andExpect( jsonPath( "$.[*].zipCode" ).value( hasItem( DEFAULT_ZIP_CODE ) ) )
+		                   .andExpect( jsonPath( "$.[*].province" ).value( hasItem( DEFAULT_PROVINCE.toString() ) ) );
 	}
 
 	@Test

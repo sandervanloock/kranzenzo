@@ -16,6 +16,10 @@
       "detail": {
         "title": "Customer"
       },
+      "street": "Street",
+      "city": "City",
+      "zipCode": "Zip Code",
+      "province": "Province",
       "address": "Address",
       "orders": "Orders"
     }

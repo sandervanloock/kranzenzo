@@ -4,6 +4,7 @@ import be.sandervl.kransenzo.domain.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 /**
  * Spring Data JPA repository for the Customer entity.
  */
@@ -11,5 +12,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Long>
 {
-
+    
 }

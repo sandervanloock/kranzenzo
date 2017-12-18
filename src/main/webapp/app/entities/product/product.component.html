@@ -31,8 +31,8 @@
             <tr>
                 <th><span jhiTranslate="global.field.id">ID</span></th>
                 <th><span jhiTranslate="kransenzoApp.product.name">Name</span></th>
-                <th><span jhiTranslate="kransenzoApp.product.description">Description</span></th>
                 <th><span jhiTranslate="kransenzoApp.product.price">Price</span></th>
+                <th><span jhiTranslate="kransenzoApp.product.description">Description</span></th>
                 <th><span jhiTranslate="kransenzoApp.product.tags">Tags</span></th>
                 <th></th>
             </tr>
@@ -41,8 +41,8 @@
             <tr *ngFor="let product of products ;trackBy: trackId">
                 <td><a [routerLink]="['../product', product.id ]">{{product.id}}</a></td>
                 <td>{{product.name}}</td>
-                <td>{{product.description}}</td>
                 <td>{{product.price}}</td>
+                <td>{{product.description}}</td>
                 <td>
                     <span *ngFor="let tags of product.tags; let last = last">
                             <a class="form-control-static" [routerLink]="['../tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}

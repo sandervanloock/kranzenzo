@@ -37,7 +37,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Test class for the OrderResource REST controller.
  *
@@ -62,8 +61,8 @@ public class OrderResourceIntTest
 	private static final DeliveryType DEFAULT_DELIVERY_TYPE = DeliveryType.DELIVERED;
 	private static final DeliveryType UPDATED_DELIVERY_TYPE = DeliveryType.PICKUP;
 
-	private static final Boolean DEFAULT_LED = false;
-	private static final Boolean UPDATED_LED = true;
+	private static final Boolean DEFAULT_INCLUDE_BATTERIES = false;
+	private static final Boolean UPDATED_INCLUDE_BATTERIES = true;
 
 	@Autowired
 	private OrderRepository orderRepository;
@@ -105,7 +104,7 @@ public class OrderResourceIntTest
 				.updated( DEFAULT_UPDATED )
 				.state( DEFAULT_STATE )
 				.deliveryType( DEFAULT_DELIVERY_TYPE )
-				.led( DEFAULT_LED );
+				.includeBatteries( DEFAULT_INCLUDE_BATTERIES );
 		// Add required entity
 		Product product = ProductResourceIntTest.createEntity( em );
 		em.persist( product );
@@ -150,7 +149,7 @@ public class OrderResourceIntTest
 		assertThat( testOrder.getUpdated() ).isEqualTo( DEFAULT_UPDATED );
 		assertThat( testOrder.getState() ).isEqualTo( DEFAULT_STATE );
 		assertThat( testOrder.getDeliveryType() ).isEqualTo( DEFAULT_DELIVERY_TYPE );
-		assertThat( testOrder.isLed() ).isEqualTo( DEFAULT_LED );
+		assertThat( testOrder.isIncludeBatteries() ).isEqualTo( DEFAULT_INCLUDE_BATTERIES );
 
 		// Validate the Order in Elasticsearch
 		Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
@@ -179,25 +178,6 @@ public class OrderResourceIntTest
 
 	@Test
 	@Transactional
-	public void checkCreatedIsRequired() throws Exception {
-		int databaseSizeBeforeTest = orderRepository.findAll().size();
-		// set the field null
-		order.setCreated( null );
-
-		// Create the Order, which fails.
-		OrderDTO orderDTO = orderMapper.toDto( order );
-
-		restOrderMockMvc.perform( post( "/api/orders" )
-				                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-				                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
-		                .andExpect( status().isBadRequest() );
-
-		List<Order> orderList = orderRepository.findAll();
-		assertThat( orderList ).hasSize( databaseSizeBeforeTest );
-	}
-
-	@Test
-	@Transactional
 	public void getAllOrders() throws Exception {
 		// Initialize the database
 		orderRepository.saveAndFlush( order );
@@ -212,7 +192,8 @@ public class OrderResourceIntTest
 		                .andExpect( jsonPath( "$.[*].state" ).value( hasItem( DEFAULT_STATE.toString() ) ) )
 		                .andExpect(
 				                jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
-		                .andExpect( jsonPath( "$.[*].led" ).value( hasItem( DEFAULT_LED.booleanValue() ) ) );
+		                .andExpect( jsonPath( "$.[*].includeBatteries" )
+				                            .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) );
 	}
 
 	@Test
@@ -230,7 +211,8 @@ public class OrderResourceIntTest
 		                .andExpect( jsonPath( "$.updated" ).value( sameInstant( DEFAULT_UPDATED ) ) )
 		                .andExpect( jsonPath( "$.state" ).value( DEFAULT_STATE.toString() ) )
 		                .andExpect( jsonPath( "$.deliveryType" ).value( DEFAULT_DELIVERY_TYPE.toString() ) )
-		                .andExpect( jsonPath( "$.led" ).value( DEFAULT_LED.booleanValue() ) );
+		                .andExpect(
+				                jsonPath( "$.includeBatteries" ).value( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) );
 	}
 
 	@Test
@@ -256,7 +238,7 @@ public class OrderResourceIntTest
 				.updated( UPDATED_UPDATED )
 				.state( UPDATED_STATE )
 				.deliveryType( UPDATED_DELIVERY_TYPE )
-				.led( UPDATED_LED );
+				.includeBatteries( UPDATED_INCLUDE_BATTERIES );
 		OrderDTO orderDTO = orderMapper.toDto( updatedOrder );
 
 		restOrderMockMvc.perform( put( "/api/orders" )
@@ -272,7 +254,7 @@ public class OrderResourceIntTest
 		assertThat( testOrder.getUpdated() ).isEqualTo( UPDATED_UPDATED );
 		assertThat( testOrder.getState() ).isEqualTo( UPDATED_STATE );
 		assertThat( testOrder.getDeliveryType() ).isEqualTo( UPDATED_DELIVERY_TYPE );
-		assertThat( testOrder.isLed() ).isEqualTo( UPDATED_LED );
+		assertThat( testOrder.isIncludeBatteries() ).isEqualTo( UPDATED_INCLUDE_BATTERIES );
 
 		// Validate the Order in Elasticsearch
 		Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
@@ -337,7 +319,8 @@ public class OrderResourceIntTest
 		                .andExpect( jsonPath( "$.[*].state" ).value( hasItem( DEFAULT_STATE.toString() ) ) )
 		                .andExpect(
 				                jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
-		                .andExpect( jsonPath( "$.[*].led" ).value( hasItem( DEFAULT_LED.booleanValue() ) ) );
+		                .andExpect( jsonPath( "$.[*].includeBatteries" )
+				                            .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) );
 	}
 
 	@Test

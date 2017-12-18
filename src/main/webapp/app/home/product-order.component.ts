@@ -5,6 +5,8 @@ import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Product, ProductService} from '../entities/product';
 import {Subscription} from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
+import {Customer} from '../entities/customer';
+import {Http} from '@angular/http';
 
 /*
 Based on https://codepen.io/bryceyork/pen/MyPjPE
@@ -24,6 +26,7 @@ export class ProductOrderComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
     product: Product;
+    customer: Customer = new Customer();
 
     private subscription: Subscription;
     private eventSubscriber: Subscription;
@@ -32,8 +35,7 @@ export class ProductOrderComponent implements OnInit {
         private loginModalService: LoginModalService,
         private principal: Principal,
         private eventManager: JhiEventManager,
-        private productService: ProductService,
-        private route: ActivatedRoute, ) {
+        private productService: ProductService, private route: ActivatedRoute, private http: Http ) {
     }
 
     ngOnInit() {
@@ -91,5 +93,18 @@ export class ProductOrderComponent implements OnInit {
 
     registerChangeInProducts() {
         this.eventSubscriber = this.eventManager.subscribe( 'productListModification', ( response ) => this.load( this.product.id ) );
+    }
+
+    updateLocation( e ) {
+        const locationString = `${this.customer.street},${this.customer.city}`;
+        this.http.get(
+            `https://maps.googleapis.com/maps/api/directions/json?origin=Zorgvliet,Sint-Katelijne-waver&destination=${locationString}&key=AIzaSyClcpip4cpRugakVB8zitzdjxfo6qRPDic` )
+            .subscribe( ( data: any ) => {
+                console.log( data )
+            } );
+    }
+
+    submitForm() {
+        console.log( 'submit' );
     }
 }

@@ -6,15 +6,23 @@
       "fieldName": "latitude",
       "fieldType": "Float",
       "fieldValidateRules": [
-        "required"
-      ]
+        "required",
+        "min",
+        "max"
+      ],
+      "fieldValidateRulesMin": -90,
+      "fieldValidateRulesMax": 90
     },
     {
       "fieldName": "longitude",
       "fieldType": "Float",
       "fieldValidateRules": [
-        "required"
-      ]
+        "required",
+        "min",
+        "max"
+      ],
+      "fieldValidateRulesMin": -180,
+      "fieldValidateRulesMax": 180
     },
     {
       "fieldName": "description",
