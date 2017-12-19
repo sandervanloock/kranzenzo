@@ -5,5 +5,5 @@ package be.sandervl.kransenzo.domain.enumeration;
  */
 public enum DeliveryType
 {
-	DELIVERED, PICKUP
+    DELIVERED, PICKUP
 }

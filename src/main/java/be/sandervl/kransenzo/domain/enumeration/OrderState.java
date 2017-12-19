@@ -5,5 +5,5 @@ package be.sandervl.kransenzo.domain.enumeration;
  */
 public enum OrderState
 {
-	NEW, PAYED, CANCELLED, DONE
+    NEW, PAYED, CANCELLED, DONE
 }

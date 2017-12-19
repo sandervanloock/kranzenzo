@@ -45,6 +45,14 @@
     {
       "fieldName": "includeBatteries",
       "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "maxlength"
+      ],
+      "fieldValidateRulesMaxlength": 5000
     }
   ],
   "changelogDate": "20171212225541",

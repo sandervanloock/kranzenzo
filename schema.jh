@@ -1,7 +1,7 @@
 entity Product {
-    name String required
-    price Float required
-    description String
+    name String maxlength(200) required
+    price Float min(0) required
+    description String maxlength(5000) 
 }
 
 entity Image {
@@ -17,6 +17,7 @@ entity Customer {
     city String
     zipCode Integer min(1000) max(9999)
     province String
+    phoneNumber String
 }
 
 entity Order{
@@ -25,6 +26,7 @@ entity Order{
     state OrderState
     deliveryType DeliveryType
     includeBatteries Boolean
+    description String maxlength(5000)
 }
 
 entity Location{

@@ -59,10 +59,6 @@ export class CustomerDialogComponent implements OnInit {
         }
     }
 
-    trackLocationById( index: number, item: Location ) {
-        return item.id;
-    }
-
     private subscribeToSaveResponse( result: Observable<Customer> ) {
         result.subscribe( ( res: Customer ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError( res ) );
     }
@@ -85,6 +81,10 @@ export class CustomerDialogComponent implements OnInit {
 
     private onError( error ) {
         this.alertService.error( error.message, null, null );
+    }
+
+    trackLocationById( index: number, item: Location ) {
+        return item.id;
     }
 }
 

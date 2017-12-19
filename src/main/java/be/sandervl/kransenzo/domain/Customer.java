@@ -23,161 +23,178 @@ import java.util.Set;
 public class Customer implements Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "street")
-	private String street;
+    @Column(name = "street")
+    private String street;
 
-	@Column(name = "city")
-	private String city;
+    @Column(name = "city")
+    private String city;
 
-	@Min(value = 1000)
-	@Max(value = 9999)
-	@Column(name = "zip_code")
-	private Integer zipCode;
+    @Min(value = 1000)
+    @Max(value = 9999)
+    @Column(name = "zip_code")
+    private Integer zipCode;
 
-	@Column(name = "province")
-	private String province;
+    @Column(name = "province")
+    private String province;
 
-	@OneToOne
-	@JoinColumn(unique = true)
-	private Location address;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
-	@OneToMany(mappedBy = "customer")
-	@JsonIgnore
-	@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<Order> orders = new HashSet<>();
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Location address;
 
-	public Long getId() {
-		return id;
-	}
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Order> orders = new HashSet<>();
 
-	public void setId( Long id ) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getStreet() {
-		return street;
-	}
+    public void setId( Long id ) {
+        this.id = id;
+    }
 
-	public void setStreet( String street ) {
-		this.street = street;
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	public Customer street( String street ) {
-		this.street = street;
-		return this;
-	}
+    public void setStreet( String street ) {
+        this.street = street;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public Customer street( String street ) {
+        this.street = street;
+        return this;
+    }
 
-	public void setCity( String city ) {
-		this.city = city;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public Customer city( String city ) {
-		this.city = city;
-		return this;
-	}
+    public void setCity( String city ) {
+        this.city = city;
+    }
 
-	public Integer getZipCode() {
-		return zipCode;
-	}
+    public Customer city( String city ) {
+        this.city = city;
+        return this;
+    }
 
-	public void setZipCode( Integer zipCode ) {
-		this.zipCode = zipCode;
-	}
+    public Integer getZipCode() {
+        return zipCode;
+    }
 
-	public Customer zipCode( Integer zipCode ) {
-		this.zipCode = zipCode;
-		return this;
-	}
+    public void setZipCode( Integer zipCode ) {
+        this.zipCode = zipCode;
+    }
 
-	public String getProvince() {
-		return province;
-	}
+    public Customer zipCode( Integer zipCode ) {
+        this.zipCode = zipCode;
+        return this;
+    }
 
-	public void setProvince( String province ) {
-		this.province = province;
-	}
+    public String getProvince() {
+        return province;
+    }
 
-	public Customer province( String province ) {
-		this.province = province;
-		return this;
-	}
+    public void setProvince( String province ) {
+        this.province = province;
+    }
 
-	public Location getAddress() {
-		return address;
-	}
+    public Customer province( String province ) {
+        this.province = province;
+        return this;
+    }
 
-	public void setAddress( Location location ) {
-		this.address = location;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	public Customer address( Location location ) {
-		this.address = location;
-		return this;
-	}
+    public void setPhoneNumber( String phoneNumber ) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	public Set<Order> getOrders() {
-		return orders;
-	}
+    public Customer phoneNumber( String phoneNumber ) {
+        this.phoneNumber = phoneNumber;
+        return this;
+    }
 
-	public void setOrders( Set<Order> orders ) {
-		this.orders = orders;
-	}
+    public Location getAddress() {
+        return address;
+    }
 
-	public Customer orders( Set<Order> orders ) {
-		this.orders = orders;
-		return this;
-	}
+    public void setAddress( Location location ) {
+        this.address = location;
+    }
 
-	public Customer addOrders( Order order ) {
-		this.orders.add( order );
-		order.setCustomer( this );
-		return this;
-	}
+    public Customer address( Location location ) {
+        this.address = location;
+        return this;
+    }
 
-	public Customer removeOrders( Order order ) {
-		this.orders.remove( order );
-		order.setCustomer( null );
-		return this;
-	}
+    public Set<Order> getOrders() {
+        return orders;
+    }
 
-	@Override
-	public boolean equals( Object o ) {
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
-		Customer customer = (Customer) o;
-		if ( customer.getId() == null || getId() == null ) {
-			return false;
-		}
-		return Objects.equals( getId(), customer.getId() );
-	}
+    public void setOrders( Set<Order> orders ) {
+        this.orders = orders;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode( getId() );
-	}
+    public Customer orders( Set<Order> orders ) {
+        this.orders = orders;
+        return this;
+    }
 
-	@Override
-	public String toString() {
-		return "Customer{" +
-				"id=" + getId() +
-				", street='" + getStreet() + "'" +
-				", city='" + getCity() + "'" +
-				", zipCode='" + getZipCode() + "'" +
-				", province='" + getProvince() + "'" +
-				"}";
-	}
+    public Customer addOrders( Order order ) {
+        this.orders.add( order );
+        order.setCustomer( this );
+        return this;
+    }
+
+    public Customer removeOrders( Order order ) {
+        this.orders.remove( order );
+        order.setCustomer( null );
+        return this;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+        Customer customer = (Customer) o;
+        if ( customer.getId() == null || getId() == null ) {
+            return false;
+        }
+        return Objects.equals( getId(), customer.getId() );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode( getId() );
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + getId() +
+                ", street='" + getStreet() + "'" +
+                ", city='" + getCity() + "'" +
+                ", zipCode='" + getZipCode() + "'" +
+                ", province='" + getProvince() + "'" +
+                ", phoneNumber='" + getPhoneNumber() + "'" +
+                "}";
+    }
 }

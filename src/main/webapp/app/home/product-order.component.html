@@ -18,7 +18,7 @@
             </div>
         </div>
         <form name="editForm" role="form" novalidate #editForm="ngForm" (ngSubmit)="submitForm()">
-            <div class="stepper-content col-md-6" *ngIf="step===1">
+            <div class="stepper-content col-md-6 " style="margin: 0 auto;" *ngIf="step===1">
                 <h2>Geef je gegevens</h2>
                 <div class="form-group">
                     <label for="lastName">Naam</label>
@@ -103,22 +103,6 @@
                                 </small>
                             </div>
 
-                            <!-- <div *ngIf="this.deliveryType === 'delivered'">
-                                 <h3>Geef je thuisadres</h3>
-                                 <p>
-                                     Zodra het geld is overgemaakt zal het stuk worden geleverd.
-                                 </p>
-                             </div>
-
-                             <div *ngIf="this.deliveryType === 'pickup'">
-                                 <h3>Maak een afspraak</h3>
-                                 <p>
-                                     Zodra het geld is zal je melding krijgen van KransEnzo om het een afspraak te maken
-                                     om
-                                     het
-                                     stuk te kunnen ophalen.
-                                 </p>
-                             </div>-->
                         </div>
                         <!--end of delivery method-->
                         <hr/>
@@ -182,6 +166,14 @@
             <div class="stepper-content" *ngIf="step===3">
                 <h2>Bevestiging</h2>
                 <p>Gelieve € {{this.price}} over te schrijven op <b>BE12 1234 4567 890</b></p>
+                <p *ngIf="this.deliveryType === 'delivered'">
+                    Zodra het geld is overgemaakt zal het stuk worden geleverd.
+                </p>
+
+                <p *ngIf="this.deliveryType === 'pickup'">
+                    Zodra het geld is overgemaakt zal je melding krijgen van KranzEnzo voor een afspraak te maken om het
+                    stuk te kunnen ophalen.
+                </p>
                 <button class="btn btn-submit" type="submit">Verzenden</button>
             </div>
         </form>

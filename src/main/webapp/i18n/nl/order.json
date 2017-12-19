@@ -21,6 +21,7 @@
       "state": "State",
       "deliveryType": "Delivery Type",
       "includeBatteries": "Include Batteries",
+      "description": "Description",
       "customer": "Customer",
       "deliveryAddress": "Delivery Address",
       "product": "Product"

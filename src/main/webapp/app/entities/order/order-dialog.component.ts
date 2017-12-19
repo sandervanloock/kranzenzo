@@ -75,18 +75,6 @@ export class OrderDialogComponent implements OnInit {
         }
     }
 
-    trackCustomerById( index: number, item: Customer ) {
-        return item.id;
-    }
-
-    trackLocationById( index: number, item: Location ) {
-        return item.id;
-    }
-
-    trackProductById( index: number, item: Product ) {
-        return item.id;
-    }
-
     private subscribeToSaveResponse( result: Observable<Order> ) {
         result.subscribe( ( res: Order ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError( res ) );
     }
@@ -109,6 +97,18 @@ export class OrderDialogComponent implements OnInit {
 
     private onError( error ) {
         this.alertService.error( error.message, null, null );
+    }
+
+    trackCustomerById( index: number, item: Customer ) {
+        return item.id;
+    }
+
+    trackLocationById( index: number, item: Location ) {
+        return item.id;
+    }
+
+    trackProductById( index: number, item: Product ) {
+        return item.id;
     }
 }
 

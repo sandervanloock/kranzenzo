@@ -12,27 +12,27 @@ import org.mapstruct.Mapping;
 public interface OrderMapper extends EntityMapper<OrderDTO, Order>
 {
 
-	@Mapping(source = "customer.id", target = "customerId")
+    @Mapping(source = "customer.id", target = "customerId")
 
-	@Mapping(source = "deliveryAddress.id", target = "deliveryAddressId")
+    @Mapping(source = "deliveryAddress.id", target = "deliveryAddressId")
 
-	@Mapping(source = "product.id", target = "productId")
-	@Mapping(source = "product.name", target = "productName")
-	OrderDTO toDto( Order order );
+    @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "product.name", target = "productName")
+    OrderDTO toDto( Order order );
 
-	@Mapping(source = "customerId", target = "customer")
+    @Mapping(source = "customerId", target = "customer")
 
-	@Mapping(source = "deliveryAddressId", target = "deliveryAddress")
+    @Mapping(source = "deliveryAddressId", target = "deliveryAddress")
 
-	@Mapping(source = "productId", target = "product")
-	Order toEntity( OrderDTO orderDTO );
+    @Mapping(source = "productId", target = "product")
+    Order toEntity( OrderDTO orderDTO );
 
-	default Order fromId( Long id ) {
-		if ( id == null ) {
-			return null;
-		}
-		Order order = new Order();
-		order.setId( id );
-		return order;
-	}
+    default Order fromId( Long id ) {
+        if ( id == null ) {
+            return null;
+        }
+        Order order = new Order();
+        order.setId( id );
+        return order;
+    }
 }

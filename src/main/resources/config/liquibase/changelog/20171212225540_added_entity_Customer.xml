@@ -35,6 +35,10 @@
 			<column name="province" type="varchar(255)">
 				<constraints nullable="true"/>
 			</column>
+
+			<column name="phone_number" type="varchar(255)">
+				<constraints nullable="true"/>
+			</column>
 			<column name="address_id" type="bigint">
 				<constraints unique="true" nullable="true"/>
 			</column>

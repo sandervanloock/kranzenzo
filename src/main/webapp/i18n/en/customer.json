@@ -20,6 +20,7 @@
       "city": "City",
       "zipCode": "Zip Code",
       "province": "Province",
+      "phoneNumber": "Phone Number",
       "address": "Address",
       "orders": "Orders"
     }

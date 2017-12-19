@@ -16,10 +16,10 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long>
 {
 
-	@Query("select distinct product from Product product left join fetch product.tags")
+    @Query("select distinct product from Product product left join fetch product.tags left join fetch product.images")
 	List<Product> findAllWithEagerRelationships();
 
-	@Query("select product from Product product left join fetch product.tags where product.id =:id")
+    @Query("select product from Product product left join fetch product.tags left join fetch product.images where product.id =:id")
 	Product findOneWithEagerRelationships( @Param("id") Long id );
     
 }

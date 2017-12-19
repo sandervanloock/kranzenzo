@@ -11,97 +11,108 @@ import java.util.Objects;
 public class CustomerDTO implements Serializable
 {
 
-	private Long id;
+    private Long id;
 
-	private String street;
+    private String street;
 
-	private String city;
+    private String city;
 
-	@Min(value = 1000)
-	@Max(value = 9999)
-	private Integer zipCode;
+    @Min(value = 1000)
+    @Max(value = 9999)
+    private Integer zipCode;
 
-	private String province;
+    private String province;
 
-	private Long addressId;
+    private String phoneNumber;
 
-	public Long getId() {
-		return id;
-	}
+    private Long addressId;
 
-	public void setId( Long id ) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getStreet() {
-		return street;
-	}
+    public void setId( Long id ) {
+        this.id = id;
+    }
 
-	public void setStreet( String street ) {
-		this.street = street;
-	}
+    public String getStreet() {
+        return street;
+    }
 
-	public String getCity() {
-		return city;
-	}
+    public void setStreet( String street ) {
+        this.street = street;
+    }
 
-	public void setCity( String city ) {
-		this.city = city;
-	}
+    public String getCity() {
+        return city;
+    }
 
-	public Integer getZipCode() {
-		return zipCode;
-	}
+    public void setCity( String city ) {
+        this.city = city;
+    }
 
-	public void setZipCode( Integer zipCode ) {
-		this.zipCode = zipCode;
-	}
+    public Integer getZipCode() {
+        return zipCode;
+    }
 
-	public String getProvince() {
-		return province;
-	}
+    public void setZipCode( Integer zipCode ) {
+        this.zipCode = zipCode;
+    }
 
-	public void setProvince( String province ) {
-		this.province = province;
-	}
+    public String getProvince() {
+        return province;
+    }
 
-	public Long getAddressId() {
-		return addressId;
-	}
+    public void setProvince( String province ) {
+        this.province = province;
+    }
 
-	public void setAddressId( Long locationId ) {
-		this.addressId = locationId;
-	}
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	@Override
-	public boolean equals( Object o ) {
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
+    public void setPhoneNumber( String phoneNumber ) {
+        this.phoneNumber = phoneNumber;
+    }
 
-		CustomerDTO customerDTO = (CustomerDTO) o;
-		if ( customerDTO.getId() == null || getId() == null ) {
-			return false;
-		}
-		return Objects.equals( getId(), customerDTO.getId() );
-	}
+    public Long getAddressId() {
+        return addressId;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode( getId() );
-	}
+    public void setAddressId( Long locationId ) {
+        this.addressId = locationId;
+    }
 
-	@Override
-	public String toString() {
-		return "CustomerDTO{" +
-				"id=" + getId() +
-				", street='" + getStreet() + "'" +
-				", city='" + getCity() + "'" +
-				", zipCode='" + getZipCode() + "'" +
-				", province='" + getProvince() + "'" +
-				"}";
-	}
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+
+        CustomerDTO customerDTO = (CustomerDTO) o;
+        if ( customerDTO.getId() == null || getId() == null ) {
+            return false;
+        }
+        return Objects.equals( getId(), customerDTO.getId() );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode( getId() );
+    }
+
+    @Override
+    public String toString() {
+        return "CustomerDTO{" +
+                "id=" + getId() +
+                ", street='" + getStreet() + "'" +
+                ", city='" + getCity() + "'" +
+                ", zipCode='" + getZipCode() + "'" +
+                ", province='" + getProvince() + "'" +
+                ", phoneNumber='" + getPhoneNumber() + "'" +
+                "}";
+    }
 }

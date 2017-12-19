@@ -8,6 +8,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -22,181 +23,199 @@ import java.util.Objects;
 public class Order implements Serializable
 {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "created")
-	private ZonedDateTime created;
+    @Column(name = "created")
+    private ZonedDateTime created;
 
-	@Column(name = "updated")
-	private ZonedDateTime updated;
+    @Column(name = "updated")
+    private ZonedDateTime updated;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "state")
-	private OrderState state;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
+    private OrderState state;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "delivery_type")
-	private DeliveryType deliveryType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "delivery_type")
+    private DeliveryType deliveryType;
 
-	@Column(name = "include_batteries")
-	private Boolean includeBatteries;
+    @Column(name = "include_batteries")
+    private Boolean includeBatteries;
 
-	@ManyToOne
-	private Customer customer;
+    @Size(max = 5000)
+    @Column(name = "description", length = 5000)
+    private String description;
 
-	@OneToOne
-	@JoinColumn(unique = true)
-	private Location deliveryAddress;
+    @ManyToOne
+    private Customer customer;
 
-	@ManyToOne(optional = false)
-	@NotNull
-	private Product product;
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Location deliveryAddress;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToOne(optional = false)
+    @NotNull
+    private Product product;
 
-	public void setId( Long id ) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public ZonedDateTime getCreated() {
-		return created;
-	}
+    public void setId( Long id ) {
+        this.id = id;
+    }
 
-	public void setCreated( ZonedDateTime created ) {
-		this.created = created;
-	}
+    public ZonedDateTime getCreated() {
+        return created;
+    }
 
-	public Order created( ZonedDateTime created ) {
-		this.created = created;
-		return this;
-	}
+    public void setCreated( ZonedDateTime created ) {
+        this.created = created;
+    }
 
-	public ZonedDateTime getUpdated() {
-		return updated;
-	}
+    public Order created( ZonedDateTime created ) {
+        this.created = created;
+        return this;
+    }
 
-	public void setUpdated( ZonedDateTime updated ) {
-		this.updated = updated;
-	}
+    public ZonedDateTime getUpdated() {
+        return updated;
+    }
 
-	public Order updated( ZonedDateTime updated ) {
-		this.updated = updated;
-		return this;
-	}
+    public void setUpdated( ZonedDateTime updated ) {
+        this.updated = updated;
+    }
 
-	public OrderState getState() {
-		return state;
-	}
+    public Order updated( ZonedDateTime updated ) {
+        this.updated = updated;
+        return this;
+    }
 
-	public void setState( OrderState state ) {
-		this.state = state;
-	}
+    public OrderState getState() {
+        return state;
+    }
 
-	public Order state( OrderState state ) {
-		this.state = state;
-		return this;
-	}
+    public void setState( OrderState state ) {
+        this.state = state;
+    }
 
-	public DeliveryType getDeliveryType() {
-		return deliveryType;
-	}
+    public Order state( OrderState state ) {
+        this.state = state;
+        return this;
+    }
 
-	public void setDeliveryType( DeliveryType deliveryType ) {
-		this.deliveryType = deliveryType;
-	}
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
 
-	public Order deliveryType( DeliveryType deliveryType ) {
-		this.deliveryType = deliveryType;
-		return this;
-	}
+    public void setDeliveryType( DeliveryType deliveryType ) {
+        this.deliveryType = deliveryType;
+    }
 
-	public Boolean isIncludeBatteries() {
-		return includeBatteries;
-	}
+    public Order deliveryType( DeliveryType deliveryType ) {
+        this.deliveryType = deliveryType;
+        return this;
+    }
 
-	public Order includeBatteries( Boolean includeBatteries ) {
-		this.includeBatteries = includeBatteries;
-		return this;
-	}
+    public Boolean isIncludeBatteries() {
+        return includeBatteries;
+    }
 
-	public void setIncludeBatteries( Boolean includeBatteries ) {
-		this.includeBatteries = includeBatteries;
-	}
+    public Order includeBatteries( Boolean includeBatteries ) {
+        this.includeBatteries = includeBatteries;
+        return this;
+    }
 
-	public Customer getCustomer() {
-		return customer;
-	}
+    public void setIncludeBatteries( Boolean includeBatteries ) {
+        this.includeBatteries = includeBatteries;
+    }
 
-	public void setCustomer( Customer customer ) {
-		this.customer = customer;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Order customer( Customer customer ) {
-		this.customer = customer;
-		return this;
-	}
+    public void setDescription( String description ) {
+        this.description = description;
+    }
 
-	public Location getDeliveryAddress() {
-		return deliveryAddress;
-	}
+    public Order description( String description ) {
+        this.description = description;
+        return this;
+    }
 
-	public void setDeliveryAddress( Location location ) {
-		this.deliveryAddress = location;
-	}
+    public Customer getCustomer() {
+        return customer;
+    }
 
-	public Order deliveryAddress( Location location ) {
-		this.deliveryAddress = location;
-		return this;
-	}
+    public void setCustomer( Customer customer ) {
+        this.customer = customer;
+    }
 
-	public Product getProduct() {
-		return product;
-	}
+    public Order customer( Customer customer ) {
+        this.customer = customer;
+        return this;
+    }
 
-	public void setProduct( Product product ) {
-		this.product = product;
-	}
+    public Location getDeliveryAddress() {
+        return deliveryAddress;
+    }
 
-	public Order product( Product product ) {
-		this.product = product;
-		return this;
-	}
+    public void setDeliveryAddress( Location location ) {
+        this.deliveryAddress = location;
+    }
 
-	@Override
-	public boolean equals( Object o ) {
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
-		Order order = (Order) o;
-		if ( order.getId() == null || getId() == null ) {
-			return false;
-		}
-		return Objects.equals( getId(), order.getId() );
-	}
+    public Order deliveryAddress( Location location ) {
+        this.deliveryAddress = location;
+        return this;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode( getId() );
-	}
+    public Product getProduct() {
+        return product;
+    }
 
-	@Override
-	public String toString() {
-		return "Order{" +
-				"id=" + getId() +
-				", created='" + getCreated() + "'" +
-				", updated='" + getUpdated() + "'" +
-				", state='" + getState() + "'" +
-				", deliveryType='" + getDeliveryType() + "'" +
-				", includeBatteries='" + isIncludeBatteries() + "'" +
-				"}";
-	}
+    public void setProduct( Product product ) {
+        this.product = product;
+    }
+
+    public Order product( Product product ) {
+        this.product = product;
+        return this;
+    }
+
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+        Order order = (Order) o;
+        if ( order.getId() == null || getId() == null ) {
+            return false;
+        }
+        return Objects.equals( getId(), order.getId() );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode( getId() );
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + getId() +
+                ", created='" + getCreated() + "'" +
+                ", updated='" + getUpdated() + "'" +
+                ", state='" + getState() + "'" +
+                ", deliveryType='" + getDeliveryType() + "'" +
+                ", includeBatteries='" + isIncludeBatteries() + "'" +
+                ", description='" + getDescription() + "'" +
+                "}";
+    }
 }

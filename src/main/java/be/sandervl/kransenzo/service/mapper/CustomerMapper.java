@@ -15,16 +15,16 @@ public interface CustomerMapper extends EntityMapper<CustomerDTO, Customer>
 	@Mapping(source = "address.id", target = "addressId")
 	CustomerDTO toDto( Customer customer );
 
-	@Mapping(source = "addressId", target = "address")
-	@Mapping(target = "orders", ignore = true)
-	Customer toEntity( CustomerDTO customerDTO );
+    @Mapping(source = "addressId", target = "address")
+    @Mapping(target = "orders", ignore = true)
+    Customer toEntity( CustomerDTO customerDTO );
 
-	default Customer fromId( Long id ) {
-		if ( id == null ) {
-			return null;
-		}
-		Customer customer = new Customer();
-		customer.setId( id );
-		return customer;
-	}
+    default Customer fromId( Long id ) {
+        if ( id == null ) {
+            return null;
+        }
+        Customer customer = new Customer();
+        customer.setId( id );
+        return customer;
+    }
 }

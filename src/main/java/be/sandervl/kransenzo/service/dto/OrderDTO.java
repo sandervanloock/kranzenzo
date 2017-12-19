@@ -3,6 +3,7 @@ package be.sandervl.kransenzo.service.dto;
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
 
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -13,136 +14,148 @@ import java.util.Objects;
 public class OrderDTO implements Serializable
 {
 
-	private Long id;
+    private Long id;
 
-	private ZonedDateTime created;
+    private ZonedDateTime created;
 
-	private ZonedDateTime updated;
+    private ZonedDateTime updated;
 
-	private OrderState state;
+    private OrderState state;
 
-	private DeliveryType deliveryType;
+    private DeliveryType deliveryType;
 
-	private Boolean includeBatteries;
+    private Boolean includeBatteries;
 
-	private Long customerId;
+    @Size(max = 5000)
+    private String description;
 
-	private Long deliveryAddressId;
+    private Long customerId;
 
-	private Long productId;
+    private Long deliveryAddressId;
 
-	private String productName;
+    private Long productId;
 
-	public Long getId() {
-		return id;
-	}
+    private String productName;
 
-	public void setId( Long id ) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public ZonedDateTime getCreated() {
-		return created;
-	}
+    public void setId( Long id ) {
+        this.id = id;
+    }
 
-	public void setCreated( ZonedDateTime created ) {
-		this.created = created;
-	}
+    public ZonedDateTime getCreated() {
+        return created;
+    }
 
-	public ZonedDateTime getUpdated() {
-		return updated;
-	}
+    public void setCreated( ZonedDateTime created ) {
+        this.created = created;
+    }
 
-	public void setUpdated( ZonedDateTime updated ) {
-		this.updated = updated;
-	}
+    public ZonedDateTime getUpdated() {
+        return updated;
+    }
 
-	public OrderState getState() {
-		return state;
-	}
+    public void setUpdated( ZonedDateTime updated ) {
+        this.updated = updated;
+    }
 
-	public void setState( OrderState state ) {
-		this.state = state;
-	}
+    public OrderState getState() {
+        return state;
+    }
 
-	public DeliveryType getDeliveryType() {
-		return deliveryType;
-	}
+    public void setState( OrderState state ) {
+        this.state = state;
+    }
 
-	public void setDeliveryType( DeliveryType deliveryType ) {
-		this.deliveryType = deliveryType;
-	}
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
+    }
 
-	public Boolean isIncludeBatteries() {
-		return includeBatteries;
-	}
+    public void setDeliveryType( DeliveryType deliveryType ) {
+        this.deliveryType = deliveryType;
+    }
 
-	public void setIncludeBatteries( Boolean includeBatteries ) {
-		this.includeBatteries = includeBatteries;
-	}
+    public Boolean isIncludeBatteries() {
+        return includeBatteries;
+    }
 
-	public Long getCustomerId() {
-		return customerId;
-	}
+    public void setIncludeBatteries( Boolean includeBatteries ) {
+        this.includeBatteries = includeBatteries;
+    }
 
-	public void setCustomerId( Long customerId ) {
-		this.customerId = customerId;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public Long getDeliveryAddressId() {
-		return deliveryAddressId;
-	}
+    public void setDescription( String description ) {
+        this.description = description;
+    }
 
-	public void setDeliveryAddressId( Long locationId ) {
-		this.deliveryAddressId = locationId;
-	}
+    public Long getCustomerId() {
+        return customerId;
+    }
 
-	public Long getProductId() {
-		return productId;
-	}
+    public void setCustomerId( Long customerId ) {
+        this.customerId = customerId;
+    }
 
-	public void setProductId( Long productId ) {
-		this.productId = productId;
-	}
+    public Long getDeliveryAddressId() {
+        return deliveryAddressId;
+    }
 
-	public String getProductName() {
-		return productName;
-	}
+    public void setDeliveryAddressId( Long locationId ) {
+        this.deliveryAddressId = locationId;
+    }
 
-	public void setProductName( String productName ) {
-		this.productName = productName;
-	}
+    public Long getProductId() {
+        return productId;
+    }
 
-	@Override
-	public boolean equals( Object o ) {
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
+    public void setProductId( Long productId ) {
+        this.productId = productId;
+    }
 
-		OrderDTO orderDTO = (OrderDTO) o;
-		if ( orderDTO.getId() == null || getId() == null ) {
-			return false;
-		}
-		return Objects.equals( getId(), orderDTO.getId() );
-	}
+    public String getProductName() {
+        return productName;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode( getId() );
-	}
+    public void setProductName( String productName ) {
+        this.productName = productName;
+    }
 
-	@Override
-	public String toString() {
-		return "OrderDTO{" +
-				"id=" + getId() +
-				", created='" + getCreated() + "'" +
-				", updated='" + getUpdated() + "'" +
-				", state='" + getState() + "'" +
-				", deliveryType='" + getDeliveryType() + "'" +
-				", includeBatteries='" + isIncludeBatteries() + "'" +
-				"}";
-	}
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+
+        OrderDTO orderDTO = (OrderDTO) o;
+        if ( orderDTO.getId() == null || getId() == null ) {
+            return false;
+        }
+        return Objects.equals( getId(), orderDTO.getId() );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode( getId() );
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "id=" + getId() +
+                ", created='" + getCreated() + "'" +
+                ", updated='" + getUpdated() + "'" +
+                ", state='" + getState() + "'" +
+                ", deliveryType='" + getDeliveryType() + "'" +
+                ", includeBatteries='" + isIncludeBatteries() + "'" +
+                ", description='" + getDescription() + "'" +
+                "}";
+    }
 }

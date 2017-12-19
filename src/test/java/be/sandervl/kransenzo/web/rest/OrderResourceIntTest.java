@@ -47,317 +47,328 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class OrderResourceIntTest
 {
 
-	private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant( Instant.ofEpochMilli( 0L ),
-	                                                                              ZoneOffset.UTC );
-	private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 );
+    private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant( Instant.ofEpochMilli( 0L ),
+                                                                                  ZoneOffset.UTC );
+    private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 );
 
-	private static final ZonedDateTime DEFAULT_UPDATED = ZonedDateTime.ofInstant( Instant.ofEpochMilli( 0L ),
-	                                                                              ZoneOffset.UTC );
-	private static final ZonedDateTime UPDATED_UPDATED = ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 );
+    private static final ZonedDateTime DEFAULT_UPDATED = ZonedDateTime.ofInstant( Instant.ofEpochMilli( 0L ),
+                                                                                  ZoneOffset.UTC );
+    private static final ZonedDateTime UPDATED_UPDATED = ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 );
 
-	private static final OrderState DEFAULT_STATE = OrderState.NEW;
-	private static final OrderState UPDATED_STATE = OrderState.PAYED;
+    private static final OrderState DEFAULT_STATE = OrderState.NEW;
+    private static final OrderState UPDATED_STATE = OrderState.PAYED;
 
-	private static final DeliveryType DEFAULT_DELIVERY_TYPE = DeliveryType.DELIVERED;
-	private static final DeliveryType UPDATED_DELIVERY_TYPE = DeliveryType.PICKUP;
+    private static final DeliveryType DEFAULT_DELIVERY_TYPE = DeliveryType.DELIVERED;
+    private static final DeliveryType UPDATED_DELIVERY_TYPE = DeliveryType.PICKUP;
 
-	private static final Boolean DEFAULT_INCLUDE_BATTERIES = false;
-	private static final Boolean UPDATED_INCLUDE_BATTERIES = true;
+    private static final Boolean DEFAULT_INCLUDE_BATTERIES = false;
+    private static final Boolean UPDATED_INCLUDE_BATTERIES = true;
 
-	@Autowired
-	private OrderRepository orderRepository;
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-	@Autowired
-	private OrderMapper orderMapper;
+    @Autowired
+    private OrderRepository orderRepository;
 
-	@Autowired
-	private OrderService orderService;
+    @Autowired
+    private OrderMapper orderMapper;
 
-	@Autowired
-	private OrderSearchRepository orderSearchRepository;
+    @Autowired
+    private OrderService orderService;
 
-	@Autowired
-	private MappingJackson2HttpMessageConverter jacksonMessageConverter;
+    @Autowired
+    private OrderSearchRepository orderSearchRepository;
 
-	@Autowired
-	private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+    @Autowired
+    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
-	@Autowired
-	private ExceptionTranslator exceptionTranslator;
+    @Autowired
+    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
-	@Autowired
-	private EntityManager em;
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
 
-	private MockMvc restOrderMockMvc;
+    @Autowired
+    private EntityManager em;
 
-	private Order order;
+    private MockMvc restOrderMockMvc;
 
-	/**
-	 * Create an entity for this test.
-	 * <p>
-	 * This is a static method, as tests for other entities might also need it,
-	 * if they test an entity which requires the current entity.
-	 */
-	public static Order createEntity( EntityManager em ) {
-		Order order = new Order()
-				.created( DEFAULT_CREATED )
-				.updated( DEFAULT_UPDATED )
-				.state( DEFAULT_STATE )
-				.deliveryType( DEFAULT_DELIVERY_TYPE )
-				.includeBatteries( DEFAULT_INCLUDE_BATTERIES );
-		// Add required entity
-		Product product = ProductResourceIntTest.createEntity( em );
-		em.persist( product );
-		em.flush();
-		order.setProduct( product );
-		return order;
-	}
+    private Order order;
 
-	@Before
-	public void setup() {
-		MockitoAnnotations.initMocks( this );
-		OrderResource orderResource = new OrderResource( orderService );
-		this.restOrderMockMvc = MockMvcBuilders.standaloneSetup( orderResource )
-		                                       .setCustomArgumentResolvers( pageableArgumentResolver )
-		                                       .setControllerAdvice( exceptionTranslator )
-		                                       .setMessageConverters( jacksonMessageConverter ).build();
-	}
+    /**
+     * Create an entity for this test.
+     * <p>
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static Order createEntity( EntityManager em ) {
+        Order order = new Order()
+                .created( DEFAULT_CREATED )
+                .updated( DEFAULT_UPDATED )
+                .state( DEFAULT_STATE )
+                .deliveryType( DEFAULT_DELIVERY_TYPE )
+                .includeBatteries( DEFAULT_INCLUDE_BATTERIES )
+                .description( DEFAULT_DESCRIPTION );
+        // Add required entity
+        Product product = ProductResourceIntTest.createEntity( em );
+        em.persist( product );
+        em.flush();
+        order.setProduct( product );
+        return order;
+    }
 
-	@Before
-	public void initTest() {
-		orderSearchRepository.deleteAll();
-		order = createEntity( em );
-	}
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks( this );
+        OrderResource orderResource = new OrderResource( orderService );
+        this.restOrderMockMvc = MockMvcBuilders.standaloneSetup( orderResource )
+                                               .setCustomArgumentResolvers( pageableArgumentResolver )
+                                               .setControllerAdvice( exceptionTranslator )
+                                               .setMessageConverters( jacksonMessageConverter ).build();
+    }
 
-	@Test
-	@Transactional
-	public void createOrder() throws Exception {
-		int databaseSizeBeforeCreate = orderRepository.findAll().size();
+    @Before
+    public void initTest() {
+        orderSearchRepository.deleteAll();
+        order = createEntity( em );
+    }
 
-		// Create the Order
-		OrderDTO orderDTO = orderMapper.toDto( order );
-		restOrderMockMvc.perform( post( "/api/orders" )
-				                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-				                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
-		                .andExpect( status().isCreated() );
+    @Test
+    @Transactional
+    public void createOrder() throws Exception {
+        int databaseSizeBeforeCreate = orderRepository.findAll().size();
 
-		// Validate the Order in the database
-		List<Order> orderList = orderRepository.findAll();
-		assertThat( orderList ).hasSize( databaseSizeBeforeCreate + 1 );
-		Order testOrder = orderList.get( orderList.size() - 1 );
-		assertThat( testOrder.getCreated() ).isEqualTo( DEFAULT_CREATED );
-		assertThat( testOrder.getUpdated() ).isEqualTo( DEFAULT_UPDATED );
-		assertThat( testOrder.getState() ).isEqualTo( DEFAULT_STATE );
-		assertThat( testOrder.getDeliveryType() ).isEqualTo( DEFAULT_DELIVERY_TYPE );
-		assertThat( testOrder.isIncludeBatteries() ).isEqualTo( DEFAULT_INCLUDE_BATTERIES );
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto( order );
+        restOrderMockMvc.perform( post( "/api/orders" )
+                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+                        .andExpect( status().isCreated() );
 
-		// Validate the Order in Elasticsearch
-		Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
-		assertThat( orderEs ).isEqualToComparingFieldByField( testOrder );
-	}
+        // Validate the Order in the database
+        List<Order> orderList = orderRepository.findAll();
+        assertThat( orderList ).hasSize( databaseSizeBeforeCreate + 1 );
+        Order testOrder = orderList.get( orderList.size() - 1 );
+        assertThat( testOrder.getCreated() ).isEqualTo( DEFAULT_CREATED );
+        assertThat( testOrder.getUpdated() ).isEqualTo( DEFAULT_UPDATED );
+        assertThat( testOrder.getState() ).isEqualTo( DEFAULT_STATE );
+        assertThat( testOrder.getDeliveryType() ).isEqualTo( DEFAULT_DELIVERY_TYPE );
+        assertThat( testOrder.isIncludeBatteries() ).isEqualTo( DEFAULT_INCLUDE_BATTERIES );
+        assertThat( testOrder.getDescription() ).isEqualTo( DEFAULT_DESCRIPTION );
 
-	@Test
-	@Transactional
-	public void createOrderWithExistingId() throws Exception {
-		int databaseSizeBeforeCreate = orderRepository.findAll().size();
+        // Validate the Order in Elasticsearch
+        Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
+        assertThat( orderEs ).isEqualToComparingFieldByField( testOrder );
+    }
 
-		// Create the Order with an existing ID
-		order.setId( 1L );
-		OrderDTO orderDTO = orderMapper.toDto( order );
+    @Test
+    @Transactional
+    public void createOrderWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = orderRepository.findAll().size();
 
-		// An entity with an existing ID cannot be created, so this API call must fail
-		restOrderMockMvc.perform( post( "/api/orders" )
-				                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-				                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
-		                .andExpect( status().isBadRequest() );
+        // Create the Order with an existing ID
+        order.setId( 1L );
+        OrderDTO orderDTO = orderMapper.toDto( order );
 
-		// Validate the Alice in the database
-		List<Order> orderList = orderRepository.findAll();
-		assertThat( orderList ).hasSize( databaseSizeBeforeCreate );
-	}
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restOrderMockMvc.perform( post( "/api/orders" )
+                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+                        .andExpect( status().isBadRequest() );
 
-	@Test
-	@Transactional
-	public void getAllOrders() throws Exception {
-		// Initialize the database
-		orderRepository.saveAndFlush( order );
+        // Validate the Alice in the database
+        List<Order> orderList = orderRepository.findAll();
+        assertThat( orderList ).hasSize( databaseSizeBeforeCreate );
+    }
 
-		// Get all the orderList
-		restOrderMockMvc.perform( get( "/api/orders?sort=id,desc" ) )
-		                .andExpect( status().isOk() )
-		                .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
-		                .andExpect( jsonPath( "$.[*].id" ).value( hasItem( order.getId().intValue() ) ) )
-		                .andExpect( jsonPath( "$.[*].created" ).value( hasItem( sameInstant( DEFAULT_CREATED ) ) ) )
-		                .andExpect( jsonPath( "$.[*].updated" ).value( hasItem( sameInstant( DEFAULT_UPDATED ) ) ) )
-		                .andExpect( jsonPath( "$.[*].state" ).value( hasItem( DEFAULT_STATE.toString() ) ) )
-		                .andExpect(
-				                jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
-		                .andExpect( jsonPath( "$.[*].includeBatteries" )
-				                            .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) );
-	}
+    @Test
+    @Transactional
+    public void getAllOrders() throws Exception {
+        // Initialize the database
+        orderRepository.saveAndFlush( order );
 
-	@Test
-	@Transactional
-	public void getOrder() throws Exception {
-		// Initialize the database
-		orderRepository.saveAndFlush( order );
+        // Get all the orderList
+        restOrderMockMvc.perform( get( "/api/orders?sort=id,desc" ) )
+                        .andExpect( status().isOk() )
+                        .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
+                        .andExpect( jsonPath( "$.[*].id" ).value( hasItem( order.getId().intValue() ) ) )
+                        .andExpect( jsonPath( "$.[*].created" ).value( hasItem( sameInstant( DEFAULT_CREATED ) ) ) )
+                        .andExpect( jsonPath( "$.[*].updated" ).value( hasItem( sameInstant( DEFAULT_UPDATED ) ) ) )
+                        .andExpect( jsonPath( "$.[*].state" ).value( hasItem( DEFAULT_STATE.toString() ) ) )
+                        .andExpect(
+                                jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
+                        .andExpect( jsonPath( "$.[*].includeBatteries" )
+                                            .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) )
+                        .andExpect(
+                                jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
+    }
 
-		// Get the order
-		restOrderMockMvc.perform( get( "/api/orders/{id}", order.getId() ) )
-		                .andExpect( status().isOk() )
-		                .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
-		                .andExpect( jsonPath( "$.id" ).value( order.getId().intValue() ) )
-		                .andExpect( jsonPath( "$.created" ).value( sameInstant( DEFAULT_CREATED ) ) )
-		                .andExpect( jsonPath( "$.updated" ).value( sameInstant( DEFAULT_UPDATED ) ) )
-		                .andExpect( jsonPath( "$.state" ).value( DEFAULT_STATE.toString() ) )
-		                .andExpect( jsonPath( "$.deliveryType" ).value( DEFAULT_DELIVERY_TYPE.toString() ) )
-		                .andExpect(
-				                jsonPath( "$.includeBatteries" ).value( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) );
-	}
+    @Test
+    @Transactional
+    public void getOrder() throws Exception {
+        // Initialize the database
+        orderRepository.saveAndFlush( order );
 
-	@Test
-	@Transactional
-	public void getNonExistingOrder() throws Exception {
-		// Get the order
-		restOrderMockMvc.perform( get( "/api/orders/{id}", Long.MAX_VALUE ) )
-		                .andExpect( status().isNotFound() );
-	}
+        // Get the order
+        restOrderMockMvc.perform( get( "/api/orders/{id}", order.getId() ) )
+                        .andExpect( status().isOk() )
+                        .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
+                        .andExpect( jsonPath( "$.id" ).value( order.getId().intValue() ) )
+                        .andExpect( jsonPath( "$.created" ).value( sameInstant( DEFAULT_CREATED ) ) )
+                        .andExpect( jsonPath( "$.updated" ).value( sameInstant( DEFAULT_UPDATED ) ) )
+                        .andExpect( jsonPath( "$.state" ).value( DEFAULT_STATE.toString() ) )
+                        .andExpect( jsonPath( "$.deliveryType" ).value( DEFAULT_DELIVERY_TYPE.toString() ) )
+                        .andExpect( jsonPath( "$.includeBatteries" ).value( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) )
+                        .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) );
+    }
 
-	@Test
-	@Transactional
-	public void updateOrder() throws Exception {
-		// Initialize the database
-		orderRepository.saveAndFlush( order );
-		orderSearchRepository.save( order );
-		int databaseSizeBeforeUpdate = orderRepository.findAll().size();
+    @Test
+    @Transactional
+    public void getNonExistingOrder() throws Exception {
+        // Get the order
+        restOrderMockMvc.perform( get( "/api/orders/{id}", Long.MAX_VALUE ) )
+                        .andExpect( status().isNotFound() );
+    }
 
-		// Update the order
-		Order updatedOrder = orderRepository.findOne( order.getId() );
-		updatedOrder
-				.created( UPDATED_CREATED )
-				.updated( UPDATED_UPDATED )
-				.state( UPDATED_STATE )
-				.deliveryType( UPDATED_DELIVERY_TYPE )
-				.includeBatteries( UPDATED_INCLUDE_BATTERIES );
-		OrderDTO orderDTO = orderMapper.toDto( updatedOrder );
+    @Test
+    @Transactional
+    public void updateOrder() throws Exception {
+        // Initialize the database
+        orderRepository.saveAndFlush( order );
+        orderSearchRepository.save( order );
+        int databaseSizeBeforeUpdate = orderRepository.findAll().size();
 
-		restOrderMockMvc.perform( put( "/api/orders" )
-				                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-				                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
-		                .andExpect( status().isOk() );
+        // Update the order
+        Order updatedOrder = orderRepository.findOne( order.getId() );
+        updatedOrder
+                .created( UPDATED_CREATED )
+                .updated( UPDATED_UPDATED )
+                .state( UPDATED_STATE )
+                .deliveryType( UPDATED_DELIVERY_TYPE )
+                .includeBatteries( UPDATED_INCLUDE_BATTERIES )
+                .description( UPDATED_DESCRIPTION );
+        OrderDTO orderDTO = orderMapper.toDto( updatedOrder );
 
-		// Validate the Order in the database
-		List<Order> orderList = orderRepository.findAll();
-		assertThat( orderList ).hasSize( databaseSizeBeforeUpdate );
-		Order testOrder = orderList.get( orderList.size() - 1 );
-		assertThat( testOrder.getCreated() ).isEqualTo( UPDATED_CREATED );
-		assertThat( testOrder.getUpdated() ).isEqualTo( UPDATED_UPDATED );
-		assertThat( testOrder.getState() ).isEqualTo( UPDATED_STATE );
-		assertThat( testOrder.getDeliveryType() ).isEqualTo( UPDATED_DELIVERY_TYPE );
-		assertThat( testOrder.isIncludeBatteries() ).isEqualTo( UPDATED_INCLUDE_BATTERIES );
+        restOrderMockMvc.perform( put( "/api/orders" )
+                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+                        .andExpect( status().isOk() );
 
-		// Validate the Order in Elasticsearch
-		Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
-		assertThat( orderEs ).isEqualToComparingFieldByField( testOrder );
-	}
+        // Validate the Order in the database
+        List<Order> orderList = orderRepository.findAll();
+        assertThat( orderList ).hasSize( databaseSizeBeforeUpdate );
+        Order testOrder = orderList.get( orderList.size() - 1 );
+        assertThat( testOrder.getCreated() ).isEqualTo( UPDATED_CREATED );
+        assertThat( testOrder.getUpdated() ).isEqualTo( UPDATED_UPDATED );
+        assertThat( testOrder.getState() ).isEqualTo( UPDATED_STATE );
+        assertThat( testOrder.getDeliveryType() ).isEqualTo( UPDATED_DELIVERY_TYPE );
+        assertThat( testOrder.isIncludeBatteries() ).isEqualTo( UPDATED_INCLUDE_BATTERIES );
+        assertThat( testOrder.getDescription() ).isEqualTo( UPDATED_DESCRIPTION );
 
-	@Test
-	@Transactional
-	public void updateNonExistingOrder() throws Exception {
-		int databaseSizeBeforeUpdate = orderRepository.findAll().size();
+        // Validate the Order in Elasticsearch
+        Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
+        assertThat( orderEs ).isEqualToComparingFieldByField( testOrder );
+    }
 
-		// Create the Order
-		OrderDTO orderDTO = orderMapper.toDto( order );
+    @Test
+    @Transactional
+    public void updateNonExistingOrder() throws Exception {
+        int databaseSizeBeforeUpdate = orderRepository.findAll().size();
 
-		// If the entity doesn't have an ID, it will be created instead of just being updated
-		restOrderMockMvc.perform( put( "/api/orders" )
-				                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-				                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
-		                .andExpect( status().isCreated() );
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto( order );
 
-		// Validate the Order in the database
-		List<Order> orderList = orderRepository.findAll();
-		assertThat( orderList ).hasSize( databaseSizeBeforeUpdate + 1 );
-	}
+        // If the entity doesn't have an ID, it will be created instead of just being updated
+        restOrderMockMvc.perform( put( "/api/orders" )
+                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+                        .andExpect( status().isCreated() );
 
-	@Test
-	@Transactional
-	public void deleteOrder() throws Exception {
-		// Initialize the database
-		orderRepository.saveAndFlush( order );
-		orderSearchRepository.save( order );
-		int databaseSizeBeforeDelete = orderRepository.findAll().size();
+        // Validate the Order in the database
+        List<Order> orderList = orderRepository.findAll();
+        assertThat( orderList ).hasSize( databaseSizeBeforeUpdate + 1 );
+    }
 
-		// Get the order
-		restOrderMockMvc.perform( delete( "/api/orders/{id}", order.getId() )
-				                          .accept( TestUtil.APPLICATION_JSON_UTF8 ) )
-		                .andExpect( status().isOk() );
+    @Test
+    @Transactional
+    public void deleteOrder() throws Exception {
+        // Initialize the database
+        orderRepository.saveAndFlush( order );
+        orderSearchRepository.save( order );
+        int databaseSizeBeforeDelete = orderRepository.findAll().size();
 
-		// Validate Elasticsearch is empty
-		boolean orderExistsInEs = orderSearchRepository.exists( order.getId() );
-		assertThat( orderExistsInEs ).isFalse();
+        // Get the order
+        restOrderMockMvc.perform( delete( "/api/orders/{id}", order.getId() )
+                                          .accept( TestUtil.APPLICATION_JSON_UTF8 ) )
+                        .andExpect( status().isOk() );
 
-		// Validate the database is empty
-		List<Order> orderList = orderRepository.findAll();
-		assertThat( orderList ).hasSize( databaseSizeBeforeDelete - 1 );
-	}
+        // Validate Elasticsearch is empty
+        boolean orderExistsInEs = orderSearchRepository.exists( order.getId() );
+        assertThat( orderExistsInEs ).isFalse();
 
-	@Test
-	@Transactional
-	public void searchOrder() throws Exception {
-		// Initialize the database
-		orderRepository.saveAndFlush( order );
-		orderSearchRepository.save( order );
+        // Validate the database is empty
+        List<Order> orderList = orderRepository.findAll();
+        assertThat( orderList ).hasSize( databaseSizeBeforeDelete - 1 );
+    }
 
-		// Search the order
-		restOrderMockMvc.perform( get( "/api/_search/orders?query=id:" + order.getId() ) )
-		                .andExpect( status().isOk() )
-		                .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
-		                .andExpect( jsonPath( "$.[*].id" ).value( hasItem( order.getId().intValue() ) ) )
-		                .andExpect( jsonPath( "$.[*].created" ).value( hasItem( sameInstant( DEFAULT_CREATED ) ) ) )
-		                .andExpect( jsonPath( "$.[*].updated" ).value( hasItem( sameInstant( DEFAULT_UPDATED ) ) ) )
-		                .andExpect( jsonPath( "$.[*].state" ).value( hasItem( DEFAULT_STATE.toString() ) ) )
-		                .andExpect(
-				                jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
-		                .andExpect( jsonPath( "$.[*].includeBatteries" )
-				                            .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) );
-	}
+    @Test
+    @Transactional
+    public void searchOrder() throws Exception {
+        // Initialize the database
+        orderRepository.saveAndFlush( order );
+        orderSearchRepository.save( order );
 
-	@Test
-	@Transactional
-	public void equalsVerifier() throws Exception {
-		TestUtil.equalsVerifier( Order.class );
-		Order order1 = new Order();
-		order1.setId( 1L );
-		Order order2 = new Order();
-		order2.setId( order1.getId() );
-		assertThat( order1 ).isEqualTo( order2 );
-		order2.setId( 2L );
-		assertThat( order1 ).isNotEqualTo( order2 );
-		order1.setId( null );
-		assertThat( order1 ).isNotEqualTo( order2 );
-	}
+        // Search the order
+        restOrderMockMvc.perform( get( "/api/_search/orders?query=id:" + order.getId() ) )
+                        .andExpect( status().isOk() )
+                        .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
+                        .andExpect( jsonPath( "$.[*].id" ).value( hasItem( order.getId().intValue() ) ) )
+                        .andExpect( jsonPath( "$.[*].created" ).value( hasItem( sameInstant( DEFAULT_CREATED ) ) ) )
+                        .andExpect( jsonPath( "$.[*].updated" ).value( hasItem( sameInstant( DEFAULT_UPDATED ) ) ) )
+                        .andExpect( jsonPath( "$.[*].state" ).value( hasItem( DEFAULT_STATE.toString() ) ) )
+                        .andExpect(
+                                jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
+                        .andExpect( jsonPath( "$.[*].includeBatteries" )
+                                            .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) )
+                        .andExpect(
+                                jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
+    }
 
-	@Test
-	@Transactional
-	public void dtoEqualsVerifier() throws Exception {
-		TestUtil.equalsVerifier( OrderDTO.class );
-		OrderDTO orderDTO1 = new OrderDTO();
-		orderDTO1.setId( 1L );
-		OrderDTO orderDTO2 = new OrderDTO();
-		assertThat( orderDTO1 ).isNotEqualTo( orderDTO2 );
-		orderDTO2.setId( orderDTO1.getId() );
-		assertThat( orderDTO1 ).isEqualTo( orderDTO2 );
-		orderDTO2.setId( 2L );
-		assertThat( orderDTO1 ).isNotEqualTo( orderDTO2 );
-		orderDTO1.setId( null );
-		assertThat( orderDTO1 ).isNotEqualTo( orderDTO2 );
-	}
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier( Order.class );
+        Order order1 = new Order();
+        order1.setId( 1L );
+        Order order2 = new Order();
+        order2.setId( order1.getId() );
+        assertThat( order1 ).isEqualTo( order2 );
+        order2.setId( 2L );
+        assertThat( order1 ).isNotEqualTo( order2 );
+        order1.setId( null );
+        assertThat( order1 ).isNotEqualTo( order2 );
+    }
 
-	@Test
-	@Transactional
-	public void testEntityFromId() {
-		assertThat( orderMapper.fromId( 42L ).getId() ).isEqualTo( 42 );
-		assertThat( orderMapper.fromId( null ) ).isNull();
-	}
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier( OrderDTO.class );
+        OrderDTO orderDTO1 = new OrderDTO();
+        orderDTO1.setId( 1L );
+        OrderDTO orderDTO2 = new OrderDTO();
+        assertThat( orderDTO1 ).isNotEqualTo( orderDTO2 );
+        orderDTO2.setId( orderDTO1.getId() );
+        assertThat( orderDTO1 ).isEqualTo( orderDTO2 );
+        orderDTO2.setId( 2L );
+        assertThat( orderDTO1 ).isNotEqualTo( orderDTO2 );
+        orderDTO1.setId( null );
+        assertThat( orderDTO1 ).isNotEqualTo( orderDTO2 );
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat( orderMapper.fromId( 42L ).getId() ).isEqualTo( 42 );
+        assertThat( orderMapper.fromId( null ) ).isNull();
+    }
 }

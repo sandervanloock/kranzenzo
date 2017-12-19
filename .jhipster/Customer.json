@@ -38,6 +38,10 @@
     {
       "fieldName": "province",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String"
     }
   ],
   "changelogDate": "20171212225540",

@@ -34,6 +34,7 @@
                 <th><span jhiTranslate="kransenzoApp.customer.city">City</span></th>
                 <th><span jhiTranslate="kransenzoApp.customer.zipCode">Zip Code</span></th>
                 <th><span jhiTranslate="kransenzoApp.customer.province">Province</span></th>
+                <th><span jhiTranslate="kransenzoApp.customer.phoneNumber">Phone Number</span></th>
                 <th><span jhiTranslate="kransenzoApp.customer.address">Address</span></th>
                 <th></th>
             </tr>
@@ -45,6 +46,7 @@
                 <td>{{customer.city}}</td>
                 <td>{{customer.zipCode}}</td>
                 <td>{{customer.province}}</td>
+                <td>{{customer.phoneNumber}}</td>
                 <td>
                     <div *ngIf="customer.addressId">
                         <a [routerLink]="['../location', customer.addressId  ]">{{customer.addressId}}</a>

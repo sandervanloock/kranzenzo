@@ -6,7 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -29,14 +31,17 @@ public class Product implements Serializable
     private Long id;
 
     @NotNull
-    @Column(name = "name", nullable = false)
+    @Size(max = 200)
+    @Column(name = "name", length = 200, nullable = false)
     private String name;
 
     @NotNull
+    @DecimalMin(value = "0")
     @Column(name = "price", nullable = false)
     private Float price;
 
-    @Column(name = "description")
+    @Size(max = 5000)
+    @Column(name = "description", length = 5000)
     private String description;
 
     @OneToMany(mappedBy = "product")
@@ -68,21 +73,17 @@ public class Product implements Serializable
         return name;
     }
 
-    public void setName( String name ) {
-        this.name = name;
-    }
-
     public Product name( String name ) {
         this.name = name;
         return this;
     }
 
-    public Float getPrice() {
-        return price;
+    public void setName( String name ) {
+        this.name = name;
     }
 
-    public void setPrice( Float price ) {
-        this.price = price;
+    public Float getPrice() {
+        return price;
     }
 
     public Product price( Float price ) {
@@ -90,12 +91,12 @@ public class Product implements Serializable
         return this;
     }
 
-    public String getDescription() {
-        return description;
+    public void setPrice( Float price ) {
+        this.price = price;
     }
 
-    public void setDescription( String description ) {
-        this.description = description;
+    public String getDescription() {
+        return description;
     }
 
     public Product description( String description ) {
@@ -103,12 +104,12 @@ public class Product implements Serializable
         return this;
     }
 
-    public Set<Image> getImages() {
-        return images;
+    public void setDescription( String description ) {
+        this.description = description;
     }
 
-    public void setImages( Set<Image> images ) {
-        this.images = images;
+    public Set<Image> getImages() {
+        return images;
     }
 
     public Product images( Set<Image> images ) {
@@ -128,12 +129,12 @@ public class Product implements Serializable
         return this;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
+    public void setImages( Set<Image> images ) {
+        this.images = images;
     }
 
-    public void setOrders( Set<Order> orders ) {
-        this.orders = orders;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
     public Product orders( Set<Order> orders ) {
@@ -153,12 +154,12 @@ public class Product implements Serializable
         return this;
     }
 
-    public Set<Tag> getTags() {
-        return tags;
+    public void setOrders( Set<Order> orders ) {
+        this.orders = orders;
     }
 
-    public void setTags( Set<Tag> tags ) {
-        this.tags = tags;
+    public Set<Tag> getTags() {
+        return tags;
     }
 
     public Product tags( Set<Tag> tags ) {
@@ -176,6 +177,10 @@ public class Product implements Serializable
         this.tags.remove( tag );
         tag.getTags().remove( this );
         return this;
+    }
+
+    public void setTags( Set<Tag> tags ) {
+        this.tags = tags;
     }
 
     @Override

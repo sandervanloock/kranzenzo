@@ -1,6 +1,8 @@
 package be.sandervl.kransenzo.service.dto;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,17 +14,20 @@ import java.util.Set;
 public class ProductDTO implements Serializable
 {
 
-	private Long id;
+    private Long id;
 
-	@NotNull
-	private String name;
+    @NotNull
+    @Size(max = 200)
+    private String name;
 
-	@NotNull
-	private Float price;
+    @NotNull
+    @DecimalMin(value = "0")
+    private Float price;
 
-	private String description;
+    @Size(max = 5000)
+    private String description;
 
-	private Set<TagDTO> tags = new HashSet<>();
+    private Set<TagDTO> tags = new HashSet<>();
 
 	private Set<ImageDTO> images = new HashSet<>();
 
@@ -30,41 +35,41 @@ public class ProductDTO implements Serializable
 		return id;
 	}
 
-	public void setId( Long id ) {
-		this.id = id;
-	}
+    public void setId( Long id ) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName( String name ) {
-		this.name = name;
-	}
+    public void setName( String name ) {
+        this.name = name;
+    }
 
-	public Float getPrice() {
-		return price;
-	}
+    public Float getPrice() {
+        return price;
+    }
 
-	public void setPrice( Float price ) {
-		this.price = price;
-	}
+    public void setPrice( Float price ) {
+        this.price = price;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setDescription( String description ) {
-		this.description = description;
-	}
+    public void setDescription( String description ) {
+        this.description = description;
+    }
 
-	public Set<TagDTO> getTags() {
-		return tags;
-	}
+    public Set<TagDTO> getTags() {
+        return tags;
+    }
 
-	public void setTags( Set<TagDTO> tags ) {
-		this.tags = tags;
-	}
+    public void setTags( Set<TagDTO> tags ) {
+        this.tags = tags;
+    }
 
 	public Set<ImageDTO> getImages() {
 		return images;
@@ -83,25 +88,25 @@ public class ProductDTO implements Serializable
 			return false;
 		}
 
-		ProductDTO productDTO = (ProductDTO) o;
-		if ( productDTO.getId() == null || getId() == null ) {
-			return false;
-		}
-		return Objects.equals( getId(), productDTO.getId() );
-	}
+        ProductDTO productDTO = (ProductDTO) o;
+        if ( productDTO.getId() == null || getId() == null ) {
+            return false;
+        }
+        return Objects.equals( getId(), productDTO.getId() );
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode( getId() );
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hashCode( getId() );
+    }
 
-	@Override
-	public String toString() {
-		return "ProductDTO{" +
-				"id=" + getId() +
-				", name='" + getName() + "'" +
-				", price='" + getPrice() + "'" +
-				", description='" + getDescription() + "'" +
-				"}";
-	}
+    @Override
+    public String toString() {
+        return "ProductDTO{" +
+                "id=" + getId() +
+                ", name='" + getName() + "'" +
+                ", price='" + getPrice() + "'" +
+                ", description='" + getDescription() + "'" +
+                "}";
+    }
 }

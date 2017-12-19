@@ -14,9 +14,12 @@ export class Order implements BaseEntity {
         public created?: any,
         public updated?: any,
         public state?: OrderState,
-        public deliveryType?: DeliveryType, public includeBatteries?: boolean,
+        public deliveryType?: DeliveryType,
+        public includeBatteries?: boolean,
+        public description?: string,
         public customerId?: number,
-        public deliveryAddressId?: number, public productId?: number, ) {
+        public deliveryAddressId?: number,
+        public productId?: number, ) {
         this.includeBatteries = false;
     }
 }
