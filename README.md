@@ -93,7 +93,7 @@ will generate few files:
 
 To optimize the kransenzo application for production, run:
 
-    ./mvnw -Pprod clean package
+    mvnw.cmd -Pprod clean package
 
 This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
 To ensure everything worked, run:
@@ -108,7 +108,7 @@ Refer to [Using JHipster in production][] for more details.
 
 To launch your application's tests, run:
 
-    ./mvnw clean test
+    mvnw.cmd clean test
 
 ### Client tests
 
@@ -134,7 +134,7 @@ To stop it and remove the container, run:
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
-    ./mvnw verify -Pprod dockerfile:build
+    mvnw.cmd verify -Pprod dockerfile:build
 
 Then run:
 
