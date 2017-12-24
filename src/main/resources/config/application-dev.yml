@@ -51,10 +51,15 @@ spring:
                     logs: target/elasticsearch/log
                     data: target/elasticsearch/data
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: email-smtp.eu-west-1.amazonaws.com
+        port: 465
+        protocol: smtps
+        username: AKIAJUHKWZKXVRD2K5VQ
+        password: AgCX7CcrJH37S++YA7YsAhyHeScyynnExI8XdMAq4KiA
+        javaMailProperties:
+          mail.smtps.auth: true
+          mail.smtp.ssl.enable: true
+          mail.transport.protocol: smtps
     messages:
         cache-seconds: 1
     thymeleaf:
@@ -112,7 +117,7 @@ jhipster:
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: kransenzo@localhost
+        from: noreply@sandervl.be
         base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
