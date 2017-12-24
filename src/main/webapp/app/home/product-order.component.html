@@ -86,16 +86,16 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input required class="form-check-input" type="radio" name="deliveryType"
-                                           value="pickup" (change)="onSelectionChange('pickup')"
-                                           [checked]="this.deliveryType === 'pickup'">
+                                           value="PICKUP" (change)="onSelectionChange('PICKUP')"
+                                           [(ngModel)]="this.order.deliveryType">
                                     Ik wil mijn stuk ophalen
                                 </label>
                             </div>
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input required class="form-check-input" type="radio" name="deliveryType"
-                                           value="delivered" (change)="onSelectionChange('delivered')"
-                                           [checked]="this.deliveryType === 'delivered'">
+                                           value="DELIVERED" (change)="onSelectionChange('DELIVERED')"
+                                           [(ngModel)]="this.order.deliveryType">
                                     Ik wil mijn stuk thuis bezorgd (€1 per km / max 10 km)
                                 </label>
                                 <small class="form-text text-muted">
@@ -139,15 +139,15 @@
                                 <td>Bloemstuk</td>
                                 <td>€50</td>
                             </tr>
-                            <tr *ngIf="led">
+                            <tr *ngIf="this.order.includeBatteries">
                                 <th scope="row">34F45G</th>
-                                <td>LED-licht</td>
+                                <td>Batterijen voor LED-licht</td>
                                 <td>€0.5</td>
                             </tr>
-                            <tr *ngIf="deliveryType==='delivered'">
+                            <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
                                 <th scope="row">DV3WZE</th>
                                 <td>Levering</td>
-                                <td>€5</td>
+                                <td>{{this.deliveryPrice}}</td>
                             </tr>
                             <tr class="table-active">
                                 <th></th>
@@ -166,11 +166,11 @@
             <div class="stepper-content" *ngIf="step===3">
                 <h2>Bevestiging</h2>
                 <p>Gelieve € {{this.price}} over te schrijven op <b>BE12 1234 4567 890</b></p>
-                <p *ngIf="this.deliveryType === 'delivered'">
+                <p *ngIf="this.order.deliveryType === 'DELIVERED'">
                     Zodra het geld is overgemaakt zal het stuk worden geleverd.
                 </p>
 
-                <p *ngIf="this.deliveryType === 'pickup'">
+                <p *ngIf="this.order.deliveryType === 'PICKUP'">
                     Zodra het geld is overgemaakt zal je melding krijgen van KranzEnzo voor een afspraak te maken om het
                     stuk te kunnen ophalen.
                 </p>

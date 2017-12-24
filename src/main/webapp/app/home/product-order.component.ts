@@ -7,6 +7,7 @@ import {Subscription} from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
 import {Customer} from '../entities/customer';
 import {Http} from '@angular/http';
+import {Order} from '../entities/order';
 
 /*
 Based on https://codepen.io/bryceyork/pen/MyPjPE
@@ -20,13 +21,14 @@ And leveraging the Creative Tim Material Bootstrap Library - http://demos.creati
             } )
 export class ProductOrderComponent implements OnInit {
     step: number;
-    deliveryType: string;
-    led: boolean;
-    price: number;
     account: Account;
     modalRef: NgbModalRef;
+    price: number;
+    deliveryPrice: number = 5; //TODO make this dynamic with google maps
+
     product: Product;
     customer: Customer = new Customer();
+    order: Order = new Order();
 
     private subscription: Subscription;
     private eventSubscriber: Subscription;
@@ -40,8 +42,6 @@ export class ProductOrderComponent implements OnInit {
 
     ngOnInit() {
         this.step = 1;
-        this.price = 50;
-        this.deliveryType = 'pickup';
 
         this.principal.identity().then( ( account ) => {
             this.account = account;
@@ -55,17 +55,16 @@ export class ProductOrderComponent implements OnInit {
     }
 
     onSelectionChange( type: string ) {
-        if ( this.deliveryType === 'pickup' && type === 'delivered' ) {
-            this.price += 5;
-        } else if ( this.deliveryType === 'delivered' && type === 'pickup' ) {
-            this.price -= 5;
+        if ( type === 'DELIVERED' ) {
+            this.price += this.deliveryPrice; //TODO calculate price for delivery
+        } else if ( type === 'PICKUP' ) {
+            this.price -= this.deliveryPrice;
         }
-        this.deliveryType = type;
     }
 
     toggleLed() {
-        this.led = !this.led;
-        if ( this.led ) {
+        this.order.includeBatteries = !this.order.includeBatteries;
+        if ( this.order.includeBatteries ) {
             this.price += 0.5;
         } else {
             this.price -= 0.5;
@@ -83,6 +82,7 @@ export class ProductOrderComponent implements OnInit {
     load( id ) {
         this.productService.find( id ).subscribe( ( product ) => {
             this.product = product;
+            this.price = this.product.price;
         } );
     }
 
@@ -105,6 +105,6 @@ export class ProductOrderComponent implements OnInit {
     }
 
     submitForm() {
-        console.log( 'submit' );
+        //submit order with API here
     }
 }
