@@ -32,6 +32,11 @@ spring:
     h2:
         console:
             enabled: false
+    social:
+      # see https://developers.facebook.com/docs/facebook-login/v2.2
+      facebook:
+          client-id: 1641430472579662
+          client-secret: ade01d6225f2fec3ae911fe3638a2033
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedH2Dialect
         database: H2

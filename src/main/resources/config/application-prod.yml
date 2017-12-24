@@ -30,6 +30,11 @@ spring:
                 prepStmtCacheSize: 250
                 prepStmtCacheSqlLimit: 2048
                 useServerPrepStmts: true
+    social:
+      # see https://developers.facebook.com/docs/facebook-login/v2.2
+      facebook:
+          client-id: 1671027859646824
+          client-secret: 37b4d2d4234b7a3475a1f9d3dd9a91c1
     jpa:
         database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
         database: MYSQL

@@ -4,18 +4,15 @@ import be.sandervl.kransenzo.domain.Authority;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.AuthorityRepository;
 import be.sandervl.kransenzo.repository.UserRepository;
-import be.sandervl.kransenzo.security.AuthoritiesConstants;
 import be.sandervl.kransenzo.repository.search.UserSearchRepository;
-
+import be.sandervl.kransenzo.security.AuthoritiesConstants;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.connect.UserProfile;
-import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.*;
+import org.springframework.social.facebook.api.Facebook;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -72,6 +69,27 @@ public class SocialService {
         User user = createUserIfNotExist(userProfile, langKey, providerId, imageUrl);
         createSocialConnection(user.getLogin(), connection);
         mailService.sendSocialRegistrationValidationEmail(user, providerId);
+    }
+
+    public void createFacebookSocialUser( Connection<Facebook> connection, String langKey ) {
+        if ( connection == null ) {
+            log.error( "Cannot create social user because connection is null" );
+            throw new IllegalArgumentException( "Connection cannot be null" );
+        }
+        String[] fields = { "id", "email", "first_name", "last_name" };
+        org.springframework.social.facebook.api.User profile =
+                connection.getApi().fetchObject( "me", org.springframework.social.facebook.api.User.class, fields );
+        UserProfile userProfile = new UserProfileBuilder()
+                .setName( profile.getName() )
+                .setFirstName( profile.getFirstName() )
+                .setLastName( profile.getLastName() )
+                .setEmail( profile.getEmail() )
+                .build();
+        String providerId = connection.getKey().getProviderId();
+        String imageUrl = connection.getImageUrl();
+        User user = createUserIfNotExist( userProfile, langKey, providerId, imageUrl );
+        createSocialConnection( user.getLogin(), connection );
+        mailService.sendSocialRegistrationValidationEmail( user, providerId );
     }
 
     private User createUserIfNotExist(UserProfile userProfile, String langKey, String providerId, String imageUrl) {
