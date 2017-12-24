@@ -111,6 +111,47 @@
                         </small>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="street">Straat</label>
+                    <input type="text" class="form-control" id="street"
+                           name="street"
+                           [(ngModel)]="registerAccountExtra.street">
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label for="zip">Postcode</label>
+                        <input type="number" class="form-control" id="zip" name="zip"
+                               [(ngModel)]="registerAccountExtra.zipCode">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="city">Stad</label>
+                        <input type="text" class="form-control" id="city" name="city"
+                               [(ngModel)]="registerAccountExtra.city">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputState">Provincie</label>
+                        <select id="inputState" class="form-control" name="province"
+                                [(ngModel)]="registerAccountExtra.province">
+                            <option selected>Kies...</option>
+                            <option>Antwerpen</option>
+                            <option>Brussel</option>
+                            <option>Vlaams-Brabant</option>
+                            <option>Waals-Brabant</option>
+                            <option>Oost Vlaanderen</option>
+                            <option>West Vlaanderen</option>
+                            <option>Limburg</option>
+                            <option>Luik</option>
+                            <option>Henegauwen</option>
+                            <option>Namen</option>
+                            <option>Luxemburg</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="phoneNumber">Telefoon</label>
+                    <input type="tel" id="phoneNumber" class="form-control"
+                           [(ngModel)]="registerAccountExtra.phoneNumber"/>
+                </div>
 
                 <button type="submit" [disabled]="registerForm.form.invalid" class="btn btn-primary" jhiTranslate="register.form.button">Register</button>
             </form>
@@ -122,9 +163,9 @@
         </div>
         <div class="col-md-4">
             <br/>
-            <jhi-social provider="google"></jhi-social>
+            <!--<jhi-social provider="google"></jhi-social>-->
             <jhi-social provider="facebook"></jhi-social>
-            <jhi-social provider="twitter"></jhi-social>
+            <!--<jhi-social provider="twitter"></jhi-social>-->
             <!-- jhipster-needle-add-social-button -->
         </div>
     </div>

@@ -1,17 +1,20 @@
 package be.sandervl.kransenzo.service;
 
+import be.sandervl.kransenzo.config.Constants;
 import be.sandervl.kransenzo.domain.Authority;
+import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.AuthorityRepository;
-import be.sandervl.kransenzo.config.Constants;
+import be.sandervl.kransenzo.repository.CustomerRepository;
 import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.repository.search.UserSearchRepository;
 import be.sandervl.kransenzo.security.AuthoritiesConstants;
 import be.sandervl.kransenzo.security.SecurityUtils;
-import be.sandervl.kransenzo.service.util.RandomUtil;
+import be.sandervl.kransenzo.service.dto.CustomerDTO;
 import be.sandervl.kransenzo.service.dto.UserDTO;
+import be.sandervl.kransenzo.service.mapper.CustomerMapper;
+import be.sandervl.kransenzo.service.util.RandomUtil;
 import be.sandervl.kransenzo.web.rest.vm.ManagedUserVM;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -24,7 +27,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -50,13 +56,26 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, SocialService socialService, UserSearchRepository userSearchRepository, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    private final CustomerRepository customerRepository;
+
+    private final CustomerMapper customerMapper;
+
+    public UserService( UserRepository userRepository,
+                        PasswordEncoder passwordEncoder,
+                        SocialService socialService,
+                        UserSearchRepository userSearchRepository,
+                        AuthorityRepository authorityRepository,
+                        CacheManager cacheManager,
+                        CustomerRepository customerRepository,
+                        CustomerMapper customerMapper ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.socialService = socialService;
         this.userSearchRepository = userSearchRepository;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.customerRepository = customerRepository;
+        this.customerMapper = customerMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -98,7 +117,7 @@ public class UserService {
             });
     }
 
-    public User registerUser(UserDTO userDTO, String password) {
+    private User registerUser( UserDTO userDTO, String password ) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne(AuthoritiesConstants.USER);
@@ -271,4 +290,11 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
+    public User registerUser( ManagedUserVM managedUserVM, String password, CustomerDTO customerDTO ) {
+        User user = registerUser( managedUserVM, password );
+        Customer customer = customerMapper.toEntity( customerDTO );
+        customer.setUser( user );
+        customerRepository.save( customer );
+        return user;
+    }
 }

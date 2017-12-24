@@ -1,7 +1,5 @@
 package be.sandervl.kransenzo.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
-
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.security.SecurityUtils;
@@ -11,7 +9,7 @@ import be.sandervl.kransenzo.service.dto.UserDTO;
 import be.sandervl.kransenzo.web.rest.errors.*;
 import be.sandervl.kransenzo.web.rest.vm.KeyAndPasswordVM;
 import be.sandervl.kransenzo.web.rest.vm.ManagedUserVM;
-
+import com.codahale.metrics.annotation.Timed;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Optional;
 
 /**
  * REST controller for managing the current user's account.
@@ -61,7 +59,7 @@ public class AccountResource {
         }
         userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).ifPresent(u -> {throw new LoginAlreadyUsedException();});
         userRepository.findOneByEmailIgnoreCase(managedUserVM.getEmail()).ifPresent(u -> {throw new EmailAlreadyUsedException();});
-        User user = userService.registerUser(managedUserVM, managedUserVM.getPassword());
+        User user = userService.registerUser( managedUserVM, managedUserVM.getPassword(), managedUserVM.getCustomer() );
         mailService.sendActivationEmail(user);
     }
 

@@ -22,12 +22,15 @@ import java.util.Set;
 @Document(indexName = "customer")
 public class Customer implements Serializable
 {
-
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private User user;
 
     @Column(name = "street")
     private String street;
@@ -128,6 +131,14 @@ public class Customer implements Serializable
         return this;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser( User user ) {
+        this.user = user;
+    }
+
     public Location getAddress() {
         return address;
     }
@@ -197,4 +208,5 @@ public class Customer implements Serializable
                 ", phoneNumber='" + getPhoneNumber() + "'" +
                 "}";
     }
+
 }
