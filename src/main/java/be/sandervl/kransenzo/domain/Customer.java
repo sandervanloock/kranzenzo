@@ -25,11 +25,11 @@ public class Customer implements Serializable
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "id")
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "street")
@@ -128,6 +128,11 @@ public class Customer implements Serializable
 
     public Customer phoneNumber( String phoneNumber ) {
         this.phoneNumber = phoneNumber;
+        return this;
+    }
+
+    public Customer user( User user ) {
+        this.user = user;
         return this;
     }
 

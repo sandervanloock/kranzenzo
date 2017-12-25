@@ -46,4 +46,15 @@
 		</createTable>
 
 	</changeSet>
+
+	<changeSet id="201725122215" author="svl">
+		<addColumn tableName="customer">
+			<column name="user_id" type="bigint">
+				<constraints unique="true" nullable="true"/>
+			</column>
+		</addColumn>
+		<addForeignKeyConstraint baseTableName="customer" baseColumnNames="user_id" constraintName="fk_customer_user"
+								 referencedTableName="jhi_user"
+								 referencedColumnNames="id"/>
+	</changeSet>
 </databaseChangeLog>

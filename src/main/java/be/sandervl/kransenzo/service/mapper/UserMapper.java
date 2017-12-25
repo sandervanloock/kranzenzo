@@ -3,10 +3,12 @@ package be.sandervl.kransenzo.service.mapper;
 import be.sandervl.kransenzo.domain.Authority;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.service.dto.UserDTO;
-
+import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -57,12 +59,13 @@ public class UserMapper {
             .collect(Collectors.toList());
     }
 
-    public User userFromId(Long id) {
+    @Named("userFromId")
+    public User userFromId( Long id) {
         if (id == null) {
             return null;
         }
         User user = new User();
-        user.setId(id);
+        user.setId( id);
         return user;
     }
 

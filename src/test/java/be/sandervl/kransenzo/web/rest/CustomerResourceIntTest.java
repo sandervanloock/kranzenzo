@@ -2,6 +2,7 @@ package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
 import be.sandervl.kransenzo.domain.Customer;
+import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.CustomerRepository;
 import be.sandervl.kransenzo.repository.search.CustomerSearchRepository;
 import be.sandervl.kransenzo.service.dto.CustomerDTO;
@@ -86,12 +87,14 @@ public class CustomerResourceIntTest
      * if they test an entity which requires the current entity.
      */
     public static Customer createEntity( EntityManager em ) {
+        User user = UserResourceIntTest.createEntity( em );
         Customer customer = new Customer()
                 .street( DEFAULT_STREET )
                 .city( DEFAULT_CITY )
                 .zipCode( DEFAULT_ZIP_CODE )
                 .province( DEFAULT_PROVINCE )
-                .phoneNumber( DEFAULT_PHONE_NUMBER );
+                .phoneNumber( DEFAULT_PHONE_NUMBER )
+                .user( user );
         return customer;
     }
 
