@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
-import { Renderer, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { JhiLanguageService } from 'ng-jhipster';
-import { MockLanguageService } from '../../../helpers/mock-language.service';
-import { KransenzoTestModule } from '../../../test.module';
-import { LoginModalService, EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from '../../../../../../main/webapp/app/shared';
-import { Register } from '../../../../../../main/webapp/app/account/register/register.service';
-import { RegisterComponent } from '../../../../../../main/webapp/app/account/register/register.component';
+import {async, ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
+import {ElementRef, Renderer} from '@angular/core';
+import {Observable} from 'rxjs/Rx';
+import {JhiLanguageService} from 'ng-jhipster';
+import {MockLanguageService} from '../../../helpers/mock-language.service';
+import {KransenzoTestModule} from '../../../test.module';
+import {EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE, LoginModalService} from '../../../../../../main/webapp/app/shared';
+import {Register} from '../../../../../../main/webapp/app/account/register/register.service';
+import {RegisterComponent} from '../../../../../../main/webapp/app/account/register/register.component';
 
 describe('Component Tests', () => {
 
@@ -62,8 +62,7 @@ describe('Component Tests', () => {
                     tick();
 
                     expect(service.save).toHaveBeenCalledWith({
-                        password: 'password',
-                        langKey: 'nl'
+                        password: 'password', langKey: 'nl', customer: {}
                     });
                     expect(comp.success).toEqual(true);
                     expect(comp.registerAccount.langKey).toEqual('nl');
