@@ -292,9 +292,11 @@ public class UserService {
 
     public User registerUser( ManagedUserVM managedUserVM, String password, CustomerDTO customerDTO ) {
         User user = registerUser( managedUserVM, password );
-        Customer customer = customerMapper.toEntity( customerDTO );
-        customer.setUser( user );
-        customerRepository.save( customer );
+        if ( customerDTO != null ) {
+            Customer customer = customerMapper.toEntity( customerDTO );
+            customer.setUser( user );
+            customerRepository.save( customer );
+        }
         return user;
     }
 }
