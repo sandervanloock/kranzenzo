@@ -1,5 +1,6 @@
 package be.sandervl.kransenzo.web.rest;
 
+import be.sandervl.kransenzo.domain.enumeration.OrderState;
 import be.sandervl.kransenzo.service.OrderService;
 import be.sandervl.kransenzo.service.dto.OrderDTO;
 import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +50,12 @@ public class OrderResource
                     HeaderUtil.createFailureAlert( ENTITY_NAME, "idexists", "A new order cannot already have an ID" ) )
                                  .body( null );
         }
+        orderDTO.setCreated( ZonedDateTime.now() );
+        orderDTO.setUpdated( ZonedDateTime.now() );
+        orderDTO.setState( OrderState.NEW );
         OrderDTO result = orderService.save( orderDTO );
+        //TODO mail annemie
+        //TODO mail customer
         return ResponseEntity.created( new URI( "/api/orders/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
                              .body( result );
@@ -70,6 +77,7 @@ public class OrderResource
         if ( orderDTO.getId() == null ) {
             return createOrder( orderDTO );
         }
+        orderDTO.setUpdated( ZonedDateTime.now() );
         OrderDTO result = orderService.save( orderDTO );
         return ResponseEntity.ok()
                              .headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, orderDTO.getId().toString() ) )

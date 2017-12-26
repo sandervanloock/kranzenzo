@@ -1,13 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {JhiEventManager} from 'ng-jhipster';
-import {LoginModalService, Principal} from '../shared';
+import {LoginModalService, Principal, User, UserService} from '../shared';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {Product, ProductService} from '../entities/product';
-import {Subscription} from 'rxjs/Rx';
 import {ActivatedRoute} from '@angular/router';
-import {Customer} from '../entities/customer';
+import {Customer, CustomerService} from '../entities/customer';
 import {Http} from '@angular/http';
-import {Order} from '../entities/order';
+import {Order, OrderService} from '../entities/order';
+import {Observable} from 'rxjs/Observable';
 
 /*
 Based on https://codepen.io/bryceyork/pen/MyPjPE
@@ -21,37 +21,41 @@ And leveraging the Creative Tim Material Bootstrap Library - http://demos.creati
             } )
 export class ProductOrderComponent implements OnInit {
     step: number;
-    account: Account;
     modalRef: NgbModalRef;
     price: number;
     deliveryPrice: number = 5; //TODO make this dynamic with google maps
 
     product: Product;
+    user: User = new User();
     customer: Customer = new Customer();
     order: Order = new Order();
-
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
 
     constructor(
         private loginModalService: LoginModalService,
         private principal: Principal,
         private eventManager: JhiEventManager,
-        private productService: ProductService, private route: ActivatedRoute, private http: Http ) {
+        private productService: ProductService,
+        private route: ActivatedRoute,
+        private http: Http,
+        private userService: UserService,
+        private customerService: CustomerService,
+        private orderService: OrderService ) {
     }
 
     ngOnInit() {
         this.step = 1;
 
         this.principal.identity().then( ( account ) => {
-            this.account = account;
+            if ( account ) {
+                this.user = account;
+                this.customer.userId = account.id;
+            }
         } );
         this.registerAuthenticationSuccess();
 
-        this.subscription = this.route.params.subscribe( ( params ) => {
-            this.load( params['id'] );
+        this.route.params.subscribe( ( params ) => {
+            this.loadProduct( params['id'] );
         } );
-        this.registerChangeInProducts();
     }
 
     onSelectionChange( type: string ) {
@@ -74,37 +78,49 @@ export class ProductOrderComponent implements OnInit {
     registerAuthenticationSuccess() {
         this.eventManager.subscribe( 'authenticationSuccess', ( message ) => {
             this.principal.identity().then( ( account ) => {
-                this.account = account;
+                this.user = account;
+                this.customer.userId = account.id;
             } );
         } );
     }
 
-    load( id ) {
+    loadProduct( id ) {
         this.productService.find( id ).subscribe( ( product ) => {
             this.product = product;
             this.price = this.product.price;
+            this.order.productId = product.id;
         } );
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy( this.eventSubscriber );
-    }
-
-    registerChangeInProducts() {
-        this.eventSubscriber = this.eventManager.subscribe( 'productListModification', ( response ) => this.load( this.product.id ) );
     }
 
     updateLocation( e ) {
         const locationString = `${this.customer.street},${this.customer.city}`;
-        this.http.get(
+        //TODO calculate deliveryPrice with google maps
+        /*this.http.get(
             `https://maps.googleapis.com/maps/api/directions/json?origin=Zorgvliet,Sint-Katelijne-waver&destination=${locationString}&key=AIzaSyClcpip4cpRugakVB8zitzdjxfo6qRPDic` )
             .subscribe( ( data: any ) => {
                 console.log( data )
             } );
+            */
     }
 
     submitForm() {
-        //submit order with API here
+        this.orderService.create( this.order ).subscribe( ( order: Order ) => {
+            this.order = order;
+        } )
+    }
+
+    createCustomer() {
+        if ( this.customer.id === undefined ) {
+            this.updateCustomer( this.customerService.create( this.customer ) );
+        } else {
+            this.updateCustomer( this.customerService.update( this.customer ) );
+        }
+    }
+
+    private updateCustomer( observable: Observable<Customer> ) {
+        observable.subscribe( ( res: Customer ) => {
+            this.customer = res;
+            this.order.customerId = res.id;
+        } )
     }
 }

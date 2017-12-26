@@ -57,4 +57,16 @@
 								 referencedTableName="jhi_user"
 								 referencedColumnNames="id"/>
 	</changeSet>
+
+    <changeSet id="201725122356" author="svl">
+        <dropColumn tableName="customer" columnName="user_id"/>
+        <addColumn tableName="customer">
+            <column name="user_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="customer" baseColumnNames="user_id" constraintName="fk_customer_user"
+                                 referencedTableName="jhi_user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

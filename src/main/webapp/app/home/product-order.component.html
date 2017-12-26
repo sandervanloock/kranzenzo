@@ -21,23 +21,28 @@
             <div class="stepper-content col-md-6 " style="margin: 0 auto;" *ngIf="step===1">
                 <h2>Geef je gegevens</h2>
                 <div class="form-group">
-                    <label for="lastName">Naam</label>
+                    <label for="lastName">Naam*</label>
                     <input required type="text" class="form-control" id="lastName"
                            aria-describedby="lastName" placeholder="Naam"
-                           [value]="account ? account.lastName : ''">
+                           name="lastName" [required]="true"
+                           [(ngModel)]="user.lastName">
                 </div>
                 <div class="form-group">
-                    <label for="lastName">Voornaam</label>
+                    <label for="lastName">Voornaam*</label>
                     <input required type="text" class="form-control" id="firstName"
                            aria-describedby="firstName" placeholder="Voornaam"
-                           [value]="account ? account.firstName : ''">
+                           name="firstName" [required]="true"
+                           [(ngModel)]="user.firstName">
                 </div>
                 <div class="form-group">
-                    <label for="email">Emailadres</label>
+                    <label for="email">Emailadres*</label>
                     <input required type="email" class="form-control" id="email" name="email"
                            aria-describedby="email" placeholder="Emailadres"
-                           [value]="account ? account.email : ''">
+                           name="email" [required]="true"
+                           [(ngModel)]="user.email">
                 </div>
+                <hr/>
+                <h4>Adresgegevens**</h4>
                 <div class="form-group">
                     <label for="street">Straat</label>
                     <input type="text" (input)="updateLocation($event)" class="form-control" id="street"
@@ -74,8 +79,10 @@
                         </select>
                     </div>
                 </div>
+                <strong>* verplicht</strong>
+                <strong>** verplicht bij levering</strong>
                 <div class="stepper-actions">
-                    <button type="submit" class="btn btn-primary" (click)="this.step=2">Verder</button>
+                    <button type="submit" class="btn btn-primary" (click)="this.step=2;createCustomer()">Verder</button>
                 </div>
             </div>
             <div class="stepper-content" *ngIf="step===2">
@@ -86,7 +93,8 @@
                             <div class="form-check">
                                 <label class="form-check-label">
                                     <input required class="form-check-input" type="radio" name="deliveryType"
-                                           value="PICKUP" (change)="onSelectionChange('PICKUP')"
+                                           value="PICKUP" (change)="onSelectionChange('PICKUP')" aria-required=""
+                                           [required]="true"
                                            [(ngModel)]="this.order.deliveryType">
                                     Ik wil mijn stuk ophalen
                                 </label>
@@ -113,6 +121,14 @@
                                            value="1" (change)="toggleLed()">
                                     Ik wil een AA-batterij bij de LED-verlichting. (0,5 €)
                                 </label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label for="description">Extra opmerkingen</label>
+                                <textarea class="form-control" rows="3"
+                                          id="description" name="description"
+                                          [(ngModel)]="order.description"></textarea>
                             </div>
                         </div>
                         <!--end of led licht-->
@@ -159,21 +175,65 @@
                     </div>
                 </div>
                 <div class="stepper-actions">
-                    <a href="#" class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn" (click)="this.step=1">Terug</a>
-                    <button type="submit" class="btn btn-primary" (click)="this.step=3">Verder</button>
+                    <a class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn" (click)="this.step=1">Terug</a>
+                    <a class="btn btn-primary" (click)="this.step=3">Verder</a>
                 </div>
             </div>
             <div class="stepper-content" *ngIf="step===3">
-                <h2>Bevestiging</h2>
+                <h2>Overzicht bestelling van {{product.name}}</h2>
+                <dl class="row">
+                    <dt class="col-sm-3">Naam</dt>
+                    <dd class="col-sm-9">{{user.lastName}}</dd>
+                    <dt class="col-sm-3">Voornaam</dt>
+                    <dd class="col-sm-9">{{user.firstName}}</dd>
+                </dl>
+                <p>
+                    Je zal via mail bevestiging krijgen op {{user.email}}.
+                </p>
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Code</th>
+                            <th scope="col">Beschrijving</th>
+                            <th scope="col">Prijs</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">0A43DF</th>
+                            <td>Bloemstuk</td>
+                            <td>€50</td>
+                        </tr>
+                        <tr *ngIf="this.order.includeBatteries">
+                            <th scope="row">34F45G</th>
+                            <td>Batterijen voor LED-licht</td>
+                            <td>€0.5</td>
+                        </tr>
+                        <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
+                            <th scope="row">DV3WZE</th>
+                            <td>Levering</td>
+                            <td>{{this.deliveryPrice}}</td>
+                        </tr>
+                        <tr class="table-active">
+                            <th></th>
+                            <td>Totaal</td>
+                            <td>€ {{this.price}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <p>Gelieve € {{this.price}} over te schrijven op <b>BE12 1234 4567 890</b></p>
                 <p *ngIf="this.order.deliveryType === 'DELIVERED'">
-                    Zodra het geld is overgemaakt zal het stuk worden geleverd.
+                    Zodra het geld is overgemaakt zal het stuk worden geleverd in {{customer.street}} te
+                    {{customer.city}}.
                 </p>
 
                 <p *ngIf="this.order.deliveryType === 'PICKUP'">
                     Zodra het geld is overgemaakt zal je melding krijgen van KranzEnzo voor een afspraak te maken om het
                     stuk te kunnen ophalen.
                 </p>
+                <a class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn" (click)="this.step=2">Terug</a>
                 <button class="btn btn-submit" type="submit">Verzenden</button>
             </div>
         </form>
