@@ -2,6 +2,7 @@ package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.repository.CustomerRepository;
+import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.repository.search.CustomerSearchRepository;
 import be.sandervl.kransenzo.service.dto.CustomerDTO;
 import be.sandervl.kransenzo.service.mapper.CustomerMapper;
@@ -38,13 +39,16 @@ public class CustomerResource
     private final CustomerMapper customerMapper;
 
     private final CustomerSearchRepository customerSearchRepository;
+    private final UserRepository userRepository;
 
     public CustomerResource( CustomerRepository customerRepository,
                              CustomerMapper customerMapper,
-                             CustomerSearchRepository customerSearchRepository ) {
+                             CustomerSearchRepository customerSearchRepository,
+                             UserRepository userRepository ) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
         this.customerSearchRepository = customerSearchRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -89,6 +93,7 @@ public class CustomerResource
             return createCustomer( customerDTO );
         }
         Customer customer = customerMapper.toEntity( customerDTO );
+        customer.setUser( userRepository.findOne( customerDTO.getUserId() ) );
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
         customerSearchRepository.save( customer );

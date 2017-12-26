@@ -4,6 +4,7 @@ import be.sandervl.kransenzo.KransenzoApp;
 import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.CustomerRepository;
+import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.repository.search.CustomerSearchRepository;
 import be.sandervl.kransenzo.service.dto.CustomerDTO;
 import be.sandervl.kransenzo.service.mapper.CustomerMapper;
@@ -74,11 +75,15 @@ public class CustomerResourceIntTest
     private ExceptionTranslator exceptionTranslator;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private EntityManager em;
 
     private MockMvc restCustomerMockMvc;
 
     private Customer customer;
+
 
     /**
      * Create an entity for this test.
@@ -102,7 +107,7 @@ public class CustomerResourceIntTest
     public void setup() {
         MockitoAnnotations.initMocks( this );
         CustomerResource customerResource = new CustomerResource( customerRepository, customerMapper,
-                                                                  customerSearchRepository );
+                                                                  customerSearchRepository, userRepository );
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup( customerResource )
                                                   .setCustomArgumentResolvers( pageableArgumentResolver )
                                                   .setControllerAdvice( exceptionTranslator )

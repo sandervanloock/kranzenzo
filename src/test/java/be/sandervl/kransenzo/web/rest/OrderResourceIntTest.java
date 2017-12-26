@@ -149,8 +149,6 @@ public class OrderResourceIntTest
         List<Order> orderList = orderRepository.findAll();
         assertThat( orderList ).hasSize( databaseSizeBeforeCreate + 1 );
         Order testOrder = orderList.get( orderList.size() - 1 );
-        assertThat( testOrder.getCreated() ).isEqualTo( DEFAULT_CREATED );
-        assertThat( testOrder.getUpdated() ).isEqualTo( DEFAULT_UPDATED );
         assertThat( testOrder.getState() ).isEqualTo( DEFAULT_STATE );
         assertThat( testOrder.getDeliveryType() ).isEqualTo( DEFAULT_DELIVERY_TYPE );
         assertThat( testOrder.isIncludeBatteries() ).isEqualTo( DEFAULT_INCLUDE_BATTERIES );
@@ -158,7 +156,7 @@ public class OrderResourceIntTest
 
         // Validate the Order in Elasticsearch
         Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
-        assertThat( orderEs ).isEqualToComparingFieldByField( testOrder );
+        assertThat( orderEs ).isEqualToIgnoringGivenFields( testOrder, "updated", "created" );
     }
 
     @Test
@@ -259,7 +257,6 @@ public class OrderResourceIntTest
         assertThat( orderList ).hasSize( databaseSizeBeforeUpdate );
         Order testOrder = orderList.get( orderList.size() - 1 );
         assertThat( testOrder.getCreated() ).isEqualTo( UPDATED_CREATED );
-        assertThat( testOrder.getUpdated() ).isEqualTo( UPDATED_UPDATED );
         assertThat( testOrder.getState() ).isEqualTo( UPDATED_STATE );
         assertThat( testOrder.getDeliveryType() ).isEqualTo( UPDATED_DELIVERY_TYPE );
         assertThat( testOrder.isIncludeBatteries() ).isEqualTo( UPDATED_INCLUDE_BATTERIES );
@@ -267,7 +264,7 @@ public class OrderResourceIntTest
 
         // Validate the Order in Elasticsearch
         Order orderEs = orderSearchRepository.findOne( testOrder.getId() );
-        assertThat( orderEs ).isEqualToComparingFieldByField( testOrder );
+        assertThat( orderEs ).isEqualToIgnoringGivenFields( testOrder, "updated", "created" );
     }
 
     @Test

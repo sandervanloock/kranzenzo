@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -50,8 +51,8 @@ public class OrderResource
                     HeaderUtil.createFailureAlert( ENTITY_NAME, "idexists", "A new order cannot already have an ID" ) )
                                  .body( null );
         }
-        orderDTO.setCreated( ZonedDateTime.now() );
-        orderDTO.setUpdated( ZonedDateTime.now() );
+        orderDTO.setCreated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
+        orderDTO.setUpdated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
         orderDTO.setState( OrderState.NEW );
         OrderDTO result = orderService.save( orderDTO );
         //TODO mail annemie
@@ -77,7 +78,7 @@ public class OrderResource
         if ( orderDTO.getId() == null ) {
             return createOrder( orderDTO );
         }
-        orderDTO.setUpdated( ZonedDateTime.now() );
+        orderDTO.setUpdated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
         OrderDTO result = orderService.save( orderDTO );
         return ResponseEntity.ok()
                              .headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, orderDTO.getId().toString() ) )
