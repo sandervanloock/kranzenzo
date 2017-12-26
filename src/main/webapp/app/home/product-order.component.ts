@@ -23,7 +23,7 @@ export class ProductOrderComponent implements OnInit {
     step: number;
     modalRef: NgbModalRef;
     price: number;
-    deliveryPrice: number = 5; //TODO make this dynamic with google maps
+    deliveryPrice: 5; //TODO make this dynamic with google maps
 
     product: Product;
     user: User = new User();

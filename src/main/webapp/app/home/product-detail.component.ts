@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Product, ProductService} from '../entities/product';
 import {JhiEventManager} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs/Rx';
 @Component( {
                 selector: 'jhi-product-detail', templateUrl: './product-detail.component.html', styles: []
             } )
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
 
     product: Product;
     private subscription: Subscription;

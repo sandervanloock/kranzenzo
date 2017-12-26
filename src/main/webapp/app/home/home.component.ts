@@ -19,5 +19,4 @@ export class HomeComponent implements OnInit {
             .subscribe( ( data: ResponseWrapper ) => this.items = data.json );
     }
 
-
 }
