@@ -44,6 +44,9 @@ public class Product implements Serializable
     @Column(name = "description", length = 5000)
     private String description;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -106,6 +109,19 @@ public class Product implements Serializable
 
     public void setDescription( String description ) {
         this.description = description;
+    }
+
+    public Boolean isIsActive() {
+        return isActive;
+    }
+
+    public Product isActive( Boolean isActive ) {
+        this.isActive = isActive;
+        return this;
+    }
+
+    public void setIsActive( Boolean isActive ) {
+        this.isActive = isActive;
     }
 
     public Set<Image> getImages() {
@@ -210,6 +226,7 @@ public class Product implements Serializable
                 ", name='" + getName() + "'" +
                 ", price='" + getPrice() + "'" +
                 ", description='" + getDescription() + "'" +
+                ", isActive='" + isIsActive() + "'" +
                 "}";
     }
 }

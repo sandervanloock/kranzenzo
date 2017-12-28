@@ -26,6 +26,7 @@ public class ProductResource
 
     private static final String ENTITY_NAME = "product";
     private final Logger log = LoggerFactory.getLogger( ProductResource.class );
+
     private final ProductService productService;
 
     public ProductResource( ProductService productService ) {

@@ -1,7 +1,10 @@
 package be.sandervl.kransenzo.service;
 
 import be.sandervl.kransenzo.domain.Order;
+import be.sandervl.kransenzo.domain.Product;
+import be.sandervl.kransenzo.domain.enumeration.OrderState;
 import be.sandervl.kransenzo.repository.OrderRepository;
+import be.sandervl.kransenzo.repository.ProductRepository;
 import be.sandervl.kransenzo.repository.search.OrderSearchRepository;
 import be.sandervl.kransenzo.service.dto.OrderDTO;
 import be.sandervl.kransenzo.service.mapper.OrderMapper;
@@ -33,12 +36,16 @@ public class OrderService
 
     private final OrderSearchRepository orderSearchRepository;
 
+    private final ProductRepository productRepository;
+
     public OrderService( OrderRepository orderRepository,
                          OrderMapper orderMapper,
-                         OrderSearchRepository orderSearchRepository ) {
+                         OrderSearchRepository orderSearchRepository,
+                         ProductRepository productRepository ) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
+        this.productRepository = productRepository;
     }
 
     /**
@@ -53,6 +60,7 @@ public class OrderService
         order = orderRepository.save( order );
         OrderDTO result = orderMapper.toDto( order );
         orderSearchRepository.save( order );
+        updateProductVisibility( order );
         return result;
     }
 
@@ -89,6 +97,7 @@ public class OrderService
      */
     public void delete( Long id ) {
         log.debug( "Request to delete Order : {}", id );
+        updateProductVisibility( orderRepository.findOne( id ) );
         orderRepository.delete( id );
         orderSearchRepository.delete( id );
     }
@@ -106,5 +115,14 @@ public class OrderService
                 .stream( orderSearchRepository.search( queryStringQuery( query ) ).spliterator(), false )
                 .map( orderMapper::toDto )
                 .collect( Collectors.toList() );
+    }
+
+    /*
+        set product inactive when state is not CANCELLED, otherwise set it active again
+     */
+    private void updateProductVisibility( Order order ) {
+        Product product = order.getProduct();
+        product.setIsActive( order.getState().equals( OrderState.CANCELLED ) );
+        productRepository.save( product );
     }
 }

@@ -2,6 +2,7 @@ entity Product {
     name String maxlength(200) required
     price Float min(0) required
     description String maxlength(5000) 
+    isActive Boolean
 }
 
 entity Image {

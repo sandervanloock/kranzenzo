@@ -50,6 +50,21 @@ export class ProductDialogComponent implements OnInit {
         }
     }
 
+    trackTagById( index: number, item: Tag ) {
+        return item.id;
+    }
+
+    getSelected( selectedVals: Array<any>, option: any ) {
+        if ( selectedVals ) {
+            for ( let i = 0; i < selectedVals.length; i++ ) {
+                if ( option.id === selectedVals[i].id ) {
+                    return selectedVals[i];
+                }
+            }
+        }
+        return option;
+    }
+
     private subscribeToSaveResponse( result: Observable<Product> ) {
         result.subscribe( ( res: Product ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError( res ) );
     }
@@ -72,21 +87,6 @@ export class ProductDialogComponent implements OnInit {
 
     private onError( error ) {
         this.alertService.error( error.message, null, null );
-    }
-
-    trackTagById( index: number, item: Tag ) {
-        return item.id;
-    }
-
-    getSelected( selectedVals: Array<any>, option: any ) {
-        if ( selectedVals ) {
-            for ( let i = 0; i < selectedVals.length; i++ ) {
-                if ( option.id === selectedVals[i].id ) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

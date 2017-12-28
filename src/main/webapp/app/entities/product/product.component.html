@@ -33,6 +33,7 @@
                 <th><span jhiTranslate="kransenzoApp.product.name">Name</span></th>
                 <th><span jhiTranslate="kransenzoApp.product.price">Price</span></th>
                 <th><span jhiTranslate="kransenzoApp.product.description">Description</span></th>
+                <th><span jhiTranslate="kransenzoApp.product.isActive">Is Active</span></th>
                 <th><span jhiTranslate="kransenzoApp.product.tags">Tags</span></th>
                 <th></th>
             </tr>
@@ -43,6 +44,7 @@
                 <td>{{product.name}}</td>
                 <td>{{product.price}}</td>
                 <td>{{product.description}}</td>
+                <td>{{product.isActive}}</td>
                 <td>
                     <span *ngFor="let tags of product.tags; let last = last">
                             <a class="form-control-static" [routerLink]="['../tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}

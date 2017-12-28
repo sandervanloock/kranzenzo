@@ -12,16 +12,16 @@ import org.mapstruct.Mapping;
 public interface ProductMapper extends EntityMapper<ProductDTO, Product>
 {
 
-	@Mapping(target = "images")
-	@Mapping(target = "orders", ignore = true)
-	Product toEntity( ProductDTO productDTO );
+    @Mapping(target = "images")
+    @Mapping(target = "orders", ignore = true)
+    Product toEntity( ProductDTO productDTO );
 
-	default Product fromId( Long id ) {
-		if ( id == null ) {
-			return null;
-		}
-		Product product = new Product();
-		product.setId( id );
-		return product;
-	}
+    default Product fromId( Long id ) {
+        if ( id == null ) {
+            return null;
+        }
+        Product product = new Product();
+        product.setId( id );
+        return product;
+    }
 }

@@ -48,6 +48,10 @@
         "maxlength"
       ],
       "fieldValidateRulesMaxlength": 5000
+    },
+    {
+      "fieldName": "isActive",
+      "fieldType": "Boolean"
     }
   ],
   "changelogDate": "20171212225537",

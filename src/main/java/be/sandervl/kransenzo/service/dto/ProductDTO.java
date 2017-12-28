@@ -27,13 +27,15 @@ public class ProductDTO implements Serializable
     @Size(max = 5000)
     private String description;
 
+    private Boolean isActive;
+
     private Set<TagDTO> tags = new HashSet<>();
 
 	private Set<ImageDTO> images = new HashSet<>();
 
-	public Long getId() {
-		return id;
-	}
+    public Long getId() {
+        return id;
+    }
 
     public void setId( Long id ) {
         this.id = id;
@@ -63,6 +65,14 @@ public class ProductDTO implements Serializable
         this.description = description;
     }
 
+    public Boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive( Boolean isActive ) {
+        this.isActive = isActive;
+    }
+
     public Set<TagDTO> getTags() {
         return tags;
     }
@@ -79,14 +89,14 @@ public class ProductDTO implements Serializable
 		this.images = images;
 	}
 
-	@Override
-	public boolean equals( Object o ) {
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
 
         ProductDTO productDTO = (ProductDTO) o;
         if ( productDTO.getId() == null || getId() == null ) {
@@ -107,6 +117,7 @@ public class ProductDTO implements Serializable
                 ", name='" + getName() + "'" +
                 ", price='" + getPrice() + "'" +
                 ", description='" + getDescription() + "'" +
+                ", isActive='" + isIsActive() + "'" +
                 "}";
     }
 }

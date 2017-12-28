@@ -49,6 +49,9 @@ public class ProductResourceIntTest
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_IS_ACTIVE = false;
+    private static final Boolean UPDATED_IS_ACTIVE = true;
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -79,7 +82,7 @@ public class ProductResourceIntTest
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -87,7 +90,8 @@ public class ProductResourceIntTest
         Product product = new Product()
                 .name( DEFAULT_NAME )
                 .price( DEFAULT_PRICE )
-                .description( DEFAULT_DESCRIPTION );
+                .description( DEFAULT_DESCRIPTION )
+                .isActive( DEFAULT_IS_ACTIVE );
         return product;
     }
 
@@ -126,6 +130,7 @@ public class ProductResourceIntTest
         assertThat( testProduct.getName() ).isEqualTo( DEFAULT_NAME );
         assertThat( testProduct.getPrice() ).isEqualTo( DEFAULT_PRICE );
         assertThat( testProduct.getDescription() ).isEqualTo( DEFAULT_DESCRIPTION );
+        assertThat( testProduct.isIsActive() ).isEqualTo( DEFAULT_IS_ACTIVE );
 
         // Validate the Product in Elasticsearch
         Product productEs = productSearchRepository.findOne( testProduct.getId() );
@@ -204,7 +209,9 @@ public class ProductResourceIntTest
                           .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) )
                           .andExpect( jsonPath( "$.[*].price" ).value( hasItem( DEFAULT_PRICE.doubleValue() ) ) )
                           .andExpect(
-                                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
+                                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) )
+                          .andExpect(
+                                  jsonPath( "$.[*].isActive" ).value( hasItem( DEFAULT_IS_ACTIVE.booleanValue() ) ) );
     }
 
     @Test
@@ -220,7 +227,8 @@ public class ProductResourceIntTest
                           .andExpect( jsonPath( "$.id" ).value( product.getId().intValue() ) )
                           .andExpect( jsonPath( "$.name" ).value( DEFAULT_NAME.toString() ) )
                           .andExpect( jsonPath( "$.price" ).value( DEFAULT_PRICE.doubleValue() ) )
-                          .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) );
+                          .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) )
+                          .andExpect( jsonPath( "$.isActive" ).value( DEFAULT_IS_ACTIVE.booleanValue() ) );
     }
 
     @Test
@@ -244,7 +252,8 @@ public class ProductResourceIntTest
         updatedProduct
                 .name( UPDATED_NAME )
                 .price( UPDATED_PRICE )
-                .description( UPDATED_DESCRIPTION );
+                .description( UPDATED_DESCRIPTION )
+                .isActive( UPDATED_IS_ACTIVE );
         ProductDTO productDTO = productMapper.toDto( updatedProduct );
 
         restProductMockMvc.perform( put( "/api/products" )
@@ -259,6 +268,7 @@ public class ProductResourceIntTest
         assertThat( testProduct.getName() ).isEqualTo( UPDATED_NAME );
         assertThat( testProduct.getPrice() ).isEqualTo( UPDATED_PRICE );
         assertThat( testProduct.getDescription() ).isEqualTo( UPDATED_DESCRIPTION );
+        assertThat( testProduct.isIsActive() ).isEqualTo( UPDATED_IS_ACTIVE );
 
         // Validate the Product in Elasticsearch
         Product productEs = productSearchRepository.findOne( testProduct.getId() );
@@ -321,7 +331,9 @@ public class ProductResourceIntTest
                           .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) )
                           .andExpect( jsonPath( "$.[*].price" ).value( hasItem( DEFAULT_PRICE.doubleValue() ) ) )
                           .andExpect(
-                                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
+                                  jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) )
+                          .andExpect(
+                                  jsonPath( "$.[*].isActive" ).value( hasItem( DEFAULT_IS_ACTIVE.booleanValue() ) ) );
     }
 
     @Test

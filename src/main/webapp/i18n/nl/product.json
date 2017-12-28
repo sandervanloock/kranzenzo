@@ -19,6 +19,7 @@
       "name": "Name",
       "price": "Price",
       "description": "Description",
+      "isActive": "Is Active",
       "images": "Images",
       "orders": "Orders",
       "tags": "Tags"

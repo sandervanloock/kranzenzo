@@ -16,6 +16,10 @@
         <dd>
             <span>{{product.description}}</span>
         </dd>
+        <dt><span jhiTranslate="kransenzoApp.product.isActive">Is Active</span></dt>
+        <dd>
+            <span>{{product.isActive}}</span>
+        </dd>
         <dt><span jhiTranslate="kransenzoApp.product.tags">Tags</span></dt>
         <dd>
             <span *ngFor="let tags of product.tags; let last = last">
