@@ -78,6 +78,16 @@ public class AccountResource {
         }
     }
 
+    @GetMapping("/deactivate")
+    @Timed
+    public void deactivateAccount( @RequestParam(value = "email") String email ) {
+        User user = userRepository.findOneByEmailIgnoreCase( email )
+                                  .orElseThrow( () -> new InternalServerErrorException(
+                                          "No user was found for this email" ) );
+        user.setActivated( false );
+        userRepository.save( user );
+    }
+
     /**
      * GET  /authenticate : check if the user is authenticated, and return its login.
      *

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService } from 'ng-jhipster';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {JhiLanguageService} from 'ng-jhipster';
 
-import { ProfileService } from '../profiles/profile.service';
-import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
+import {ProfileService} from '../profiles/profile.service';
+import {JhiLanguageHelper, LoginModalService, LoginService, Principal} from '../../shared';
 
-import { VERSION } from '../../app.constants';
+import {VERSION} from '../../app.constants';
+import {DeactivateService} from '../../account/deactivate/deactivate.service';
 
 @Component({
     selector: 'jhi-navbar',
@@ -29,8 +30,7 @@ export class NavbarComponent implements OnInit {
         private languageHelper: JhiLanguageHelper,
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private profileService: ProfileService,
-        private router: Router
+        private profileService: ProfileService, private router: Router, private deactivateService: DeactivateService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -67,6 +67,13 @@ export class NavbarComponent implements OnInit {
         this.collapseNavbar();
         this.loginService.logout();
         this.router.navigate(['']);
+    }
+
+    deactivate() {
+        this.collapseNavbar();
+        this.deactivateService.get( this.principal.getEmail() ).subscribe();
+        this.loginService.logout();
+        this.router.navigate( [''] );
     }
 
     toggleNavbar() {

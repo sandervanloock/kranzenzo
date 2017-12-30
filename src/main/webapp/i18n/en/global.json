@@ -21,6 +21,7 @@
                 "password": "Password",
                 "sessions": "Sessions",
                 "login": "Sign in",
+                "deactivate": "Deactivate",
                 "logout": "Sign out",
                 "register": "Register"
             },

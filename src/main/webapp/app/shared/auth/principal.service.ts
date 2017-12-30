@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { AccountService } from './account.service';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {AccountService} from './account.service';
 
 @Injectable()
 export class Principal {
@@ -93,5 +93,9 @@ export class Principal {
 
     getImageUrl(): String {
         return this.isIdentityResolved() ? this.userIdentity.imageUrl : null;
+    }
+
+    getEmail(): string {
+        return this.isIdentityResolved() ? this.userIdentity.email : null;
     }
 }

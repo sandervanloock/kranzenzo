@@ -21,6 +21,7 @@
                 "password": "Wachtwoord",
                 "sessions": "Sessions",
                 "login": "Aanmelden",
+                "deactivate": "Deactiveren",
                 "logout": "Afmelden",
                 "register": "Registreren"
             },

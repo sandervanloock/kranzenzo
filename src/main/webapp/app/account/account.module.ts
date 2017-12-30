@@ -1,25 +1,18 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { KransenzoSharedModule } from '../shared';
+import {KransenzoSharedModule} from '../shared';
 
 import {
-    Register,
-    ActivateService,
-    PasswordService,
-    PasswordResetInitService,
-    PasswordResetFinishService,
-    PasswordStrengthBarComponent,
+    accountState, ActivateComponent,
+    ActivateService, PasswordComponent, PasswordResetFinishComponent,
+    PasswordResetFinishService, PasswordResetInitComponent, PasswordResetInitService, PasswordService,
+    PasswordStrengthBarComponent, Register,
     RegisterComponent,
-    ActivateComponent,
-    PasswordComponent,
-    PasswordResetInitComponent,
-    PasswordResetFinishComponent,
     SettingsComponent,
-    SocialRegisterComponent,
-    SocialAuthComponent,
-    accountState
+    SocialAuthComponent, SocialRegisterComponent
 } from './';
+import {DeactivateService} from './deactivate/deactivate.service';
 
 @NgModule({
     imports: [
@@ -39,7 +32,7 @@ import {
     ],
     providers: [
         Register,
-        ActivateService,
+        ActivateService, DeactivateService,
         PasswordService,
         PasswordResetInitService,
         PasswordResetFinishService
