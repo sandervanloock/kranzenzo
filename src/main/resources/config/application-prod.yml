@@ -53,8 +53,6 @@ spring:
         host: email-smtp.eu-west-1.amazonaws.com
         port: 465
         protocol: smtps
-        username: AKIAJUHKWZKXVRD2K5VQ
-        password: AgCX7CcrJH37S++YA7YsAhyHeScyynnExI8XdMAq4KiA
         javaMailProperties:
           mail.smtps.auth: true
           mail.smtp.ssl.enable: true
