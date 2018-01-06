@@ -52,15 +52,15 @@ spring:
     thymeleaf:
         mode: XHTML
     social:
-        # see https://developers.google.com/+/web/signin/server-side-flow#step_1_create_a_client_id_and_client_secret
-        google:
-            client-id: xxx
-            client-secret: xxx
-
-        # see https://apps.twitter.com/app/
-        twitter:
-            client-id: xxx
-            client-secret: xxx
+#        # see https://developers.google.com/+/web/signin/server-side-flow#step_1_create_a_client_id_and_client_secret
+#        google:
+#            client-id: xxx
+#            client-secret: xxx
+#
+#        # see https://apps.twitter.com/app/
+#        twitter:
+#            client-id: xxx
+#            client-secret: xxx
 
         # jhipster-needle-add-social-configuration
 security:
