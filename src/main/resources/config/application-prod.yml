@@ -53,10 +53,6 @@ spring:
         host: email-smtp.eu-west-1.amazonaws.com
         port: 465
         protocol: smtps
-        javaMailProperties:
-          mail.smtps.auth: true
-          mail.smtp.ssl.enable: true
-          mail.transport.protocol: smtps
     thymeleaf:
         cache: true
 
