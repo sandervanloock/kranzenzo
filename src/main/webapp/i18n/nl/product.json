@@ -2,10 +2,10 @@
   "kransenzoApp": {
     "product": {
       "home": {
-        "title": "Products",
+        "title": "Producten",
         "createLabel": "Maak een nieuwe Product",
         "createOrEditLabel": "Maak of wijzig een Product",
-        "search": "Search for Product"
+        "search": "Zoek voor een Product"
       },
       "created": "A new Product is created with identifier {{ param }}",
       "updated": "A Product is updated with identifier {{ param }}",

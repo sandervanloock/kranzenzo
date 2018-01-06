@@ -1,6 +1,6 @@
 {
     "global": {
-        "title": "KranzEnzo",
+        "title": "Kranzenzo",
         "browsehappy": "U gebruikt een <strong>verouderde</strong> browser. <a href=\"http://browsehappy.com/?locale=en\">upgrade uw browser</a> om de bruikbaarheid te verbeteren.",
         "menu": {
             "home": "Startpagina",
@@ -10,7 +10,7 @@
               "product": "Product",
               "image": "Image",
               "tag": "Tag",
-              "customer": "Customer",
+                "customer": "Klant",
               "order": "Order",
               "location": "Location",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"

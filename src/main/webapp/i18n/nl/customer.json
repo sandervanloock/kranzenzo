@@ -2,26 +2,26 @@
   "kransenzoApp": {
     "customer": {
       "home": {
-        "title": "Customers",
-        "createLabel": "Maak een nieuwe Customer",
-        "createOrEditLabel": "Maak of wijzig een Customer",
-        "search": "Search for Customer"
+        "title": "Klanten",
+        "createLabel": "Maak een nieuwe Klant",
+        "createOrEditLabel": "Maak of wijzig een Klant",
+        "search": "Zoek voor een Klant"
       },
-      "created": "A new Customer is created with identifier {{ param }}",
-      "updated": "A Customer is updated with identifier {{ param }}",
-      "deleted": "A Customer is deleted with identifier {{ param }}",
+      "created": "Een nieuwe klant is aangemaakt met id {{ param }}",
+      "updated": "Een klant is gewijzigd met id {{ param }}",
+      "deleted": "Een klant is verwijderd met id {{ param }}",
       "delete": {
         "question": "Bent u zeker dat u Customer {{ id }} wilt verwijderen?"
       },
       "detail": {
-        "title": "Customer"
+        "title": "Klant"
       },
-      "street": "Street",
-      "city": "City",
-      "zipCode": "Zip Code",
-      "province": "Province",
-      "phoneNumber": "Phone Number",
-      "address": "Address",
+      "street": "Straat",
+      "city": "Stad",
+      "zipCode": "Postcode",
+      "province": "Provincie",
+      "phoneNumber": "Telefoonnummer",
+      "address": "Adres",
       "orders": "Orders"
     }
   }

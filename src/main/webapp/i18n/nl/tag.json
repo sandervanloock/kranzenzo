@@ -5,7 +5,7 @@
         "title": "Tags",
         "createLabel": "Maak een nieuwe Tag",
         "createOrEditLabel": "Maak of wijzig een Tag",
-        "search": "Search for Tag"
+        "search": "Zoek voor Tag"
       },
       "created": "A new Tag is created with identifier {{ param }}",
       "updated": "A Tag is updated with identifier {{ param }}",
