@@ -87,7 +87,7 @@ public class ProductResource
     @Timed
     public List<ProductDTO> getAllProducts() {
         log.debug( "REST request to get all Products" );
-        return productService.findAll();
+        return productService.findAllActive();
     }
 
     /**

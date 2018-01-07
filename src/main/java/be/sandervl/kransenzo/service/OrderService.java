@@ -12,6 +12,7 @@ import be.sandervl.kransenzo.service.dto.OrderDTO;
 import be.sandervl.kransenzo.service.mapper.OrderMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -159,5 +160,12 @@ public class OrderService
         product.setIsActive( order.getState().equals( OrderState.CANCELLED ) );
         product = productRepository.save( product );
         order.setProduct( product );
+    }
+
+    public List<OrderDTO> findAllOrderByUpdatedDesc() {
+        return orderRepository.findAll( new Sort( Sort.Direction.DESC, "updated" ) ).stream()
+                              .map( orderMapper::toDto )
+                              .collect( Collectors.toCollection( LinkedList::new ) );
+
     }
 }

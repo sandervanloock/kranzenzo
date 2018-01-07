@@ -107,4 +107,10 @@ public class ProductService
                 .map( productMapper::toDto )
                 .collect( Collectors.toList() );
     }
+
+    public List<ProductDTO> findAllActive() {
+        return productRepository.findAllByIsActiveIsTrue().stream()
+                                .map( productMapper::toDto )
+                                .collect( Collectors.toCollection( LinkedList::new ) );
+    }
 }

@@ -87,7 +87,7 @@ public class OrderResource
     @Timed
     public List<OrderDTO> getAllOrders() {
         log.debug( "REST request to get all Orders" );
-        return orderService.findAll();
+        return orderService.findAllOrderByUpdatedDesc();
     }
 
     /**

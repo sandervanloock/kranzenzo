@@ -21,5 +21,7 @@ public interface ProductRepository extends JpaRepository<Product, Long>
 
     @Query("select product from Product product left join fetch product.tags left join fetch product.images where product.id =:id")
     Product findOneWithEagerRelationships( @Param("id") Long id );
-    
+
+    @Query("select distinct product from Product product left join fetch product.tags left join fetch product.images where product.isActive = 1")
+    List<Product> findAllByIsActiveIsTrue();
 }
