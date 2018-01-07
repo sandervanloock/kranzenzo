@@ -213,7 +213,7 @@ public class MailServiceIntTest {
         mailService.sendOrderCreationMails( order, user );
         verify( javaMailSender, times( 2 ) ).send( (MimeMessage) messageCaptor.capture() );
         MimeMessage message = (MimeMessage) messageCaptor.getValue();
-        assertThat( message.getAllRecipients()[0].toString() ).isEqualTo( user.getEmail() );
+        assertThat( message.getAllRecipients()[0].toString() ).isEqualTo( "confirmation@mail.com" );
         assertThat( message.getFrom()[0].toString() ).isEqualTo( "test@localhost" );
         assertThat( message.getContent().toString() ).isNotEmpty();
         assertThat( message.getDataHandler().getContentType() ).isEqualTo( "text/html;charset=UTF-8" );
