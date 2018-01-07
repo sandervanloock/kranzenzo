@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {JhiEventManager} from 'ng-jhipster';
 import {LoginModalService, Principal, User, UserService} from '../shared';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {Product, ProductService} from '../entities/product';
+import {Product, ProductPopupService, ProductService} from '../entities/product';
 import {ActivatedRoute} from '@angular/router';
 import {Customer, CustomerService} from '../entities/customer';
 import {Http} from '@angular/http';
@@ -26,7 +26,7 @@ export class ProductOrderComponent implements OnInit {
     deliveryPrice: number = 5; //TODO make this dynamic with google maps
     private deliveryPriceAdded: boolean;
 
-    product: Product;
+    product: Product = new Product();
     customer: Customer = new Customer();
     order: Order = new Order();
 
@@ -44,6 +44,9 @@ export class ProductOrderComponent implements OnInit {
 
     ngOnInit() {
         this.step = 1;
+        this.price = this.product.price;
+        this.order.productId = this.product.id;
+        this.customer.user = new User();
 
         this.principal.identity().then( ( account ) => {
             if ( account ) {
@@ -55,9 +58,6 @@ export class ProductOrderComponent implements OnInit {
         } );
         this.registerAuthenticationSuccess();
 
-        this.route.params.subscribe( ( params ) => {
-            this.loadProduct( params['id'] );
-        } );
     }
 
     onSelectionChange( type: string ) {
@@ -84,14 +84,6 @@ export class ProductOrderComponent implements OnInit {
             this.principal.identity().then( ( account ) => {
                 this.customer.user = account;
             } );
-        } );
-    }
-
-    loadProduct( id ) {
-        this.productService.find( id ).subscribe( ( product ) => {
-            this.product = product;
-            this.price = this.product.price;
-            this.order.productId = product.id;
         } );
     }
 
@@ -125,5 +117,27 @@ export class ProductOrderComponent implements OnInit {
             this.customer = res;
             this.order.customerId = res.id;
         } )
+    }
+}
+
+@Component( {
+                selector: 'product-order-popup', template: ''
+            } )
+export class ProductOrderPopupComponent implements OnInit, OnDestroy {
+
+    routeSub: any;
+
+    constructor( private route: ActivatedRoute, private productPopupService: ProductPopupService ) {
+    }
+
+    ngOnInit() {
+        this.routeSub = this.route.params.subscribe( ( params ) => {
+            this.productPopupService
+                .open( ProductOrderComponent as Component, params['id'] );
+        } );
+    }
+
+    ngOnDestroy() {
+        this.routeSub.unsubscribe();
     }
 }

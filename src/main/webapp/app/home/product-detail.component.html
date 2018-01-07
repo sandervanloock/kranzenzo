@@ -32,7 +32,12 @@
             </div>
             </p>
             <p class="lead">
-                <a class="btn btn-primary btn-lg" routerLink="order" routerLinkActive="active" role="button">Bestellen</a>
+                <a class="btn btn-primary btn-lg"
+                   [routerLink]="['/', { outlets: { popup: 'product/'+ product.id + '/order'} }]"
+                   replaceUrl="true"
+                   role="button">
+                    Bestellen
+                </a>
             </p>
         </div>
 
