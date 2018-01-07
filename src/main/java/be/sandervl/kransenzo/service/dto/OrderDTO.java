@@ -3,6 +3,7 @@ package be.sandervl.kransenzo.service.dto;
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
 
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -28,6 +29,9 @@ public class OrderDTO implements Serializable
 
     @Size(max = 5000)
     private String description;
+
+    @DecimalMin(value = "0")
+    private Float deliveryPrice;
 
     private Long customerId;
 
@@ -93,6 +97,14 @@ public class OrderDTO implements Serializable
         this.description = description;
     }
 
+    public Float getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice( Float deliveryPrice ) {
+        this.deliveryPrice = deliveryPrice;
+    }
+
     public Long getCustomerId() {
         return customerId;
     }
@@ -156,6 +168,7 @@ public class OrderDTO implements Serializable
                 ", deliveryType='" + getDeliveryType() + "'" +
                 ", includeBatteries='" + isIncludeBatteries() + "'" +
                 ", description='" + getDescription() + "'" +
+                ", deliveryPrice='" + getDeliveryPrice() + "'" +
                 "}";
     }
 }

@@ -1,6 +1,7 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.domain.Customer;
+import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.CustomerRepository;
 import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.repository.search.CustomerSearchRepository;
@@ -9,9 +10,11 @@ import be.sandervl.kransenzo.service.mapper.CustomerMapper;
 import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,6 +22,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -39,15 +43,18 @@ public class CustomerResource
     private final CustomerMapper customerMapper;
 
     private final CustomerSearchRepository customerSearchRepository;
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
     public CustomerResource( CustomerRepository customerRepository,
                              CustomerMapper customerMapper,
                              CustomerSearchRepository customerSearchRepository,
+                             PasswordEncoder passwordEncoder,
                              UserRepository userRepository ) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
         this.customerSearchRepository = customerSearchRepository;
+        this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
 
@@ -68,12 +75,28 @@ public class CustomerResource
                                  .body( null );
         }
         Customer customer = customerMapper.toEntity( customerDTO );
+        setUserLoginAndPassword( customer );
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
         customerSearchRepository.save( customer );
         return ResponseEntity.created( new URI( "/api/customers/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
                              .body( result );
+    }
+
+    private void setUserLoginAndPassword( Customer customer ) {
+        User user = customer.getUser();
+        userRepository.findOneByEmailIgnoreCase( user.getEmail() )
+                      .ifPresent( existing -> {
+                          user.setId( existing.getId() );
+                          user.setLogin( existing.getLogin() );
+                          user.setPassword( existing.getPassword() );
+                      } );
+        if ( StringUtils.isAnyBlank( user.getLogin(), user.getPassword() ) ) {
+            user.setLogin( UUID.randomUUID().toString() );
+            user.setPassword( passwordEncoder.encode( "NO_PASS" ) );
+            customer.setUser( userRepository.save( user ) );
+        }
     }
 
     /**
@@ -93,7 +116,7 @@ public class CustomerResource
             return createCustomer( customerDTO );
         }
         Customer customer = customerMapper.toEntity( customerDTO );
-        customer.setUser( userRepository.findOne( customerDTO.getUserId() ) );
+        setUserLoginAndPassword( customer );
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
         customerSearchRepository.save( customer );

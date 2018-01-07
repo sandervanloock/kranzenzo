@@ -1,8 +1,13 @@
 package be.sandervl.kransenzo.service;
-import be.sandervl.kransenzo.config.Constants;
 
 import be.sandervl.kransenzo.KransenzoApp;
+import be.sandervl.kransenzo.config.ApplicationProperties;
+import be.sandervl.kransenzo.config.Constants;
+import be.sandervl.kransenzo.domain.Customer;
+import be.sandervl.kransenzo.domain.Order;
+import be.sandervl.kransenzo.domain.Product;
 import be.sandervl.kransenzo.domain.User;
+import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,6 +42,9 @@ public class MailServiceIntTest {
     private JHipsterProperties jHipsterProperties;
 
     @Autowired
+    private ApplicationProperties applicationProperties;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Autowired
@@ -54,7 +62,8 @@ public class MailServiceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
-        mailService = new MailService(jHipsterProperties, javaMailSender, messageSource, templateEngine);
+        mailService = new MailService( jHipsterProperties, applicationProperties, javaMailSender, messageSource,
+                                       templateEngine );
     }
 
     @Test
@@ -182,6 +191,32 @@ public class MailServiceIntTest {
     public void testSendEmailWithException() throws Exception {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false);
+    }
+
+    @Test
+    public void sendOrderConfirmationMailToCustomer() throws Exception {
+        User user = new User();
+        user.setLangKey( Constants.DEFAULT_LANGUAGE );
+        user.setLogin( "john" );
+        user.setEmail( "john.doe@example.com" );
+
+        Order order = new Order();
+        Customer customer = new Customer();
+        customer.setUser( user );
+        order.setCustomer( customer );
+        Product product = new Product();
+        product.setName( "product-name" );
+        product.setPrice( 123F );
+        order.setProduct( product );
+        order.setDeliveryType( DeliveryType.PICKUP );
+
+        mailService.sendOrderCreationMails( order, user );
+        verify( javaMailSender, times( 2 ) ).send( (MimeMessage) messageCaptor.capture() );
+        MimeMessage message = (MimeMessage) messageCaptor.getValue();
+        assertThat( message.getAllRecipients()[0].toString() ).isEqualTo( user.getEmail() );
+        assertThat( message.getFrom()[0].toString() ).isEqualTo( "test@localhost" );
+        assertThat( message.getContent().toString() ).isNotEmpty();
+        assertThat( message.getDataHandler().getContentType() ).isEqualTo( "text/html;charset=UTF-8" );
     }
 
 }

@@ -29,7 +29,7 @@ management:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
 spring:
     application:
-        name: kransenzo
+        name: Kranzenzo
     profiles:
         # The commented value for `active` can be replaced with valid Spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
@@ -123,3 +123,5 @@ jhipster:
 # ===================================================================
 
 application:
+  mail:
+    confirmation: annemie.rousseau@telenet.be

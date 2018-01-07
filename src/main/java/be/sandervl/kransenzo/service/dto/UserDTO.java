@@ -1,15 +1,15 @@
 package be.sandervl.kransenzo.service.dto;
 
 import be.sandervl.kransenzo.config.Constants;
-
 import be.sandervl.kransenzo.domain.Authority;
 import be.sandervl.kransenzo.domain.User;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -58,6 +58,9 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
+        if ( user == null ) {
+            return;
+        }
         this.id = user.getId();
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
@@ -70,9 +73,14 @@ public class UserDTO {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
-        this.authorities = user.getAuthorities().stream()
-            .map(Authority::getName)
-            .collect(Collectors.toSet());
+        if ( user.getAuthorities() == null ) {
+            this.authorities = Collections.emptySet();
+        }
+        else {
+            this.authorities = user.getAuthorities().stream()
+                                   .map( Authority::getName )
+                                   .collect( Collectors.toSet() );
+        }
     }
 
     public Long getId() {

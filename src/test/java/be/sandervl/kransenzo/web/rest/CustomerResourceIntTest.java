@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -80,10 +81,12 @@ public class CustomerResourceIntTest
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private MockMvc restCustomerMockMvc;
 
     private Customer customer;
-
 
     /**
      * Create an entity for this test.
@@ -107,7 +110,8 @@ public class CustomerResourceIntTest
     public void setup() {
         MockitoAnnotations.initMocks( this );
         CustomerResource customerResource = new CustomerResource( customerRepository, customerMapper,
-                                                                  customerSearchRepository, userRepository );
+                                                                  customerSearchRepository, passwordEncoder,
+                                                                  userRepository );
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup( customerResource )
                                                   .setCustomArgumentResolvers( pageableArgumentResolver )
                                                   .setControllerAdvice( exceptionTranslator )

@@ -67,6 +67,9 @@ public class OrderResourceIntTest
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Float DEFAULT_DELIVERY_PRICE = 0F;
+    private static final Float UPDATED_DELIVERY_PRICE = 1F;
+
     @Autowired
     private OrderRepository orderRepository;
 
@@ -97,7 +100,7 @@ public class OrderResourceIntTest
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -108,7 +111,8 @@ public class OrderResourceIntTest
                 .state( DEFAULT_STATE )
                 .deliveryType( DEFAULT_DELIVERY_TYPE )
                 .includeBatteries( DEFAULT_INCLUDE_BATTERIES )
-                .description( DEFAULT_DESCRIPTION );
+                .description( DEFAULT_DESCRIPTION )
+                .deliveryPrice( DEFAULT_DELIVERY_PRICE );
         // Add required entity
         Product product = ProductResourceIntTest.createEntity( em );
         em.persist( product );
@@ -197,8 +201,9 @@ public class OrderResourceIntTest
                                 jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
                         .andExpect( jsonPath( "$.[*].includeBatteries" )
                                             .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) )
-                        .andExpect(
-                                jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
+                        .andExpect( jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) )
+                        .andExpect( jsonPath( "$.[*].deliveryPrice" )
+                                            .value( hasItem( DEFAULT_DELIVERY_PRICE.doubleValue() ) ) );
     }
 
     @Test
@@ -217,7 +222,8 @@ public class OrderResourceIntTest
                         .andExpect( jsonPath( "$.state" ).value( DEFAULT_STATE.toString() ) )
                         .andExpect( jsonPath( "$.deliveryType" ).value( DEFAULT_DELIVERY_TYPE.toString() ) )
                         .andExpect( jsonPath( "$.includeBatteries" ).value( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) )
-                        .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) );
+                        .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) )
+                        .andExpect( jsonPath( "$.deliveryPrice" ).value( DEFAULT_DELIVERY_PRICE.doubleValue() ) );
     }
 
     @Test
@@ -327,8 +333,9 @@ public class OrderResourceIntTest
                                 jsonPath( "$.[*].deliveryType" ).value( hasItem( DEFAULT_DELIVERY_TYPE.toString() ) ) )
                         .andExpect( jsonPath( "$.[*].includeBatteries" )
                                             .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) )
-                        .andExpect(
-                                jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) );
+                        .andExpect( jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) )
+                        .andExpect( jsonPath( "$.[*].deliveryPrice" )
+                                            .value( hasItem( DEFAULT_DELIVERY_PRICE.doubleValue() ) ) );
     }
 
     @Test

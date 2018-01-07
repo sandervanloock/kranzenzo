@@ -22,6 +22,7 @@
       "deliveryType": "Delivery Type",
       "includeBatteries": "Include Batteries",
       "description": "Description",
+      "deliveryPrice": "Delivery Price",
       "customer": "Customer",
       "deliveryAddress": "Delivery Address",
       "product": "Product"

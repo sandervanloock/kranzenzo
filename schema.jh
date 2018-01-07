@@ -28,6 +28,7 @@ entity Order{
     deliveryType DeliveryType
     includeBatteries Boolean
     description String maxlength(5000)
+    deliveryPrice Float min(0)
 }
 
 entity Location{

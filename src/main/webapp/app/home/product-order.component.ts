@@ -23,10 +23,10 @@ export class ProductOrderComponent implements OnInit {
     step: number;
     modalRef: NgbModalRef;
     price: number;
-    deliveryPrice: 5; //TODO make this dynamic with google maps
+    deliveryPrice: number = 5; //TODO make this dynamic with google maps
+    private deliveryPriceAdded: boolean;
 
     product: Product;
-    user: User = new User();
     customer: Customer = new Customer();
     order: Order = new Order();
 
@@ -47,8 +47,10 @@ export class ProductOrderComponent implements OnInit {
 
         this.principal.identity().then( ( account ) => {
             if ( account ) {
-                this.user = account;
-                this.customer.userId = account.id;
+                this.customer.user = account;
+            } else {
+                this.customer.user = new User();
+                this.customer.user.langKey = 'nl';
             }
         } );
         this.registerAuthenticationSuccess();
@@ -60,8 +62,10 @@ export class ProductOrderComponent implements OnInit {
 
     onSelectionChange( type: string ) {
         if ( type === 'DELIVERED' ) {
+            this.deliveryPriceAdded = true;
             this.price += this.deliveryPrice; //TODO calculate price for delivery
-        } else if ( type === 'PICKUP' ) {
+        } else if ( this.deliveryPriceAdded && type === 'PICKUP' ) {
+            this.deliveryPriceAdded = false;
             this.price -= this.deliveryPrice;
         }
     }
@@ -78,8 +82,7 @@ export class ProductOrderComponent implements OnInit {
     registerAuthenticationSuccess() {
         this.eventManager.subscribe( 'authenticationSuccess', ( message ) => {
             this.principal.identity().then( ( account ) => {
-                this.user = account;
-                this.customer.userId = account.id;
+                this.customer.user = account;
             } );
         } );
     }

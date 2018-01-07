@@ -1,10 +1,11 @@
 package be.sandervl.kransenzo.service;
 
+import be.sandervl.kransenzo.config.ApplicationProperties;
+import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.domain.User;
-
 import io.github.jhipster.config.JHipsterProperties;
-
 import org.apache.commons.lang3.CharEncoding;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -14,10 +15,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.mail.internet.MimeMessage;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Service for sending emails.
@@ -35,16 +36,22 @@ public class MailService {
 
     private final JHipsterProperties jHipsterProperties;
 
+    private final ApplicationProperties applicationProperties;
+
     private final JavaMailSender javaMailSender;
 
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public MailService( JHipsterProperties jHipsterProperties,
+                        ApplicationProperties applicationProperties,
+                        JavaMailSender javaMailSender,
+                        MessageSource messageSource,
+                        SpringTemplateEngine templateEngine ) {
 
         this.jHipsterProperties = jHipsterProperties;
+        this.applicationProperties = applicationProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
@@ -115,5 +122,28 @@ public class MailService {
         String content = templateEngine.process("socialRegistrationValidationEmail", context);
         String subject = messageSource.getMessage("email.social.registration.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendOrderCreationMails( Order order, User user ) {
+        if ( user != null ) {
+            log.debug( "Sending confirmation mail to '{}'", user.getEmail() );
+            Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
+            Context context = new Context( locale );
+            context.setVariable( USER, user );
+            context.setVariable( "order", order );
+            context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+            String content = templateEngine.process( "orderConfirmationCustomer", context );
+            String subject = messageSource.getMessage( "email.order.confirmation.title", null, locale );
+            sendEmail( user.getEmail(), subject, content, false, true );
+        }
+
+        log.debug( "Sending notification of new order to '{}'", applicationProperties.getMail().getConfirmation() );
+        Context context = new Context( Locale.getDefault() );
+        context.setVariable( "orderLink", jHipsterProperties.getMail().getBaseUrl() + "#/order/" + order.getId() );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        String content = templateEngine.process( "orderConfirmationClient", context );
+        String subject = messageSource.getMessage( "email.order.confirmation.client.title", null, Locale.getDefault() );
+        sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
     }
 }

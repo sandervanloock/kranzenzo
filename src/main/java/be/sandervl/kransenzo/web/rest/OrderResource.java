@@ -1,6 +1,5 @@
 package be.sandervl.kransenzo.web.rest;
 
-import be.sandervl.kransenzo.domain.enumeration.OrderState;
 import be.sandervl.kransenzo.service.OrderService;
 import be.sandervl.kransenzo.service.dto.OrderDTO;
 import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +24,10 @@ import java.util.Optional;
 public class OrderResource
 {
 
-    private static final String ENTITY_NAME = "order";
     private final Logger log = LoggerFactory.getLogger( OrderResource.class );
+
+    private static final String ENTITY_NAME = "order";
+
     private final OrderService orderService;
 
     public OrderResource( OrderService orderService ) {
@@ -51,12 +50,7 @@ public class OrderResource
                     HeaderUtil.createFailureAlert( ENTITY_NAME, "idexists", "A new order cannot already have an ID" ) )
                                  .body( null );
         }
-        orderDTO.setCreated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
-        orderDTO.setUpdated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
-        orderDTO.setState( OrderState.NEW );
-        OrderDTO result = orderService.save( orderDTO );
-        //TODO mail annemie
-        //TODO mail customer
+        OrderDTO result = orderService.create( orderDTO );
         return ResponseEntity.created( new URI( "/api/orders/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
                              .body( result );
@@ -78,7 +72,6 @@ public class OrderResource
         if ( orderDTO.getId() == null ) {
             return createOrder( orderDTO );
         }
-        orderDTO.setUpdated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
         OrderDTO result = orderService.save( orderDTO );
         return ResponseEntity.ok()
                              .headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, orderDTO.getId().toString() ) )

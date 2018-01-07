@@ -2,7 +2,9 @@ package be.sandervl.kransenzo.service;
 
 import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.domain.Product;
+import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
+import be.sandervl.kransenzo.repository.CustomerRepository;
 import be.sandervl.kransenzo.repository.OrderRepository;
 import be.sandervl.kransenzo.repository.ProductRepository;
 import be.sandervl.kransenzo.repository.search.OrderSearchRepository;
@@ -13,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,14 +42,22 @@ public class OrderService
 
     private final ProductRepository productRepository;
 
+    private final MailService mailService;
+
+    private final CustomerRepository customerRepository;
+
     public OrderService( OrderRepository orderRepository,
                          OrderMapper orderMapper,
                          OrderSearchRepository orderSearchRepository,
-                         ProductRepository productRepository ) {
+                         ProductRepository productRepository,
+                         MailService mailService,
+                         CustomerRepository customerRepository ) {
         this.orderRepository = orderRepository;
         this.orderMapper = orderMapper;
         this.orderSearchRepository = orderSearchRepository;
         this.productRepository = productRepository;
+        this.mailService = mailService;
+        this.customerRepository = customerRepository;
     }
 
     /**
@@ -56,6 +68,7 @@ public class OrderService
      */
     public OrderDTO save( OrderDTO orderDTO ) {
         log.debug( "Request to save Order : {}", orderDTO );
+        orderDTO.setUpdated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
         Order order = orderMapper.toEntity( orderDTO );
         order = orderRepository.save( order );
         OrderDTO result = orderMapper.toDto( order );
@@ -65,9 +78,30 @@ public class OrderService
     }
 
     /**
-     * Get all the orders.
+     * Create a order.
      *
-     * @return the list of entities
+     * @param orderDTO the entity to create
+     * @return the persisted entity
+     */
+    public OrderDTO create( OrderDTO orderDTO ) {
+        log.debug( "Request to create Order : {}", orderDTO );
+        orderDTO.setCreated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
+        orderDTO.setUpdated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
+        orderDTO.setState( OrderState.NEW );
+        Order order = orderMapper.toEntity( orderDTO );
+        order = orderRepository.save( order );
+        orderSearchRepository.save( order );
+        updateProductVisibility( order );
+        //fetch customer eager so all information for sending the email is present on the order
+        User user = customerRepository.getOne( order.getCustomer().getId() ).getUser();
+        mailService.sendOrderCreationMails( order, user );
+        return orderMapper.toDto( order );
+    }
+
+    /**
+     *  Get all the orders.
+     *
+     *  @return the list of entities
      */
     @Transactional(readOnly = true)
     public List<OrderDTO> findAll() {
@@ -78,10 +112,10 @@ public class OrderService
     }
 
     /**
-     * Get one order by id.
+     *  Get one order by id.
      *
-     * @param id the id of the entity
-     * @return the entity
+     *  @param id the id of the entity
+     *  @return the entity
      */
     @Transactional(readOnly = true)
     public OrderDTO findOne( Long id ) {
@@ -91,9 +125,9 @@ public class OrderService
     }
 
     /**
-     * Delete the  order by id.
+     *  Delete the  order by id.
      *
-     * @param id the id of the entity
+     *  @param id the id of the entity
      */
     public void delete( Long id ) {
         log.debug( "Request to delete Order : {}", id );
@@ -105,8 +139,8 @@ public class OrderService
     /**
      * Search for the order corresponding to the query.
      *
-     * @param query the query of the search
-     * @return the list of entities
+     *  @param query the query of the search
+     *  @return the list of entities
      */
     @Transactional(readOnly = true)
     public List<OrderDTO> search( String query ) {
@@ -121,8 +155,9 @@ public class OrderService
         set product inactive when state is not CANCELLED, otherwise set it active again
      */
     private void updateProductVisibility( Order order ) {
-        Product product = order.getProduct();
+        Product product = productRepository.findOneWithEagerRelationships( order.getProduct().getId() );
         product.setIsActive( order.getState().equals( OrderState.CANCELLED ) );
-        productRepository.save( product );
+        product = productRepository.save( product );
+        order.setProduct( product );
     }
 }

@@ -13,7 +13,7 @@ public class CustomerDTO implements Serializable
 
     private Long id;
 
-    private Long userId;
+    private UserDTO user;
 
     private String street;
 
@@ -37,12 +37,12 @@ public class CustomerDTO implements Serializable
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserId( Long userId ) {
-        this.userId = userId;
+    public void setUser( UserDTO user ) {
+        this.user = user;
     }
 
     public String getStreet() {

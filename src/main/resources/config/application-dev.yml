@@ -56,15 +56,10 @@ spring:
                     logs: target/elasticsearch/log
                     data: target/elasticsearch/data
     mail:
-        host: email-smtp.eu-west-1.amazonaws.com
-        port: 465
-        protocol: smtps
-        username: AKIAJUHKWZKXVRD2K5VQ
-        password: AgCX7CcrJH37S++YA7YsAhyHeScyynnExI8XdMAq4KiA
-        javaMailProperties:
-          mail.smtps.auth: true
-          mail.smtp.ssl.enable: true
-          mail.transport.protocol: smtps
+        host: localhost
+        port: 25
+        username:
+        password:
     messages:
         cache-seconds: 1
     thymeleaf:

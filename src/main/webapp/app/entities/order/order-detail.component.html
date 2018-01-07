@@ -28,6 +28,10 @@
         <dd>
             <span>{{order.description}}</span>
         </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.deliveryPrice">Delivery Price</span></dt>
+        <dd>
+            <span>{{order.deliveryPrice}}</span>
+        </dd>
         <dt><span jhiTranslate="kransenzoApp.order.customer">Customer</span></dt>
         <dd>
             <div *ngIf="order.customerId">

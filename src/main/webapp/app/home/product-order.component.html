@@ -25,21 +25,21 @@
                     <input required type="text" class="form-control" id="lastName"
                            aria-describedby="lastName" placeholder="Naam"
                            name="lastName" [required]="true"
-                           [(ngModel)]="user.lastName">
+                           [(ngModel)]="this.customer.user.lastName">
                 </div>
                 <div class="form-group">
                     <label for="lastName">Voornaam*</label>
                     <input required type="text" class="form-control" id="firstName"
                            aria-describedby="firstName" placeholder="Voornaam"
                            name="firstName" [required]="true"
-                           [(ngModel)]="user.firstName">
+                           [(ngModel)]="this.customer.user.firstName">
                 </div>
                 <div class="form-group">
                     <label for="email">Emailadres*</label>
                     <input required type="email" class="form-control" id="email" name="email"
                            aria-describedby="email" placeholder="Emailadres"
                            name="email" [required]="true"
-                           [(ngModel)]="user.email">
+                           [(ngModel)]="this.customer.user.email">
                 </div>
                 <hr/>
                 <h4>Adresgegevens**</h4>
@@ -144,29 +144,24 @@
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">Code</th>
                                 <th scope="col">Beschrijving</th>
                                 <th scope="col">Prijs</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <th scope="row">0A43DF</th>
-                                <td>Bloemstuk</td>
-                                <td>€50</td>
+                                <td>{{this.product.name}}</td>
+                                <td>€ {{this.product.price}}</td>
                             </tr>
                             <tr *ngIf="this.order.includeBatteries">
-                                <th scope="row">34F45G</th>
                                 <td>Batterijen voor LED-licht</td>
-                                <td>€0.5</td>
+                                <td>€ 0.5</td>
                             </tr>
                             <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
-                                <th scope="row">DV3WZE</th>
                                 <td>Levering</td>
-                                <td>{{this.deliveryPrice}}</td>
+                                <td>€ {{this.deliveryPrice}}</td>
                             </tr>
                             <tr class="table-active">
-                                <th></th>
                                 <td>Totaal</td>
                                 <td>€ {{this.price}}</td>
                             </tr>
@@ -183,40 +178,35 @@
                 <h2>Overzicht bestelling van {{product.name}}</h2>
                 <dl class="row">
                     <dt class="col-sm-3">Naam</dt>
-                    <dd class="col-sm-9">{{user.lastName}}</dd>
+                    <dd class="col-sm-9">{{this.customer.user.lastName}}</dd>
                     <dt class="col-sm-3">Voornaam</dt>
-                    <dd class="col-sm-9">{{user.firstName}}</dd>
+                    <dd class="col-sm-9">{{this.customer.user.firstName}}</dd>
                 </dl>
                 <p>
-                    Je zal via mail bevestiging krijgen op {{user.email}}.
+                    Je zal via mail bevestiging krijgen op {{this.customer.user.email}}.
                 </p>
                 <div>
                     <table class="table">
                         <thead>
                         <tr>
-                            <th scope="col">Code</th>
                             <th scope="col">Beschrijving</th>
                             <th scope="col">Prijs</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <th scope="row">0A43DF</th>
-                            <td>Bloemstuk</td>
-                            <td>€50</td>
+                            <td>{{this.product.name}}</td>
+                            <td>€ {{this.product.price}}</td>
                         </tr>
                         <tr *ngIf="this.order.includeBatteries">
-                            <th scope="row">34F45G</th>
                             <td>Batterijen voor LED-licht</td>
-                            <td>€0.5</td>
+                            <td>€ 0.5</td>
                         </tr>
                         <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
-                            <th scope="row">DV3WZE</th>
                             <td>Levering</td>
-                            <td>{{this.deliveryPrice}}</td>
+                            <td>€ {{this.deliveryPrice}}</td>
                         </tr>
                         <tr class="table-active">
-                            <th></th>
                             <td>Totaal</td>
                             <td>€ {{this.price}}</td>
                         </tr>

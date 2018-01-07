@@ -22,6 +22,7 @@
       "deliveryType": "Aflever type",
       "includeBatteries": "Batterijen inbegrepen",
       "description": "Beschrijving",
+      "deliveryPrice": "Prijs voor aflevering",
       "customer": "Klant",
       "deliveryAddress": "Afleveradres",
       "product": "Product"

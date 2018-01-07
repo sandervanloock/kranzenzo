@@ -55,6 +55,8 @@ spring:
         protocol: smtps
     thymeleaf:
         cache: true
+    application:
+        url: https://kransenzo.sandervl.be
 
 liquibase:
     contexts: prod

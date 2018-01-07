@@ -53,6 +53,14 @@
         "maxlength"
       ],
       "fieldValidateRulesMaxlength": 5000
+    },
+    {
+      "fieldName": "deliveryPrice",
+      "fieldType": "Float",
+      "fieldValidateRules": [
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
     }
   ],
   "changelogDate": "20171212225541",

@@ -13,10 +13,10 @@ public interface CustomerMapper extends EntityMapper<CustomerDTO, Customer>
 {
 
 	@Mapping(source = "address.id", target = "addressId")
-    @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user", target = "user", qualifiedByName = "userToUserDTO")
 	CustomerDTO toDto( Customer customer );
 
-    @Mapping(source = "userId", target = "user", qualifiedByName = "userFromId")
+    @Mapping(source = "user", target = "user", qualifiedByName = "userDTOToUser")
     @Mapping(source = "addressId", target = "address")
     @Mapping(target = "orders", ignore = true)
     Customer toEntity( CustomerDTO customerDTO );

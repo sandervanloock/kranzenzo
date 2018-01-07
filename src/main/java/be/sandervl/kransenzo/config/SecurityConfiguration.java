@@ -103,6 +103,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/profile-info").permitAll()
                 .antMatchers( HttpMethod.GET, "/api/products/**" ).permitAll()
                 .antMatchers( HttpMethod.POST, "/api/customers" ).permitAll()
+                .antMatchers( HttpMethod.PUT, "/api/customers" ).permitAll()
                 .antMatchers( HttpMethod.POST, "/api/orders" ).permitAll()
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/management/health").permitAll()

@@ -19,7 +19,9 @@ export class OrderComponent implements OnInit, OnDestroy {
     constructor(
         private orderService: OrderService,
         private alertService: JhiAlertService,
-        private eventManager: JhiEventManager, private activatedRoute: ActivatedRoute, private principal: Principal ) {
+        private eventManager: JhiEventManager,
+        private activatedRoute: ActivatedRoute,
+        private principal: Principal ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 

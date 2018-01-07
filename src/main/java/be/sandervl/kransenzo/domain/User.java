@@ -15,10 +15,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A user.
@@ -85,10 +82,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "reset_date")
     private Instant resetDate = null;
 
-    //private Collection<>
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Collection<Customer> customers;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "jhi_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -200,6 +198,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Collection<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers( Collection<Customer> customers ) {
+        this.customers = customers;
     }
 
     @Override

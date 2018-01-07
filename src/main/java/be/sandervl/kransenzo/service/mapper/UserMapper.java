@@ -6,6 +6,7 @@ import be.sandervl.kransenzo.service.dto.UserDTO;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -70,6 +71,9 @@ public class UserMapper {
     }
 
     public Set<Authority> authoritiesFromStrings(Set<String> strings) {
+        if ( strings == null ) {
+            return Collections.emptySet();
+        }
         return strings.stream().map(string -> {
             Authority auth = new Authority();
             auth.setName(string);

@@ -2,11 +2,13 @@ package be.sandervl.kransenzo.domain;
 
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -23,6 +25,7 @@ import java.util.Objects;
 public class Order implements Serializable
 {
 
+    public static final float PRICE_FOR_BATTERIES = 0.5f;
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -30,25 +33,29 @@ public class Order implements Serializable
     private Long id;
 
     @Column(name = "created")
-    private ZonedDateTime created;
+    private ZonedDateTime created = ZonedDateTime.now();
 
     @Column(name = "updated")
-    private ZonedDateTime updated;
+    private ZonedDateTime updated = ZonedDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
-    private OrderState state;
+    private OrderState state = OrderState.NEW;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_type")
-    private DeliveryType deliveryType;
+    private DeliveryType deliveryType = DeliveryType.PICKUP;
 
     @Column(name = "include_batteries")
-    private Boolean includeBatteries;
+    private Boolean includeBatteries = false;
 
     @Size(max = 5000)
     @Column(name = "description", length = 5000)
     private String description;
+
+    @DecimalMin(value = "0")
+    @Column(name = "delivery_price")
+    private Float deliveryPrice;
 
     @ManyToOne
     private Customer customer;
@@ -73,21 +80,17 @@ public class Order implements Serializable
         return created;
     }
 
-    public void setCreated( ZonedDateTime created ) {
-        this.created = created;
-    }
-
     public Order created( ZonedDateTime created ) {
         this.created = created;
         return this;
     }
 
-    public ZonedDateTime getUpdated() {
-        return updated;
+    public void setCreated( ZonedDateTime created ) {
+        this.created = created;
     }
 
-    public void setUpdated( ZonedDateTime updated ) {
-        this.updated = updated;
+    public ZonedDateTime getUpdated() {
+        return updated;
     }
 
     public Order updated( ZonedDateTime updated ) {
@@ -95,12 +98,12 @@ public class Order implements Serializable
         return this;
     }
 
-    public OrderState getState() {
-        return state;
+    public void setUpdated( ZonedDateTime updated ) {
+        this.updated = updated;
     }
 
-    public void setState( OrderState state ) {
-        this.state = state;
+    public OrderState getState() {
+        return state;
     }
 
     public Order state( OrderState state ) {
@@ -108,17 +111,21 @@ public class Order implements Serializable
         return this;
     }
 
-    public DeliveryType getDeliveryType() {
-        return deliveryType;
+    public void setState( OrderState state ) {
+        this.state = state;
     }
 
-    public void setDeliveryType( DeliveryType deliveryType ) {
-        this.deliveryType = deliveryType;
+    public DeliveryType getDeliveryType() {
+        return deliveryType;
     }
 
     public Order deliveryType( DeliveryType deliveryType ) {
         this.deliveryType = deliveryType;
         return this;
+    }
+
+    public void setDeliveryType( DeliveryType deliveryType ) {
+        this.deliveryType = deliveryType;
     }
 
     public Boolean isIncludeBatteries() {
@@ -138,12 +145,25 @@ public class Order implements Serializable
         return description;
     }
 
+    public Order description( String description ) {
+        this.description = description;
+        return this;
+    }
+
     public void setDescription( String description ) {
         this.description = description;
     }
 
-    public Order description( String description ) {
-        this.description = description;
+    public Float getDeliveryPrice() {
+        return deliveryPrice;
+    }
+
+    public void setDeliveryPrice( Float deliveryPrice ) {
+        this.deliveryPrice = deliveryPrice;
+    }
+
+    public Order deliveryPrice( Float deliveryPrice ) {
+        this.deliveryPrice = deliveryPrice;
         return this;
     }
 
@@ -151,21 +171,17 @@ public class Order implements Serializable
         return customer;
     }
 
-    public void setCustomer( Customer customer ) {
-        this.customer = customer;
-    }
-
     public Order customer( Customer customer ) {
         this.customer = customer;
         return this;
     }
 
-    public Location getDeliveryAddress() {
-        return deliveryAddress;
+    public void setCustomer( Customer customer ) {
+        this.customer = customer;
     }
 
-    public void setDeliveryAddress( Location location ) {
-        this.deliveryAddress = location;
+    public Location getDeliveryAddress() {
+        return deliveryAddress;
     }
 
     public Order deliveryAddress( Location location ) {
@@ -173,17 +189,34 @@ public class Order implements Serializable
         return this;
     }
 
+    public void setDeliveryAddress( Location location ) {
+        this.deliveryAddress = location;
+    }
+
     public Product getProduct() {
         return product;
+    }
+
+    public Order product( Product product ) {
+        this.product = product;
+        return this;
     }
 
     public void setProduct( Product product ) {
         this.product = product;
     }
 
-    public Order product( Product product ) {
-        this.product = product;
-        return this;
+    @Transient
+    @JsonIgnore
+    public float getTotalPrice() {
+        Float result = product.getPrice();
+        if ( deliveryType == DeliveryType.DELIVERED ) {
+            result += this.deliveryPrice;
+        }
+        if ( includeBatteries ) {
+            result += PRICE_FOR_BATTERIES;
+        }
+        return result;
     }
 
     @Override
@@ -216,6 +249,7 @@ public class Order implements Serializable
                 ", deliveryType='" + getDeliveryType() + "'" +
                 ", includeBatteries='" + isIncludeBatteries() + "'" +
                 ", description='" + getDescription() + "'" +
+                ", deliveryPrice='" + getDeliveryPrice() + "'" +
                 "}";
     }
 }
