@@ -7,7 +7,7 @@ import {Subscription} from 'rxjs/Rx';
 // import {C} from '@ng-bootstrap/ng-bootstrap/carousel'
 
 @Component( {
-                selector: 'jhi-product-detail', templateUrl: './product-detail.component.html', styles: []
+                selector: 'jhi-product-detail', templateUrl: './product-detail.component.html', styleUrls: ['product-detail.css']
             } )
 export class ProductDetailComponent implements OnInit, OnDestroy {
 
