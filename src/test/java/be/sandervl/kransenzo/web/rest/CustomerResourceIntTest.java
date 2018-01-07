@@ -58,6 +58,9 @@ public class CustomerResourceIntTest
     private static final String UPDATED_PHONE_NUMBER = "BBBBBBBBBB";
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private CustomerRepository customerRepository;
 
     @Autowired
@@ -74,9 +77,6 @@ public class CustomerResourceIntTest
 
     @Autowired
     private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private EntityManager em;
@@ -122,6 +122,7 @@ public class CustomerResourceIntTest
     public void initTest() {
         customerSearchRepository.deleteAll();
         customer = createEntity( em );
+        userRepository.save( customer.getUser() );
     }
 
     @Test

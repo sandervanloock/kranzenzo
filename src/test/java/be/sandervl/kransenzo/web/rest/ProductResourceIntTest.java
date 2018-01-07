@@ -49,7 +49,7 @@ public class ProductResourceIntTest
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Boolean DEFAULT_IS_ACTIVE = false;
+    private static final Boolean DEFAULT_IS_ACTIVE = true;
     private static final Boolean UPDATED_IS_ACTIVE = true;
 
     @Autowired

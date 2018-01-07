@@ -93,9 +93,11 @@ public class OrderService
         order = orderRepository.save( order );
         orderSearchRepository.save( order );
         updateProductVisibility( order );
-        //fetch customer eager so all information for sending the email is present on the order
-        User user = customerRepository.getOne( order.getCustomer().getId() ).getUser();
-        mailService.sendOrderCreationMails( order, user );
+        if ( order.getCustomer() != null ) {
+            //fetch customer eager so all information for sending the email is present on the order
+            User user = customerRepository.getOne( order.getCustomer().getId() ).getUser();
+            mailService.sendOrderCreationMails( order, user );
+        }
         return orderMapper.toDto( order );
     }
 
