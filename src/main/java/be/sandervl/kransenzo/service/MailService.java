@@ -143,7 +143,8 @@ public class MailService {
         context.setVariable( "orderLink", jHipsterProperties.getMail().getBaseUrl() + "#/order/" + order.getId() );
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
         String content = templateEngine.process( "orderConfirmationClient", context );
-        String subject = messageSource.getMessage( "email.order.confirmation.client.title", null, Locale.getDefault() );
+        String subject = messageSource.getMessage( "email.order.confirmation.client.title", null,
+                                                   Locale.forLanguageTag( "nl" ) );
         sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
     }
 }
