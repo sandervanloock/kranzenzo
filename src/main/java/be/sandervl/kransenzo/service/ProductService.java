@@ -60,11 +60,19 @@ public class ProductService
      *  Get all the products.
      *
      *  @return the list of entities
+     * @param activeOnly
      */
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll() {
+    public List<ProductDTO> findAll( Boolean activeOnly ) {
         log.debug( "Request to get all Products" );
-        return productRepository.findAllWithEagerRelationships().stream()
+        List<Product> products;
+        if ( activeOnly != null ) {
+            products = productRepository.findAllByIsActive( activeOnly );
+        }
+        else {
+            products = productRepository.findAllWithEagerRelationships();
+        }
+        return products.stream()
                                 .map( productMapper::toDto )
                                 .collect( Collectors.toCollection( LinkedList::new ) );
     }
@@ -106,11 +114,5 @@ public class ProductService
                 .stream( productSearchRepository.search( queryStringQuery( query ) ).spliterator(), false )
                 .map( productMapper::toDto )
                 .collect( Collectors.toList() );
-    }
-
-    public List<ProductDTO> findAllActive() {
-        return productRepository.findAllByIsActiveIsTrue().stream()
-                                .map( productMapper::toDto )
-                                .collect( Collectors.toCollection( LinkedList::new ) );
     }
 }

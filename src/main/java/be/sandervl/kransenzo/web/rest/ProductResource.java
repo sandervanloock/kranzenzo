@@ -85,9 +85,11 @@ public class ProductResource
      */
     @GetMapping("/products")
     @Timed
-    public List<ProductDTO> getAllProducts() {
+    public List<ProductDTO> getAllProducts(
+            @RequestParam(required = false, name = "activeOnly") Boolean activeOnly
+    ) {
         log.debug( "REST request to get all Products" );
-        return productService.findAllActive();
+        return productService.findAll( activeOnly );
     }
 
     /**

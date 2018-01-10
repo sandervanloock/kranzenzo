@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.productService.query()
+        this.productService.query( {activeOnly: true} )
             .subscribe( ( data: ResponseWrapper ) => this.items = data.json );
     }
 

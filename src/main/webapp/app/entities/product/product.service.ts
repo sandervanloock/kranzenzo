@@ -36,6 +36,9 @@ export class ProductService {
 
     query( req?: any ): Observable<ResponseWrapper> {
         const options = createRequestOption( req );
+        if ( req && req.activeOnly ) {
+            options.params.set( 'activeOnly', req.activeOnly );
+        }
         return this.http.get( this.resourceUrl, options )
             .map( ( res: Response ) => this.convertResponse( res ) );
     }
