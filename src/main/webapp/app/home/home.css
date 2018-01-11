@@ -22,5 +22,11 @@ only screen and (                min-resolution: 2dppx) {
 
 a:hover {
     text-decoration: none !important;
+}
 
+.card-text {
+    max-height: 2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
