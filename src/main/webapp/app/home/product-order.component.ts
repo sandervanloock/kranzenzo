@@ -34,7 +34,7 @@ export class ProductOrderComponent implements OnInit {
         private loginModalService: LoginModalService,
         private principal: Principal,
         private eventManager: JhiEventManager,
-        private productService: ProductService,
+        private productService: ProductService, private productPopupService: ProductPopupService,
         private route: ActivatedRoute,
         private http: Http,
         private userService: UserService,
@@ -101,6 +101,7 @@ export class ProductOrderComponent implements OnInit {
     submitForm() {
         this.orderService.create( this.order ).subscribe( ( order: Order ) => {
             this.order = order;
+            this.productPopupService.close();
         } )
     }
 
@@ -117,6 +118,19 @@ export class ProductOrderComponent implements OnInit {
             this.customer = res;
             this.order.customerId = res.id;
         } )
+    }
+
+    gotoStepTwo() {
+        if ( this.customer.user.lastName && this.customer.user.firstName && this.customer.user.email ) {
+            this.step = 2;
+            this.createCustomer()
+        }
+    }
+
+    gotoStepTree() {
+        if ( !(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city)) ) {
+            this.step = 3;
+        }
     }
 }
 

@@ -26,7 +26,7 @@
                         <input required type="text" class="form-control" id="lastName"
                                aria-describedby="lastName" placeholder="Naam"
                                name="lastName" [required]="true"
-                               [(ngModel)]="this.customer.user.lastName">
+                               [(ngModel)]="this.customer.user.lastName" #name="ngModel">
                     </div>
                     <div class="form-group">
                         <label for="lastName">Voornaam*</label>
@@ -85,7 +85,7 @@
                 <small class="user-form-legend">* verplicht</small>
                 <small class="user-form-legend">** verplicht bij levering</small>
                 <div class="stepper-actions">
-                    <button type="button" class="btn btn-primary" (click)="this.step=2;createCustomer()">
+                    <button type="button" class="btn btn-primary" (click)="gotoStepTwo()">
                         Verder
                     </button>
                 </div>
@@ -102,7 +102,7 @@
                                     Ik wil mijn stuk ophalen
                                 </label>
                         <input required class="form-control" checked type="radio" name="deliveryType"
-                               value="PICKUP" (change)="onSelectionChange('PICKUP')"
+                               [value]="1" (change)="onSelectionChange('PICKUP')"
                                required [(ngModel)]="this.order.deliveryType">
                             </div>
                     <div class="form-group">
@@ -110,8 +110,8 @@
                                     Ik wil mijn stuk thuis bezorgd (€1 per km / max 10 km)
                                 </label>
                         <input required class="form-control" type="radio" name="deliveryType"
-                               value="DELIVERED" (change)="onSelectionChange('DELIVERED')"
-                               [required]="true" [(ngModel)]="this.order.deliveryType">
+                               [value]="0" (change)="onSelectionChange('DELIVERED')"
+                               [required] [(ngModel)]="this.order.deliveryType">
                                 <small class="form-text text-muted">
                                     Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
                                 </small>
@@ -164,7 +164,7 @@
                         <button type="button" class="btn btn-light" (click)="this.step=1">
                             Terug
                         </button>
-                        <button type="button" class="btn btn-primary" (click)="this.step=3">
+                        <button type="button" class="btn btn-primary" (click)="gotoStepTree()">
                             Verder
                         </button>
                     </div>
@@ -210,17 +210,17 @@
                     </table>
                 </div>
                 <p>Gelieve € {{this.price}} over te schrijven op <b>BE12 1234 4567 890</b></p>
-                <p *ngIf="this.order.deliveryType === 'DELIVERED'">
+                <p *ngIf="this.order.deliveryType === 0">
                     Zodra het geld is overgemaakt zal het stuk worden geleverd in {{customer.street}} te
                     {{customer.city}}.
                 </p>
 
-                <p *ngIf="this.order.deliveryType === 'PICKUP'">
+                <p *ngIf="this.order.deliveryType === 1">
                     Zodra het geld is overgemaakt zal je melding krijgen van KranzEnzo voor een afspraak te maken om het
                     stuk te kunnen ophalen.
                 </p>
                 <a class="btn btn-light" (click)="this.step=2">Terug</a>
-                <button type="submit" class="btn btn-secondary">Verzenden</button>
+                <button type="submit" class="btn btn-success">Verzenden</button>
             </div>
         </form>
     </div>

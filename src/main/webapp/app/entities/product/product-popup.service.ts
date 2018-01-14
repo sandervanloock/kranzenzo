@@ -34,6 +34,10 @@ export class ProductPopupService {
         } );
     }
 
+    close() {
+        this.ngbModalRef.close();
+    }
+
     productModalRef( component: Component, product: Product ): NgbModalRef {
         const modalRef = this.modalService.open( component, {size: 'lg', backdrop: 'static'} );
         modalRef.componentInstance.product = product;
