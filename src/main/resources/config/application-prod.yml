@@ -21,8 +21,8 @@ spring:
             enabled: false
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://julia.cbfhzjff8oye.eu-west-1.rds.amazonaws.com:3306/kransenzo?useUnicode=true&characterEncoding=utf8&useSSL=false
-        username: kransenzo
+        url: jdbc:mysql://maaike.cbfhzjff8oye.eu-west-1.rds.amazonaws.com:3306/kransenzo?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: kranzenzo
         password: SQFE3dvpPPOsqdfi79DD
         hikari:
             data-source-properties:
@@ -48,7 +48,7 @@ spring:
     data:
         elasticsearch:
             cluster-name: my-elastic-search
-            cluster-nodes: 54.72.215.156:9300
+            cluster-nodes: 172.31.37.99:9300
     mail:
         host: email-smtp.eu-west-1.amazonaws.com
         port: 465
