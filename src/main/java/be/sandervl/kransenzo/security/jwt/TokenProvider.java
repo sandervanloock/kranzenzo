@@ -50,7 +50,8 @@ public class TokenProvider {
 
     @PostConstruct
     public void init() {
-        if ( environment.getActiveProfiles()[0].equalsIgnoreCase( "prod" ) ) {
+        if ( environment.getActiveProfiles().length > 0 &&
+                environment.getActiveProfiles()[0].equalsIgnoreCase( "prod" ) ) {
             try {
                 StringBuilder sb = new StringBuilder();
                 Files.readLines( new File( CREDENTIALS_PATH ), Charset.defaultCharset() ).forEach( sb::append );
