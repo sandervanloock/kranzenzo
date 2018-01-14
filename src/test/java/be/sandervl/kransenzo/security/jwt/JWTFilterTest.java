@@ -4,6 +4,7 @@ import be.sandervl.kransenzo.security.AuthoritiesConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.mock.web.MockFilterChain;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -16,17 +17,20 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class JWTFilterTest {
 
     private TokenProvider tokenProvider;
 
     private JWTFilter jwtFilter;
+    private Environment environment;
 
     @Before
     public void setup() {
         JHipsterProperties jHipsterProperties = new JHipsterProperties();
-        tokenProvider = new TokenProvider(jHipsterProperties);
+        environment = mock( Environment.class );
+        tokenProvider = new TokenProvider( jHipsterProperties, environment );
         ReflectionTestUtils.setField(tokenProvider, "secretKey", "test secret");
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", 60000);
         jwtFilter = new JWTFilter(tokenProvider);

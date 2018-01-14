@@ -1,13 +1,12 @@
 package be.sandervl.kransenzo.security.jwt;
 
+import com.google.common.io.Files;
 import io.github.jhipster.config.JHipsterProperties;
-
-import java.util.*;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +14,17 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.*;
+import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static be.sandervl.kransenzo.config.Constants.CREDENTIALS_PATH;
 
 @Component
 public class TokenProvider {
@@ -32,14 +41,30 @@ public class TokenProvider {
 
     private final JHipsterProperties jHipsterProperties;
 
-    public TokenProvider(JHipsterProperties jHipsterProperties) {
+    private final Environment environment;
+
+    public TokenProvider( JHipsterProperties jHipsterProperties, Environment environment ) {
         this.jHipsterProperties = jHipsterProperties;
+        this.environment = environment;
     }
 
     @PostConstruct
     public void init() {
-        this.secretKey =
-            jHipsterProperties.getSecurity().getAuthentication().getJwt().getSecret();
+        if ( environment.getActiveProfiles()[0].equalsIgnoreCase( "prod" ) ) {
+            try {
+                StringBuilder sb = new StringBuilder();
+                Files.readLines( new File( CREDENTIALS_PATH ), Charset.defaultCharset() ).forEach( sb::append );
+                Map<String, Object> objects = new JacksonJsonParser().parseMap( sb.toString() );
+                this.secretKey = ( (String) objects.get( "jhipster.security.authentication.jwt.secret" ) );
+            }
+            catch ( IOException e ) {
+                log.error( "Unable to find credentials file for JWT TokenProvider", e );
+            }
+        }
+        else {
+            this.secretKey =
+                    jHipsterProperties.getSecurity().getAuthentication().getJwt().getSecret();
+        }
 
         this.tokenValidityInMilliseconds =
             1000 * jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSeconds();

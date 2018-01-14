@@ -17,12 +17,13 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Properties;
 
+import static be.sandervl.kransenzo.config.Constants.CREDENTIALS_PATH;
+
 @Configuration
 @ConfigurationProperties("spring.mail")
 @Profile("prod")
 public class MailConfiguration
 {
-    public static final String CREDENTIALS_PATH = "/tmp/host/beanstalk-credentials.json";
     private static Logger LOG = LoggerFactory.getLogger( MailConfiguration.class );
     private String host;
     private Integer port;

@@ -11,7 +11,8 @@ public final class Constants {
     public static final String SYSTEM_ACCOUNT = "system";
     public static final String ANONYMOUS_USER = "anonymoususer";
     public static final String DEFAULT_LANGUAGE = "nl";
-    
+    public static final String CREDENTIALS_PATH = "/tmp/host/beanstalk-credentials.json";
+
     private Constants() {
     }
 }
