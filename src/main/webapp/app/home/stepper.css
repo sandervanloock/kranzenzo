@@ -1,9 +1,5 @@
-
-.stepper {
-    background-color: #fff;
-    margin-bottom: 90px;
-    border-radius: 3px;
-    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+.form-group {
+    padding: 1px;
 }
 
 .stepper-steps {
@@ -107,4 +103,12 @@
     z-index: 2;
     padding: 0 8px;
     background-color: #fff;
+}
+
+.stepper-actions {
+    padding: 1rem;
+}
+
+.user-form-legend {
+    display: block;
 }

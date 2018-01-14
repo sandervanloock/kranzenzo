@@ -6,7 +6,7 @@
                     <span class="stepper-stepMarker">1</span>Gebruiker
                 </div>
             </div>
-            <div class="stepper-step" ngClass="{{step===2 ? 'stepper-step-isValid' : ''}}" (click)="this.step=2">
+            <div class="stepper-step" ngClass="{{step===2 ? 'stepper-step-isValid' : ''}}" (click)="this.step < 2 ? this.step=2 : void">
                 <div class="stepper-stepContent">
                     <span class="stepper-stepMarker">2</span>Bestelling
                 </div>
@@ -17,161 +17,157 @@
                 </div>
             </div>
         </div>
-        <form name="editForm" role="form" novalidate #editForm="ngForm" (ngSubmit)="submitForm()">
-            <div class="stepper-content col-md-6 " style="margin: 0 auto;" *ngIf="step===1">
-                <h2>Geef je gegevens</h2>
-                <div class="form-group">
-                    <label for="lastName">Naam*</label>
-                    <input required type="text" class="form-control" id="lastName"
-                           aria-describedby="lastName" placeholder="Naam"
-                           name="lastName" [required]="true"
-                           [(ngModel)]="this.customer.user.lastName">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Voornaam*</label>
-                    <input required type="text" class="form-control" id="firstName"
-                           aria-describedby="firstName" placeholder="Voornaam"
-                           name="firstName" [required]="true"
-                           [(ngModel)]="this.customer.user.firstName">
-                </div>
-                <div class="form-group">
+        <form name="editForm" novalidate role="form" #editForm="ngForm" (ngSubmit)="submitForm()">
+            <div class="stepper-content" *ngIf="step===1">
+                <fieldset class="form-group">
+                    <h2>Geef je gegevens</h2>
+                    <div class="form-group">
+                        <label for="lastName">Naam*</label>
+                        <input required type="text" class="form-control" id="lastName"
+                               aria-describedby="lastName" placeholder="Naam"
+                               name="lastName" [required]="true"
+                               [(ngModel)]="this.customer.user.lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Voornaam*</label>
+                        <input required type="text" class="form-control" id="firstName"
+                               aria-describedby="firstName" placeholder="Voornaam"
+                               name="firstName" [required]="true"
+                               [(ngModel)]="this.customer.user.firstName">
+                    </div>
+                    <div class="form-group">
                     <label for="email">Emailadres*</label>
                     <input required type="email" class="form-control" id="email" name="email"
                            aria-describedby="email" placeholder="Emailadres"
                            name="email" [required]="true"
                            [(ngModel)]="this.customer.user.email">
                 </div>
-                <hr/>
-                <h4>Adresgegevens**</h4>
-                <div class="form-group">
-                    <label for="street">Straat</label>
-                    <input type="text" (input)="updateLocation($event)" class="form-control" id="street"
-                           name="street"
-                           [(ngModel)]="customer.street">
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-2">
-                        <label for="zip">Postcode</label>
-                        <input type="number" class="form-control" id="zip" name="zip"
-                               [(ngModel)]="customer.zipCode">
+                </fieldset>
+                <fieldset class="form-group">
+                    <legend>Adresgegevens**</legend>
+                    <div class="form-group">
+                        <label for="street">Straat & nummer</label>
+                        <input type="text" (input)="updateLocation($event)" class="form-control" id="street"
+                               name="street"
+                               [(ngModel)]="customer.street">
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="city">Stad</label>
-                        <input type="text" class="form-control" id="city" name="city"
-                               [(ngModel)]="customer.city">
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="zip">Postcode</label>
+                            <input type="number" class="form-control" id="zip" name="zip"
+                                   [(ngModel)]="customer.zipCode">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="city">Stad</label>
+                            <input type="text" class="form-control" id="city" name="city"
+                                   [(ngModel)]="customer.city">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="inputState">Provincie</label>
+                            <select id="inputState" class="form-control" name="province"
+                                    [(ngModel)]="customer.province">
+                                <option selected>Kies...</option>
+                                <option>Antwerpen</option>
+                                <option>Brussel</option>
+                                <option>Vlaams-Brabant</option>
+                                <option>Waals-Brabant</option>
+                                <option>Oost Vlaanderen</option>
+                                <option>West Vlaanderen</option>
+                                <option>Limburg</option>
+                                <option>Luik</option>
+                                <option>Henegauwen</option>
+                                <option>Namen</option>
+                                <option>Luxemburg</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputState">Provincie</label>
-                        <select id="inputState" class="form-control" name="province"
-                                [(ngModel)]="customer.province">
-                            <option selected>Kies...</option>
-                            <option>Antwerpen</option>
-                            <option>Brussel</option>
-                            <option>Vlaams-Brabant</option>
-                            <option>Waals-Brabant</option>
-                            <option>Oost Vlaanderen</option>
-                            <option>West Vlaanderen</option>
-                            <option>Limburg</option>
-                            <option>Luik</option>
-                            <option>Henegauwen</option>
-                            <option>Namen</option>
-                            <option>Luxemburg</option>
-                        </select>
-                    </div>
-                </div>
-                <strong>* verplicht</strong>
-                <strong>** verplicht bij levering</strong>
+                </fieldset>
+                <small class="user-form-legend">* verplicht</small>
+                <small class="user-form-legend">** verplicht bij levering</small>
                 <div class="stepper-actions">
-                    <button type="submit" class="btn btn-primary" (click)="this.step=2;createCustomer()">Verder</button>
+                    <button type="button" class="btn btn-primary" (click)="this.step=2;createCustomer()">
+                        Verder
+                    </button>
                 </div>
             </div>
             <div class="stepper-content" *ngIf="step===2">
-                <h2>Bestelling</h2>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input required class="form-check-input" type="radio" name="deliveryType"
-                                           value="PICKUP" (change)="onSelectionChange('PICKUP')" aria-required=""
-                                           [required]="true"
-                                           [(ngModel)]="this.order.deliveryType">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myProductLabel">
+                        <span>Bestelling</span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="form-control-label">
                                     Ik wil mijn stuk ophalen
                                 </label>
+                        <input required class="form-control" checked type="radio" name="deliveryType"
+                               value="PICKUP" (change)="onSelectionChange('PICKUP')"
+                               required [(ngModel)]="this.order.deliveryType">
                             </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input required class="form-check-input" type="radio" name="deliveryType"
-                                           value="DELIVERED" (change)="onSelectionChange('DELIVERED')"
-                                           [(ngModel)]="this.order.deliveryType">
+                    <div class="form-group">
+                        <label class="form-control-label">
                                     Ik wil mijn stuk thuis bezorgd (€1 per km / max 10 km)
                                 </label>
+                        <input required class="form-control" type="radio" name="deliveryType"
+                               value="DELIVERED" (change)="onSelectionChange('DELIVERED')"
+                               [required]="true" [(ngModel)]="this.order.deliveryType">
                                 <small class="form-text text-muted">
                                     Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
                                 </small>
                             </div>
-
+                    <div class="form-group">
+                        <label class="form-control-label">
+                            Ik wil een AA-batterij bij de LED-verlichting. (0,5 €)
+                        </label>
+                        <input class="form-control" type="checkbox" name="led"
+                               value="1" (change)="toggleLed()">
                         </div>
-                        <!--end of delivery method-->
-                        <hr/>
-                        <div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" name="led"
-                                           value="1" (change)="toggleLed()">
-                                    Ik wil een AA-batterij bij de LED-verlichting. (0,5 €)
-                                </label>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label for="description">Extra opmerkingen</label>
-                                <textarea class="form-control" rows="3"
-                                          id="description" name="description"
-                                          [(ngModel)]="order.description"></textarea>
-                            </div>
-                        </div>
-                        <!--end of led licht-->
+                    <div class="form-group">
+                        <label for="description">Extra opmerkingen</label>
+                        <textarea class="form-control" rows="3"
+                                  id="description" name="description"
+                                  [(ngModel)]="order.description"></textarea>
                     </div>
-
-                </div>
-
-                <hr/>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <h2>Factuur</h2>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">Beschrijving</th>
-                                <th scope="col">Prijs</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>{{this.product.name}}</td>
-                                <td>€ {{this.product.price}}</td>
-                            </tr>
-                            <tr *ngIf="this.order.includeBatteries">
-                                <td>Batterijen voor LED-licht</td>
-                                <td>€ 0.5</td>
-                            </tr>
-                            <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
-                                <td>Levering</td>
-                                <td>€ {{this.deliveryPrice}}</td>
-                            </tr>
-                            <tr class="table-active">
-                                <td>Totaal</td>
-                                <td>€ {{this.price}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Factuur</h2>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Beschrijving</th>
+                                    <th scope="col">Prijs</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>{{this.product.name}}</td>
+                                    <td>€ {{this.product.price}}</td>
+                                </tr>
+                                <tr *ngIf="this.order.includeBatteries">
+                                    <td>Batterijen voor LED-licht</td>
+                                    <td>€ 0.5</td>
+                                </tr>
+                                <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
+                                    <td>Levering</td>
+                                    <td>€ {{this.deliveryPrice}}</td>
+                                </tr>
+                                <tr class="table-active">
+                                    <td>Totaal</td>
+                                    <td>€ {{this.price}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-                <div class="stepper-actions">
-                    <a class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn" (click)="this.step=1">Terug</a>
-                    <a class="btn btn-primary" (click)="this.step=3">Verder</a>
+                    <div class="stepper-actions">
+                        <button type="button" class="btn btn-light" (click)="this.step=1">
+                            Terug
+                        </button>
+                        <button type="button" class="btn btn-primary" (click)="this.step=3">
+                            Verder
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="stepper-content" *ngIf="step===3">
@@ -223,8 +219,8 @@
                     Zodra het geld is overgemaakt zal je melding krijgen van KranzEnzo voor een afspraak te maken om het
                     stuk te kunnen ophalen.
                 </p>
-                <a class="stepper-actionPrevious btn btn-default btn-simple btn-lg mbn" (click)="this.step=2">Terug</a>
-                <button class="btn btn-submit" type="submit">Verzenden</button>
+                <a class="btn btn-light" (click)="this.step=2">Terug</a>
+                <button type="submit" class="btn btn-secondary">Verzenden</button>
             </div>
         </form>
     </div>
