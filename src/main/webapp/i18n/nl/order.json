@@ -1,0 +1,31 @@
+{
+    "kransenzoApp": {
+        "order" : {
+            "home": {
+                "title": "Orders",
+                "createLabel": "Maak een nieuwe Order",
+                "createOrEditLabel": "Maak of wijzig een Order",
+                "search": "Search for Order"
+            },
+            "created": "A new Order is created with identifier {{ param }}",
+            "updated": "A Order is updated with identifier {{ param }}",
+            "deleted": "A Order is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Order {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Order"
+            },
+            "created": "Created",
+            "updated": "Updated",
+            "state": "State",
+            "deliveryType": "Delivery Type",
+            "includeBatteries": "Include Batteries",
+            "description": "Description",
+            "deliveryPrice": "Delivery Price",
+            "customer": "Customer",
+            "deliveryAddress": "Delivery Address",
+            "product": "Product"
+        }
+    }
+}

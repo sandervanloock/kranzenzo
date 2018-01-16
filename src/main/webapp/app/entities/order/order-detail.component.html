@@ -1,0 +1,67 @@
+
+<div *ngIf="order">
+    <h2><span jhiTranslate="kransenzoApp.order.detail.title">Order</span> {{order.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kransenzoApp.order.created">Created</span></dt>
+        <dd>
+            <span>{{order.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.updated">Updated</span></dt>
+        <dd>
+            <span>{{order.updated | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.state">State</span></dt>
+        <dd>
+            <span jhiTranslate="{{'kransenzoApp.OrderState.' + order.state}}">{{order.state}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.deliveryType">Delivery Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'kransenzoApp.DeliveryType.' + order.deliveryType}}">{{order.deliveryType}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.includeBatteries">Include Batteries</span></dt>
+        <dd>
+            <span>{{order.includeBatteries}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.description">Description</span></dt>
+        <dd>
+            <span>{{order.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.deliveryPrice">Delivery Price</span></dt>
+        <dd>
+            <span>{{order.deliveryPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.customer">Customer</span></dt>
+        <dd>
+            <div *ngIf="order.customerId">
+                <a [routerLink]="['/customer', order.customerId]">{{order.customerId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.deliveryAddress">Delivery Address</span></dt>
+        <dd>
+            <div *ngIf="order.deliveryAddressId">
+                <a [routerLink]="['/location', order.deliveryAddressId]">{{order.deliveryAddressId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.product">Product</span></dt>
+        <dd>
+            <div *ngIf="order.productId">
+                <a [routerLink]="['/product', order.productId]">{{order.productName}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'order/'+ order.id + '/edit'} }]"
+            replaceUrl="true"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

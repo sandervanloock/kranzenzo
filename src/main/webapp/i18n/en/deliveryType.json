@@ -1,0 +1,9 @@
+{
+    "kransenzoApp": {
+        "DeliveryType" : {
+            "null": "",
+            "DELIVERED": "DELIVERED",
+            "PICKUP": "PICKUP"
+        }
+    }
+}

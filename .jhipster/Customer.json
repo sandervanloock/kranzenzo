@@ -1,0 +1,52 @@
+{
+  "fluentMethods": true,
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "relationshipName": "address",
+      "otherEntityName": "location",
+      "otherEntityField": "id",
+      "ownerSide": true,
+      "otherEntityRelationshipName": "customer"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "relationshipName": "orders",
+      "otherEntityName": "order",
+      "otherEntityRelationshipName": "customer"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "street",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "zipCode",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "min",
+        "max"
+      ],
+      "fieldValidateRulesMin": 1000,
+      "fieldValidateRulesMax": 9999
+    },
+    {
+      "fieldName": "province",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20171212225540",
+  "entityTableName": "customer",
+  "dto": "mapstruct",
+  "pagination": "no",
+  "service": "no"
+}
