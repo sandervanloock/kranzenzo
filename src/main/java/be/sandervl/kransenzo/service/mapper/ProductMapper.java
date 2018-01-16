@@ -11,7 +11,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {TagMapper.class})
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
 
-    
 
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "orders", ignore = true)

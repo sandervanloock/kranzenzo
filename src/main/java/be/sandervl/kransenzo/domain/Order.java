@@ -2,10 +2,11 @@ package be.sandervl.kransenzo.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+
+import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -13,7 +14,6 @@ import java.util.Objects;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
 
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
-
 
 /**
  * A Order.

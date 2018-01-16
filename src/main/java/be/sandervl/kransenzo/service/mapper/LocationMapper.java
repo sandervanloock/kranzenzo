@@ -11,9 +11,7 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface LocationMapper extends EntityMapper<LocationDTO, Location> {
 
-    
 
-    
 
     default Location fromId(Long id) {
         if (id == null) {

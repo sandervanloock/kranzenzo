@@ -165,7 +165,9 @@ public class OrderResourceIntTest {
 
         // Validate the Order in Elasticsearch
         Order orderEs = orderSearchRepository.findOne(testOrder.getId());
-        assertThat(orderEs).isEqualToComparingFieldByField(testOrder);
+        assertThat(testOrder.getCreated()).isEqualTo(testOrder.getCreated());
+        assertThat(testOrder.getUpdated()).isEqualTo(testOrder.getUpdated());
+        assertThat(orderEs).isEqualToIgnoringGivenFields(testOrder, "created", "updated");
     }
 
     @Test
@@ -277,7 +279,9 @@ public class OrderResourceIntTest {
 
         // Validate the Order in Elasticsearch
         Order orderEs = orderSearchRepository.findOne(testOrder.getId());
-        assertThat(orderEs).isEqualToComparingFieldByField(testOrder);
+        assertThat(testOrder.getCreated()).isEqualTo(testOrder.getCreated());
+        assertThat(testOrder.getUpdated()).isEqualTo(testOrder.getUpdated());
+        assertThat(orderEs).isEqualToIgnoringGivenFields(testOrder, "created", "updated");
     }
 
     @Test

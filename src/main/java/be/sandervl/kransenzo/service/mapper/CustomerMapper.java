@@ -12,7 +12,7 @@ import org.mapstruct.*;
 public interface CustomerMapper extends EntityMapper<CustomerDTO, Customer> {
 
     @Mapping(source = "address.id", target = "addressId")
-    CustomerDTO toDto(Customer customer); 
+    CustomerDTO toDto(Customer customer);
 
     @Mapping(source = "addressId", target = "address")
     @Mapping(target = "orders", ignore = true)

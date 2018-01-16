@@ -1,11 +1,8 @@
 /* tslint:disable max-line-length */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Rx';
-import { JhiDateUtils, JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { Observable } from 'rxjs/Observable';
+
 import { KransenzoTestModule } from '../../../test.module';
-import { MockActivatedRoute } from '../../../helpers/mock-route.service';
 import { TagDetailComponent } from '../../../../../../main/webapp/app/entities/tag/tag-detail.component';
 import { TagService } from '../../../../../../main/webapp/app/entities/tag/tag.service';
 import { Tag } from '../../../../../../main/webapp/app/entities/tag/tag.model';
@@ -22,17 +19,10 @@ describe('Component Tests', () => {
                 imports: [KransenzoTestModule],
                 declarations: [TagDetailComponent],
                 providers: [
-                    JhiDateUtils,
-                    JhiDataUtils,
-                    DatePipe,
-                    {
-                        provide: ActivatedRoute,
-                        useValue: new MockActivatedRoute({id: 123})
-                    },
-                    TagService,
-                    JhiEventManager
+                    TagService
                 ]
-            }).overrideTemplate(TagDetailComponent, '')
+            })
+            .overrideTemplate(TagDetailComponent, '')
             .compileComponents();
         }));
 
@@ -44,16 +34,16 @@ describe('Component Tests', () => {
 
         describe('OnInit', () => {
             it('Should call load all on init', () => {
-            // GIVEN
+                // GIVEN
 
-            spyOn(service, 'find').and.returnValue(Observable.of(new Tag(10)));
+                spyOn(service, 'find').and.returnValue(Observable.of(new Tag(123)));
 
-            // WHEN
-            comp.ngOnInit();
+                // WHEN
+                comp.ngOnInit();
 
-            // THEN
-            expect(service.find).toHaveBeenCalledWith(123);
-            expect(comp.tag).toEqual(jasmine.objectContaining({id: 10}));
+                // THEN
+                expect(service.find).toHaveBeenCalledWith(123);
+                expect(comp.tag).toEqual(jasmine.objectContaining({id: 123}));
             });
         });
     });

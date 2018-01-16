@@ -13,7 +13,7 @@ public interface ImageMapper extends EntityMapper<ImageDTO, Image> {
 
     @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "product.name", target = "productName")
-    ImageDTO toDto(Image image); 
+    ImageDTO toDto(Image image);
 
     @Mapping(source = "productId", target = "product")
     Image toEntity(ImageDTO imageDTO);

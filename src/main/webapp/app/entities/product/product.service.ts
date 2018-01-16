@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Product } from './product.model';
@@ -9,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class ProductService {
 
-    private resourceUrl = SERVER_API_URL + 'api/products';
+    private resourceUrl =  SERVER_API_URL + 'api/products';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/products';
 
     constructor(private http: Http) { }

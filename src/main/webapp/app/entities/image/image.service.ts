@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Image } from './image.model';
@@ -9,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class ImageService {
 
-    private resourceUrl = SERVER_API_URL + 'api/images';
+    private resourceUrl =  SERVER_API_URL + 'api/images';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/images';
 
     constructor(private http: Http) { }

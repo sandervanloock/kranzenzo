@@ -138,7 +138,7 @@ public class CustomerResourceIntTest {
 
         // Validate the Customer in Elasticsearch
         Customer customerEs = customerSearchRepository.findOne(testCustomer.getId());
-        assertThat(customerEs).isEqualToComparingFieldByField(testCustomer);
+        assertThat(customerEs).isEqualToIgnoringGivenFields(testCustomer);
     }
 
     @Test
@@ -242,7 +242,7 @@ public class CustomerResourceIntTest {
 
         // Validate the Customer in Elasticsearch
         Customer customerEs = customerSearchRepository.findOne(testCustomer.getId());
-        assertThat(customerEs).isEqualToComparingFieldByField(testCustomer);
+        assertThat(customerEs).isEqualToIgnoringGivenFields(testCustomer);
     }
 
     @Test

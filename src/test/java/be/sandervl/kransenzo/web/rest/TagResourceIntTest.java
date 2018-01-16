@@ -118,7 +118,7 @@ public class TagResourceIntTest {
 
         // Validate the Tag in Elasticsearch
         Tag tagEs = tagSearchRepository.findOne(testTag.getId());
-        assertThat(tagEs).isEqualToComparingFieldByField(testTag);
+        assertThat(tagEs).isEqualToIgnoringGivenFields(testTag);
     }
 
     @Test
@@ -225,7 +225,7 @@ public class TagResourceIntTest {
 
         // Validate the Tag in Elasticsearch
         Tag tagEs = tagSearchRepository.findOne(testTag.getId());
-        assertThat(tagEs).isEqualToComparingFieldByField(testTag);
+        assertThat(tagEs).isEqualToIgnoringGivenFields(testTag);
     }
 
     @Test

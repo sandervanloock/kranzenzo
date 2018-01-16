@@ -11,7 +11,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface TagMapper extends EntityMapper<TagDTO, Tag> {
 
-    
 
     @Mapping(target = "tags", ignore = true)
     Tag toEntity(TagDTO tagDTO);

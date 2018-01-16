@@ -29,9 +29,11 @@
       "nl"
     ],
     "clientFramework": "angularX",
-    "jhipsterVersion": "4.11.1",
+    "jhipsterVersion": "4.13.3",
     "packageFolder": "be/sandervl/kransenzo",
     "jwtSecretKey": "522be5f3b99d70057b3473799fcee40a9a3926fa",
-    "jhiPrefix": "jhi"
+    "jhiPrefix": "jhi",
+    "cacheProvider": "ehcache",
+    "enableHibernateCache": true
   }
 }

@@ -137,7 +137,7 @@ public class ProductResourceIntTest {
 
         // Validate the Product in Elasticsearch
         Product productEs = productSearchRepository.findOne(testProduct.getId());
-        assertThat(productEs).isEqualToComparingFieldByField(testProduct);
+        assertThat(productEs).isEqualToIgnoringGivenFields(testProduct);
     }
 
     @Test
@@ -275,7 +275,7 @@ public class ProductResourceIntTest {
 
         // Validate the Product in Elasticsearch
         Product productEs = productSearchRepository.findOne(testProduct.getId());
-        assertThat(productEs).isEqualToComparingFieldByField(testProduct);
+        assertThat(productEs).isEqualToIgnoringGivenFields(testProduct);
     }
 
     @Test

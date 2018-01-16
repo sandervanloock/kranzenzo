@@ -123,7 +123,7 @@ public class ImageResourceIntTest {
 
         // Validate the Image in Elasticsearch
         Image imageEs = imageSearchRepository.findOne(testImage.getId());
-        assertThat(imageEs).isEqualToComparingFieldByField(testImage);
+        assertThat(imageEs).isEqualToIgnoringGivenFields(testImage);
     }
 
     @Test
@@ -234,7 +234,7 @@ public class ImageResourceIntTest {
 
         // Validate the Image in Elasticsearch
         Image imageEs = imageSearchRepository.findOne(testImage.getId());
-        assertThat(imageEs).isEqualToComparingFieldByField(testImage);
+        assertThat(imageEs).isEqualToIgnoringGivenFields(testImage);
     }
 
     @Test

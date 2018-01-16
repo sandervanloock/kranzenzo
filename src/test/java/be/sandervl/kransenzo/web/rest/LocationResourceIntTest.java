@@ -128,7 +128,7 @@ public class LocationResourceIntTest {
 
         // Validate the Location in Elasticsearch
         Location locationEs = locationSearchRepository.findOne(testLocation.getId());
-        assertThat(locationEs).isEqualToComparingFieldByField(testLocation);
+        assertThat(locationEs).isEqualToIgnoringGivenFields(testLocation);
     }
 
     @Test
@@ -262,7 +262,7 @@ public class LocationResourceIntTest {
 
         // Validate the Location in Elasticsearch
         Location locationEs = locationSearchRepository.findOne(testLocation.getId());
-        assertThat(locationEs).isEqualToComparingFieldByField(testLocation);
+        assertThat(locationEs).isEqualToIgnoringGivenFields(testLocation);
     }
 
     @Test

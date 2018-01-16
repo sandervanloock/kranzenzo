@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
 import { Location } from './location.model';
@@ -9,7 +9,7 @@ import { ResponseWrapper, createRequestOption } from '../../shared';
 @Injectable()
 export class LocationService {
 
-    private resourceUrl = SERVER_API_URL + 'api/locations';
+    private resourceUrl =  SERVER_API_URL + 'api/locations';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/locations';
 
     constructor(private http: Http) { }
