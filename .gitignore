@@ -53,7 +53,10 @@ local.properties
 ######################
 # Intellij
 ######################
-.idea/
+.idea/workspace.xml
+.idea/libraries
+.idea/sonarlint
+.idea/artifacts
 *.iml
 *.iws
 *.ipr
