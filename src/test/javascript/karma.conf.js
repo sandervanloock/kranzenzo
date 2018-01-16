@@ -1,81 +1,79 @@
-const webpackConfig = require('../../../webpack/webpack.test.js');
+const webpackConfig = require( '../../../webpack/webpack.test.js' );
 
-const WATCH = process.argv.includes('--watch');
+const WATCH = process.argv.includes( '--watch' );
 
-module.exports = (config) => {
-    config.set({
+module.exports = ( config ) => {
+    config.set( {
 
-        // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: './',
+                    // base path that will be used to resolve all patterns (eg. files, exclude)
+                    basePath: './',
 
-        // frameworks to use
-        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine', 'intl-shim'],
+                    // frameworks to use
+                    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+                    frameworks: ['jasmine', 'intl-shim'],
 
-        // list of files / patterns to load in the browser
-        files: [
-            'spec/entry.ts'
-        ],
+                    // list of files / patterns to load in the browser
+                    files: [
+                        'spec/entry.ts'
+                    ],
 
+                    // list of files to exclude
+                    exclude: [],
 
-        // list of files to exclude
-        exclude: [],
+                    // preprocess matching files before serving them to the browser
+                    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+                    preprocessors: {
+                        'spec/entry.ts': ['webpack', 'sourcemap']
+                    },
 
-        // preprocess matching files before serving them to the browser
-        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {
-            'spec/entry.ts': ['webpack', 'sourcemap']
-        },
+                    webpack: webpackConfig( WATCH ),
 
-        webpack: webpackConfig(WATCH),
+                    // test results reporter to use
+                    // possible values: 'dots', 'progress'
+                    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+                    reporters: ['dots', 'junit', 'progress', 'karma-remap-istanbul', 'notify'],
 
-        // test results reporter to use
-        // possible values: 'dots', 'progress'
-        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['dots', 'junit', 'progress', 'karma-remap-istanbul', 'notify'],
+                    junitReporter: {
+                        outputFile: '../../../../target/test-results/karma/TESTS-results.xml'
+                    },
 
-        junitReporter: {
-            outputFile: '../../../../target/test-results/karma/TESTS-results.xml'
-        },
+                    notifyReporter: {
+                        reportEachFailure: true, // Default: false, will notify on every failed sepc
+                        reportSuccess: true // Default: true, will notify when a suite was successful
+                    },
 
-        notifyReporter: {
-            reportEachFailure: true, // Default: false, will notify on every failed sepc
-            reportSuccess: true // Default: true, will notify when a suite was successful
-        },
+                    remapIstanbulReporter: {
+                        reports: { // eslint-disable-line
+                            'lcovonly': 'target/test-results/coverage/report-lcov/lcov.info',
+                            'html': 'target/test-results/coverage',
+                            'text-summary': null
+                        }
+                    },
 
+                    // web server port
+                    port: 9876,
 
-        remapIstanbulReporter: {
-            reports: { // eslint-disable-line
-                'lcovonly': 'target/test-results/coverage/report-lcov/lcov.info',
-                'html': 'target/test-results/coverage',
-                'text-summary': null
-            }
-        },
+                    // enable / disable colors in the output (reporters and logs)
+                    colors: true,
 
-        // web server port
-        port: 9876,
+                    // level of logging
+                    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+                    logLevel: config.LOG_INFO,
 
-        // enable / disable colors in the output (reporters and logs)
-        colors: true,
+                    // enable / disable watching file and executing tests whenever any file changes
+                    autoWatch: WATCH,
 
-        // level of logging
-        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+                    // start these browsers
+                    // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+                    browsers: ['PhantomJS'],
 
-        // enable / disable watching file and executing tests whenever any file changes
-        autoWatch: WATCH,
+                    // Ensure all browsers can run tests written in .ts files
+                    mime: {
+                        'text/x-typescript': ['ts', 'tsx']
+                    },
 
-        // start these browsers
-        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: ['PhantomJS'],
-
-        // Ensure all browsers can run tests written in .ts files
-        mime: {
-            'text/x-typescript': ['ts','tsx']
-        },
-
-        // Continuous Integration mode
-        // if true, Karma captures browsers, runs the tests and exits
-        singleRun: !WATCH
-    });
+                    // Continuous Integration mode
+                    // if true, Karma captures browsers, runs the tests and exits
+                    singleRun: !WATCH
+                } );
 };

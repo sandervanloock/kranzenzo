@@ -1,49 +1,28 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { KransenzoSharedModule } from '../../shared';
+import {KransenzoSharedModule} from '../../shared';
 import {
-    ImageService,
-    ImagePopupService,
     ImageComponent,
+    ImageDeleteDialogComponent,
+    ImageDeletePopupComponent,
     ImageDetailComponent,
     ImageDialogComponent,
     ImagePopupComponent,
-    ImageDeletePopupComponent,
-    ImageDeleteDialogComponent,
-    imageRoute,
     imagePopupRoute,
+    ImagePopupService,
+    imageRoute,
+    ImageService,
 } from './';
 
-const ENTITY_STATES = [
-    ...imageRoute,
-    ...imagePopupRoute,
-];
+const ENTITY_STATES = [...imageRoute, ...imagePopupRoute,];
 
-@NgModule({
-    imports: [
-        KransenzoSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        ImageComponent,
-        ImageDetailComponent,
-        ImageDialogComponent,
-        ImageDeleteDialogComponent,
-        ImagePopupComponent,
-        ImageDeletePopupComponent,
-    ],
-    entryComponents: [
-        ImageComponent,
-        ImageDialogComponent,
-        ImagePopupComponent,
-        ImageDeleteDialogComponent,
-        ImageDeletePopupComponent,
-    ],
-    providers: [
-        ImageService,
-        ImagePopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
-export class KransenzoImageModule {}
+@NgModule( {
+               imports: [KransenzoSharedModule, RouterModule.forChild( ENTITY_STATES )],
+               declarations: [ImageComponent, ImageDetailComponent, ImageDialogComponent, ImageDeleteDialogComponent, ImagePopupComponent, ImageDeletePopupComponent,],
+               entryComponents: [ImageComponent, ImageDialogComponent, ImagePopupComponent, ImageDeleteDialogComponent, ImageDeletePopupComponent,],
+               providers: [ImageService, ImagePopupService,],
+               schemas: [CUSTOM_ELEMENTS_SCHEMA]
+           } )
+export class KransenzoImageModule {
+}

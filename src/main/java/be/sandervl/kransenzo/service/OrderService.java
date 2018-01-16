@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Order.
@@ -59,11 +59,11 @@ public class OrderService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<OrderDTO> findAll() {
+    public List <OrderDTO> findAll() {
         log.debug("Request to get all Orders");
         return orderRepository.findAll().stream()
-            .map(orderMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+                              .map(orderMapper::toDto)
+                              .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -97,7 +97,7 @@ public class OrderService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<OrderDTO> search(String query) {
+    public List <OrderDTO> search(String query) {
         log.debug("Request to search Orders for query {}", query);
         return StreamSupport
             .stream(orderSearchRepository.search(queryStringQuery(query)).spliterator(), false)

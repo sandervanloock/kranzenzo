@@ -1,6 +1,6 @@
 {
     "kransenzoApp": {
-        "OrderState" : {
+        "OrderState": {
             "null": "",
             "NEW": "NEW",
             "PAYED": "PAYED",

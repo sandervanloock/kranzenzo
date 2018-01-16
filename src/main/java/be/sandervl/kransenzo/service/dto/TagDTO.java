@@ -1,10 +1,7 @@
 package be.sandervl.kransenzo.service.dto;
 
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -43,7 +40,7 @@ public class TagDTO implements Serializable {
         }
 
         TagDTO tagDTO = (TagDTO) o;
-        if(tagDTO.getId() == null || getId() == null) {
+        if (tagDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), tagDTO.getId());

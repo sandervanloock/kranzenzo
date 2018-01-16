@@ -4,9 +4,8 @@ import be.sandervl.kransenzo.domain.Authority;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.AuthorityRepository;
 import be.sandervl.kransenzo.repository.UserRepository;
-import be.sandervl.kransenzo.security.AuthoritiesConstants;
 import be.sandervl.kransenzo.repository.search.UserSearchRepository;
-
+import be.sandervl.kransenzo.security.AuthoritiesConstants;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -41,8 +40,8 @@ public class SocialService {
     private final UserSearchRepository userSearchRepository;
 
     public SocialService(UsersConnectionRepository usersConnectionRepository, AuthorityRepository authorityRepository,
-            PasswordEncoder passwordEncoder, UserRepository userRepository,
-            MailService mailService, UserSearchRepository userSearchRepository) {
+                         PasswordEncoder passwordEncoder, UserRepository userRepository,
+                         MailService mailService, UserSearchRepository userSearchRepository) {
 
         this.usersConnectionRepository = usersConnectionRepository;
         this.authorityRepository = authorityRepository;
@@ -55,13 +54,13 @@ public class SocialService {
     public void deleteUserSocialConnection(String login) {
         ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(login);
         connectionRepository.findAllConnections().keySet().stream()
-            .forEach(providerId -> {
-                connectionRepository.removeConnections(providerId);
-                log.debug("Delete user social connection providerId: {}", providerId);
-            });
+                            .forEach(providerId -> {
+                                connectionRepository.removeConnections(providerId);
+                                log.debug("Delete user social connection providerId: {}", providerId);
+                            });
     }
 
-    public void createSocialUser(Connection<?> connection, String langKey) {
+    public void createSocialUser(Connection <?> connection, String langKey) {
         if (connection == null) {
             log.error("Cannot create social user because connection is null");
             throw new IllegalArgumentException("Connection cannot be null");
@@ -89,7 +88,7 @@ public class SocialService {
             throw new IllegalArgumentException("Email cannot be null with an existing login");
         }
         if (!StringUtils.isBlank(email)) {
-            Optional<User> user = userRepository.findOneByEmailIgnoreCase(email);
+            Optional <User> user = userRepository.findOneByEmailIgnoreCase(email);
             if (user.isPresent()) {
                 log.info("User already exist associate the connection to this account");
                 return user.get();
@@ -98,7 +97,7 @@ public class SocialService {
 
         String login = getLoginDependingOnProviderId(userProfile, providerId);
         String encryptedPassword = passwordEncoder.encode(RandomStringUtils.random(10));
-        Set<Authority> authorities = new HashSet<>(1);
+        Set <Authority> authorities = new HashSet <>(1);
         authorities.add(authorityRepository.findOne(AuthoritiesConstants.USER));
 
         User newUser = new User();
@@ -118,10 +117,10 @@ public class SocialService {
 
     /**
      * @return login if provider manage a login like Twitter or GitHub otherwise email address.
-     *         Because provider like Google or Facebook didn't provide login or login like "12099388847393"
+     * Because provider like Google or Facebook didn't provide login or login like "12099388847393"
      */
     private String getLoginDependingOnProviderId(UserProfile userProfile, String providerId) {
-        switch (providerId) {
+        switch (providerId){
             case "twitter":
                 return userProfile.getUsername().toLowerCase();
             default:
@@ -129,7 +128,7 @@ public class SocialService {
         }
     }
 
-    private void createSocialConnection(String login, Connection<?> connection) {
+    private void createSocialConnection(String login, Connection <?> connection) {
         ConnectionRepository connectionRepository = usersConnectionRepository.createConnectionRepository(login);
         connectionRepository.addConnection(connection);
     }

@@ -1,6 +1,6 @@
 {
     "kransenzoApp": {
-        "order" : {
+        "order": {
             "home": {
                 "title": "Orders",
                 "createLabel": "Create a new Order",

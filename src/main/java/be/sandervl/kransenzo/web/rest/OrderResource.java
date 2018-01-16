@@ -1,10 +1,10 @@
 package be.sandervl.kransenzo.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import be.sandervl.kransenzo.service.OrderService;
+import be.sandervl.kransenzo.service.dto.OrderDTO;
 import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
-import be.sandervl.kransenzo.service.dto.OrderDTO;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Order.
@@ -28,10 +24,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class OrderResource {
 
-    private final Logger log = LoggerFactory.getLogger(OrderResource.class);
-
     private static final String ENTITY_NAME = "order";
-
+    private final Logger log = LoggerFactory.getLogger(OrderResource.class);
     private final OrderService orderService;
 
     public OrderResource(OrderService orderService) {
@@ -47,15 +41,15 @@ public class OrderResource {
      */
     @PostMapping("/orders")
     @Timed
-    public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
+    public ResponseEntity <OrderDTO> createOrder(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
         log.debug("REST request to save Order : {}", orderDTO);
         if (orderDTO.getId() != null) {
             throw new BadRequestAlertException("A new order cannot already have an ID", ENTITY_NAME, "idexists");
         }
         OrderDTO result = orderService.save(orderDTO);
         return ResponseEntity.created(new URI("/api/orders/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -69,15 +63,15 @@ public class OrderResource {
      */
     @PutMapping("/orders")
     @Timed
-    public ResponseEntity<OrderDTO> updateOrder(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
+    public ResponseEntity <OrderDTO> updateOrder(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
         log.debug("REST request to update Order : {}", orderDTO);
         if (orderDTO.getId() == null) {
             return createOrder(orderDTO);
         }
         OrderDTO result = orderService.save(orderDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderDTO.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderDTO.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -87,10 +81,10 @@ public class OrderResource {
      */
     @GetMapping("/orders")
     @Timed
-    public List<OrderDTO> getAllOrders() {
+    public List <OrderDTO> getAllOrders() {
         log.debug("REST request to get all Orders");
         return orderService.findAll();
-        }
+    }
 
     /**
      * GET  /orders/:id : get the "id" order.
@@ -100,7 +94,7 @@ public class OrderResource {
      */
     @GetMapping("/orders/{id}")
     @Timed
-    public ResponseEntity<OrderDTO> getOrder(@PathVariable Long id) {
+    public ResponseEntity <OrderDTO> getOrder(@PathVariable Long id) {
         log.debug("REST request to get Order : {}", id);
         OrderDTO orderDTO = orderService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(orderDTO));
@@ -114,7 +108,7 @@ public class OrderResource {
      */
     @DeleteMapping("/orders/{id}")
     @Timed
-    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+    public ResponseEntity <Void> deleteOrder(@PathVariable Long id) {
         log.debug("REST request to delete Order : {}", id);
         orderService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
@@ -129,7 +123,7 @@ public class OrderResource {
      */
     @GetMapping("/_search/orders")
     @Timed
-    public List<OrderDTO> searchOrders(@RequestParam String query) {
+    public List <OrderDTO> searchOrders(@RequestParam String query) {
         log.debug("REST request to search Orders for query {}", query);
         return orderService.search(query);
     }

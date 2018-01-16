@@ -1,56 +1,51 @@
 /* tslint:disable max-line-length */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Observable';
-import { Headers } from '@angular/http';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {Observable} from 'rxjs/Observable';
+import {Headers} from '@angular/http';
 
-import { KransenzoTestModule } from '../../../test.module';
-import { ProductComponent } from '../../../../../../main/webapp/app/entities/product/product.component';
-import { ProductService } from '../../../../../../main/webapp/app/entities/product/product.service';
-import { Product } from '../../../../../../main/webapp/app/entities/product/product.model';
+import {KransenzoTestModule} from '../../../test.module';
+import {ProductComponent} from '../../../../../../main/webapp/app/entities/product/product.component';
+import {ProductService} from '../../../../../../main/webapp/app/entities/product/product.service';
+import {Product} from '../../../../../../main/webapp/app/entities/product/product.model';
 
-describe('Component Tests', () => {
+describe( 'Component Tests', () => {
 
-    describe('Product Management Component', () => {
+    describe( 'Product Management Component', () => {
         let comp: ProductComponent;
         let fixture: ComponentFixture<ProductComponent>;
         let service: ProductService;
 
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [KransenzoTestModule],
-                declarations: [ProductComponent],
-                providers: [
-                    ProductService
-                ]
-            })
-            .overrideTemplate(ProductComponent, '')
-            .compileComponents();
-        }));
+        beforeEach( async( () => {
+            TestBed.configureTestingModule( {
+                                                imports: [KransenzoTestModule], declarations: [ProductComponent], providers: [ProductService]
+                                            } )
+                .overrideTemplate( ProductComponent, '' )
+                .compileComponents();
+        } ) );
 
-        beforeEach(() => {
-            fixture = TestBed.createComponent(ProductComponent);
+        beforeEach( () => {
+            fixture = TestBed.createComponent( ProductComponent );
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(ProductService);
-        });
+            service = fixture.debugElement.injector.get( ProductService );
+        } );
 
-        describe('OnInit', () => {
-            it('Should call load all on init', () => {
+        describe( 'OnInit', () => {
+            it( 'Should call load all on init', () => {
                 // GIVEN
                 const headers = new Headers();
-                headers.append('link', 'link;link');
-                spyOn(service, 'query').and.returnValue(Observable.of({
-                    json: [new Product(123)],
-                    headers
-                }));
+                headers.append( 'link', 'link;link' );
+                spyOn( service, 'query' ).and.returnValue( Observable.of( {
+                                                                              json: [new Product( 123 )], headers
+                                                                          } ) );
 
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect(service.query).toHaveBeenCalled();
-                expect(comp.products[0]).toEqual(jasmine.objectContaining({id: 123}));
-            });
-        });
-    });
+                expect( service.query ).toHaveBeenCalled();
+                expect( comp.products[0] ).toEqual( jasmine.objectContaining( {id: 123} ) );
+            } );
+        } );
+    } );
 
-});
+} );

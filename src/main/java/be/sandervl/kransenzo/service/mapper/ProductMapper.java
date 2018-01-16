@@ -1,16 +1,15 @@
 package be.sandervl.kransenzo.service.mapper;
 
-import be.sandervl.kransenzo.domain.*;
+import be.sandervl.kransenzo.domain.Product;
 import be.sandervl.kransenzo.service.dto.ProductDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity Product and its DTO ProductDTO.
  */
 @Mapper(componentModel = "spring", uses = {TagMapper.class})
-public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
-
+public interface ProductMapper extends EntityMapper <ProductDTO, Product> {
 
     @Mapping(target = "images", ignore = true)
     @Mapping(target = "orders", ignore = true)

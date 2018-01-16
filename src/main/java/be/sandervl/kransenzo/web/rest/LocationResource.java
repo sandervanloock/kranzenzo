@@ -1,14 +1,13 @@
 package be.sandervl.kransenzo.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import be.sandervl.kransenzo.domain.Location;
-
 import be.sandervl.kransenzo.repository.LocationRepository;
 import be.sandervl.kransenzo.repository.search.LocationSearchRepository;
-import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
-import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
 import be.sandervl.kransenzo.service.dto.LocationDTO;
 import be.sandervl.kransenzo.service.mapper.LocationMapper;
+import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
+import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Location.
@@ -33,10 +31,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class LocationResource {
 
-    private final Logger log = LoggerFactory.getLogger(LocationResource.class);
-
     private static final String ENTITY_NAME = "location";
-
+    private final Logger log = LoggerFactory.getLogger(LocationResource.class);
     private final LocationRepository locationRepository;
 
     private final LocationMapper locationMapper;
@@ -58,7 +54,7 @@ public class LocationResource {
      */
     @PostMapping("/locations")
     @Timed
-    public ResponseEntity<LocationDTO> createLocation(@Valid @RequestBody LocationDTO locationDTO) throws URISyntaxException {
+    public ResponseEntity <LocationDTO> createLocation(@Valid @RequestBody LocationDTO locationDTO) throws URISyntaxException {
         log.debug("REST request to save Location : {}", locationDTO);
         if (locationDTO.getId() != null) {
             throw new BadRequestAlertException("A new location cannot already have an ID", ENTITY_NAME, "idexists");
@@ -68,8 +64,8 @@ public class LocationResource {
         LocationDTO result = locationMapper.toDto(location);
         locationSearchRepository.save(location);
         return ResponseEntity.created(new URI("/api/locations/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -83,7 +79,7 @@ public class LocationResource {
      */
     @PutMapping("/locations")
     @Timed
-    public ResponseEntity<LocationDTO> updateLocation(@Valid @RequestBody LocationDTO locationDTO) throws URISyntaxException {
+    public ResponseEntity <LocationDTO> updateLocation(@Valid @RequestBody LocationDTO locationDTO) throws URISyntaxException {
         log.debug("REST request to update Location : {}", locationDTO);
         if (locationDTO.getId() == null) {
             return createLocation(locationDTO);
@@ -93,8 +89,8 @@ public class LocationResource {
         LocationDTO result = locationMapper.toDto(location);
         locationSearchRepository.save(location);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, locationDTO.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, locationDTO.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -104,11 +100,11 @@ public class LocationResource {
      */
     @GetMapping("/locations")
     @Timed
-    public List<LocationDTO> getAllLocations() {
+    public List <LocationDTO> getAllLocations() {
         log.debug("REST request to get all Locations");
-        List<Location> locations = locationRepository.findAll();
+        List <Location> locations = locationRepository.findAll();
         return locationMapper.toDto(locations);
-        }
+    }
 
     /**
      * GET  /locations/:id : get the "id" location.
@@ -118,7 +114,7 @@ public class LocationResource {
      */
     @GetMapping("/locations/{id}")
     @Timed
-    public ResponseEntity<LocationDTO> getLocation(@PathVariable Long id) {
+    public ResponseEntity <LocationDTO> getLocation(@PathVariable Long id) {
         log.debug("REST request to get Location : {}", id);
         Location location = locationRepository.findOne(id);
         LocationDTO locationDTO = locationMapper.toDto(location);
@@ -133,7 +129,7 @@ public class LocationResource {
      */
     @DeleteMapping("/locations/{id}")
     @Timed
-    public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {
+    public ResponseEntity <Void> deleteLocation(@PathVariable Long id) {
         log.debug("REST request to delete Location : {}", id);
         locationRepository.delete(id);
         locationSearchRepository.delete(id);
@@ -149,7 +145,7 @@ public class LocationResource {
      */
     @GetMapping("/_search/locations")
     @Timed
-    public List<LocationDTO> searchLocations(@RequestParam String query) {
+    public List <LocationDTO> searchLocations(@RequestParam String query) {
         log.debug("REST request to search Locations for query {}", query);
         return StreamSupport
             .stream(locationSearchRepository.search(queryStringQuery(query)).spliterator(), false)

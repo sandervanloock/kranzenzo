@@ -3,7 +3,7 @@
         <span jhiTranslate="kransenzoApp.order.home.title">Orders</span>
         <button class="btn btn-primary float-right jh-create-entity create-order" [routerLink]="['/', { outlets: { popup: ['order-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="kransenzoApp.order.home.createLabel">
+            <span class="hidden-sm-down" jhiTranslate="kransenzoApp.order.home.createLabel">
             Create new Order
             </span>
         </button>
@@ -29,18 +29,18 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.created">Created</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.updated">Updated</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.state">State</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.deliveryType">Delivery Type</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.includeBatteries">Include Batteries</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.description">Description</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.deliveryPrice">Delivery Price</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.customer">Customer</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.deliveryAddress">Delivery Address</span></th>
-            <th><span jhiTranslate="kransenzoApp.order.product">Product</span></th>
-            <th></th>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.created">Created</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.updated">Updated</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.state">State</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.deliveryType">Delivery Type</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.includeBatteries">Include Batteries</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.description">Description</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.deliveryPrice">Delivery Price</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.customer">Customer</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.deliveryAddress">Delivery Address</span></th>
+                <th><span jhiTranslate="kransenzoApp.order.product">Product</span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -55,17 +55,17 @@
                 <td>{{order.deliveryPrice}}</td>
                 <td>
                     <div *ngIf="order.customerId">
-                        <a [routerLink]="['../customer', order.customerId  ]" >{{order.customerId}}</a>
+                        <a [routerLink]="['../customer', order.customerId  ]">{{order.customerId}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="order.deliveryAddressId">
-                        <a [routerLink]="['../location', order.deliveryAddressId  ]" >{{order.deliveryAddressId}}</a>
+                        <a [routerLink]="['../location', order.deliveryAddressId  ]">{{order.deliveryAddressId}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="order.productId">
-                        <a [routerLink]="['../product', order.productId  ]" >{{order.productName}}</a>
+                        <a [routerLink]="['../product', order.productId  ]">{{order.productName}}</a>
                     </div>
                 </td>
                 <td class="text-right">

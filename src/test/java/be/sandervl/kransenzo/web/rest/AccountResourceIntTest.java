@@ -1,20 +1,19 @@
 package be.sandervl.kransenzo.web.rest;
 
-import be.sandervl.kransenzo.config.Constants;
 import be.sandervl.kransenzo.KransenzoApp;
+import be.sandervl.kransenzo.config.Constants;
 import be.sandervl.kransenzo.domain.Authority;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.AuthorityRepository;
 import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.security.AuthoritiesConstants;
 import be.sandervl.kransenzo.service.MailService;
+import be.sandervl.kransenzo.service.UserService;
 import be.sandervl.kransenzo.service.dto.UserDTO;
 import be.sandervl.kransenzo.web.rest.errors.ExceptionTranslator;
 import be.sandervl.kransenzo.web.rest.vm.KeyAndPasswordVM;
 import be.sandervl.kransenzo.web.rest.vm.ManagedUserVM;
-import be.sandervl.kransenzo.service.UserService;
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,17 +29,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.Instant;
-import java.time.LocalDate;
 
-import java.util.*;
+import java.time.Instant;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
@@ -90,20 +91,20 @@ public class AccountResourceIntTest {
         AccountResource accountUserMockResource =
             new AccountResource(userRepository, mockUserService, mockMailService);
         this.restMvc = MockMvcBuilders.standaloneSetup(accountResource)
-            .setMessageConverters(httpMessageConverters)
-            .setControllerAdvice(exceptionTranslator)
-            .build();
+                                      .setMessageConverters(httpMessageConverters)
+                                      .setControllerAdvice(exceptionTranslator)
+                                      .build();
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(accountUserMockResource)
-            .setControllerAdvice(exceptionTranslator)
-            .build();
+                                              .setControllerAdvice(exceptionTranslator)
+                                              .build();
     }
 
     @Test
     public void testNonAuthenticatedUser() throws Exception {
         restUserMockMvc.perform(get("/api/authenticate")
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string(""));
+                       .andExpect(status().isOk())
+                       .andExpect(content().string(""));
     }
 
     @Test
@@ -114,13 +115,13 @@ public class AccountResourceIntTest {
                 return request;
             })
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().string("test"));
+                       .andExpect(status().isOk())
+                       .andExpect(content().string("test"));
     }
 
     @Test
     public void testGetExistingAccount() throws Exception {
-        Set<Authority> authorities = new HashSet<>();
+        Set <Authority> authorities = new HashSet <>();
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.ADMIN);
         authorities.add(authority);
@@ -137,15 +138,15 @@ public class AccountResourceIntTest {
 
         restUserMockMvc.perform(get("/api/account")
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.login").value("test"))
-            .andExpect(jsonPath("$.firstName").value("john"))
-            .andExpect(jsonPath("$.lastName").value("doe"))
-            .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
-            .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
-            .andExpect(jsonPath("$.langKey").value("en"))
-            .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
+                       .andExpect(status().isOk())
+                       .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                       .andExpect(jsonPath("$.login").value("test"))
+                       .andExpect(jsonPath("$.firstName").value("john"))
+                       .andExpect(jsonPath("$.lastName").value("doe"))
+                       .andExpect(jsonPath("$.email").value("john.doe@jhipster.com"))
+                       .andExpect(jsonPath("$.imageUrl").value("http://placehold.it/50x50"))
+                       .andExpect(jsonPath("$.langKey").value("en"))
+                       .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
     }
 
     @Test
@@ -154,7 +155,7 @@ public class AccountResourceIntTest {
 
         restUserMockMvc.perform(get("/api/account")
             .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isInternalServerError());
+                       .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -176,7 +177,7 @@ public class AccountResourceIntTest {
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
-            .andExpect(status().isCreated());
+               .andExpect(status().isCreated());
 
         assertThat(userRepository.findOneByLogin("joe").isPresent()).isTrue();
     }
@@ -199,9 +200,9 @@ public class AccountResourceIntTest {
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
-            .andExpect(status().isBadRequest());
+                       .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByEmailIgnoreCase("funky@example.com");
+        Optional <User> user = userRepository.findOneByEmailIgnoreCase("funky@example.com");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -223,9 +224,9 @@ public class AccountResourceIntTest {
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
-            .andExpect(status().isBadRequest());
+                       .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional <User> user = userRepository.findOneByLogin("bob");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -247,9 +248,9 @@ public class AccountResourceIntTest {
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
-            .andExpect(status().isBadRequest());
+                       .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional <User> user = userRepository.findOneByLogin("bob");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -271,9 +272,9 @@ public class AccountResourceIntTest {
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(invalidUser)))
-            .andExpect(status().isBadRequest());
+                       .andExpect(status().isBadRequest());
 
-        Optional<User> user = userRepository.findOneByLogin("bob");
+        Optional <User> user = userRepository.findOneByLogin("bob");
         assertThat(user.isPresent()).isFalse();
     }
 
@@ -306,23 +307,23 @@ public class AccountResourceIntTest {
         duplicatedUser.setCreatedDate(validUser.getCreatedDate());
         duplicatedUser.setLastModifiedBy(validUser.getLastModifiedBy());
         duplicatedUser.setLastModifiedDate(validUser.getLastModifiedDate());
-        duplicatedUser.setAuthorities(new HashSet<>(validUser.getAuthorities()));
+        duplicatedUser.setAuthorities(new HashSet <>(validUser.getAuthorities()));
 
         // Good user
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
-            .andExpect(status().isCreated());
+               .andExpect(status().isCreated());
 
         // Duplicate login
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(duplicatedUser)))
-            .andExpect(status().is4xxClientError());
+               .andExpect(status().is4xxClientError());
 
-        Optional<User> userDup = userRepository.findOneByEmailIgnoreCase("alicejr@example.com");
+        Optional <User> userDup = userRepository.findOneByEmailIgnoreCase("alicejr@example.com");
         assertThat(userDup.isPresent()).isFalse();
     }
 
@@ -355,21 +356,21 @@ public class AccountResourceIntTest {
         duplicatedUser.setCreatedDate(validUser.getCreatedDate());
         duplicatedUser.setLastModifiedBy(validUser.getLastModifiedBy());
         duplicatedUser.setLastModifiedDate(validUser.getLastModifiedDate());
-        duplicatedUser.setAuthorities(new HashSet<>(validUser.getAuthorities()));
+        duplicatedUser.setAuthorities(new HashSet <>(validUser.getAuthorities()));
 
         // Good user
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
-            .andExpect(status().isCreated());
+               .andExpect(status().isCreated());
 
         // Duplicate email
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(duplicatedUser)))
-            .andExpect(status().is4xxClientError());
+               .andExpect(status().is4xxClientError());
 
         // Duplicate email - with uppercase email address
         ManagedUserVM userWithUpperCaseEmail = new ManagedUserVM();
@@ -386,15 +387,15 @@ public class AccountResourceIntTest {
         userWithUpperCaseEmail.setCreatedDate(validUser.getCreatedDate());
         userWithUpperCaseEmail.setLastModifiedBy(validUser.getLastModifiedBy());
         userWithUpperCaseEmail.setLastModifiedDate(validUser.getLastModifiedDate());
-        userWithUpperCaseEmail.setAuthorities(new HashSet<>(validUser.getAuthorities()));
+        userWithUpperCaseEmail.setAuthorities(new HashSet <>(validUser.getAuthorities()));
 
         restMvc.perform(
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(userWithUpperCaseEmail)))
-            .andExpect(status().is4xxClientError());
+               .andExpect(status().is4xxClientError());
 
-        Optional<User> userDup = userRepository.findOneByLogin("johnjr");
+        Optional <User> userDup = userRepository.findOneByLogin("johnjr");
         assertThat(userDup.isPresent()).isFalse();
     }
 
@@ -416,12 +417,13 @@ public class AccountResourceIntTest {
             post("/api/register")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(validUser)))
-            .andExpect(status().isCreated());
+               .andExpect(status().isCreated());
 
-        Optional<User> userDup = userRepository.findOneByLogin("badguy");
+        Optional <User> userDup = userRepository.findOneByLogin("badguy");
         assertThat(userDup.isPresent()).isTrue();
         assertThat(userDup.get().getAuthorities()).hasSize(1)
-            .containsExactly(authorityRepository.findOne(AuthoritiesConstants.USER));
+                                                  .containsExactly(authorityRepository
+                                                      .findOne(AuthoritiesConstants.USER));
     }
 
     @Test
@@ -438,7 +440,7 @@ public class AccountResourceIntTest {
         userRepository.saveAndFlush(user);
 
         restMvc.perform(get("/api/activate?key={activationKey}", activationKey))
-            .andExpect(status().isOk());
+               .andExpect(status().isOk());
 
         user = userRepository.findOneByLogin(user.getLogin()).orElse(null);
         assertThat(user.getActivated()).isTrue();
@@ -448,7 +450,7 @@ public class AccountResourceIntTest {
     @Transactional
     public void testActivateAccountWithWrongKey() throws Exception {
         restMvc.perform(get("/api/activate?key=wrongActivationKey"))
-            .andExpect(status().isInternalServerError());
+               .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -477,7 +479,7 @@ public class AccountResourceIntTest {
             post("/api/account")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(userDTO)))
-            .andExpect(status().isOk());
+               .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElse(null);
         assertThat(updatedUser.getFirstName()).isEqualTo(userDTO.getFirstName());
@@ -516,7 +518,7 @@ public class AccountResourceIntTest {
             post("/api/account")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(userDTO)))
-            .andExpect(status().isBadRequest());
+               .andExpect(status().isBadRequest());
 
         assertThat(userRepository.findOneByEmailIgnoreCase("invalid email")).isNotPresent();
     }
@@ -555,7 +557,7 @@ public class AccountResourceIntTest {
             post("/api/account")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(userDTO)))
-            .andExpect(status().isBadRequest());
+               .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("save-existing-email").orElse(null);
         assertThat(updatedUser.getEmail()).isEqualTo("save-existing-email@example.com");
@@ -587,7 +589,7 @@ public class AccountResourceIntTest {
             post("/api/account")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(userDTO)))
-            .andExpect(status().isOk());
+               .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneByLogin("save-existing-email-and-login").orElse(null);
         assertThat(updatedUser.getEmail()).isEqualTo("save-existing-email-and-login@example.com");
@@ -604,7 +606,7 @@ public class AccountResourceIntTest {
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change-password").content("new password"))
-            .andExpect(status().isOk());
+               .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneByLogin("change-password").orElse(null);
         assertThat(passwordEncoder.matches("new password", updatedUser.getPassword())).isTrue();
@@ -621,7 +623,7 @@ public class AccountResourceIntTest {
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change-password").content("new"))
-            .andExpect(status().isBadRequest());
+               .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("change-password-too-small").orElse(null);
         assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
@@ -638,7 +640,7 @@ public class AccountResourceIntTest {
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change-password").content(RandomStringUtils.random(101)))
-            .andExpect(status().isBadRequest());
+               .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("change-password-too-long").orElse(null);
         assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
@@ -655,7 +657,7 @@ public class AccountResourceIntTest {
         userRepository.saveAndFlush(user);
 
         restMvc.perform(post("/api/account/change-password").content(RandomStringUtils.random(0)))
-            .andExpect(status().isBadRequest());
+               .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin("change-password-empty").orElse(null);
         assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
@@ -673,7 +675,7 @@ public class AccountResourceIntTest {
 
         restMvc.perform(post("/api/account/reset-password/init")
             .content("password-reset@example.com"))
-            .andExpect(status().isOk());
+               .andExpect(status().isOk());
     }
 
     @Test
@@ -688,7 +690,7 @@ public class AccountResourceIntTest {
 
         restMvc.perform(post("/api/account/reset-password/init")
             .content("password-reset@EXAMPLE.COM"))
-            .andExpect(status().isOk());
+               .andExpect(status().isOk());
     }
 
     @Test
@@ -696,7 +698,7 @@ public class AccountResourceIntTest {
         restMvc.perform(
             post("/api/account/reset-password/init")
                 .content("password-reset-wrong-email@example.com"))
-            .andExpect(status().isBadRequest());
+               .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -718,7 +720,7 @@ public class AccountResourceIntTest {
             post("/api/account/reset-password/finish")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(keyAndPassword)))
-            .andExpect(status().isOk());
+               .andExpect(status().isOk());
 
         User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElse(null);
         assertThat(passwordEncoder.matches(keyAndPassword.getNewPassword(), updatedUser.getPassword())).isTrue();
@@ -743,12 +745,11 @@ public class AccountResourceIntTest {
             post("/api/account/reset-password/finish")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(keyAndPassword)))
-            .andExpect(status().isBadRequest());
+               .andExpect(status().isBadRequest());
 
         User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElse(null);
         assertThat(passwordEncoder.matches(keyAndPassword.getNewPassword(), updatedUser.getPassword())).isFalse();
     }
-
 
     @Test
     @Transactional
@@ -761,6 +762,6 @@ public class AccountResourceIntTest {
             post("/api/account/reset-password/finish")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(keyAndPassword)))
-            .andExpect(status().isInternalServerError());
+               .andExpect(status().isInternalServerError());
     }
 }

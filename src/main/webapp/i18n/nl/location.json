@@ -1,6 +1,6 @@
 {
     "kransenzoApp": {
-        "location" : {
+        "location": {
             "home": {
                 "title": "Locations",
                 "createLabel": "Maak een nieuwe Location",

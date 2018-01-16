@@ -1,6 +1,6 @@
 {
     "kransenzoApp": {
-        "customer" : {
+        "customer": {
             "home": {
                 "title": "Customers",
                 "createLabel": "Maak een nieuwe Customer",

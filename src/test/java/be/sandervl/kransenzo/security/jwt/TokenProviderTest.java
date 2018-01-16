@@ -80,23 +80,23 @@ public class TokenProviderTest {
     }
 
     private Authentication createAuthentication() {
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        Collection <GrantedAuthority> authorities = new ArrayList <>();
         authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ANONYMOUS));
         return new UsernamePasswordAuthenticationToken("anonymous", "anonymous", authorities);
     }
 
     private String createUnsupportedToken() {
         return Jwts.builder()
-            .setPayload("payload")
-            .signWith(SignatureAlgorithm.HS512, secretKey)
-            .compact();
+                   .setPayload("payload")
+                   .signWith(SignatureAlgorithm.HS512, secretKey)
+                   .compact();
     }
 
     private String createTokenWithDifferentSignature() {
         return Jwts.builder()
-            .setSubject("anonymous")
-            .signWith(SignatureAlgorithm.HS512, "e5c9ee274ae87bc031adda32e27fa98b9290da90")
-            .setExpiration(new Date(new Date().getTime() + ONE_MINUTE))
-            .compact();
+                   .setSubject("anonymous")
+                   .signWith(SignatureAlgorithm.HS512, "e5c9ee274ae87bc031adda32e27fa98b9290da90")
+                   .setExpiration(new Date(new Date().getTime() + ONE_MINUTE))
+                   .compact();
     }
 }

@@ -62,7 +62,7 @@
                 }
             },
             "error": {
-                "dontmatch" : "Het wachtwoord en zijn bevestiging komen niet overeen!"
+                "dontmatch": "Het wachtwoord en zijn bevestiging komen niet overeen!"
             },
             "validate": {
                 "newpassword": {
@@ -85,10 +85,10 @@
             }
         },
         "field": {
-            "id" : "ID"
+            "id": "ID"
         },
         "ribbon": {
-            "dev":"Ontwikkeling"
+            "dev": "Ontwikkeling"
         },
         "item-count": "Resultaat {{first}} - {{second}} van {{total}} items."
     },

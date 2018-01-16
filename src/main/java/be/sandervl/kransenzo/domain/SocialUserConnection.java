@@ -61,7 +61,9 @@ public class SocialUserConnection implements Serializable {
     @Column(name = "expire_time")
     private Long expireTime;
 
-    public SocialUserConnection() {}
+    public SocialUserConnection() {
+    }
+
     public SocialUserConnection(String userId,
                                 String providerId,
                                 String providerUserId,

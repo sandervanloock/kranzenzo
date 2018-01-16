@@ -1,14 +1,13 @@
 package be.sandervl.kransenzo.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import be.sandervl.kransenzo.domain.Image;
-
 import be.sandervl.kransenzo.repository.ImageRepository;
 import be.sandervl.kransenzo.repository.search.ImageSearchRepository;
-import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
-import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
 import be.sandervl.kransenzo.service.dto.ImageDTO;
 import be.sandervl.kransenzo.service.mapper.ImageMapper;
+import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
+import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Image.
@@ -33,10 +31,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class ImageResource {
 
-    private final Logger log = LoggerFactory.getLogger(ImageResource.class);
-
     private static final String ENTITY_NAME = "image";
-
+    private final Logger log = LoggerFactory.getLogger(ImageResource.class);
     private final ImageRepository imageRepository;
 
     private final ImageMapper imageMapper;
@@ -58,7 +54,7 @@ public class ImageResource {
      */
     @PostMapping("/images")
     @Timed
-    public ResponseEntity<ImageDTO> createImage(@Valid @RequestBody ImageDTO imageDTO) throws URISyntaxException {
+    public ResponseEntity <ImageDTO> createImage(@Valid @RequestBody ImageDTO imageDTO) throws URISyntaxException {
         log.debug("REST request to save Image : {}", imageDTO);
         if (imageDTO.getId() != null) {
             throw new BadRequestAlertException("A new image cannot already have an ID", ENTITY_NAME, "idexists");
@@ -68,8 +64,8 @@ public class ImageResource {
         ImageDTO result = imageMapper.toDto(image);
         imageSearchRepository.save(image);
         return ResponseEntity.created(new URI("/api/images/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -83,7 +79,7 @@ public class ImageResource {
      */
     @PutMapping("/images")
     @Timed
-    public ResponseEntity<ImageDTO> updateImage(@Valid @RequestBody ImageDTO imageDTO) throws URISyntaxException {
+    public ResponseEntity <ImageDTO> updateImage(@Valid @RequestBody ImageDTO imageDTO) throws URISyntaxException {
         log.debug("REST request to update Image : {}", imageDTO);
         if (imageDTO.getId() == null) {
             return createImage(imageDTO);
@@ -93,8 +89,8 @@ public class ImageResource {
         ImageDTO result = imageMapper.toDto(image);
         imageSearchRepository.save(image);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, imageDTO.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, imageDTO.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -104,11 +100,11 @@ public class ImageResource {
      */
     @GetMapping("/images")
     @Timed
-    public List<ImageDTO> getAllImages() {
+    public List <ImageDTO> getAllImages() {
         log.debug("REST request to get all Images");
-        List<Image> images = imageRepository.findAll();
+        List <Image> images = imageRepository.findAll();
         return imageMapper.toDto(images);
-        }
+    }
 
     /**
      * GET  /images/:id : get the "id" image.
@@ -118,7 +114,7 @@ public class ImageResource {
      */
     @GetMapping("/images/{id}")
     @Timed
-    public ResponseEntity<ImageDTO> getImage(@PathVariable Long id) {
+    public ResponseEntity <ImageDTO> getImage(@PathVariable Long id) {
         log.debug("REST request to get Image : {}", id);
         Image image = imageRepository.findOne(id);
         ImageDTO imageDTO = imageMapper.toDto(image);
@@ -133,7 +129,7 @@ public class ImageResource {
      */
     @DeleteMapping("/images/{id}")
     @Timed
-    public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
+    public ResponseEntity <Void> deleteImage(@PathVariable Long id) {
         log.debug("REST request to delete Image : {}", id);
         imageRepository.delete(id);
         imageSearchRepository.delete(id);
@@ -149,7 +145,7 @@ public class ImageResource {
      */
     @GetMapping("/_search/images")
     @Timed
-    public List<ImageDTO> searchImages(@RequestParam String query) {
+    public List <ImageDTO> searchImages(@RequestParam String query) {
         log.debug("REST request to search Images for query {}", query);
         return StreamSupport
             .stream(imageSearchRepository.search(queryStringQuery(query)).spliterator(), false)

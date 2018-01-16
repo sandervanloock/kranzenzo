@@ -3,15 +3,15 @@ package be.sandervl.kransenzo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Customer.
@@ -52,7 +52,7 @@ public class Customer implements Serializable {
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Order> orders = new HashSet<>();
+    private Set <Order> orders = new HashSet <>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -67,17 +67,21 @@ public class Customer implements Serializable {
         return street;
     }
 
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public Customer street(String street) {
         this.street = street;
         return this;
     }
 
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
     public String getCity() {
         return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public Customer city(String city) {
@@ -85,12 +89,12 @@ public class Customer implements Serializable {
         return this;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
     public Integer getZipCode() {
         return zipCode;
+    }
+
+    public void setZipCode(Integer zipCode) {
+        this.zipCode = zipCode;
     }
 
     public Customer zipCode(Integer zipCode) {
@@ -98,12 +102,12 @@ public class Customer implements Serializable {
         return this;
     }
 
-    public void setZipCode(Integer zipCode) {
-        this.zipCode = zipCode;
-    }
-
     public String getProvince() {
         return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public Customer province(String province) {
@@ -111,12 +115,12 @@ public class Customer implements Serializable {
         return this;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Customer phoneNumber(String phoneNumber) {
@@ -124,12 +128,12 @@ public class Customer implements Serializable {
         return this;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public Location getAddress() {
         return address;
+    }
+
+    public void setAddress(Location location) {
+        this.address = location;
     }
 
     public Customer address(Location location) {
@@ -137,15 +141,15 @@ public class Customer implements Serializable {
         return this;
     }
 
-    public void setAddress(Location location) {
-        this.address = location;
-    }
-
-    public Set<Order> getOrders() {
+    public Set <Order> getOrders() {
         return orders;
     }
 
-    public Customer orders(Set<Order> orders) {
+    public void setOrders(Set <Order> orders) {
+        this.orders = orders;
+    }
+
+    public Customer orders(Set <Order> orders) {
         this.orders = orders;
         return this;
     }
@@ -160,10 +164,6 @@ public class Customer implements Serializable {
         this.orders.remove(order);
         order.setCustomer(null);
         return this;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -3,15 +3,14 @@ package be.sandervl.kransenzo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Tag.
@@ -35,7 +34,7 @@ public class Tag implements Serializable {
     @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Product> tags = new HashSet<>();
+    private Set <Product> tags = new HashSet <>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -50,20 +49,24 @@ public class Tag implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Tag name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Product> getTags() {
+    public Set <Product> getTags() {
         return tags;
     }
 
-    public Tag tags(Set<Product> products) {
+    public void setTags(Set <Product> products) {
+        this.tags = products;
+    }
+
+    public Tag tags(Set <Product> products) {
         this.tags = products;
         return this;
     }
@@ -78,10 +81,6 @@ public class Tag implements Serializable {
         this.tags.remove(product);
         product.getTags().remove(this);
         return this;
-    }
-
-    public void setTags(Set<Product> products) {
-        this.tags = products;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

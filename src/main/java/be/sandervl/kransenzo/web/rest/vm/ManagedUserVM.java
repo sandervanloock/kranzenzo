@@ -1,6 +1,7 @@
 package be.sandervl.kransenzo.web.rest.vm;
 
 import be.sandervl.kransenzo.service.dto.UserDTO;
+
 import javax.validation.constraints.Size;
 
 /**

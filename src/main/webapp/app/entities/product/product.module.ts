@@ -1,49 +1,28 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { KransenzoSharedModule } from '../../shared';
+import {KransenzoSharedModule} from '../../shared';
 import {
-    ProductService,
-    ProductPopupService,
     ProductComponent,
+    ProductDeleteDialogComponent,
+    ProductDeletePopupComponent,
     ProductDetailComponent,
     ProductDialogComponent,
     ProductPopupComponent,
-    ProductDeletePopupComponent,
-    ProductDeleteDialogComponent,
-    productRoute,
     productPopupRoute,
+    ProductPopupService,
+    productRoute,
+    ProductService,
 } from './';
 
-const ENTITY_STATES = [
-    ...productRoute,
-    ...productPopupRoute,
-];
+const ENTITY_STATES = [...productRoute, ...productPopupRoute,];
 
-@NgModule({
-    imports: [
-        KransenzoSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        ProductComponent,
-        ProductDetailComponent,
-        ProductDialogComponent,
-        ProductDeleteDialogComponent,
-        ProductPopupComponent,
-        ProductDeletePopupComponent,
-    ],
-    entryComponents: [
-        ProductComponent,
-        ProductDialogComponent,
-        ProductPopupComponent,
-        ProductDeleteDialogComponent,
-        ProductDeletePopupComponent,
-    ],
-    providers: [
-        ProductService,
-        ProductPopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
-export class KransenzoProductModule {}
+@NgModule( {
+               imports: [KransenzoSharedModule, RouterModule.forChild( ENTITY_STATES )],
+               declarations: [ProductComponent, ProductDetailComponent, ProductDialogComponent, ProductDeleteDialogComponent, ProductPopupComponent, ProductDeletePopupComponent,],
+               entryComponents: [ProductComponent, ProductDialogComponent, ProductPopupComponent, ProductDeleteDialogComponent, ProductDeletePopupComponent,],
+               providers: [ProductService, ProductPopupService,],
+               schemas: [CUSTOM_ELEMENTS_SCHEMA]
+           } )
+export class KransenzoProductModule {
+}

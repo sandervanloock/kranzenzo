@@ -1,26 +1,26 @@
-import { Injectable } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {Injectable} from '@angular/core';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
-import { JhiLoginModalComponent } from './login.component';
+import {JhiLoginModalComponent} from './login.component';
 
 @Injectable()
 export class LoginModalService {
     private isOpen = false;
-    constructor(
-        private modalService: NgbModal,
-    ) {}
+
+    constructor( private modalService: NgbModal, ) {
+    }
 
     open(): NgbModalRef {
-        if (this.isOpen) {
+        if ( this.isOpen ) {
             return;
         }
         this.isOpen = true;
-        const modalRef = this.modalService.open(JhiLoginModalComponent);
-        modalRef.result.then((result) => {
+        const modalRef = this.modalService.open( JhiLoginModalComponent );
+        modalRef.result.then( ( result ) => {
             this.isOpen = false;
-        }, (reason) => {
+        }, ( reason ) => {
             this.isOpen = false;
-        });
+        } );
         return modalRef;
     }
 }

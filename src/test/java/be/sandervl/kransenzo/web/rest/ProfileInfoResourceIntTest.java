@@ -1,7 +1,7 @@
 package be.sandervl.kransenzo.web.rest;
 
-import io.github.jhipster.config.JHipsterProperties;
 import be.sandervl.kransenzo.KransenzoApp;
+import io.github.jhipster.config.JHipsterProperties;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,7 +39,7 @@ public class ProfileInfoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        String mockProfile[] = { "test" };
+        String mockProfile[] = {"test"};
         JHipsterProperties.Ribbon ribbon = new JHipsterProperties.Ribbon();
         ribbon.setDisplayOnActiveProfiles(mockProfile);
         when(jHipsterProperties.getRibbon()).thenReturn(ribbon);
@@ -57,8 +57,8 @@ public class ProfileInfoResourceIntTest {
     @Test
     public void getProfileInfoWithRibbon() throws Exception {
         restProfileMockMvc.perform(get("/api/profile-info"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+                          .andExpect(status().isOk())
+                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
     @Test
@@ -68,8 +68,8 @@ public class ProfileInfoResourceIntTest {
         when(jHipsterProperties.getRibbon()).thenReturn(ribbon);
 
         restProfileMockMvc.perform(get("/api/profile-info"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+                          .andExpect(status().isOk())
+                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class ProfileInfoResourceIntTest {
         when(environment.getActiveProfiles()).thenReturn(emptyProfile);
 
         restProfileMockMvc.perform(get("/api/profile-info"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
+                          .andExpect(status().isOk())
+                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE));
     }
 }

@@ -3,7 +3,7 @@
         <span jhiTranslate="kransenzoApp.customer.home.title">Customers</span>
         <button class="btn btn-primary float-right jh-create-entity create-customer" [routerLink]="['/', { outlets: { popup: ['customer-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="kransenzoApp.customer.home.createLabel">
+            <span class="hidden-sm-down" jhiTranslate="kransenzoApp.customer.home.createLabel">
             Create new Customer
             </span>
         </button>
@@ -29,14 +29,14 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="kransenzoApp.customer.street">Street</span></th>
-            <th><span jhiTranslate="kransenzoApp.customer.city">City</span></th>
-            <th><span jhiTranslate="kransenzoApp.customer.zipCode">Zip Code</span></th>
-            <th><span jhiTranslate="kransenzoApp.customer.province">Province</span></th>
-            <th><span jhiTranslate="kransenzoApp.customer.phoneNumber">Phone Number</span></th>
-            <th><span jhiTranslate="kransenzoApp.customer.address">Address</span></th>
-            <th></th>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="kransenzoApp.customer.street">Street</span></th>
+                <th><span jhiTranslate="kransenzoApp.customer.city">City</span></th>
+                <th><span jhiTranslate="kransenzoApp.customer.zipCode">Zip Code</span></th>
+                <th><span jhiTranslate="kransenzoApp.customer.province">Province</span></th>
+                <th><span jhiTranslate="kransenzoApp.customer.phoneNumber">Phone Number</span></th>
+                <th><span jhiTranslate="kransenzoApp.customer.address">Address</span></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -49,7 +49,7 @@
                 <td>{{customer.phoneNumber}}</td>
                 <td>
                     <div *ngIf="customer.addressId">
-                        <a [routerLink]="['../location', customer.addressId  ]" >{{customer.addressId}}</a>
+                        <a [routerLink]="['../location', customer.addressId  ]">{{customer.addressId}}</a>
                     </div>
                 </td>
                 <td class="text-right">

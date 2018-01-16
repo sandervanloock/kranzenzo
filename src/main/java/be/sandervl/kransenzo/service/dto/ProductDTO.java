@@ -1,11 +1,12 @@
 package be.sandervl.kransenzo.service.dto;
 
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the Product entity.
@@ -27,7 +28,7 @@ public class ProductDTO implements Serializable {
 
     private Boolean isActive;
 
-    private Set<TagDTO> tags = new HashSet<>();
+    private Set <TagDTO> tags = new HashSet <>();
 
     public Long getId() {
         return id;
@@ -69,11 +70,11 @@ public class ProductDTO implements Serializable {
         this.isActive = isActive;
     }
 
-    public Set<TagDTO> getTags() {
+    public Set <TagDTO> getTags() {
         return tags;
     }
 
-    public void setTags(Set<TagDTO> tags) {
+    public void setTags(Set <TagDTO> tags) {
         this.tags = tags;
     }
 
@@ -87,7 +88,7 @@ public class ProductDTO implements Serializable {
         }
 
         ProductDTO productDTO = (ProductDTO) o;
-        if(productDTO.getId() == null || getId() == null) {
+        if (productDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), productDTO.getId());

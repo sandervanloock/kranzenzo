@@ -3,15 +3,16 @@ package be.sandervl.kransenzo.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Product.
@@ -48,19 +49,19 @@ public class Product implements Serializable {
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Image> images = new HashSet<>();
+    private Set <Image> images = new HashSet <>();
 
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Order> orders = new HashSet<>();
+    private Set <Order> orders = new HashSet <>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "product_tags",
-               joinColumns = @JoinColumn(name="products_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="tags_id", referencedColumnName="id"))
-    private Set<Tag> tags = new HashSet<>();
+        joinColumns = @JoinColumn(name = "products_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id"))
+    private Set <Tag> tags = new HashSet <>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -75,17 +76,21 @@ public class Product implements Serializable {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Product name(String name) {
         this.name = name;
         return this;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Float getPrice() {
         return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 
     public Product price(Float price) {
@@ -93,21 +98,17 @@ public class Product implements Serializable {
         return this;
     }
 
-    public void setPrice(Float price) {
-        this.price = price;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Product description(String description) {
         this.description = description;
         return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Boolean isIsActive() {
@@ -123,11 +124,15 @@ public class Product implements Serializable {
         this.isActive = isActive;
     }
 
-    public Set<Image> getImages() {
+    public Set <Image> getImages() {
         return images;
     }
 
-    public Product images(Set<Image> images) {
+    public void setImages(Set <Image> images) {
+        this.images = images;
+    }
+
+    public Product images(Set <Image> images) {
         this.images = images;
         return this;
     }
@@ -144,15 +149,15 @@ public class Product implements Serializable {
         return this;
     }
 
-    public void setImages(Set<Image> images) {
-        this.images = images;
-    }
-
-    public Set<Order> getOrders() {
+    public Set <Order> getOrders() {
         return orders;
     }
 
-    public Product orders(Set<Order> orders) {
+    public void setOrders(Set <Order> orders) {
+        this.orders = orders;
+    }
+
+    public Product orders(Set <Order> orders) {
         this.orders = orders;
         return this;
     }
@@ -169,15 +174,15 @@ public class Product implements Serializable {
         return this;
     }
 
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
-
-    public Set<Tag> getTags() {
+    public Set <Tag> getTags() {
         return tags;
     }
 
-    public Product tags(Set<Tag> tags) {
+    public void setTags(Set <Tag> tags) {
+        this.tags = tags;
+    }
+
+    public Product tags(Set <Tag> tags) {
         this.tags = tags;
         return this;
     }
@@ -192,10 +197,6 @@ public class Product implements Serializable {
         this.tags.remove(tag);
         tag.getTags().remove(this);
         return this;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -1,4 +1,4 @@
-import { BaseEntity } from './../../shared';
+import {BaseEntity} from './../../shared';
 
 export class Customer implements BaseEntity {
     constructor(
@@ -9,7 +9,6 @@ export class Customer implements BaseEntity {
         public province?: string,
         public phoneNumber?: string,
         public addressId?: number,
-        public orders?: BaseEntity[],
-    ) {
+        public orders?: BaseEntity[], ) {
     }
 }

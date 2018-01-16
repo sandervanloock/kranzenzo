@@ -2,14 +2,15 @@ package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.config.Constants;
 import be.sandervl.kransenzo.service.SocialService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.support.URIBuilder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -30,17 +31,18 @@ public class SocialController {
 
     @GetMapping("/signup")
     public RedirectView signUp(WebRequest webRequest, @CookieValue(name = "NG_TRANSLATE_LANG_KEY", required = false, defaultValue = Constants.DEFAULT_LANGUAGE) String langKey) {
-        try {
-            Connection<?> connection = providerSignInUtils.getConnectionFromSession(webRequest);
+        try{
+            Connection <?> connection = providerSignInUtils.getConnectionFromSession(webRequest);
             socialService.createSocialUser(connection, langKey.replace("\"", ""));
             return new RedirectView(URIBuilder.fromUri("/#/social-register/" + connection.getKey().getProviderId())
-                .queryParam("success", "true")
-                .build().toString(), true);
-        } catch (Exception e) {
+                                              .queryParam("success", "true")
+                                              .build().toString(), true);
+        }
+        catch (Exception e){
             log.error("Exception creating social user: ", e);
             return new RedirectView(URIBuilder.fromUri("/#/social-register/no-provider")
-                .queryParam("success", "false")
-                .build().toString(), true);
+                                              .queryParam("success", "false")
+                                              .build().toString(), true);
         }
     }
 }

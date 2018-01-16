@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Product.
@@ -59,11 +59,11 @@ public class ProductService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll() {
+    public List <ProductDTO> findAll() {
         log.debug("Request to get all Products");
         return productRepository.findAllWithEagerRelationships().stream()
-            .map(productMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+                                .map(productMapper::toDto)
+                                .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
@@ -97,7 +97,7 @@ public class ProductService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<ProductDTO> search(String query) {
+    public List <ProductDTO> search(String query) {
         log.debug("Request to search Products for query {}", query);
         return StreamSupport
             .stream(productSearchRepository.search(queryStringQuery(query)).spliterator(), false)

@@ -1,12 +1,10 @@
 package be.sandervl.kransenzo.config.social;
 
-import be.sandervl.kransenzo.repository.SocialUserConnectionRepository;
 import be.sandervl.kransenzo.repository.CustomSocialUsersConnectionRepository;
+import be.sandervl.kransenzo.repository.SocialUserConnectionRepository;
 import be.sandervl.kransenzo.security.jwt.TokenProvider;
 import be.sandervl.kransenzo.security.social.CustomSignInAdapter;
-
 import io.github.jhipster.config.JHipsterProperties;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +30,7 @@ import org.springframework.social.twitter.connect.TwitterConnectionFactory;
 
 /**
  * Basic Spring Social configuration.
- *
+ * <p>
  * <p>
  * Creates the beans necessary to manage Connections to social services and
  * link accounts from those services to internal Users.
@@ -48,7 +46,7 @@ public class SocialConfiguration implements SocialConfigurer {
     private final Environment environment;
 
     public SocialConfiguration(SocialUserConnectionRepository socialUserConnectionRepository,
-            Environment environment) {
+                               Environment environment) {
 
         this.socialUserConnectionRepository = socialUserConnectionRepository;
         this.environment = environment;
@@ -56,7 +54,7 @@ public class SocialConfiguration implements SocialConfigurer {
 
     @Bean
     public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator,
-            ConnectionRepository connectionRepository) {
+                                               ConnectionRepository connectionRepository) {
 
         ConnectController controller = new ConnectController(connectionFactoryLocator, connectionRepository);
         controller.setApplicationUrl(environment.getProperty("spring.application.url"));
@@ -76,7 +74,8 @@ public class SocialConfiguration implements SocialConfigurer {
                     googleClientSecret
                 )
             );
-        } else {
+        }
+        else{
             log.error("Cannot configure GoogleConnectionFactory id or secret null");
         }
 
@@ -91,7 +90,8 @@ public class SocialConfiguration implements SocialConfigurer {
                     facebookClientSecret
                 )
             );
-        } else {
+        }
+        else{
             log.error("Cannot configure FacebookConnectionFactory id or secret null");
         }
 
@@ -106,7 +106,8 @@ public class SocialConfiguration implements SocialConfigurer {
                     twitterClientSecret
                 )
             );
-        } else {
+        }
+        else{
             log.error("Cannot configure TwitterConnectionFactory id or secret null");
         }
 
@@ -125,14 +126,15 @@ public class SocialConfiguration implements SocialConfigurer {
 
     @Bean
     public SignInAdapter signInAdapter(UserDetailsService userDetailsService, JHipsterProperties jHipsterProperties,
-            TokenProvider tokenProvider) {
+                                       TokenProvider tokenProvider) {
         return new CustomSignInAdapter(userDetailsService, jHipsterProperties,
             tokenProvider);
     }
 
     @Bean
     public ProviderSignInController providerSignInController(ConnectionFactoryLocator connectionFactoryLocator, UsersConnectionRepository usersConnectionRepository, SignInAdapter signInAdapter) {
-        ProviderSignInController providerSignInController = new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
+        ProviderSignInController providerSignInController =
+            new ProviderSignInController(connectionFactoryLocator, usersConnectionRepository, signInAdapter);
         providerSignInController.setSignUpUrl("/social/signup");
         providerSignInController.setApplicationUrl(environment.getProperty("spring.application.url"));
         return providerSignInController;

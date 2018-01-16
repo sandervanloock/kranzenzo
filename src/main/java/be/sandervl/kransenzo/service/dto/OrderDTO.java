@@ -1,14 +1,13 @@
 package be.sandervl.kransenzo.service.dto;
 
-
-import java.time.ZonedDateTime;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
-import be.sandervl.kransenzo.domain.enumeration.OrderState;
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
+import be.sandervl.kransenzo.domain.enumeration.OrderState;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * A DTO for the Order entity.
@@ -147,7 +146,7 @@ public class OrderDTO implements Serializable {
         }
 
         OrderDTO orderDTO = (OrderDTO) o;
-        if(orderDTO.getId() == null || getId() == null) {
+        if (orderDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), orderDTO.getId());

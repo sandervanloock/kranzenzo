@@ -1,14 +1,13 @@
 package be.sandervl.kransenzo.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import be.sandervl.kransenzo.domain.Tag;
-
 import be.sandervl.kransenzo.repository.TagRepository;
 import be.sandervl.kransenzo.repository.search.TagSearchRepository;
-import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
-import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
 import be.sandervl.kransenzo.service.dto.TagDTO;
 import be.sandervl.kransenzo.service.mapper.TagMapper;
+import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
+import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Tag.
@@ -33,10 +31,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class TagResource {
 
-    private final Logger log = LoggerFactory.getLogger(TagResource.class);
-
     private static final String ENTITY_NAME = "tag";
-
+    private final Logger log = LoggerFactory.getLogger(TagResource.class);
     private final TagRepository tagRepository;
 
     private final TagMapper tagMapper;
@@ -58,7 +54,7 @@ public class TagResource {
      */
     @PostMapping("/tags")
     @Timed
-    public ResponseEntity<TagDTO> createTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
+    public ResponseEntity <TagDTO> createTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
         log.debug("REST request to save Tag : {}", tagDTO);
         if (tagDTO.getId() != null) {
             throw new BadRequestAlertException("A new tag cannot already have an ID", ENTITY_NAME, "idexists");
@@ -68,8 +64,8 @@ public class TagResource {
         TagDTO result = tagMapper.toDto(tag);
         tagSearchRepository.save(tag);
         return ResponseEntity.created(new URI("/api/tags/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -83,7 +79,7 @@ public class TagResource {
      */
     @PutMapping("/tags")
     @Timed
-    public ResponseEntity<TagDTO> updateTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
+    public ResponseEntity <TagDTO> updateTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
         log.debug("REST request to update Tag : {}", tagDTO);
         if (tagDTO.getId() == null) {
             return createTag(tagDTO);
@@ -93,8 +89,8 @@ public class TagResource {
         TagDTO result = tagMapper.toDto(tag);
         tagSearchRepository.save(tag);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tagDTO.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, tagDTO.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -104,11 +100,11 @@ public class TagResource {
      */
     @GetMapping("/tags")
     @Timed
-    public List<TagDTO> getAllTags() {
+    public List <TagDTO> getAllTags() {
         log.debug("REST request to get all Tags");
-        List<Tag> tags = tagRepository.findAll();
+        List <Tag> tags = tagRepository.findAll();
         return tagMapper.toDto(tags);
-        }
+    }
 
     /**
      * GET  /tags/:id : get the "id" tag.
@@ -118,7 +114,7 @@ public class TagResource {
      */
     @GetMapping("/tags/{id}")
     @Timed
-    public ResponseEntity<TagDTO> getTag(@PathVariable Long id) {
+    public ResponseEntity <TagDTO> getTag(@PathVariable Long id) {
         log.debug("REST request to get Tag : {}", id);
         Tag tag = tagRepository.findOne(id);
         TagDTO tagDTO = tagMapper.toDto(tag);
@@ -133,7 +129,7 @@ public class TagResource {
      */
     @DeleteMapping("/tags/{id}")
     @Timed
-    public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
+    public ResponseEntity <Void> deleteTag(@PathVariable Long id) {
         log.debug("REST request to delete Tag : {}", id);
         tagRepository.delete(id);
         tagSearchRepository.delete(id);
@@ -149,7 +145,7 @@ public class TagResource {
      */
     @GetMapping("/_search/tags")
     @Timed
-    public List<TagDTO> searchTags(@RequestParam String query) {
+    public List <TagDTO> searchTags(@RequestParam String query) {
         log.debug("REST request to search Tags for query {}", query);
         return StreamSupport
             .stream(tagSearchRepository.search(queryStringQuery(query)).spliterator(), false)

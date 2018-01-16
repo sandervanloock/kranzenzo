@@ -1,15 +1,15 @@
 package be.sandervl.kransenzo.service.mapper;
 
-import be.sandervl.kransenzo.domain.*;
+import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.service.dto.CustomerDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity Customer and its DTO CustomerDTO.
  */
 @Mapper(componentModel = "spring", uses = {LocationMapper.class})
-public interface CustomerMapper extends EntityMapper<CustomerDTO, Customer> {
+public interface CustomerMapper extends EntityMapper <CustomerDTO, Customer> {
 
     @Mapping(source = "address.id", target = "addressId")
     CustomerDTO toDto(Customer customer);

@@ -1,14 +1,13 @@
 package be.sandervl.kransenzo.service.dto;
 
 import be.sandervl.kransenzo.config.Constants;
-
 import be.sandervl.kransenzo.domain.Authority;
 import be.sandervl.kransenzo.domain.User;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,7 +50,7 @@ public class UserDTO {
 
     private Instant lastModifiedDate;
 
-    private Set<String> authorities;
+    private Set <String> authorities;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -71,8 +70,8 @@ public class UserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.authorities = user.getAuthorities().stream()
-            .map(Authority::getName)
-            .collect(Collectors.toSet());
+                               .map(Authority::getName)
+                               .collect(Collectors.toSet());
     }
 
     public Long getId() {
@@ -171,11 +170,11 @@ public class UserDTO {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public Set<String> getAuthorities() {
+    public Set <String> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities(Set<String> authorities) {
+    public void setAuthorities(Set <String> authorities) {
         this.authorities = authorities;
     }
 

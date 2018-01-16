@@ -1,11 +1,11 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.config.DefaultProfileUtil;
-
 import io.github.jhipster.config.JHipsterProperties;
-
 import org.springframework.core.env.Environment;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,8 +38,8 @@ public class ProfileInfoResource {
         if (displayOnActiveProfiles == null) {
             return null;
         }
-        List<String> ribbonProfiles = new ArrayList<>(Arrays.asList(displayOnActiveProfiles));
-        List<String> springBootProfiles = Arrays.asList(activeProfiles);
+        List <String> ribbonProfiles = new ArrayList <>(Arrays.asList(displayOnActiveProfiles));
+        List <String> springBootProfiles = Arrays.asList(activeProfiles);
         ribbonProfiles.retainAll(springBootProfiles);
         if (!ribbonProfiles.isEmpty()) {
             return ribbonProfiles.get(0);

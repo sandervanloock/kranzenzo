@@ -32,17 +32,17 @@ public class AuditEventService {
         this.auditEventConverter = auditEventConverter;
     }
 
-    public Page<AuditEvent> findAll(Pageable pageable) {
+    public Page <AuditEvent> findAll(Pageable pageable) {
         return persistenceAuditEventRepository.findAll(pageable)
-            .map(auditEventConverter::convertToAuditEvent);
+                                              .map(auditEventConverter::convertToAuditEvent);
     }
 
-    public Page<AuditEvent> findByDates(Instant fromDate, Instant toDate, Pageable pageable) {
+    public Page <AuditEvent> findByDates(Instant fromDate, Instant toDate, Pageable pageable) {
         return persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate, pageable)
-            .map(auditEventConverter::convertToAuditEvent);
+                                              .map(auditEventConverter::convertToAuditEvent);
     }
 
-    public Optional<AuditEvent> find(Long id) {
+    public Optional <AuditEvent> find(Long id) {
         return Optional.ofNullable(persistenceAuditEventRepository.findOne(id)).map
             (auditEventConverter::convertToAuditEvent);
     }

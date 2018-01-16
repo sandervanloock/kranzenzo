@@ -1,16 +1,16 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
-
 import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.domain.Product;
+import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
+import be.sandervl.kransenzo.domain.enumeration.OrderState;
 import be.sandervl.kransenzo.repository.OrderRepository;
-import be.sandervl.kransenzo.service.OrderService;
 import be.sandervl.kransenzo.repository.search.OrderSearchRepository;
+import be.sandervl.kransenzo.service.OrderService;
 import be.sandervl.kransenzo.service.dto.OrderDTO;
 import be.sandervl.kransenzo.service.mapper.OrderMapper;
 import be.sandervl.kransenzo.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,20 +27,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
-import static be.sandervl.kransenzo.web.rest.TestUtil.sameInstant;
 import static be.sandervl.kransenzo.web.rest.TestUtil.createFormattingConversionService;
+import static be.sandervl.kransenzo.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import be.sandervl.kransenzo.domain.enumeration.OrderState;
-import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 /**
  * Test class for the OrderResource REST controller.
  *
@@ -50,10 +48,12 @@ import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 @SpringBootTest(classes = KransenzoApp.class)
 public class OrderResourceIntTest {
 
-    private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant
+        .ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final ZonedDateTime DEFAULT_UPDATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime DEFAULT_UPDATED = ZonedDateTime.ofInstant(Instant
+        .ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_UPDATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     private static final OrderState DEFAULT_STATE = OrderState.NEW;
@@ -99,20 +99,9 @@ public class OrderResourceIntTest {
 
     private Order order;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final OrderResource orderResource = new OrderResource(orderService);
-        this.restOrderMockMvc = MockMvcBuilders.standaloneSetup(orderResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -134,6 +123,17 @@ public class OrderResourceIntTest {
     }
 
     @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        final OrderResource orderResource = new OrderResource(orderService);
+        this.restOrderMockMvc = MockMvcBuilders.standaloneSetup(orderResource)
+                                               .setCustomArgumentResolvers(pageableArgumentResolver)
+                                               .setControllerAdvice(exceptionTranslator)
+                                               .setConversionService(createFormattingConversionService())
+                                               .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    @Before
     public void initTest() {
         orderSearchRepository.deleteAll();
         order = createEntity(em);
@@ -149,10 +149,10 @@ public class OrderResourceIntTest {
         restOrderMockMvc.perform(post("/api/orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(orderDTO)))
-            .andExpect(status().isCreated());
+                        .andExpect(status().isCreated());
 
         // Validate the Order in the database
-        List<Order> orderList = orderRepository.findAll();
+        List <Order> orderList = orderRepository.findAll();
         assertThat(orderList).hasSize(databaseSizeBeforeCreate + 1);
         Order testOrder = orderList.get(orderList.size() - 1);
         assertThat(testOrder.getCreated()).isEqualTo(DEFAULT_CREATED);
@@ -183,10 +183,10 @@ public class OrderResourceIntTest {
         restOrderMockMvc.perform(post("/api/orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(orderDTO)))
-            .andExpect(status().isBadRequest());
+                        .andExpect(status().isBadRequest());
 
         // Validate the Order in the database
-        List<Order> orderList = orderRepository.findAll();
+        List <Order> orderList = orderRepository.findAll();
         assertThat(orderList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -198,16 +198,18 @@ public class OrderResourceIntTest {
 
         // Get all the orderList
         restOrderMockMvc.perform(get("/api/orders?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().intValue())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].updated").value(hasItem(sameInstant(DEFAULT_UPDATED))))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].includeBatteries").value(hasItem(DEFAULT_INCLUDE_BATTERIES.booleanValue())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].deliveryPrice").value(hasItem(DEFAULT_DELIVERY_PRICE.doubleValue())));
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                        .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().intValue())))
+                        .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
+                        .andExpect(jsonPath("$.[*].updated").value(hasItem(sameInstant(DEFAULT_UPDATED))))
+                        .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+                        .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())))
+                        .andExpect(jsonPath("$.[*].includeBatteries")
+                            .value(hasItem(DEFAULT_INCLUDE_BATTERIES.booleanValue())))
+                        .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                        .andExpect(jsonPath("$.[*].deliveryPrice")
+                            .value(hasItem(DEFAULT_DELIVERY_PRICE.doubleValue())));
     }
 
     @Test
@@ -218,16 +220,16 @@ public class OrderResourceIntTest {
 
         // Get the order
         restOrderMockMvc.perform(get("/api/orders/{id}", order.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(order.getId().intValue()))
-            .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
-            .andExpect(jsonPath("$.updated").value(sameInstant(DEFAULT_UPDATED)))
-            .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
-            .andExpect(jsonPath("$.deliveryType").value(DEFAULT_DELIVERY_TYPE.toString()))
-            .andExpect(jsonPath("$.includeBatteries").value(DEFAULT_INCLUDE_BATTERIES.booleanValue()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.deliveryPrice").value(DEFAULT_DELIVERY_PRICE.doubleValue()));
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                        .andExpect(jsonPath("$.id").value(order.getId().intValue()))
+                        .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
+                        .andExpect(jsonPath("$.updated").value(sameInstant(DEFAULT_UPDATED)))
+                        .andExpect(jsonPath("$.state").value(DEFAULT_STATE.toString()))
+                        .andExpect(jsonPath("$.deliveryType").value(DEFAULT_DELIVERY_TYPE.toString()))
+                        .andExpect(jsonPath("$.includeBatteries").value(DEFAULT_INCLUDE_BATTERIES.booleanValue()))
+                        .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+                        .andExpect(jsonPath("$.deliveryPrice").value(DEFAULT_DELIVERY_PRICE.doubleValue()));
     }
 
     @Test
@@ -235,7 +237,7 @@ public class OrderResourceIntTest {
     public void getNonExistingOrder() throws Exception {
         // Get the order
         restOrderMockMvc.perform(get("/api/orders/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                        .andExpect(status().isNotFound());
     }
 
     @Test
@@ -263,10 +265,10 @@ public class OrderResourceIntTest {
         restOrderMockMvc.perform(put("/api/orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(orderDTO)))
-            .andExpect(status().isOk());
+                        .andExpect(status().isOk());
 
         // Validate the Order in the database
-        List<Order> orderList = orderRepository.findAll();
+        List <Order> orderList = orderRepository.findAll();
         assertThat(orderList).hasSize(databaseSizeBeforeUpdate);
         Order testOrder = orderList.get(orderList.size() - 1);
         assertThat(testOrder.getCreated()).isEqualTo(UPDATED_CREATED);
@@ -296,10 +298,10 @@ public class OrderResourceIntTest {
         restOrderMockMvc.perform(put("/api/orders")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(orderDTO)))
-            .andExpect(status().isCreated());
+                        .andExpect(status().isCreated());
 
         // Validate the Order in the database
-        List<Order> orderList = orderRepository.findAll();
+        List <Order> orderList = orderRepository.findAll();
         assertThat(orderList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -314,14 +316,14 @@ public class OrderResourceIntTest {
         // Get the order
         restOrderMockMvc.perform(delete("/api/orders/{id}", order.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                        .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
         boolean orderExistsInEs = orderSearchRepository.exists(order.getId());
         assertThat(orderExistsInEs).isFalse();
 
         // Validate the database is empty
-        List<Order> orderList = orderRepository.findAll();
+        List <Order> orderList = orderRepository.findAll();
         assertThat(orderList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
@@ -334,16 +336,18 @@ public class OrderResourceIntTest {
 
         // Search the order
         restOrderMockMvc.perform(get("/api/_search/orders?query=id:" + order.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().intValue())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].updated").value(hasItem(sameInstant(DEFAULT_UPDATED))))
-            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
-            .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].includeBatteries").value(hasItem(DEFAULT_INCLUDE_BATTERIES.booleanValue())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].deliveryPrice").value(hasItem(DEFAULT_DELIVERY_PRICE.doubleValue())));
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                        .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().intValue())))
+                        .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
+                        .andExpect(jsonPath("$.[*].updated").value(hasItem(sameInstant(DEFAULT_UPDATED))))
+                        .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE.toString())))
+                        .andExpect(jsonPath("$.[*].deliveryType").value(hasItem(DEFAULT_DELIVERY_TYPE.toString())))
+                        .andExpect(jsonPath("$.[*].includeBatteries")
+                            .value(hasItem(DEFAULT_INCLUDE_BATTERIES.booleanValue())))
+                        .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                        .andExpect(jsonPath("$.[*].deliveryPrice")
+                            .value(hasItem(DEFAULT_DELIVERY_PRICE.doubleValue())));
     }
 
     @Test

@@ -1,10 +1,11 @@
 package be.sandervl.kransenzo.repository;
 
 import be.sandervl.kransenzo.domain.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.jpa.repository.*;
-import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 /**
@@ -12,9 +13,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository <Product, Long> {
     @Query("select distinct product from Product product left join fetch product.tags")
-    List<Product> findAllWithEagerRelationships();
+    List <Product> findAllWithEagerRelationships();
 
     @Query("select product from Product product left join fetch product.tags where product.id =:id")
     Product findOneWithEagerRelationships(@Param("id") Long id);

@@ -17,15 +17,21 @@
         <table class="table table-sm table-striped table-bordered">
             <thead>
             <tr>
-                <th (click)="orderProp = 'timestamp'; reverse=!reverse"><span jhiTranslate="audits.table.header.date">Date</span></th>
-                <th (click)="orderProp = 'principal'; reverse=!reverse"><span jhiTranslate="audits.table.header.principal">User</span></th>
-                <th (click)="orderProp = 'type'; reverse=!reverse"><span jhiTranslate="audits.table.header.status">State</span></th>
-                <th (click)="orderProp = 'data.message'; reverse=!reverse"><span jhiTranslate="audits.table.header.data">Extra data</span></th>
+                <th (click)="orderProp = 'timestamp'; reverse=!reverse"><span jhiTranslate="audits.table.header.date">Date</span>
+                </th>
+                <th (click)="orderProp = 'principal'; reverse=!reverse">
+                    <span jhiTranslate="audits.table.header.principal">User</span></th>
+                <th (click)="orderProp = 'type'; reverse=!reverse">
+                    <span jhiTranslate="audits.table.header.status">State</span></th>
+                <th (click)="orderProp = 'data.message'; reverse=!reverse">
+                    <span jhiTranslate="audits.table.header.data">Extra data</span></th>
             </tr>
             </thead>
             <tr *ngFor="let audit of getAudits()">
                 <td><span>{{audit.timestamp| date:'medium'}}</span></td>
-                <td><small>{{audit.principal}}</small></td>
+                <td>
+                    <small>{{audit.principal}}</small>
+                </td>
                 <td>{{audit.type}}</td>
                 <td>
                     <span *ngIf="audit.data" ng-show="audit.data.message">{{audit.data.message}}</span>

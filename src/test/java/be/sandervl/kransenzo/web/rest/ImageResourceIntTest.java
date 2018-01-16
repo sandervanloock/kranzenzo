@@ -1,14 +1,12 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
-
 import be.sandervl.kransenzo.domain.Image;
 import be.sandervl.kransenzo.repository.ImageRepository;
 import be.sandervl.kransenzo.repository.search.ImageSearchRepository;
 import be.sandervl.kransenzo.service.dto.ImageDTO;
 import be.sandervl.kransenzo.service.mapper.ImageMapper;
 import be.sandervl.kransenzo.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,20 +70,9 @@ public class ImageResourceIntTest {
 
     private Image image;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final ImageResource imageResource = new ImageResource(imageRepository, imageMapper, imageSearchRepository);
-        this.restImageMockMvc = MockMvcBuilders.standaloneSetup(imageResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -94,6 +81,17 @@ public class ImageResourceIntTest {
             .data(DEFAULT_DATA)
             .dataContentType(DEFAULT_DATA_CONTENT_TYPE);
         return image;
+    }
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        final ImageResource imageResource = new ImageResource(imageRepository, imageMapper, imageSearchRepository);
+        this.restImageMockMvc = MockMvcBuilders.standaloneSetup(imageResource)
+                                               .setCustomArgumentResolvers(pageableArgumentResolver)
+                                               .setControllerAdvice(exceptionTranslator)
+                                               .setConversionService(createFormattingConversionService())
+                                               .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -112,10 +110,10 @@ public class ImageResourceIntTest {
         restImageMockMvc.perform(post("/api/images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(imageDTO)))
-            .andExpect(status().isCreated());
+                        .andExpect(status().isCreated());
 
         // Validate the Image in the database
-        List<Image> imageList = imageRepository.findAll();
+        List <Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeCreate + 1);
         Image testImage = imageList.get(imageList.size() - 1);
         assertThat(testImage.getData()).isEqualTo(DEFAULT_DATA);
@@ -139,10 +137,10 @@ public class ImageResourceIntTest {
         restImageMockMvc.perform(post("/api/images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(imageDTO)))
-            .andExpect(status().isBadRequest());
+                        .andExpect(status().isBadRequest());
 
         // Validate the Image in the database
-        List<Image> imageList = imageRepository.findAll();
+        List <Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -159,9 +157,9 @@ public class ImageResourceIntTest {
         restImageMockMvc.perform(post("/api/images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(imageDTO)))
-            .andExpect(status().isBadRequest());
+                        .andExpect(status().isBadRequest());
 
-        List<Image> imageList = imageRepository.findAll();
+        List <Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -173,11 +171,11 @@ public class ImageResourceIntTest {
 
         // Get all the imageList
         restImageMockMvc.perform(get("/api/images?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(image.getId().intValue())))
-            .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))));
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                        .andExpect(jsonPath("$.[*].id").value(hasItem(image.getId().intValue())))
+                        .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
+                        .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))));
     }
 
     @Test
@@ -188,11 +186,11 @@ public class ImageResourceIntTest {
 
         // Get the image
         restImageMockMvc.perform(get("/api/images/{id}", image.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(image.getId().intValue()))
-            .andExpect(jsonPath("$.dataContentType").value(DEFAULT_DATA_CONTENT_TYPE))
-            .andExpect(jsonPath("$.data").value(Base64Utils.encodeToString(DEFAULT_DATA)));
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                        .andExpect(jsonPath("$.id").value(image.getId().intValue()))
+                        .andExpect(jsonPath("$.dataContentType").value(DEFAULT_DATA_CONTENT_TYPE))
+                        .andExpect(jsonPath("$.data").value(Base64Utils.encodeToString(DEFAULT_DATA)));
     }
 
     @Test
@@ -200,7 +198,7 @@ public class ImageResourceIntTest {
     public void getNonExistingImage() throws Exception {
         // Get the image
         restImageMockMvc.perform(get("/api/images/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                        .andExpect(status().isNotFound());
     }
 
     @Test
@@ -223,10 +221,10 @@ public class ImageResourceIntTest {
         restImageMockMvc.perform(put("/api/images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(imageDTO)))
-            .andExpect(status().isOk());
+                        .andExpect(status().isOk());
 
         // Validate the Image in the database
-        List<Image> imageList = imageRepository.findAll();
+        List <Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeUpdate);
         Image testImage = imageList.get(imageList.size() - 1);
         assertThat(testImage.getData()).isEqualTo(UPDATED_DATA);
@@ -249,10 +247,10 @@ public class ImageResourceIntTest {
         restImageMockMvc.perform(put("/api/images")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(imageDTO)))
-            .andExpect(status().isCreated());
+                        .andExpect(status().isCreated());
 
         // Validate the Image in the database
-        List<Image> imageList = imageRepository.findAll();
+        List <Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -267,14 +265,14 @@ public class ImageResourceIntTest {
         // Get the image
         restImageMockMvc.perform(delete("/api/images/{id}", image.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                        .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
         boolean imageExistsInEs = imageSearchRepository.exists(image.getId());
         assertThat(imageExistsInEs).isFalse();
 
         // Validate the database is empty
-        List<Image> imageList = imageRepository.findAll();
+        List <Image> imageList = imageRepository.findAll();
         assertThat(imageList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
@@ -287,11 +285,11 @@ public class ImageResourceIntTest {
 
         // Search the image
         restImageMockMvc.perform(get("/api/_search/images?query=id:" + image.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(image.getId().intValue())))
-            .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))));
+                        .andExpect(status().isOk())
+                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                        .andExpect(jsonPath("$.[*].id").value(hasItem(image.getId().intValue())))
+                        .andExpect(jsonPath("$.[*].dataContentType").value(hasItem(DEFAULT_DATA_CONTENT_TYPE)))
+                        .andExpect(jsonPath("$.[*].data").value(hasItem(Base64Utils.encodeToString(DEFAULT_DATA))));
     }
 
     @Test

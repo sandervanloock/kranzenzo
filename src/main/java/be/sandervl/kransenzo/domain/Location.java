@@ -2,11 +2,12 @@ package be.sandervl.kransenzo.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -53,17 +54,21 @@ public class Location implements Serializable {
         return latitude;
     }
 
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
+    }
+
     public Location latitude(Float latitude) {
         this.latitude = latitude;
         return this;
     }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
-    }
-
     public Float getLongitude() {
         return longitude;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
     }
 
     public Location longitude(Float longitude) {
@@ -71,21 +76,17 @@ public class Location implements Serializable {
         return this;
     }
 
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
-    }
-
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Location description(String description) {
         this.description = description;
         return this;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -1,21 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Response } from '@angular/http';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Response} from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
-import { Tag } from './tag.model';
-import { TagPopupService } from './tag-popup.service';
-import { TagService } from './tag.service';
-import { Product, ProductService } from '../product';
-import { ResponseWrapper } from '../../shared';
+import {Tag} from './tag.model';
+import {TagPopupService} from './tag-popup.service';
+import {TagService} from './tag.service';
+import {Product, ProductService} from '../product';
+import {ResponseWrapper} from '../../shared';
 
-@Component({
-    selector: 'jhi-tag-dialog',
-    templateUrl: './tag-dialog.component.html'
-})
+@Component( {
+                selector: 'jhi-tag-dialog', templateUrl: './tag-dialog.component.html'
+            } )
 export class TagDialogComponent implements OnInit {
 
     tag: Tag;
@@ -23,94 +22,88 @@ export class TagDialogComponent implements OnInit {
 
     products: Product[];
 
-    constructor(
-        public activeModal: NgbActiveModal,
-        private jhiAlertService: JhiAlertService,
-        private tagService: TagService,
-        private productService: ProductService,
-        private eventManager: JhiEventManager
-    ) {
+    constructor( public activeModal: NgbActiveModal,
+                 private jhiAlertService: JhiAlertService,
+                 private tagService: TagService,
+                 private productService: ProductService,
+                 private eventManager: JhiEventManager ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.productService.query()
-            .subscribe((res: ResponseWrapper) => { this.products = res.json; }, (res: ResponseWrapper) => this.onError(res.json));
+            .subscribe( ( res: ResponseWrapper ) => {
+                this.products = res.json;
+            }, ( res: ResponseWrapper ) => this.onError( res.json ) );
     }
 
     clear() {
-        this.activeModal.dismiss('cancel');
+        this.activeModal.dismiss( 'cancel' );
     }
 
     save() {
         this.isSaving = true;
-        if (this.tag.id !== undefined) {
-            this.subscribeToSaveResponse(
-                this.tagService.update(this.tag));
+        if ( this.tag.id !== undefined ) {
+            this.subscribeToSaveResponse( this.tagService.update( this.tag ) );
         } else {
-            this.subscribeToSaveResponse(
-                this.tagService.create(this.tag));
+            this.subscribeToSaveResponse( this.tagService.create( this.tag ) );
         }
     }
 
-    private subscribeToSaveResponse(result: Observable<Tag>) {
-        result.subscribe((res: Tag) =>
-            this.onSaveSuccess(res), (res: Response) => this.onSaveError());
-    }
-
-    private onSaveSuccess(result: Tag) {
-        this.eventManager.broadcast({ name: 'tagListModification', content: 'OK'});
-        this.isSaving = false;
-        this.activeModal.dismiss(result);
-    }
-
-    private onSaveError() {
-        this.isSaving = false;
-    }
-
-    private onError(error: any) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackProductById(index: number, item: Product) {
+    trackProductById( index: number, item: Product ) {
         return item.id;
     }
 
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
+    getSelected( selectedVals: Array<any>, option: any ) {
+        if ( selectedVals ) {
+            for ( let i = 0; i < selectedVals.length; i++ ) {
+                if ( option.id === selectedVals[i].id ) {
                     return selectedVals[i];
                 }
             }
         }
         return option;
     }
+
+    private subscribeToSaveResponse( result: Observable<Tag> ) {
+        result.subscribe( ( res: Tag ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError() );
+    }
+
+    private onSaveSuccess( result: Tag ) {
+        this.eventManager.broadcast( {name: 'tagListModification', content: 'OK'} );
+        this.isSaving = false;
+        this.activeModal.dismiss( result );
+    }
+
+    private onSaveError() {
+        this.isSaving = false;
+    }
+
+    private onError( error: any ) {
+        this.jhiAlertService.error( error.message, null, null );
+    }
 }
 
-@Component({
-    selector: 'jhi-tag-popup',
-    template: ''
-})
+@Component( {
+                selector: 'jhi-tag-popup', template: ''
+            } )
 export class TagPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
-    constructor(
-        private route: ActivatedRoute,
-        private tagPopupService: TagPopupService
-    ) {}
+    constructor( private route: ActivatedRoute, private tagPopupService: TagPopupService ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
+        this.routeSub = this.route.params.subscribe( ( params ) => {
             if ( params['id'] ) {
                 this.tagPopupService
-                    .open(TagDialogComponent as Component, params['id']);
+                    .open( TagDialogComponent as Component, params['id'] );
             } else {
                 this.tagPopupService
-                    .open(TagDialogComponent as Component);
+                    .open( TagDialogComponent as Component );
             }
-        });
+        } );
     }
 
     ngOnDestroy() {

@@ -1,7 +1,7 @@
 package be.sandervl.kransenzo.config;
 
-import java.io.IOException;
-
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.elasticsearch.client.Client;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,15 +9,15 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.EntityMapper;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 
 @Configuration
 public class ElasticsearchConfiguration {
 
     @Bean
     public ElasticsearchTemplate elasticsearchTemplate(Client client, Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder) {
-        return new ElasticsearchTemplate(client, new CustomEntityMapper(jackson2ObjectMapperBuilder.createXmlMapper(false).build()));
+        return new ElasticsearchTemplate(client, new CustomEntityMapper(jackson2ObjectMapperBuilder
+            .createXmlMapper(false).build()));
     }
 
     public class CustomEntityMapper implements EntityMapper {
@@ -36,7 +36,7 @@ public class ElasticsearchConfiguration {
         }
 
         @Override
-        public <T> T mapToObject(String source, Class<T> clazz) throws IOException {
+        public <T> T mapToObject(String source, Class <T> clazz) throws IOException {
             return objectMapper.readValue(source, clazz);
         }
     }

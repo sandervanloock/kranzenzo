@@ -3,7 +3,6 @@ package be.sandervl.kransenzo.repository;
 import be.sandervl.kransenzo.config.Constants;
 import be.sandervl.kransenzo.config.audit.AuditEventConverter;
 import be.sandervl.kransenzo.domain.PersistentAuditEvent;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.audit.AuditEvent;
@@ -23,13 +22,11 @@ import java.util.Map;
 @Repository
 public class CustomAuditEventRepository implements AuditEventRepository {
 
-    private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
-
     /**
      * Should be the same as in Liquibase migration.
      */
     protected static final int EVENT_DATA_COLUMN_MAX_LENGTH = 255;
-
+    private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
     private final PersistenceAuditEventRepository persistenceAuditEventRepository;
 
     private final AuditEventConverter auditEventConverter;
@@ -37,27 +34,29 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     public CustomAuditEventRepository(PersistenceAuditEventRepository persistenceAuditEventRepository,
-            AuditEventConverter auditEventConverter) {
+                                      AuditEventConverter auditEventConverter) {
 
         this.persistenceAuditEventRepository = persistenceAuditEventRepository;
         this.auditEventConverter = auditEventConverter;
     }
 
     @Override
-    public List<AuditEvent> find(Date after) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents =
+    public List <AuditEvent> find(Date after) {
+        Iterable <PersistentAuditEvent> persistentAuditEvents =
             persistenceAuditEventRepository.findByAuditEventDateAfter(after.toInstant());
         return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
     }
 
     @Override
-    public List<AuditEvent> find(String principal, Date after) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents;
+    public List <AuditEvent> find(String principal, Date after) {
+        Iterable <PersistentAuditEvent> persistentAuditEvents;
         if (principal == null && after == null) {
             persistentAuditEvents = persistenceAuditEventRepository.findAll();
-        } else if (after == null) {
+        }
+        else if (after == null) {
             persistentAuditEvents = persistenceAuditEventRepository.findByPrincipal(principal);
-        } else {
+        }
+        else{
             persistentAuditEvents =
                 persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfter(principal, after.toInstant());
         }
@@ -65,9 +64,10 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     }
 
     @Override
-    public List<AuditEvent> find(String principal, Date after, String type) {
-        Iterable<PersistentAuditEvent> persistentAuditEvents =
-            persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfterAndAuditEventType(principal, after.toInstant(), type);
+    public List <AuditEvent> find(String principal, Date after, String type) {
+        Iterable <PersistentAuditEvent> persistentAuditEvents =
+            persistenceAuditEventRepository.findByPrincipalAndAuditEventDateAfterAndAuditEventType(principal, after
+                .toInstant(), type);
         return auditEventConverter.convertToAuditEvent(persistentAuditEvents);
     }
 
@@ -81,7 +81,7 @@ public class CustomAuditEventRepository implements AuditEventRepository {
             persistentAuditEvent.setPrincipal(event.getPrincipal());
             persistentAuditEvent.setAuditEventType(event.getType());
             persistentAuditEvent.setAuditEventDate(event.getTimestamp().toInstant());
-            Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
+            Map <String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
             persistentAuditEvent.setData(truncate(eventData));
             persistenceAuditEventRepository.save(persistentAuditEvent);
         }
@@ -90,18 +90,18 @@ public class CustomAuditEventRepository implements AuditEventRepository {
     /**
      * Truncate event data that might exceed column length.
      */
-    private Map<String, String> truncate(Map<String, String> data) {
-        Map<String, String> results = new HashMap<>();
+    private Map <String, String> truncate(Map <String, String> data) {
+        Map <String, String> results = new HashMap <>();
 
         if (data != null) {
-            for (Map.Entry<String, String> entry : data.entrySet()) {
+            for (Map.Entry <String, String> entry : data.entrySet()){
                 String value = entry.getValue();
                 if (value != null) {
                     int length = value.length();
                     if (length > EVENT_DATA_COLUMN_MAX_LENGTH) {
                         value = value.substring(0, EVENT_DATA_COLUMN_MAX_LENGTH);
                         log.warn("Event data for {} too long ({}) has been truncated to {}. Consider increasing column width.",
-                                 entry.getKey(), length, EVENT_DATA_COLUMN_MAX_LENGTH);
+                            entry.getKey(), length, EVENT_DATA_COLUMN_MAX_LENGTH);
                     }
                 }
                 results.put(entry.getKey(), value);

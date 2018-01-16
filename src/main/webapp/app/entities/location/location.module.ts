@@ -1,49 +1,29 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { KransenzoSharedModule } from '../../shared';
+import {KransenzoSharedModule} from '../../shared';
 import {
-    LocationService,
-    LocationPopupService,
     LocationComponent,
+    LocationDeleteDialogComponent,
+    LocationDeletePopupComponent,
     LocationDetailComponent,
     LocationDialogComponent,
     LocationPopupComponent,
-    LocationDeletePopupComponent,
-    LocationDeleteDialogComponent,
-    locationRoute,
     locationPopupRoute,
+    LocationPopupService,
+    locationRoute,
+    LocationService,
 } from './';
 
-const ENTITY_STATES = [
-    ...locationRoute,
-    ...locationPopupRoute,
-];
+const ENTITY_STATES = [...locationRoute, ...locationPopupRoute,];
 
-@NgModule({
-    imports: [
-        KransenzoSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
-    ],
-    declarations: [
-        LocationComponent,
-        LocationDetailComponent,
-        LocationDialogComponent,
-        LocationDeleteDialogComponent,
-        LocationPopupComponent,
-        LocationDeletePopupComponent,
-    ],
-    entryComponents: [
-        LocationComponent,
-        LocationDialogComponent,
-        LocationPopupComponent,
-        LocationDeleteDialogComponent,
-        LocationDeletePopupComponent,
-    ],
-    providers: [
-        LocationService,
-        LocationPopupService,
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
-export class KransenzoLocationModule {}
+@NgModule( {
+               imports: [KransenzoSharedModule, RouterModule.forChild( ENTITY_STATES )],
+               declarations: [LocationComponent, LocationDetailComponent, LocationDialogComponent, LocationDeleteDialogComponent, LocationPopupComponent,
+                              LocationDeletePopupComponent,],
+               entryComponents: [LocationComponent, LocationDialogComponent, LocationPopupComponent, LocationDeleteDialogComponent, LocationDeletePopupComponent,],
+               providers: [LocationService, LocationPopupService,],
+               schemas: [CUSTOM_ELEMENTS_SCHEMA]
+           } )
+export class KransenzoLocationModule {
+}

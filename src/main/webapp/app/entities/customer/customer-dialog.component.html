@@ -1,42 +1,45 @@
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myCustomerLabel" jhiTranslate="kransenzoApp.customer.home.createOrEditLabel">Create or edit a Customer</h4>
+        <h4 class="modal-title" id="myCustomerLabel" jhiTranslate="kransenzoApp.customer.home.createOrEditLabel">Create
+            or edit a Customer</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
+                (click)="clear()">&times;
+        </button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group" [hidden]="!customer.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
-                   [(ngModel)]="customer.id" readonly />
+                   [(ngModel)]="customer.id" readonly/>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.customer.street" for="field_street">Street</label>
             <input type="text" class="form-control" name="street" id="field_street"
-                [(ngModel)]="customer.street" />
+                   [(ngModel)]="customer.street"/>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.customer.city" for="field_city">City</label>
             <input type="text" class="form-control" name="city" id="field_city"
-                [(ngModel)]="customer.city" />
+                   [(ngModel)]="customer.city"/>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kransenzoApp.customer.zipCode" for="field_zipCode">Zip Code</label>
+            <label class="form-control-label" jhiTranslate="kransenzoApp.customer.zipCode" for="field_zipCode">Zip
+                Code</label>
             <input type="number" class="form-control" name="zipCode" id="field_zipCode"
-                [(ngModel)]="customer.zipCode" min="1000" max="9999"/>
+                   [(ngModel)]="customer.zipCode" min="1000" max="9999"/>
             <div [hidden]="!(editForm.controls.zipCode?.dirty && editForm.controls.zipCode?.invalid)">
                 <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.zipCode?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1000 }">
+                       [hidden]="!editForm.controls.zipCode?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1000 }">
                     This field should be at least 1000.
                 </small>
                 <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.zipCode?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 9999 }">
+                       [hidden]="!editForm.controls.zipCode?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 9999 }">
                     This field cannot be more than 9999.
                 </small>
                 <small class="form-text text-danger"
-                    [hidden]="!editForm.controls.zipCode?.errors?.number" jhiTranslate="entity.validation.number">
+                       [hidden]="!editForm.controls.zipCode?.errors?.number" jhiTranslate="entity.validation.number">
                     This field should be a number.
                 </small>
             </div>
@@ -44,19 +47,22 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.customer.province" for="field_province">Province</label>
             <input type="text" class="form-control" name="province" id="field_province"
-                [(ngModel)]="customer.province" />
+                   [(ngModel)]="customer.province"/>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kransenzoApp.customer.phoneNumber" for="field_phoneNumber">Phone Number</label>
+            <label class="form-control-label" jhiTranslate="kransenzoApp.customer.phoneNumber" for="field_phoneNumber">Phone
+                Number</label>
             <input type="text" class="form-control" name="phoneNumber" id="field_phoneNumber"
-                [(ngModel)]="customer.phoneNumber" />
+                   [(ngModel)]="customer.phoneNumber"/>
         </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.customer.address" for="field_address">Address</label>
             <select class="form-control" id="field_address" name="address" [(ngModel)]="customer.addressId">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="locationOption.id" *ngFor="let locationOption of addresses; trackBy: trackLocationById">{{locationOption.id}}</option>
+                <option [ngValue]="locationOption.id" *ngFor="let locationOption of addresses; trackBy: trackLocationById">
+                    {{locationOption.id}}
+                </option>
             </select>
         </div>
     </div>

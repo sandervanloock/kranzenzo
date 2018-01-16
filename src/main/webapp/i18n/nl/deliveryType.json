@@ -1,6 +1,6 @@
 {
     "kransenzoApp": {
-        "DeliveryType" : {
+        "DeliveryType": {
             "null": "",
             "DELIVERED": "DELIVERED",
             "PICKUP": "PICKUP"

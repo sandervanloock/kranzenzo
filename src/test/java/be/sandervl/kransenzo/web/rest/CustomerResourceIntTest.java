@@ -1,14 +1,12 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
-
 import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.repository.CustomerRepository;
 import be.sandervl.kransenzo.repository.search.CustomerSearchRepository;
 import be.sandervl.kransenzo.service.dto.CustomerDTO;
 import be.sandervl.kransenzo.service.mapper.CustomerMapper;
 import be.sandervl.kransenzo.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -81,20 +79,9 @@ public class CustomerResourceIntTest {
 
     private Customer customer;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final CustomerResource customerResource = new CustomerResource(customerRepository, customerMapper, customerSearchRepository);
-        this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup(customerResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -106,6 +93,18 @@ public class CustomerResourceIntTest {
             .province(DEFAULT_PROVINCE)
             .phoneNumber(DEFAULT_PHONE_NUMBER);
         return customer;
+    }
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        final CustomerResource customerResource =
+            new CustomerResource(customerRepository, customerMapper, customerSearchRepository);
+        this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup(customerResource)
+                                                  .setCustomArgumentResolvers(pageableArgumentResolver)
+                                                  .setControllerAdvice(exceptionTranslator)
+                                                  .setConversionService(createFormattingConversionService())
+                                                  .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -124,10 +123,10 @@ public class CustomerResourceIntTest {
         restCustomerMockMvc.perform(post("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
-            .andExpect(status().isCreated());
+                           .andExpect(status().isCreated());
 
         // Validate the Customer in the database
-        List<Customer> customerList = customerRepository.findAll();
+        List <Customer> customerList = customerRepository.findAll();
         assertThat(customerList).hasSize(databaseSizeBeforeCreate + 1);
         Customer testCustomer = customerList.get(customerList.size() - 1);
         assertThat(testCustomer.getStreet()).isEqualTo(DEFAULT_STREET);
@@ -154,10 +153,10 @@ public class CustomerResourceIntTest {
         restCustomerMockMvc.perform(post("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
-            .andExpect(status().isBadRequest());
+                           .andExpect(status().isBadRequest());
 
         // Validate the Customer in the database
-        List<Customer> customerList = customerRepository.findAll();
+        List <Customer> customerList = customerRepository.findAll();
         assertThat(customerList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -169,14 +168,14 @@ public class CustomerResourceIntTest {
 
         // Get all the customerList
         restCustomerMockMvc.perform(get("/api/customers?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].street").value(hasItem(DEFAULT_STREET.toString())))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY.toString())))
-            .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)))
-            .andExpect(jsonPath("$.[*].province").value(hasItem(DEFAULT_PROVINCE.toString())))
-            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())));
+                           .andExpect(status().isOk())
+                           .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                           .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
+                           .andExpect(jsonPath("$.[*].street").value(hasItem(DEFAULT_STREET.toString())))
+                           .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY.toString())))
+                           .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)))
+                           .andExpect(jsonPath("$.[*].province").value(hasItem(DEFAULT_PROVINCE.toString())))
+                           .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())));
     }
 
     @Test
@@ -187,14 +186,14 @@ public class CustomerResourceIntTest {
 
         // Get the customer
         restCustomerMockMvc.perform(get("/api/customers/{id}", customer.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(customer.getId().intValue()))
-            .andExpect(jsonPath("$.street").value(DEFAULT_STREET.toString()))
-            .andExpect(jsonPath("$.city").value(DEFAULT_CITY.toString()))
-            .andExpect(jsonPath("$.zipCode").value(DEFAULT_ZIP_CODE))
-            .andExpect(jsonPath("$.province").value(DEFAULT_PROVINCE.toString()))
-            .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.toString()));
+                           .andExpect(status().isOk())
+                           .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                           .andExpect(jsonPath("$.id").value(customer.getId().intValue()))
+                           .andExpect(jsonPath("$.street").value(DEFAULT_STREET.toString()))
+                           .andExpect(jsonPath("$.city").value(DEFAULT_CITY.toString()))
+                           .andExpect(jsonPath("$.zipCode").value(DEFAULT_ZIP_CODE))
+                           .andExpect(jsonPath("$.province").value(DEFAULT_PROVINCE.toString()))
+                           .andExpect(jsonPath("$.phoneNumber").value(DEFAULT_PHONE_NUMBER.toString()));
     }
 
     @Test
@@ -202,7 +201,7 @@ public class CustomerResourceIntTest {
     public void getNonExistingCustomer() throws Exception {
         // Get the customer
         restCustomerMockMvc.perform(get("/api/customers/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                           .andExpect(status().isNotFound());
     }
 
     @Test
@@ -228,10 +227,10 @@ public class CustomerResourceIntTest {
         restCustomerMockMvc.perform(put("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
-            .andExpect(status().isOk());
+                           .andExpect(status().isOk());
 
         // Validate the Customer in the database
-        List<Customer> customerList = customerRepository.findAll();
+        List <Customer> customerList = customerRepository.findAll();
         assertThat(customerList).hasSize(databaseSizeBeforeUpdate);
         Customer testCustomer = customerList.get(customerList.size() - 1);
         assertThat(testCustomer.getStreet()).isEqualTo(UPDATED_STREET);
@@ -257,10 +256,10 @@ public class CustomerResourceIntTest {
         restCustomerMockMvc.perform(put("/api/customers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(customerDTO)))
-            .andExpect(status().isCreated());
+                           .andExpect(status().isCreated());
 
         // Validate the Customer in the database
-        List<Customer> customerList = customerRepository.findAll();
+        List <Customer> customerList = customerRepository.findAll();
         assertThat(customerList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -275,14 +274,14 @@ public class CustomerResourceIntTest {
         // Get the customer
         restCustomerMockMvc.perform(delete("/api/customers/{id}", customer.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                           .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
         boolean customerExistsInEs = customerSearchRepository.exists(customer.getId());
         assertThat(customerExistsInEs).isFalse();
 
         // Validate the database is empty
-        List<Customer> customerList = customerRepository.findAll();
+        List <Customer> customerList = customerRepository.findAll();
         assertThat(customerList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
@@ -295,14 +294,14 @@ public class CustomerResourceIntTest {
 
         // Search the customer
         restCustomerMockMvc.perform(get("/api/_search/customers?query=id:" + customer.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].street").value(hasItem(DEFAULT_STREET.toString())))
-            .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY.toString())))
-            .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)))
-            .andExpect(jsonPath("$.[*].province").value(hasItem(DEFAULT_PROVINCE.toString())))
-            .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())));
+                           .andExpect(status().isOk())
+                           .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                           .andExpect(jsonPath("$.[*].id").value(hasItem(customer.getId().intValue())))
+                           .andExpect(jsonPath("$.[*].street").value(hasItem(DEFAULT_STREET.toString())))
+                           .andExpect(jsonPath("$.[*].city").value(hasItem(DEFAULT_CITY.toString())))
+                           .andExpect(jsonPath("$.[*].zipCode").value(hasItem(DEFAULT_ZIP_CODE)))
+                           .andExpect(jsonPath("$.[*].province").value(hasItem(DEFAULT_PROVINCE.toString())))
+                           .andExpect(jsonPath("$.[*].phoneNumber").value(hasItem(DEFAULT_PHONE_NUMBER.toString())));
     }
 
     @Test

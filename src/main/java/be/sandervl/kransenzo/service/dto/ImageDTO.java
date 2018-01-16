@@ -1,12 +1,9 @@
 package be.sandervl.kransenzo.service.dto;
 
-
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
 import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A DTO for the Image entity.
@@ -74,7 +71,7 @@ public class ImageDTO implements Serializable {
         }
 
         ImageDTO imageDTO = (ImageDTO) o;
-        if(imageDTO.getId() == null || getId() == null) {
+        if (imageDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), imageDTO.getId());

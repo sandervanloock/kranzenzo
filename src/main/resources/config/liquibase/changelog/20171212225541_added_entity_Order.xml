@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
 
@@ -23,48 +21,48 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="created" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="updated" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="state" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="delivery_type" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="include_batteries" type="bit">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="description" type="varchar(5000)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="delivery_price" type="${floatType}">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
 
             <column name="customer_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="delivery_address_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints unique="true" nullable="true"/>
             </column>
             <column name="product_id" type="bigint">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="jhi_order" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="jhi_order" columnName="updated" columnDataType="datetime"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

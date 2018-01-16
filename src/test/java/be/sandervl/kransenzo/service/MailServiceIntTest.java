@@ -1,7 +1,7 @@
 package be.sandervl.kransenzo.service;
-import be.sandervl.kransenzo.config.Constants;
 
 import be.sandervl.kransenzo.KransenzoApp;
+import be.sandervl.kransenzo.config.Constants;
 import be.sandervl.kransenzo.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.Before;

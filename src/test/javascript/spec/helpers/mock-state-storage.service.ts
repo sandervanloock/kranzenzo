@@ -1,5 +1,5 @@
-import { SpyObject } from './spyobject';
-import { StateStorageService } from '../../../../main/webapp/app/shared/auth/state-storage.service';
+import {SpyObject} from './spyobject';
+import {StateStorageService} from '../../../../main/webapp/app/shared/auth/state-storage.service';
 import Spy = jasmine.Spy;
 
 export class MockStateStorageService extends SpyObject {
@@ -8,16 +8,16 @@ export class MockStateStorageService extends SpyObject {
     storeUrlSpy: Spy
 
     constructor() {
-        super(StateStorageService);
-        this.setUrlSpy({});
-        this.storeUrlSpy = this.spy('storeUrl').andReturn(this);
+        super( StateStorageService );
+        this.setUrlSpy( {} );
+        this.storeUrlSpy = this.spy( 'storeUrl' ).andReturn( this );
     }
 
-    setUrlSpy(json) {
-        this.getUrlSpy = this.spy('getUrl').andReturn(json);
+    setUrlSpy( json ) {
+        this.getUrlSpy = this.spy( 'getUrl' ).andReturn( json );
     }
 
-    setResponse(json: any): void {
-        this.setUrlSpy(json);
+    setResponse( json: any ): void {
+        this.setUrlSpy( json );
     }
 }

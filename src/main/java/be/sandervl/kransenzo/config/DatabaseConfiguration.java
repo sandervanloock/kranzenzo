@@ -2,7 +2,6 @@ package be.sandervl.kransenzo.config;
 
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.liquibase.AsyncSpringLiquibase;
-
 import liquibase.integration.spring.SpringLiquibase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,9 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
-import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -48,24 +46,28 @@ public class DatabaseConfiguration {
     @Bean(initMethod = "start", destroyMethod = "stop")
     @Profile(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT)
     public Object h2TCPServer() throws SQLException {
-        try {
+        try{
             // We don't want to include H2 when we are packaging for the "prod" profile and won't
             // actually need it, so we have to load / invoke things at runtime through reflection.
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            Class<?> serverClass = Class.forName("org.h2.tools.Server", true, loader);
+            Class <?> serverClass = Class.forName("org.h2.tools.Server", true, loader);
             Method createServer = serverClass.getMethod("createTcpServer", String[].class);
-            return createServer.invoke(null, new Object[] { new String[] { "-tcp", "-tcpAllowOthers" } });
+            return createServer.invoke(null, new Object[]{new String[]{"-tcp", "-tcpAllowOthers"}});
 
-        } catch (ClassNotFoundException | LinkageError  e) {
+        }
+        catch (ClassNotFoundException | LinkageError e){
             throw new RuntimeException("Failed to load and initialize org.h2.tools.Server", e);
 
-        } catch (SecurityException | NoSuchMethodException e) {
+        }
+        catch (SecurityException | NoSuchMethodException e){
             throw new RuntimeException("Failed to get method org.h2.tools.Server.createTcpServer()", e);
 
-        } catch (IllegalAccessException | IllegalArgumentException e) {
+        }
+        catch (IllegalAccessException | IllegalArgumentException e){
             throw new RuntimeException("Failed to invoke org.h2.tools.Server.createTcpServer()", e);
 
-        } catch (InvocationTargetException e) {
+        }
+        catch (InvocationTargetException e){
             Throwable t = e.getTargetException();
             if (t instanceof SQLException) {
                 throw (SQLException) t;
@@ -76,7 +78,7 @@ public class DatabaseConfiguration {
 
     @Bean
     public SpringLiquibase liquibase(@Qualifier("taskExecutor") TaskExecutor taskExecutor,
-            DataSource dataSource, LiquibaseProperties liquibaseProperties) {
+                                     DataSource dataSource, LiquibaseProperties liquibaseProperties) {
 
         // Use liquibase.integration.spring.SpringLiquibase if you don't want Liquibase to start asynchronously
         SpringLiquibase liquibase = new AsyncSpringLiquibase(taskExecutor, env);
@@ -87,7 +89,8 @@ public class DatabaseConfiguration {
         liquibase.setDropFirst(liquibaseProperties.isDropFirst());
         if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE)) {
             liquibase.setShouldRun(false);
-        } else {
+        }
+        else{
             liquibase.setShouldRun(liquibaseProperties.isEnabled());
             log.debug("Configuring Liquibase");
         }

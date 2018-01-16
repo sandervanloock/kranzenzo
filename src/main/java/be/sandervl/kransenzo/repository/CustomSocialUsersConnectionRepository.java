@@ -1,7 +1,6 @@
 package be.sandervl.kransenzo.repository;
 
 import be.sandervl.kransenzo.domain.SocialUserConnection;
-
 import org.springframework.social.connect.*;
 
 import java.util.List;
@@ -20,22 +19,23 @@ public class CustomSocialUsersConnectionRepository implements UsersConnectionRep
     }
 
     @Override
-    public List<String> findUserIdsWithConnection(Connection<?> connection) {
+    public List <String> findUserIdsWithConnection(Connection <?> connection) {
         ConnectionKey key = connection.getKey();
-        List<SocialUserConnection> socialUserConnections =
-            socialUserConnectionRepository.findAllByProviderIdAndProviderUserId(key.getProviderId(), key.getProviderUserId());
+        List <SocialUserConnection> socialUserConnections =
+            socialUserConnectionRepository.findAllByProviderIdAndProviderUserId(key.getProviderId(), key
+                .getProviderUserId());
         return socialUserConnections.stream()
-            .map(SocialUserConnection::getUserId)
-            .collect(Collectors.toList());
+                                    .map(SocialUserConnection::getUserId)
+                                    .collect(Collectors.toList());
     }
 
     @Override
-    public Set<String> findUserIdsConnectedTo(String providerId, Set<String> providerUserIds) {
-        List<SocialUserConnection> socialUserConnections =
+    public Set <String> findUserIdsConnectedTo(String providerId, Set <String> providerUserIds) {
+        List <SocialUserConnection> socialUserConnections =
             socialUserConnectionRepository.findAllByProviderIdAndProviderUserIdIn(providerId, providerUserIds);
         return socialUserConnections.stream()
-            .map(SocialUserConnection::getUserId)
-            .collect(Collectors.toSet());
+                                    .map(SocialUserConnection::getUserId)
+                                    .collect(Collectors.toSet());
     }
 
     @Override

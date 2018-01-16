@@ -1,6 +1,6 @@
 {
     "kransenzoApp": {
-        "tag" : {
+        "tag": {
             "home": {
                 "title": "Tags",
                 "createLabel": "Maak een nieuwe Tag",

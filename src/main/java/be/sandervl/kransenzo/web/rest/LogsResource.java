@@ -1,7 +1,6 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.web.rest.vm.LoggerVM;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
 import com.codahale.metrics.annotation.Timed;
@@ -21,12 +20,12 @@ public class LogsResource {
 
     @GetMapping("/logs")
     @Timed
-    public List<LoggerVM> getList() {
+    public List <LoggerVM> getList() {
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         return context.getLoggerList()
-            .stream()
-            .map(LoggerVM::new)
-            .collect(Collectors.toList());
+                      .stream()
+                      .map(LoggerVM::new)
+                      .collect(Collectors.toList());
     }
 
     @PutMapping("/logs")

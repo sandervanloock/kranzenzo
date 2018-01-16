@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
-import { Customer } from './customer.model';
-import { CustomerService } from './customer.service';
-import { Principal, ResponseWrapper } from '../../shared';
+import {Customer} from './customer.model';
+import {CustomerService} from './customer.service';
+import {Principal, ResponseWrapper} from '../../shared';
 
-@Component({
-    selector: 'jhi-customer',
-    templateUrl: './customer.component.html'
-})
+@Component( {
+                selector: 'jhi-customer', templateUrl: './customer.component.html'
+            } )
 export class CustomerComponent implements OnInit, OnDestroy {
-customers: Customer[];
+    customers: Customer[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
@@ -22,33 +21,25 @@ customers: Customer[];
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
-    ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
+        private principal: Principal ) {
+        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ? this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.customerService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: ResponseWrapper) => this.customers = res.json,
-                    (res: ResponseWrapper) => this.onError(res.json)
-                );
+        if ( this.currentSearch ) {
+            this.customerService.search( {
+                                             query: this.currentSearch,
+                                         } ).subscribe( ( res: ResponseWrapper ) => this.customers = res.json, ( res: ResponseWrapper ) => this.onError( res.json ) );
             return;
-       }
-        this.customerService.query().subscribe(
-            (res: ResponseWrapper) => {
-                this.customers = res.json;
-                this.currentSearch = '';
-            },
-            (res: ResponseWrapper) => this.onError(res.json)
-        );
+        }
+        this.customerService.query().subscribe( ( res: ResponseWrapper ) => {
+            this.customers = res.json;
+            this.currentSearch = '';
+        }, ( res: ResponseWrapper ) => this.onError( res.json ) );
     }
 
-    search(query) {
-        if (!query) {
+    search( query ) {
+        if ( !query ) {
             return this.clear();
         }
         this.currentSearch = query;
@@ -59,26 +50,28 @@ customers: Customer[];
         this.currentSearch = '';
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then((account) => {
+        this.principal.identity().then( ( account ) => {
             this.currentAccount = account;
-        });
+        } );
         this.registerChangeInCustomers();
     }
 
     ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
+        this.eventManager.destroy( this.eventSubscriber );
     }
 
-    trackId(index: number, item: Customer) {
+    trackId( index: number, item: Customer ) {
         return item.id;
     }
+
     registerChangeInCustomers() {
-        this.eventSubscriber = this.eventManager.subscribe('customerListModification', (response) => this.loadAll());
+        this.eventSubscriber = this.eventManager.subscribe( 'customerListModification', ( response ) => this.loadAll() );
     }
 
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
+    private onError( error ) {
+        this.jhiAlertService.error( error.message, null, null );
     }
 }

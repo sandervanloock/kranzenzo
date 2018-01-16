@@ -1,14 +1,13 @@
 package be.sandervl.kransenzo.web.rest;
 
-import com.codahale.metrics.annotation.Timed;
 import be.sandervl.kransenzo.domain.Customer;
-
 import be.sandervl.kransenzo.repository.CustomerRepository;
 import be.sandervl.kransenzo.repository.search.CustomerSearchRepository;
-import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
-import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
 import be.sandervl.kransenzo.service.dto.CustomerDTO;
 import be.sandervl.kransenzo.service.mapper.CustomerMapper;
+import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
+import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
+import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +17,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing Customer.
@@ -33,10 +31,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @RequestMapping("/api")
 public class CustomerResource {
 
-    private final Logger log = LoggerFactory.getLogger(CustomerResource.class);
-
     private static final String ENTITY_NAME = "customer";
-
+    private final Logger log = LoggerFactory.getLogger(CustomerResource.class);
     private final CustomerRepository customerRepository;
 
     private final CustomerMapper customerMapper;
@@ -58,7 +54,7 @@ public class CustomerResource {
      */
     @PostMapping("/customers")
     @Timed
-    public ResponseEntity<CustomerDTO> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) throws URISyntaxException {
+    public ResponseEntity <CustomerDTO> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) throws URISyntaxException {
         log.debug("REST request to save Customer : {}", customerDTO);
         if (customerDTO.getId() != null) {
             throw new BadRequestAlertException("A new customer cannot already have an ID", ENTITY_NAME, "idexists");
@@ -68,8 +64,8 @@ public class CustomerResource {
         CustomerDTO result = customerMapper.toDto(customer);
         customerSearchRepository.save(customer);
         return ResponseEntity.created(new URI("/api/customers/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -83,7 +79,7 @@ public class CustomerResource {
      */
     @PutMapping("/customers")
     @Timed
-    public ResponseEntity<CustomerDTO> updateCustomer(@Valid @RequestBody CustomerDTO customerDTO) throws URISyntaxException {
+    public ResponseEntity <CustomerDTO> updateCustomer(@Valid @RequestBody CustomerDTO customerDTO) throws URISyntaxException {
         log.debug("REST request to update Customer : {}", customerDTO);
         if (customerDTO.getId() == null) {
             return createCustomer(customerDTO);
@@ -93,8 +89,8 @@ public class CustomerResource {
         CustomerDTO result = customerMapper.toDto(customer);
         customerSearchRepository.save(customer);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, customerDTO.getId().toString()))
-            .body(result);
+                             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, customerDTO.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -104,11 +100,11 @@ public class CustomerResource {
      */
     @GetMapping("/customers")
     @Timed
-    public List<CustomerDTO> getAllCustomers() {
+    public List <CustomerDTO> getAllCustomers() {
         log.debug("REST request to get all Customers");
-        List<Customer> customers = customerRepository.findAll();
+        List <Customer> customers = customerRepository.findAll();
         return customerMapper.toDto(customers);
-        }
+    }
 
     /**
      * GET  /customers/:id : get the "id" customer.
@@ -118,7 +114,7 @@ public class CustomerResource {
      */
     @GetMapping("/customers/{id}")
     @Timed
-    public ResponseEntity<CustomerDTO> getCustomer(@PathVariable Long id) {
+    public ResponseEntity <CustomerDTO> getCustomer(@PathVariable Long id) {
         log.debug("REST request to get Customer : {}", id);
         Customer customer = customerRepository.findOne(id);
         CustomerDTO customerDTO = customerMapper.toDto(customer);
@@ -133,7 +129,7 @@ public class CustomerResource {
      */
     @DeleteMapping("/customers/{id}")
     @Timed
-    public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+    public ResponseEntity <Void> deleteCustomer(@PathVariable Long id) {
         log.debug("REST request to delete Customer : {}", id);
         customerRepository.delete(id);
         customerSearchRepository.delete(id);
@@ -149,7 +145,7 @@ public class CustomerResource {
      */
     @GetMapping("/_search/customers")
     @Timed
-    public List<CustomerDTO> searchCustomers(@RequestParam String query) {
+    public List <CustomerDTO> searchCustomers(@RequestParam String query) {
         log.debug("REST request to search Customers for query {}", query);
         return StreamSupport
             .stream(customerSearchRepository.search(queryStringQuery(query)).spliterator(), false)

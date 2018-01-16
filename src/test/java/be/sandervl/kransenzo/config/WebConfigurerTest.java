@@ -131,25 +131,25 @@ public class WebConfigurerTest {
         props.getCors().setAllowCredentials(true);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
-            .build();
+                                         .addFilters(webConfigurer.corsFilter())
+                                         .build();
 
         mockMvc.perform(
             options("/api/test-cors")
                 .header(HttpHeaders.ORIGIN, "other.domain.com")
                 .header(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD, "POST"))
-            .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"))
-            .andExpect(header().string(HttpHeaders.VARY, "Origin"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,POST,PUT,DELETE"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true"))
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1800"));
+               .andExpect(status().isOk())
+               .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"))
+               .andExpect(header().string(HttpHeaders.VARY, "Origin"))
+               .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET,POST,PUT,DELETE"))
+               .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true"))
+               .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "1800"));
 
         mockMvc.perform(
             get("/api/test-cors")
                 .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"));
+               .andExpect(status().isOk())
+               .andExpect(header().string(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "other.domain.com"));
     }
 
     @Test
@@ -161,14 +161,14 @@ public class WebConfigurerTest {
         props.getCors().setAllowCredentials(true);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
-            .build();
+                                         .addFilters(webConfigurer.corsFilter())
+                                         .build();
 
         mockMvc.perform(
             get("/test/test-cors")
                 .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+               .andExpect(status().isOk())
+               .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
     }
 
     @Test
@@ -176,50 +176,50 @@ public class WebConfigurerTest {
         props.getCors().setAllowedOrigins(null);
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
-            .build();
+                                         .addFilters(webConfigurer.corsFilter())
+                                         .build();
 
         mockMvc.perform(
             get("/api/test-cors")
                 .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+               .andExpect(status().isOk())
+               .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
     }
 
     @Test
     public void testCorsFilterDeactivated2() throws Exception {
-        props.getCors().setAllowedOrigins(new ArrayList<>());
+        props.getCors().setAllowedOrigins(new ArrayList <>());
 
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(new WebConfigurerTestController())
-            .addFilters(webConfigurer.corsFilter())
-            .build();
+                                         .addFilters(webConfigurer.corsFilter())
+                                         .build();
 
         mockMvc.perform(
             get("/api/test-cors")
                 .header(HttpHeaders.ORIGIN, "other.domain.com"))
-            .andExpect(status().isOk())
-            .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
+               .andExpect(status().isOk())
+               .andExpect(header().doesNotExist(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN));
     }
 
     static class MockFilterRegistration implements FilterRegistration, FilterRegistration.Dynamic {
 
         @Override
-        public void addMappingForServletNames(EnumSet<DispatcherType> dispatcherTypes, boolean isMatchAfter, String... servletNames) {
+        public void addMappingForServletNames(EnumSet <DispatcherType> dispatcherTypes, boolean isMatchAfter, String... servletNames) {
 
         }
 
         @Override
-        public Collection<String> getServletNameMappings() {
+        public Collection <String> getServletNameMappings() {
             return null;
         }
 
         @Override
-        public void addMappingForUrlPatterns(EnumSet<DispatcherType> dispatcherTypes, boolean isMatchAfter, String... urlPatterns) {
+        public void addMappingForUrlPatterns(EnumSet <DispatcherType> dispatcherTypes, boolean isMatchAfter, String... urlPatterns) {
 
         }
 
         @Override
-        public Collection<String> getUrlPatternMappings() {
+        public Collection <String> getUrlPatternMappings() {
             return null;
         }
 
@@ -249,12 +249,12 @@ public class WebConfigurerTest {
         }
 
         @Override
-        public Set<String> setInitParameters(Map<String, String> initParameters) {
+        public Set <String> setInitParameters(Map <String, String> initParameters) {
             return null;
         }
 
         @Override
-        public Map<String, String> getInitParameters() {
+        public Map <String, String> getInitParameters() {
             return null;
         }
     }
@@ -267,7 +267,7 @@ public class WebConfigurerTest {
         }
 
         @Override
-        public Set<String> setServletSecurity(ServletSecurityElement constraint) {
+        public Set <String> setServletSecurity(ServletSecurityElement constraint) {
             return null;
         }
 
@@ -277,28 +277,28 @@ public class WebConfigurerTest {
         }
 
         @Override
-        public void setRunAsRole(String roleName) {
-
-        }
-
-        @Override
         public void setAsyncSupported(boolean isAsyncSupported) {
 
         }
 
         @Override
-        public Set<String> addMapping(String... urlPatterns) {
+        public Set <String> addMapping(String... urlPatterns) {
             return null;
         }
 
         @Override
-        public Collection<String> getMappings() {
+        public Collection <String> getMappings() {
             return null;
         }
 
         @Override
         public String getRunAsRole() {
             return null;
+        }
+
+        @Override
+        public void setRunAsRole(String roleName) {
+
         }
 
         @Override
@@ -322,12 +322,12 @@ public class WebConfigurerTest {
         }
 
         @Override
-        public Set<String> setInitParameters(Map<String, String> initParameters) {
+        public Set <String> setInitParameters(Map <String, String> initParameters) {
             return null;
         }
 
         @Override
-        public Map<String, String> getInitParameters() {
+        public Map <String, String> getInitParameters() {
             return null;
         }
     }

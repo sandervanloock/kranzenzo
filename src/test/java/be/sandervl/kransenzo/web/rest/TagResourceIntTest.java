@@ -1,14 +1,12 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
-
 import be.sandervl.kransenzo.domain.Tag;
 import be.sandervl.kransenzo.repository.TagRepository;
 import be.sandervl.kransenzo.repository.search.TagSearchRepository;
 import be.sandervl.kransenzo.service.dto.TagDTO;
 import be.sandervl.kransenzo.service.mapper.TagMapper;
 import be.sandervl.kransenzo.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,20 +67,9 @@ public class TagResourceIntTest {
 
     private Tag tag;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final TagResource tagResource = new TagResource(tagRepository, tagMapper, tagSearchRepository);
-        this.restTagMockMvc = MockMvcBuilders.standaloneSetup(tagResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -90,6 +77,17 @@ public class TagResourceIntTest {
         Tag tag = new Tag()
             .name(DEFAULT_NAME);
         return tag;
+    }
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        final TagResource tagResource = new TagResource(tagRepository, tagMapper, tagSearchRepository);
+        this.restTagMockMvc = MockMvcBuilders.standaloneSetup(tagResource)
+                                             .setCustomArgumentResolvers(pageableArgumentResolver)
+                                             .setControllerAdvice(exceptionTranslator)
+                                             .setConversionService(createFormattingConversionService())
+                                             .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -108,10 +106,10 @@ public class TagResourceIntTest {
         restTagMockMvc.perform(post("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
-            .andExpect(status().isCreated());
+                      .andExpect(status().isCreated());
 
         // Validate the Tag in the database
-        List<Tag> tagList = tagRepository.findAll();
+        List <Tag> tagList = tagRepository.findAll();
         assertThat(tagList).hasSize(databaseSizeBeforeCreate + 1);
         Tag testTag = tagList.get(tagList.size() - 1);
         assertThat(testTag.getName()).isEqualTo(DEFAULT_NAME);
@@ -134,10 +132,10 @@ public class TagResourceIntTest {
         restTagMockMvc.perform(post("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
-            .andExpect(status().isBadRequest());
+                      .andExpect(status().isBadRequest());
 
         // Validate the Tag in the database
-        List<Tag> tagList = tagRepository.findAll();
+        List <Tag> tagList = tagRepository.findAll();
         assertThat(tagList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -154,9 +152,9 @@ public class TagResourceIntTest {
         restTagMockMvc.perform(post("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
-            .andExpect(status().isBadRequest());
+                      .andExpect(status().isBadRequest());
 
-        List<Tag> tagList = tagRepository.findAll();
+        List <Tag> tagList = tagRepository.findAll();
         assertThat(tagList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -168,10 +166,10 @@ public class TagResourceIntTest {
 
         // Get all the tagList
         restTagMockMvc.perform(get("/api/tags?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+                      .andExpect(status().isOk())
+                      .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                      .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().intValue())))
+                      .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
     @Test
@@ -182,10 +180,10 @@ public class TagResourceIntTest {
 
         // Get the tag
         restTagMockMvc.perform(get("/api/tags/{id}", tag.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(tag.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+                      .andExpect(status().isOk())
+                      .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                      .andExpect(jsonPath("$.id").value(tag.getId().intValue()))
+                      .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
     }
 
     @Test
@@ -193,7 +191,7 @@ public class TagResourceIntTest {
     public void getNonExistingTag() throws Exception {
         // Get the tag
         restTagMockMvc.perform(get("/api/tags/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                      .andExpect(status().isNotFound());
     }
 
     @Test
@@ -215,10 +213,10 @@ public class TagResourceIntTest {
         restTagMockMvc.perform(put("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
-            .andExpect(status().isOk());
+                      .andExpect(status().isOk());
 
         // Validate the Tag in the database
-        List<Tag> tagList = tagRepository.findAll();
+        List <Tag> tagList = tagRepository.findAll();
         assertThat(tagList).hasSize(databaseSizeBeforeUpdate);
         Tag testTag = tagList.get(tagList.size() - 1);
         assertThat(testTag.getName()).isEqualTo(UPDATED_NAME);
@@ -240,10 +238,10 @@ public class TagResourceIntTest {
         restTagMockMvc.perform(put("/api/tags")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(tagDTO)))
-            .andExpect(status().isCreated());
+                      .andExpect(status().isCreated());
 
         // Validate the Tag in the database
-        List<Tag> tagList = tagRepository.findAll();
+        List <Tag> tagList = tagRepository.findAll();
         assertThat(tagList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -258,14 +256,14 @@ public class TagResourceIntTest {
         // Get the tag
         restTagMockMvc.perform(delete("/api/tags/{id}", tag.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                      .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
         boolean tagExistsInEs = tagSearchRepository.exists(tag.getId());
         assertThat(tagExistsInEs).isFalse();
 
         // Validate the database is empty
-        List<Tag> tagList = tagRepository.findAll();
+        List <Tag> tagList = tagRepository.findAll();
         assertThat(tagList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
@@ -278,10 +276,10 @@ public class TagResourceIntTest {
 
         // Search the tag
         restTagMockMvc.perform(get("/api/_search/tags?query=id:" + tag.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+                      .andExpect(status().isOk())
+                      .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                      .andExpect(jsonPath("$.[*].id").value(hasItem(tag.getId().intValue())))
+                      .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
     @Test

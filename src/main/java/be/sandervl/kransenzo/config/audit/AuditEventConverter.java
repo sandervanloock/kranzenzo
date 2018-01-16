@@ -1,7 +1,6 @@
 package be.sandervl.kransenzo.config.audit;
 
 import be.sandervl.kransenzo.domain.PersistentAuditEvent;
-
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
@@ -17,12 +16,12 @@ public class AuditEventConverter {
      * @param persistentAuditEvents the list to convert
      * @return the converted list.
      */
-    public List<AuditEvent> convertToAuditEvent(Iterable<PersistentAuditEvent> persistentAuditEvents) {
+    public List <AuditEvent> convertToAuditEvent(Iterable <PersistentAuditEvent> persistentAuditEvents) {
         if (persistentAuditEvents == null) {
             return Collections.emptyList();
         }
-        List<AuditEvent> auditEvents = new ArrayList<>();
-        for (PersistentAuditEvent persistentAuditEvent : persistentAuditEvents) {
+        List <AuditEvent> auditEvents = new ArrayList <>();
+        for (PersistentAuditEvent persistentAuditEvent : persistentAuditEvents){
             auditEvents.add(convertToAuditEvent(persistentAuditEvent));
         }
         return auditEvents;
@@ -48,11 +47,11 @@ public class AuditEventConverter {
      * @param data the data to convert
      * @return a map of String, Object
      */
-    public Map<String, Object> convertDataToObjects(Map<String, String> data) {
-        Map<String, Object> results = new HashMap<>();
+    public Map <String, Object> convertDataToObjects(Map <String, String> data) {
+        Map <String, Object> results = new HashMap <>();
 
         if (data != null) {
-            for (Map.Entry<String, String> entry : data.entrySet()) {
+            for (Map.Entry <String, String> entry : data.entrySet()){
                 results.put(entry.getKey(), entry.getValue());
             }
         }
@@ -66,11 +65,11 @@ public class AuditEventConverter {
      * @param data the data to convert
      * @return a map of String, String
      */
-    public Map<String, String> convertDataToStrings(Map<String, Object> data) {
-        Map<String, String> results = new HashMap<>();
+    public Map <String, String> convertDataToStrings(Map <String, Object> data) {
+        Map <String, String> results = new HashMap <>();
 
         if (data != null) {
-            for (Map.Entry<String, Object> entry : data.entrySet()) {
+            for (Map.Entry <String, Object> entry : data.entrySet()){
                 Object object = entry.getValue();
 
                 // Extract the data that will be saved.
@@ -78,9 +77,11 @@ public class AuditEventConverter {
                     WebAuthenticationDetails authenticationDetails = (WebAuthenticationDetails) object;
                     results.put("remoteAddress", authenticationDetails.getRemoteAddress());
                     results.put("sessionId", authenticationDetails.getSessionId());
-                } else if (object != null) {
+                }
+                else if (object != null) {
                     results.put(entry.getKey(), object.toString());
-                } else {
+                }
+                else{
                     results.put(entry.getKey(), "null");
                 }
             }

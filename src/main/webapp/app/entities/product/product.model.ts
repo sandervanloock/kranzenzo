@@ -1,4 +1,4 @@
-import { BaseEntity } from './../../shared';
+import {BaseEntity} from './../../shared';
 
 export class Product implements BaseEntity {
     constructor(
@@ -9,8 +9,7 @@ export class Product implements BaseEntity {
         public isActive?: boolean,
         public images?: BaseEntity[],
         public orders?: BaseEntity[],
-        public tags?: BaseEntity[],
-    ) {
+        public tags?: BaseEntity[], ) {
         this.isActive = false;
     }
 }

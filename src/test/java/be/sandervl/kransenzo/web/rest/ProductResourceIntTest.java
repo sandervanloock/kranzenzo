@@ -1,15 +1,13 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
-
 import be.sandervl.kransenzo.domain.Product;
 import be.sandervl.kransenzo.repository.ProductRepository;
-import be.sandervl.kransenzo.service.ProductService;
 import be.sandervl.kransenzo.repository.search.ProductSearchRepository;
+import be.sandervl.kransenzo.service.ProductService;
 import be.sandervl.kransenzo.service.dto.ProductDTO;
 import be.sandervl.kransenzo.service.mapper.ProductMapper;
 import be.sandervl.kransenzo.web.rest.errors.ExceptionTranslator;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,20 +80,9 @@ public class ProductResourceIntTest {
 
     private Product product;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final ProductResource productResource = new ProductResource(productService);
-        this.restProductMockMvc = MockMvcBuilders.standaloneSetup(productResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
-
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -106,6 +93,17 @@ public class ProductResourceIntTest {
             .description(DEFAULT_DESCRIPTION)
             .isActive(DEFAULT_IS_ACTIVE);
         return product;
+    }
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        final ProductResource productResource = new ProductResource(productService);
+        this.restProductMockMvc = MockMvcBuilders.standaloneSetup(productResource)
+                                                 .setCustomArgumentResolvers(pageableArgumentResolver)
+                                                 .setControllerAdvice(exceptionTranslator)
+                                                 .setConversionService(createFormattingConversionService())
+                                                 .setMessageConverters(jacksonMessageConverter).build();
     }
 
     @Before
@@ -124,10 +122,10 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(post("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
-            .andExpect(status().isCreated());
+                          .andExpect(status().isCreated());
 
         // Validate the Product in the database
-        List<Product> productList = productRepository.findAll();
+        List <Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeCreate + 1);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(DEFAULT_NAME);
@@ -153,10 +151,10 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(post("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
-            .andExpect(status().isBadRequest());
+                          .andExpect(status().isBadRequest());
 
         // Validate the Product in the database
-        List<Product> productList = productRepository.findAll();
+        List <Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeCreate);
     }
 
@@ -173,9 +171,9 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(post("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
-            .andExpect(status().isBadRequest());
+                          .andExpect(status().isBadRequest());
 
-        List<Product> productList = productRepository.findAll();
+        List <Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -192,9 +190,9 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(post("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
-            .andExpect(status().isBadRequest());
+                          .andExpect(status().isBadRequest());
 
-        List<Product> productList = productRepository.findAll();
+        List <Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeTest);
     }
 
@@ -206,13 +204,13 @@ public class ProductResourceIntTest {
 
         // Get all the productList
         restProductMockMvc.perform(get("/api/products?sort=id,desc"))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
+                          .andExpect(status().isOk())
+                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                          .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
+                          .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                          .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
+                          .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                          .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
     }
 
     @Test
@@ -223,13 +221,13 @@ public class ProductResourceIntTest {
 
         // Get the product
         restProductMockMvc.perform(get("/api/products/{id}", product.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.id").value(product.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()));
+                          .andExpect(status().isOk())
+                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                          .andExpect(jsonPath("$.id").value(product.getId().intValue()))
+                          .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+                          .andExpect(jsonPath("$.price").value(DEFAULT_PRICE.doubleValue()))
+                          .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+                          .andExpect(jsonPath("$.isActive").value(DEFAULT_IS_ACTIVE.booleanValue()));
     }
 
     @Test
@@ -237,7 +235,7 @@ public class ProductResourceIntTest {
     public void getNonExistingProduct() throws Exception {
         // Get the product
         restProductMockMvc.perform(get("/api/products/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+                          .andExpect(status().isNotFound());
     }
 
     @Test
@@ -262,10 +260,10 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(put("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
-            .andExpect(status().isOk());
+                          .andExpect(status().isOk());
 
         // Validate the Product in the database
-        List<Product> productList = productRepository.findAll();
+        List <Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeUpdate);
         Product testProduct = productList.get(productList.size() - 1);
         assertThat(testProduct.getName()).isEqualTo(UPDATED_NAME);
@@ -290,10 +288,10 @@ public class ProductResourceIntTest {
         restProductMockMvc.perform(put("/api/products")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(productDTO)))
-            .andExpect(status().isCreated());
+                          .andExpect(status().isCreated());
 
         // Validate the Product in the database
-        List<Product> productList = productRepository.findAll();
+        List <Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeUpdate + 1);
     }
 
@@ -308,14 +306,14 @@ public class ProductResourceIntTest {
         // Get the product
         restProductMockMvc.perform(delete("/api/products/{id}", product.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
-            .andExpect(status().isOk());
+                          .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
         boolean productExistsInEs = productSearchRepository.exists(product.getId());
         assertThat(productExistsInEs).isFalse();
 
         // Validate the database is empty
-        List<Product> productList = productRepository.findAll();
+        List <Product> productList = productRepository.findAll();
         assertThat(productList).hasSize(databaseSizeBeforeDelete - 1);
     }
 
@@ -328,13 +326,13 @@ public class ProductResourceIntTest {
 
         // Search the product
         restProductMockMvc.perform(get("/api/_search/products?query=id:" + product.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
+                          .andExpect(status().isOk())
+                          .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                          .andExpect(jsonPath("$.[*].id").value(hasItem(product.getId().intValue())))
+                          .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+                          .andExpect(jsonPath("$.[*].price").value(hasItem(DEFAULT_PRICE.doubleValue())))
+                          .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+                          .andExpect(jsonPath("$.[*].isActive").value(hasItem(DEFAULT_IS_ACTIVE.booleanValue())));
     }
 
     @Test

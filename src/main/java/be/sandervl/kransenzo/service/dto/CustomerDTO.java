@@ -1,10 +1,8 @@
 package be.sandervl.kransenzo.service.dto;
 
-
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -94,7 +92,7 @@ public class CustomerDTO implements Serializable {
         }
 
         CustomerDTO customerDTO = (CustomerDTO) o;
-        if(customerDTO.getId() == null || getId() == null) {
+        if (customerDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), customerDTO.getId());

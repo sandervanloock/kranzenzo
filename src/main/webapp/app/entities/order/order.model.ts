@@ -1,15 +1,11 @@
-import { BaseEntity } from './../../shared';
+import {BaseEntity} from './../../shared';
 
 export const enum OrderState {
-    'NEW',
-    'PAYED',
-    'CANCELLED',
-    'DONE'
+    'NEW', 'PAYED', 'CANCELLED', 'DONE'
 }
 
 export const enum DeliveryType {
-    'DELIVERED',
-    'PICKUP'
+    'DELIVERED', 'PICKUP'
 }
 
 export class Order implements BaseEntity {
@@ -24,8 +20,7 @@ export class Order implements BaseEntity {
         public deliveryPrice?: number,
         public customerId?: number,
         public deliveryAddressId?: number,
-        public productId?: number,
-    ) {
+        public productId?: number, ) {
         this.includeBatteries = false;
     }
 }

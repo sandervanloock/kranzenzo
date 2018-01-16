@@ -1,19 +1,18 @@
 package be.sandervl.kransenzo.domain;
 
+import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
+import be.sandervl.kransenzo.domain.enumeration.OrderState;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
-
-import be.sandervl.kransenzo.domain.enumeration.OrderState;
-
-import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 
 /**
  * A Order.
@@ -79,17 +78,21 @@ public class Order implements Serializable {
         return created;
     }
 
+    public void setCreated(ZonedDateTime created) {
+        this.created = created;
+    }
+
     public Order created(ZonedDateTime created) {
         this.created = created;
         return this;
     }
 
-    public void setCreated(ZonedDateTime created) {
-        this.created = created;
-    }
-
     public ZonedDateTime getUpdated() {
         return updated;
+    }
+
+    public void setUpdated(ZonedDateTime updated) {
+        this.updated = updated;
     }
 
     public Order updated(ZonedDateTime updated) {
@@ -97,12 +100,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setUpdated(ZonedDateTime updated) {
-        this.updated = updated;
-    }
-
     public OrderState getState() {
         return state;
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
     }
 
     public Order state(OrderState state) {
@@ -110,21 +113,17 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setState(OrderState state) {
-        this.state = state;
-    }
-
     public DeliveryType getDeliveryType() {
         return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
     }
 
     public Order deliveryType(DeliveryType deliveryType) {
         this.deliveryType = deliveryType;
         return this;
-    }
-
-    public void setDeliveryType(DeliveryType deliveryType) {
-        this.deliveryType = deliveryType;
     }
 
     public Boolean isIncludeBatteries() {
@@ -144,17 +143,21 @@ public class Order implements Serializable {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Order description(String description) {
         this.description = description;
         return this;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public Float getDeliveryPrice() {
         return deliveryPrice;
+    }
+
+    public void setDeliveryPrice(Float deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
     }
 
     public Order deliveryPrice(Float deliveryPrice) {
@@ -162,12 +165,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setDeliveryPrice(Float deliveryPrice) {
-        this.deliveryPrice = deliveryPrice;
-    }
-
     public Customer getCustomer() {
         return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Order customer(Customer customer) {
@@ -175,12 +178,12 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
     public Location getDeliveryAddress() {
         return deliveryAddress;
+    }
+
+    public void setDeliveryAddress(Location location) {
+        this.deliveryAddress = location;
     }
 
     public Order deliveryAddress(Location location) {
@@ -188,21 +191,17 @@ public class Order implements Serializable {
         return this;
     }
 
-    public void setDeliveryAddress(Location location) {
-        this.deliveryAddress = location;
-    }
-
     public Product getProduct() {
         return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Order product(Product product) {
         this.product = product;
         return this;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

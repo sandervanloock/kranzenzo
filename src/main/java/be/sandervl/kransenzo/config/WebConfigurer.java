@@ -1,32 +1,32 @@
 package be.sandervl.kransenzo.config;
 
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
-
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
-
+import io.github.jhipster.config.JHipsterConstants;
+import io.github.jhipster.config.JHipsterProperties;
+import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
+import io.undertow.UndertowOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.*;
+import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.context.embedded.MimeMappings;
 import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
-import io.undertow.UndertowOptions;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.http.MediaType;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import org.springframework.http.MediaType;
 
+import javax.servlet.*;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.*;
-import javax.servlet.*;
+import java.util.EnumSet;
 
 /**
  * Configuration of web application with Servlet 3.0 APIs.
@@ -53,7 +53,8 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         if (env.getActiveProfiles().length != 0) {
             log.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
         }
-        EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
+        EnumSet <DispatcherType> disps =
+            EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
         initMetrics(servletContext, disps);
         if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             initCachingHttpHeadersFilter(servletContext, disps);
@@ -120,7 +121,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      * Initializes the caching HTTP Headers Filter.
      */
     private void initCachingHttpHeadersFilter(ServletContext servletContext,
-                                              EnumSet<DispatcherType> disps) {
+                                              EnumSet <DispatcherType> disps) {
         log.debug("Registering Caching HTTP Headers Filter");
         FilterRegistration.Dynamic cachingHttpHeadersFilter =
             servletContext.addFilter("cachingHttpHeadersFilter",
@@ -134,7 +135,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
     /**
      * Initializes Metrics.
      */
-    private void initMetrics(ServletContext servletContext, EnumSet<DispatcherType> disps) {
+    private void initMetrics(ServletContext servletContext, EnumSet <DispatcherType> disps) {
         log.debug("Initializing Metrics registries");
         servletContext.setAttribute(InstrumentedFilter.REGISTRY_ATTRIBUTE,
             metricRegistry);
@@ -175,11 +176,11 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
      */
     private void initH2Console(ServletContext servletContext) {
         log.debug("Initialize H2 console");
-        try {
+        try{
             // We don't want to include H2 when we are packaging for the "prod" profile and won't
             // actually need it, so we have to load / invoke things at runtime through reflection.
             ClassLoader loader = Thread.currentThread().getContextClassLoader();
-            Class<?> servletClass = Class.forName("org.h2.server.web.WebServlet", true, loader);
+            Class <?> servletClass = Class.forName("org.h2.server.web.WebServlet", true, loader);
             Servlet servlet = (Servlet) servletClass.newInstance();
 
             ServletRegistration.Dynamic h2ConsoleServlet = servletContext.addServlet("H2Console", servlet);
@@ -187,10 +188,12 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
             h2ConsoleServlet.setInitParameter("-properties", "src/main/resources/");
             h2ConsoleServlet.setLoadOnStartup(1);
 
-        } catch (ClassNotFoundException | LinkageError  e) {
+        }
+        catch (ClassNotFoundException | LinkageError e){
             throw new RuntimeException("Failed to load and initialize org.h2.server.web.WebServlet", e);
 
-        } catch (IllegalAccessException | InstantiationException e) {
+        }
+        catch (IllegalAccessException | InstantiationException e){
             throw new RuntimeException("Failed to instantiate org.h2.server.web.WebServlet", e);
         }
     }

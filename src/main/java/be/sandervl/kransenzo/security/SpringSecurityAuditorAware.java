@@ -1,7 +1,6 @@
 package be.sandervl.kransenzo.security;
 
 import be.sandervl.kransenzo.config.Constants;
-
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Component;
  * Implementation of AuditorAware based on Spring Security.
  */
 @Component
-public class SpringSecurityAuditorAware implements AuditorAware<String> {
+public class SpringSecurityAuditorAware implements AuditorAware <String> {
 
     @Override
     public String getCurrentAuditor() {

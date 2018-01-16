@@ -1,15 +1,15 @@
 package be.sandervl.kransenzo.service.mapper;
 
-import be.sandervl.kransenzo.domain.*;
+import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.service.dto.OrderDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity Order and its DTO OrderDTO.
  */
 @Mapper(componentModel = "spring", uses = {CustomerMapper.class, LocationMapper.class, ProductMapper.class})
-public interface OrderMapper extends EntityMapper<OrderDTO, Order> {
+public interface OrderMapper extends EntityMapper <OrderDTO, Order> {
 
     @Mapping(source = "customer.id", target = "customerId")
     @Mapping(source = "deliveryAddress.id", target = "deliveryAddressId")

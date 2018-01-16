@@ -2,11 +2,10 @@ package be.sandervl.kransenzo.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -49,17 +48,21 @@ public class Image implements Serializable {
         return data;
     }
 
+    public void setData(byte[] data) {
+        this.data = data;
+    }
+
     public Image data(byte[] data) {
         this.data = data;
         return this;
     }
 
-    public void setData(byte[] data) {
-        this.data = data;
-    }
-
     public String getDataContentType() {
         return dataContentType;
+    }
+
+    public void setDataContentType(String dataContentType) {
+        this.dataContentType = dataContentType;
     }
 
     public Image dataContentType(String dataContentType) {
@@ -67,21 +70,17 @@ public class Image implements Serializable {
         return this;
     }
 
-    public void setDataContentType(String dataContentType) {
-        this.dataContentType = dataContentType;
-    }
-
     public Product getProduct() {
         return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Image product(Product product) {
         this.product = product;
         return this;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
