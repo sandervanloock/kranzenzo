@@ -30,3 +30,17 @@ a:hover {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+@media all and (min-width: 480px) {
+    .card-img-top {
+        width: 100%;
+        height: 400px;
+    }
+}
+
+@media all and (max-width: 480px) {
+    .card-img-top {
+        width: 100%;
+        height: 200px;
+    }
+}

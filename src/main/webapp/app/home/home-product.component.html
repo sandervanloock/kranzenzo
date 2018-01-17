@@ -1,8 +1,7 @@
 <a routerLink="product/{{item.id}}" routerLinkActive="active" class="card-image-link">
     <div class="card">
         <img class="card-img-top" *ngIf="item.images.length"
-             [src]="'data:' + item.images[0].dataContentType + ';base64,' + item.images[0].data"
-             style="height:500px;">
+             [src]="'data:' + item.images[0].dataContentType + ';base64,' + item.images[0].data">
         <img class="card-img-top" *ngIf="item.images.length==0"
              [src]="'http://via.placeholder.com/350x150?text='+item.name"/>
         <div class="card-body">
