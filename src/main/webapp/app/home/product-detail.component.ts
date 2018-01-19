@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Product, ProductService} from '../entities/product';
-import {JhiEventManager} from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager, JhiAlert} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
 
@@ -14,8 +14,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     product: Product;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
+    submittedAlert: any;
 
-    constructor( private eventManager: JhiEventManager, private productService: ProductService, private route: ActivatedRoute ) {
+    constructor( private eventManager: JhiEventManager, private alertService: JhiAlertService, private productService: ProductService, private route: ActivatedRoute ) {
     }
 
     ngOnInit() {
@@ -39,6 +40,15 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
     registerChangeInProducts() {
         this.eventSubscriber = this.eventManager.subscribe( 'productListModification', ( response ) => this.load( this.product.id ) );
+        this.eventManager.subscribe( 'productOrderCompleted', ( response ) => this.setSubmittedAlert( response.content ) );
+    }
+
+    private setSubmittedAlert( props ) {
+        const alert = this.alertService.addAlert( {
+                                                      type: props.type, msg: props.msg, params: {}, timeout: 5000, toast: true
+                                                  }, [] );
+        this.submittedAlert = alert;
+        window.scrollTo( 0, 0 )
     }
 
 }

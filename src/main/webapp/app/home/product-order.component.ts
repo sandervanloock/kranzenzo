@@ -32,9 +32,7 @@ export class ProductOrderComponent implements OnInit {
 
     constructor(
         private loginModalService: LoginModalService,
-        private principal: Principal,
-        private eventManager: JhiEventManager,
-        private productService: ProductService, private productPopupService: ProductPopupService,
+        private principal: Principal, private eventManager: JhiEventManager, private productService: ProductService, private productPopupService: ProductPopupService,
         private route: ActivatedRoute,
         private http: Http,
         private userService: UserService,
@@ -102,6 +100,17 @@ export class ProductOrderComponent implements OnInit {
         this.orderService.create( this.order ).subscribe( ( order: Order ) => {
             this.order = order;
             this.productPopupService.close();
+            this.eventManager.broadcast( {
+                                             name: 'productOrderCompleted', content: {
+                    type: 'success', msg: 'product.submitted.success',
+                }
+                                         } );
+        }, ( error ) => {
+            this.eventManager.broadcast( {
+                                             name: 'productOrderCompleted', content: {
+                    type: 'error', msg: 'product.submitted.error',
+                }
+                                         } );
         } )
     }
 

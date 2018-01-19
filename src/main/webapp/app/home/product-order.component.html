@@ -108,14 +108,19 @@
                     <div class="form-group">
                         <label class="form-control-label">
                                     Ik wil mijn stuk thuis bezorgd (€1 per km / max 10 km)
-                                </label>
+                        </label>
                         <input required class="form-control" type="radio" name="deliveryType"
                                [value]="0" (change)="onSelectionChange('DELIVERED')"
-                               [required] [(ngModel)]="this.order.deliveryType">
-                                <small class="form-text text-muted">
-                                    Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
-                                </small>
-                            </div>
+                               [required] [(ngModel)]="this.order.deliveryType"/>
+                        <small class="form-text text-muted">
+                            Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
+                        </small>
+                        <div [hidden]="!(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city))">
+                            <small class="form-text text-danger">
+                                Gelieve je adres in de vorige stap op te geven
+                            </small>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="form-control-label">
                             Ik wil een AA-batterij bij de LED-verlichting. (0,5 €)

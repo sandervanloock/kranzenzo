@@ -1,6 +1,13 @@
 <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8" *ngIf="product">
+
+        <div class="alerts" role="alert">
+            <ngb-alert *ngIf="submittedAlert" [type]="submittedAlert.type" (close)="submittedAlert = null">
+                <pre [innerHTML]="submittedAlert.msg"></pre>
+            </ngb-alert>
+        </div>
+
         <ngb-carousel *ngIf="product.images.length">
             <ng-template ngbSlide *ngFor="let image of product.images">
                 <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" alt="Random first slide"
@@ -10,6 +17,7 @@
                 </div>
             </ng-template>
         </ngb-carousel>
+
         <img class="card-img-top" *ngIf="product.images.length==0"
              [src]="'http://via.placeholder.com/350x150?text='+product.name"/>
 

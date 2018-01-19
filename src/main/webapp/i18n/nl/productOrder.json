@@ -1,0 +1,8 @@
+{
+    "product": {
+        "submitted": {
+            "success": "<strong>Uw bestelling is correct ontvangen. Bekijk je mailbox voor de bevestiging van je bestelling</strong>",
+            "error": "<strong>Er ging iets mis, probeer opnieuw of contacteer ons op info@sandervl.be</strong>"
+        }
+    }
+}
