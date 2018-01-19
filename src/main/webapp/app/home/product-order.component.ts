@@ -9,6 +9,8 @@ import {Http} from '@angular/http';
 import {Order, OrderService} from '../entities/order';
 import {Observable} from 'rxjs/Observable';
 
+declare var google: any;
+
 /*
 Based on https://codepen.io/bryceyork/pen/MyPjPE
 
@@ -87,13 +89,19 @@ export class ProductOrderComponent implements OnInit {
 
     updateLocation( e ) {
         const locationString = `${this.customer.street},${this.customer.city}`;
-        //TODO calculate deliveryPrice with google maps
-        /*this.http.get(
-            `https://maps.googleapis.com/maps/api/directions/json?origin=Zorgvliet,Sint-Katelijne-waver&destination=${locationString}&key=AIzaSyClcpip4cpRugakVB8zitzdjxfo6qRPDic` )
-            .subscribe( ( data: any ) => {
-                console.log( data )
-            } );
-            */
+        const directionsService = new google.maps.DirectionsService;
+        directionsService.route( {
+                                     origin: {lat: 51.055410, lng: 4.490185}, destination: locationString, waypoints: [], optimizeWaypoints: true, travelMode: 'DRIVING'
+                                 }, ( response, status ) => {
+            if ( status === 'OK' ) {
+                if ( response.routes.length && response.routes[0].legs.length ) {
+                    this.deliveryPrice = Math.round( (response.routes[0].legs[0].distance.value * 0.001) * 100 ) / 100;
+                }
+            } else {
+                window.alert( 'Directions request failed due to ' + status );
+            }
+        } );
+
     }
 
     submitForm() {

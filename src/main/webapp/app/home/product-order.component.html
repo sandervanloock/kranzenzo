@@ -114,6 +114,7 @@
                                [required] [(ngModel)]="this.order.deliveryType"/>
                         <small class="form-text text-muted">
                             Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
+                            Kostprijs is {{this.deliveryPrice}}
                         </small>
                         <div [hidden]="!(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city))">
                             <small class="form-text text-danger">
@@ -153,7 +154,7 @@
                                     <td>Batterijen voor LED-licht</td>
                                     <td>€ 0.5</td>
                                 </tr>
-                                <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
+                                <tr *ngIf="this.order.deliveryType === 0">
                                     <td>Levering</td>
                                     <td>€ {{this.deliveryPrice}}</td>
                                 </tr>
@@ -203,7 +204,7 @@
                             <td>Batterijen voor LED-licht</td>
                             <td>€ 0.5</td>
                         </tr>
-                        <tr *ngIf="this.order.deliveryType === 'DELIVERED'">
+                        <tr *ngIf="this.order.deliveryType === 0">
                             <td>Levering</td>
                             <td>€ {{this.deliveryPrice}}</td>
                         </tr>
