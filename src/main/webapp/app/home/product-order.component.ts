@@ -25,7 +25,6 @@ export class ProductOrderComponent implements OnInit {
     step: number;
     modalRef: NgbModalRef;
     price: number;
-    deliveryPrice: number = 5; //TODO make this dynamic with google maps
     private deliveryPriceAdded: boolean;
 
     product: Product = new Product();
@@ -61,12 +60,12 @@ export class ProductOrderComponent implements OnInit {
     }
 
     onSelectionChange( type: string ) {
-        if ( type === 'DELIVERED' ) {
+        if ( type === 'DELIVERED' && this.order.deliveryPrice ) {
             this.deliveryPriceAdded = true;
-            this.price += this.deliveryPrice; //TODO calculate price for delivery
-        } else if ( this.deliveryPriceAdded && type === 'PICKUP' ) {
+            this.price += this.order.deliveryPrice; //TODO calculate price for delivery
+        } else if ( this.deliveryPriceAdded && type === 'PICKUP' && this.order.deliveryPrice ) {
             this.deliveryPriceAdded = false;
-            this.price -= this.deliveryPrice;
+            this.price -= this.order.deliveryPrice;
         }
     }
 
@@ -85,23 +84,6 @@ export class ProductOrderComponent implements OnInit {
                 this.customer.user = account;
             } );
         } );
-    }
-
-    updateLocation( e ) {
-        const locationString = `${this.customer.street},${this.customer.city}`;
-        const directionsService = new google.maps.DirectionsService;
-        directionsService.route( {
-                                     origin: {lat: 51.055410, lng: 4.490185}, destination: locationString, waypoints: [], optimizeWaypoints: true, travelMode: 'DRIVING'
-                                 }, ( response, status ) => {
-            if ( status === 'OK' ) {
-                if ( response.routes.length && response.routes[0].legs.length ) {
-                    this.deliveryPrice = Math.round( (response.routes[0].legs[0].distance.value * 0.001) * 100 ) / 100;
-                }
-            } else {
-                window.alert( 'Directions request failed due to ' + status );
-            }
-        } );
-
     }
 
     submitForm() {
@@ -137,6 +119,10 @@ export class ProductOrderComponent implements OnInit {
         } )
     }
 
+    updateDeliveryPrice( price: number ) {
+        this.order.deliveryPrice = price;
+    }
+
     gotoStepTwo() {
         if ( this.customer.user.lastName && this.customer.user.firstName && this.customer.user.email ) {
             this.step = 2;
@@ -145,14 +131,14 @@ export class ProductOrderComponent implements OnInit {
     }
 
     gotoStepTree() {
-        if ( !(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city)) ) {
+        if ( !(this.order.deliveryType === 0 && (!this.customer.street || !this.customer.city)) ) {
             this.step = 3;
         }
     }
 }
 
 @Component( {
-                selector: 'product-order-popup', template: ''
+                selector: 'jhi-product-order-popup', template: ''
             } )
 export class ProductOrderPopupComponent implements OnInit, OnDestroy {
 

@@ -4,6 +4,7 @@ import be.sandervl.kransenzo.KransenzoApp;
 import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.CustomerRepository;
+import be.sandervl.kransenzo.repository.LocationRepository;
 import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.repository.search.CustomerSearchRepository;
 import be.sandervl.kransenzo.service.dto.CustomerDTO;
@@ -84,6 +85,9 @@ public class CustomerResourceIntTest
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private LocationRepository locationRepository;
+
     private MockMvc restCustomerMockMvc;
 
     private Customer customer;
@@ -109,9 +113,9 @@ public class CustomerResourceIntTest
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
-        CustomerResource customerResource = new CustomerResource( customerRepository, customerMapper,
-                                                                  customerSearchRepository, passwordEncoder,
-                                                                  userRepository );
+        CustomerResource customerResource = new CustomerResource(customerRepository, customerMapper,
+                                                                 customerSearchRepository, passwordEncoder,
+                                                                 userRepository, locationRepository);
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup( customerResource )
                                                   .setCustomArgumentResolvers( pageableArgumentResolver )
                                                   .setControllerAdvice( exceptionTranslator )

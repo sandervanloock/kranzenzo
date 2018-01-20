@@ -1,5 +1,6 @@
 package be.sandervl.kransenzo.service;
 
+import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.domain.Product;
 import be.sandervl.kransenzo.domain.User;
@@ -95,7 +96,9 @@ public class OrderService
         updateProductVisibility( order );
         if ( order.getCustomer() != null ) {
             //fetch customer eager so all information for sending the email is present on the order
-            User user = customerRepository.getOne( order.getCustomer().getId() ).getUser();
+            Customer customer = customerRepository.getOne(order.getCustomer().getId());
+            User user = customer.getUser();
+            order.setCustomer(customer);
             mailService.sendOrderCreationMails( order, user );
         }
         return orderMapper.toDto( order );

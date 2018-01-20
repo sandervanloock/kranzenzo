@@ -27,7 +27,11 @@ public class CustomerDTO implements Serializable
 
     private String phoneNumber;
 
-    private Long addressId;
+    private Float latitude;
+
+    private Float longitude;
+
+    private String description;
 
     public Long getId() {
         return id;
@@ -85,12 +89,28 @@ public class CustomerDTO implements Serializable
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getAddressId() {
-        return addressId;
+    public Float getLatitude(){
+        return latitude;
     }
 
-    public void setAddressId( Long locationId ) {
-        this.addressId = locationId;
+    public void setLatitude(Float latitude){
+        this.latitude = latitude;
+    }
+
+    public Float getLongitude(){
+        return longitude;
+    }
+
+    public void setLongitude(Float longitude){
+        this.longitude = longitude;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
     }
 
     @Override

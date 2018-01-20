@@ -43,45 +43,9 @@
                            [(ngModel)]="this.customer.user.email">
                 </div>
                 </fieldset>
-                <fieldset class="form-group">
-                    <legend>Adresgegevens**</legend>
-                    <div class="form-group">
-                        <label for="street">Straat & nummer</label>
-                        <input type="text" (input)="updateLocation($event)" class="form-control" id="street"
-                               name="street"
-                               [(ngModel)]="customer.street">
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-2">
-                            <label for="zip">Postcode</label>
-                            <input type="number" class="form-control" id="zip" name="zip"
-                                   [(ngModel)]="customer.zipCode">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="city">Stad</label>
-                            <input type="text" class="form-control" id="city" name="city"
-                                   [(ngModel)]="customer.city">
-                        </div>
-                        <div class="form-group col-md-4">
-                            <label for="inputState">Provincie</label>
-                            <select id="inputState" class="form-control" name="province"
-                                    [(ngModel)]="customer.province">
-                                <option selected>Kies...</option>
-                                <option>Antwerpen</option>
-                                <option>Brussel</option>
-                                <option>Vlaams-Brabant</option>
-                                <option>Waals-Brabant</option>
-                                <option>Oost Vlaanderen</option>
-                                <option>West Vlaanderen</option>
-                                <option>Limburg</option>
-                                <option>Luik</option>
-                                <option>Henegauwen</option>
-                                <option>Namen</option>
-                                <option>Luxemburg</option>
-                            </select>
-                        </div>
-                    </div>
-                </fieldset>
+                <jhi-customer-address [customer]="this.customer"
+                                      (updateDeliveryPrice)="updateDeliveryPrice($event)">
+                </jhi-customer-address>
                 <small class="user-form-legend">* verplicht</small>
                 <small class="user-form-legend">** verplicht bij levering</small>
                 <div class="stepper-actions">
@@ -114,7 +78,7 @@
                                [required] [(ngModel)]="this.order.deliveryType"/>
                         <small class="form-text text-muted">
                             Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
-                            Kostprijs is {{this.deliveryPrice}}
+                            Kostprijs is {{this.order.deliveryPrice}}
                         </small>
                         <div [hidden]="!(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city))">
                             <small class="form-text text-danger">
@@ -156,7 +120,7 @@
                                 </tr>
                                 <tr *ngIf="this.order.deliveryType === 0">
                                     <td>Levering</td>
-                                    <td>€ {{this.deliveryPrice}}</td>
+                                    <td>€ {{this.order.deliveryPrice}}</td>
                                 </tr>
                                 <tr class="table-active">
                                     <td>Totaal</td>
@@ -206,7 +170,7 @@
                         </tr>
                         <tr *ngIf="this.order.deliveryType === 0">
                             <td>Levering</td>
-                            <td>€ {{this.deliveryPrice}}</td>
+                            <td>€ {{this.order.deliveryPrice}}</td>
                         </tr>
                         <tr class="table-active">
                             <td>Totaal</td>

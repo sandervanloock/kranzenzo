@@ -8,7 +8,7 @@ export class Customer implements BaseEntity {
                  public zipCode?: number,
                  public province?: string,
                  public phoneNumber?: string,
-                 public addressId?: number,
+                 public addressId?: number, public latitude?: number, public longitude?: number, public description?: number,
                  public orders?: BaseEntity[], ) {
     }
 }
