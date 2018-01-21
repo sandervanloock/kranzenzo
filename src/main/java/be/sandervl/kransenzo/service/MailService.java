@@ -1,7 +1,6 @@
 package be.sandervl.kransenzo.service;
 
 import be.sandervl.kransenzo.config.ApplicationProperties;
-import be.sandervl.kransenzo.domain.Customer;
 import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
