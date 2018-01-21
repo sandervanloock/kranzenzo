@@ -2,6 +2,7 @@ package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
 import be.sandervl.kransenzo.domain.Customer;
+import be.sandervl.kransenzo.domain.Location;
 import be.sandervl.kransenzo.domain.User;
 import be.sandervl.kransenzo.repository.CustomerRepository;
 import be.sandervl.kransenzo.repository.LocationRepository;
@@ -100,13 +101,15 @@ public class CustomerResourceIntTest
      */
     public static Customer createEntity( EntityManager em ) {
         User user = UserResourceIntTest.createEntity( em );
+        Location location = LocationResourceIntTest.createEntity(em);
         Customer customer = new Customer()
-                .street( DEFAULT_STREET )
-                .city( DEFAULT_CITY )
-                .zipCode( DEFAULT_ZIP_CODE )
-                .province( DEFAULT_PROVINCE )
-                .phoneNumber( DEFAULT_PHONE_NUMBER )
-                .user( user );
+            .street(DEFAULT_STREET)
+            .city(DEFAULT_CITY)
+            .zipCode(DEFAULT_ZIP_CODE)
+            .province(DEFAULT_PROVINCE)
+            .phoneNumber(DEFAULT_PHONE_NUMBER)
+            .user(user)
+            .address(location);
         return customer;
     }
 
@@ -127,6 +130,7 @@ public class CustomerResourceIntTest
         customerSearchRepository.deleteAll();
         customer = createEntity( em );
         userRepository.save( customer.getUser() );
+        locationRepository.save(customer.getAddress());
     }
 
     @Test
