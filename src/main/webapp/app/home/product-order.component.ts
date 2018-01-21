@@ -8,6 +8,7 @@ import {Customer, CustomerService} from '../entities/customer';
 import {Http} from '@angular/http';
 import {Order, OrderService} from '../entities/order';
 import {Observable} from 'rxjs/Observable';
+import {PRICE_BATTERIES_INCLUDED, VAT_NUMBER} from '../app.constants';
 
 declare var google: any;
 
@@ -24,8 +25,7 @@ And leveraging the Creative Tim Material Bootstrap Library - http://demos.creati
 export class ProductOrderComponent implements OnInit {
     step: number;
     modalRef: NgbModalRef;
-    price: number;
-    private deliveryPriceAdded: boolean;
+    vatNumber: string;
 
     product: Product = new Product();
     customer: Customer = new Customer();
@@ -43,7 +43,7 @@ export class ProductOrderComponent implements OnInit {
 
     ngOnInit() {
         this.step = 1;
-        this.price = this.product.price;
+        this.vatNumber = VAT_NUMBER;
         this.order.productId = this.product.id;
         this.customer.user = new User();
 
@@ -59,23 +59,19 @@ export class ProductOrderComponent implements OnInit {
 
     }
 
-    onSelectionChange( type: string ) {
-        if ( type === 'DELIVERED' && this.order.deliveryPrice ) {
-            this.deliveryPriceAdded = true;
-            this.price += this.order.deliveryPrice; //TODO calculate price for delivery
-        } else if ( this.deliveryPriceAdded && type === 'PICKUP' && this.order.deliveryPrice ) {
-            this.deliveryPriceAdded = false;
-            this.price -= this.order.deliveryPrice;
-        }
-    }
-
     toggleLed() {
         this.order.includeBatteries = !this.order.includeBatteries;
-        if ( this.order.includeBatteries ) {
-            this.price += 0.5;
-        } else {
-            this.price -= 0.5;
+    }
+
+    getTotalPrice() {
+        let price = this.product.price;
+        if ( this.order.deliveryType === 0 && this.order.deliveryPrice ) {
+            price += this.order.deliveryPrice;
         }
+        if ( this.order.includeBatteries ) {
+            price += PRICE_BATTERIES_INCLUDED;
+        }
+        return price;
     }
 
     registerAuthenticationSuccess() {

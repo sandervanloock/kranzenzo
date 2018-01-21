@@ -97,6 +97,7 @@ public class OrderService
         if ( order.getCustomer() != null ) {
             //fetch customer eager so all information for sending the email is present on the order
             Customer customer = customerRepository.getOne(order.getCustomer().getId());
+            order.setDeliveryAddress(customer.getAddress());
             User user = customer.getUser();
             order.setCustomer(customer);
             mailService.sendOrderCreationMails( order, user );

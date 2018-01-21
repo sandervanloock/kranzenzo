@@ -38,7 +38,8 @@
     </tr>
     </tbody>
 </table>
-<p th:inline="text">Gelieve € [[${order.totalPrice}]] over te schrijven op <b>BE12 1234 4567 890</b></p>
+<p th:inline="text">Gelieve € [[${order.totalPrice}]] over te schrijven op <b>[[${T(be.sandervl.kransenzo.config.Constants).VAT_NUMBER}]]</b>
+</p>
 <p th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).DELIVERED)}"
    th:inline="text">
     Zodra het geld is overgemaakt zal het stuk worden geleverd in [[${order.customer.street}]] te

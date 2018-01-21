@@ -22,26 +22,29 @@
                 <fieldset class="form-group">
                     <h2>Geef je gegevens</h2>
                     <div class="form-group">
-                        <label for="lastName">Naam*</label>
-                        <input required type="text" class="form-control" id="lastName"
-                               aria-describedby="lastName" placeholder="Naam"
-                               name="lastName" [required]="true"
-                               [(ngModel)]="this.customer.user.lastName" #name="ngModel">
-                    </div>
-                    <div class="form-group">
                         <label for="lastName">Voornaam*</label>
                         <input required type="text" class="form-control" id="firstName"
                                aria-describedby="firstName" placeholder="Voornaam"
-                               name="firstName" [required]="true"
-                               [(ngModel)]="this.customer.user.firstName">
+                               name="firstName" [(ngModel)]="this.customer.user.firstName">
                     </div>
                     <div class="form-group">
-                    <label for="email">Emailadres*</label>
-                    <input required type="email" class="form-control" id="email" name="email"
-                           aria-describedby="email" placeholder="Emailadres"
-                           name="email" [required]="true"
-                           [(ngModel)]="this.customer.user.email">
-                </div>
+                        <label for="lastName">Naam*</label>
+                        <input required type="text" class="form-control" id="lastName"
+                               aria-describedby="lastName" placeholder="Naam"
+                               name="lastName" [(ngModel)]="this.customer.user.lastName">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Emailadres*</label>
+                        <input required type="email" class="form-control" id="email" name="email"
+                               aria-describedby="email" placeholder="Emailadres"
+                               [(ngModel)]="this.customer.user.email">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">Telefoonnummer</label>
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
+                               aria-describedby="phoneNumber" placeholder="Telefoonnummber"
+                               [(ngModel)]="this.customer.phoneNumber">
+                    </div>
                 </fieldset>
                 <jhi-customer-address [customer]="this.customer"
                                       (updateDeliveryPrice)="updateDeliveryPrice($event)">
@@ -66,16 +69,14 @@
                                     Ik wil mijn stuk ophalen
                                 </label>
                         <input required class="form-control" checked type="radio" name="deliveryType"
-                               [value]="1" (change)="onSelectionChange('PICKUP')"
-                               required [(ngModel)]="this.order.deliveryType">
+                               [value]="1" [(ngModel)]="this.order.deliveryType">
                             </div>
                     <div class="form-group">
                         <label class="form-control-label">
                                     Ik wil mijn stuk thuis bezorgd (€1 per km / max 10 km)
                         </label>
                         <input required class="form-control" type="radio" name="deliveryType"
-                               [value]="0" (change)="onSelectionChange('DELIVERED')"
-                               [required] [(ngModel)]="this.order.deliveryType"/>
+                               [value]="0" [(ngModel)]="this.order.deliveryType"/>
                         <small class="form-text text-muted">
                             Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
                         </small>
@@ -94,7 +95,7 @@
                             Ik wil een AA-batterij bij de LED-verlichting. (0,5 €)
                         </label>
                         <input class="form-control" type="checkbox" name="led"
-                               value="1" (change)="toggleLed()">
+                               value="1" [(ngModel)]="this.order.includeBatteries">
                         </div>
                     <div class="form-group">
                         <label for="description">Extra opmerkingen</label>
@@ -121,13 +122,13 @@
                                     <td>Batterijen voor LED-licht</td>
                                     <td>€ 0.5</td>
                                 </tr>
-                                <tr *ngIf="this.order.deliveryType === 0">
+                                <tr *ngIf="this.order.deliveryType === 0 && this.order.deliveryPrice">
                                     <td>Levering</td>
                                     <td>€ {{this.order.deliveryPrice}}</td>
                                 </tr>
                                 <tr class="table-active">
                                     <td>Totaal</td>
-                                    <td>€ {{this.price}}</td>
+                                    <td>€ {{this.getTotalPrice()}}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -177,12 +178,13 @@
                         </tr>
                         <tr class="table-active">
                             <td>Totaal</td>
-                            <td>€ {{this.price}}</td>
+                            <td>€ {{this.getTotalPrice()}}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <p>Gelieve € {{this.price}} over te schrijven op <b>BE12 1234 4567 890</b></p>
+
+                <p>Gelieve € {{this.getTotalPrice()}} over te schrijven op <b>{{this.vatNumber}}</b></p>
                 <p *ngIf="this.order.deliveryType === 0">
                     Zodra het geld is overgemaakt zal het stuk worden geleverd in {{customer.street}} te
                     {{customer.city}}.
