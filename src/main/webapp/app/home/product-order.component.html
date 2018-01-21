@@ -78,7 +78,10 @@
                                [required] [(ngModel)]="this.order.deliveryType"/>
                         <small class="form-text text-muted">
                             Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
-                            Kostprijs is {{this.order.deliveryPrice}}
+                        </small>
+                        <small class="form-text text-muted" *ngIf="this.order.deliveryPrice">
+                            Kostprijs voor levering naar {{this.customer.street}} te {{this.customer.city}} is
+                            {{this.order.deliveryPrice}}. (€1 per km)
                         </small>
                         <div [hidden]="!(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city))">
                             <small class="form-text text-danger">
