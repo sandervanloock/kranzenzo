@@ -20,7 +20,8 @@ export class CustomerAddressComponent implements OnInit {
 
     ngOnInit() {
         const input = document.getElementById( 'address' );
-        this.searchBox = new google.maps.places.Autocomplete( input );
+        const options = {componentRestrictions: {country: 'be'}};
+        this.searchBox = new google.maps.places.Autocomplete( input, options );
         this.searchBox.addListener( 'place_changed', () => this.updateAddress() );
     }
 
