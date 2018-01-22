@@ -4,6 +4,15 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="userManagement.firstName">First Name</span></dt>
+        <dd>{{customer.user.firstName}}</dd>
+        <dt><span jhiTranslate="userManagement.lastName">Last Name</span></dt>
+        <dd>{{customer.user.lastName}}</dd>
+        <dt><span jhiTranslate="userManagement.email">Email</span></dt>
+        <dd>{{customer.user.email}}</dd>
+        <dd>
+            <span>{{customer.street}}</span>
+        </dd>
         <dt><span jhiTranslate="kransenzoApp.customer.street">Street</span></dt>
         <dd>
             <span>{{customer.street}}</span>
@@ -26,9 +35,9 @@
         </dd>
         <dt><span jhiTranslate="kransenzoApp.customer.address">Address</span></dt>
         <dd>
-            <div *ngIf="customer.addressId">
-                <a [routerLink]="['/location', customer.addressId]">{{customer.addressId}}</a>
-            </div>
+            <span *ngIf="customer.description">
+                {{customer.description}}
+            </span>
         </dd>
     </dl>
 

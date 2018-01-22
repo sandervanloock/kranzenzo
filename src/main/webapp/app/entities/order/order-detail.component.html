@@ -35,7 +35,8 @@
         <dt><span jhiTranslate="kransenzoApp.order.customer">Customer</span></dt>
         <dd>
             <div *ngIf="order.customerId">
-                <a [routerLink]="['/customer', order.customerId]">{{order.customerId}}</a>
+                <a [routerLink]="['/customer', order.customerId]">{{order.customer.user.firstName}}
+                    {{order.customer.user.lastName}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="kransenzoApp.order.deliveryAddress">Delivery Address</span></dt>

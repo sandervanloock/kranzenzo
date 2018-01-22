@@ -49,7 +49,7 @@ public class Customer implements Serializable
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Location address;
 

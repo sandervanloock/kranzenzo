@@ -8,6 +8,9 @@ import {Customer, CustomerService} from '../entities/customer';
 import {Http} from '@angular/http';
 import {Order, OrderService} from '../entities/order';
 import {Observable} from 'rxjs/Observable';
+import {PRICE_BATTERIES_INCLUDED, VAT_NUMBER} from '../app.constants';
+
+declare var google: any;
 
 /*
 Based on https://codepen.io/bryceyork/pen/MyPjPE
@@ -22,9 +25,7 @@ And leveraging the Creative Tim Material Bootstrap Library - http://demos.creati
 export class ProductOrderComponent implements OnInit {
     step: number;
     modalRef: NgbModalRef;
-    price: number;
-    deliveryPrice: number = 5; //TODO make this dynamic with google maps
-    private deliveryPriceAdded: boolean;
+    vatNumber: string;
 
     product: Product = new Product();
     customer: Customer = new Customer();
@@ -42,7 +43,7 @@ export class ProductOrderComponent implements OnInit {
 
     ngOnInit() {
         this.step = 1;
-        this.price = this.product.price;
+        this.vatNumber = VAT_NUMBER;
         this.order.productId = this.product.id;
         this.customer.user = new User();
 
@@ -58,23 +59,19 @@ export class ProductOrderComponent implements OnInit {
 
     }
 
-    onSelectionChange( type: string ) {
-        if ( type === 'DELIVERED' ) {
-            this.deliveryPriceAdded = true;
-            this.price += this.deliveryPrice; //TODO calculate price for delivery
-        } else if ( this.deliveryPriceAdded && type === 'PICKUP' ) {
-            this.deliveryPriceAdded = false;
-            this.price -= this.deliveryPrice;
-        }
-    }
-
     toggleLed() {
         this.order.includeBatteries = !this.order.includeBatteries;
-        if ( this.order.includeBatteries ) {
-            this.price += 0.5;
-        } else {
-            this.price -= 0.5;
+    }
+
+    getTotalPrice() {
+        let price = this.product.price;
+        if ( this.order.deliveryType === 0 && this.order.deliveryPrice ) {
+            price += this.order.deliveryPrice;
         }
+        if ( this.order.includeBatteries ) {
+            price += PRICE_BATTERIES_INCLUDED;
+        }
+        return price;
     }
 
     registerAuthenticationSuccess() {
@@ -83,17 +80,6 @@ export class ProductOrderComponent implements OnInit {
                 this.customer.user = account;
             } );
         } );
-    }
-
-    updateLocation( e ) {
-        const locationString = `${this.customer.street},${this.customer.city}`;
-        //TODO calculate deliveryPrice with google maps
-        /*this.http.get(
-            `https://maps.googleapis.com/maps/api/directions/json?origin=Zorgvliet,Sint-Katelijne-waver&destination=${locationString}&key=AIzaSyClcpip4cpRugakVB8zitzdjxfo6qRPDic` )
-            .subscribe( ( data: any ) => {
-                console.log( data )
-            } );
-            */
     }
 
     submitForm() {
@@ -129,6 +115,10 @@ export class ProductOrderComponent implements OnInit {
         } )
     }
 
+    updateDeliveryPrice( price: number ) {
+        this.order.deliveryPrice = price;
+    }
+
     gotoStepTwo() {
         if ( this.customer.user.lastName && this.customer.user.firstName && this.customer.user.email ) {
             this.step = 2;
@@ -137,14 +127,14 @@ export class ProductOrderComponent implements OnInit {
     }
 
     gotoStepTree() {
-        if ( !(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city)) ) {
+        if ( !(this.order.deliveryType === 0 && (!this.customer.street || !this.customer.city)) ) {
             this.step = 3;
         }
     }
 }
 
 @Component( {
-                selector: 'product-order-popup', template: ''
+                selector: 'jhi-product-order-popup', template: ''
             } )
 export class ProductOrderPopupComponent implements OnInit, OnDestroy {
 

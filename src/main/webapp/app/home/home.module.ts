@@ -8,9 +8,11 @@ import {HomeProductComponent} from './home-product.component';
 import {ProductDetailComponent} from './product-detail.component';
 import {ProductOrderComponent, ProductOrderPopupComponent} from './product-order.component';
 
+import {CustomerAddressComponent} from './customer-address.component';
+
 @NgModule({
               imports: [KransenzoSharedModule, RouterModule.forChild( HOME_ROUTE )],
-              declarations: [HomeComponent, HomeProductComponent, ProductDetailComponent, ProductOrderComponent, ProductOrderPopupComponent
+              declarations: [HomeComponent, HomeProductComponent, ProductDetailComponent, ProductOrderComponent, ProductOrderPopupComponent, CustomerAddressComponent
     ],
               entryComponents: [ProductOrderComponent
     ],

@@ -10,3 +10,7 @@ let _SERVER_API_URL = ''; // This value will be overwritten by Webpack
 export const VERSION = _VERSION;
 export const DEBUG_INFO_ENABLED = _DEBUG_INFO_ENABLED;
 export const SERVER_API_URL = _SERVER_API_URL;
+export const PRICE_BATTERIES_INCLUDED = 0.5;
+export const PRICE_PER_KILOMETER_PER_KM = 1;
+export const ORDER_DELIVERY_ORIGIN = {lat: 51.055410, lng: 4.490185};
+export const VAT_NUMBER = 'BE12 1234 4567 890';
