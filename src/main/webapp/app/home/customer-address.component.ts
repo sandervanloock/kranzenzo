@@ -6,7 +6,7 @@ declare var google: any;
 declare var $: any;
 
 @Component( {
-                selector: 'jhi-customer-address', templateUrl: './customer-address.component.html', styleUrls: ['customer-address.css'],
+                selector: 'jhi-customer-address', templateUrl: './customer-address.component.html',
             } )
 export class CustomerAddressComponent implements OnInit {
 
