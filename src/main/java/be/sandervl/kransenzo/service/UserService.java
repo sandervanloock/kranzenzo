@@ -296,6 +296,8 @@ public class UserService {
         if ( customerDTO != null ) {
             Customer customer = customerMapper.toEntity( customerDTO );
             customer.setUser( user );
+            //TODO fill in address with google maps when registering
+            customer.setAddress(null);
             customerRepository.save( customer );
         }
         return user;
