@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -92,8 +93,13 @@ public class CustomerResource
 
     private void setUserLocation(Customer customer){
         Location address = customer.getAddress();
-        Location location = locationRepository.save(address);
-        customer.setAddress(location);
+        if (Objects.nonNull(address.getLatitude()) && Objects.nonNull(address.getLongitude())){
+            Location location = locationRepository.save(address);
+            customer.setAddress(location);
+        }
+        else{
+            customer.setAddress(null);
+        }
     }
 
     private void setUserLoginAndPassword( Customer customer ) {
