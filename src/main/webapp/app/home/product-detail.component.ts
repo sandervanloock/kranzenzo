@@ -4,7 +4,6 @@ import {JhiAlertService, JhiEventManager, JhiAlert} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
 
-// import {C} from '@ng-bootstrap/ng-bootstrap/carousel'
 
 @Component( {
                 selector: 'jhi-product-detail', templateUrl: './product-detail.component.html', styleUrls: ['product-detail.css']

@@ -9,9 +9,11 @@ import {ProductDetailComponent} from './product-detail.component';
 import {ProductOrderComponent, ProductOrderPopupComponent} from './product-order.component';
 
 import {CustomerAddressComponent} from './customer-address.component';
+import {ShareButtonsModule} from 'ngx-sharebuttons';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
-              imports: [KransenzoSharedModule, RouterModule.forChild( HOME_ROUTE )],
+              imports: [HttpClientModule, KransenzoSharedModule, RouterModule.forChild( HOME_ROUTE ), ShareButtonsModule.forRoot()],
               declarations: [HomeComponent, HomeProductComponent, ProductDetailComponent, ProductOrderComponent, ProductOrderPopupComponent, CustomerAddressComponent
     ],
               entryComponents: [ProductOrderComponent
