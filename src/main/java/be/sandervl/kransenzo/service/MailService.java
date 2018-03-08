@@ -139,7 +139,7 @@ public class MailService {
         }
 
         log.debug( "Sending notification of new order to '{}'", applicationProperties.getMail().getConfirmation() );
-        Context context = new Context( Locale.getDefault() );
+        Context context = new Context(Locale.forLanguageTag("nl"));
         context.setVariable( "orderLink", jHipsterProperties.getMail().getBaseUrl() + "#/order/" + order.getId() );
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
         String content = templateEngine.process( "orderConfirmationClient", context );

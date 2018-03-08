@@ -1,5 +1,7 @@
 package be.sandervl.kransenzo.config;
 
+import java.time.ZoneId;
+
 /**
  * Application constants.
  */
@@ -13,6 +15,8 @@ public final class Constants {
     public static final String DEFAULT_LANGUAGE = "nl";
     public static final String CREDENTIALS_PATH = "/tmp/host/beanstalk-credentials.json";
     public static final String VAT_NUMBER = "BE12 1234 4567 890";
+
+    public static final ZoneId WORKING_ZONE_ID = ZoneId.of("Europe/Paris");
 
     private Constants() {
     }

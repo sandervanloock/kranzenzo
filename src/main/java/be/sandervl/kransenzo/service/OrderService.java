@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static be.sandervl.kransenzo.config.Constants.WORKING_ZONE_ID;
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
@@ -34,7 +35,7 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 public class OrderService
 {
 
-    private final Logger log = LoggerFactory.getLogger( OrderService.class );
+    private final Logger log = LoggerFactory.getLogger(OrderService.class);
 
     private final OrderRepository orderRepository;
 
@@ -87,8 +88,8 @@ public class OrderService
      */
     public OrderDTO create( OrderDTO orderDTO ) {
         log.debug( "Request to create Order : {}", orderDTO );
-        orderDTO.setCreated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
-        orderDTO.setUpdated( ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 ) );
+        orderDTO.setCreated(ZonedDateTime.now(WORKING_ZONE_ID).withNano(0));
+        orderDTO.setUpdated(ZonedDateTime.now(WORKING_ZONE_ID).withNano(0));
         orderDTO.setState( OrderState.NEW );
         Order order = orderMapper.toEntity( orderDTO );
         order = orderRepository.save( order );

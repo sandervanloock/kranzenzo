@@ -8,6 +8,6 @@ export class Product implements BaseEntity {
         public description?: string, public isActive?: boolean,
         public images?: BaseEntity[],
         public orders?: BaseEntity[], public tags?: BaseEntity[], ) {
-        this.isActive = false;
+        this.isActive = true;
     }
 }

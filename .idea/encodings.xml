@@ -2,5 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/i18n/messages_en.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../resto/web.resto.admin.lu/src/main/resources/be/resto/admin/config/development/common.properties" charset="UTF-8" />
   </component>
 </project>

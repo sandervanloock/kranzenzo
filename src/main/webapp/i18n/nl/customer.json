@@ -3,15 +3,15 @@
     "customer": {
       "home": {
         "title": "Klanten",
-        "createLabel": "Maak een nieuwe Klant",
-        "createOrEditLabel": "Maak of wijzig een Klant",
-        "search": "Zoek voor een Klant"
+          "createLabel": "Maak een nieuwe klant",
+          "createOrEditLabel": "Maak of wijzig een klant",
+          "search": "Zoek een klant"
       },
       "created": "Een nieuwe klant is aangemaakt met id {{ param }}",
-      "updated": "Een klant is gewijzigd met id {{ param }}",
-      "deleted": "Een klant is verwijderd met id {{ param }}",
+        "updated": "Een klant met id {{ param }} is gewijzigd",
+        "deleted": "Een klant met id {{ param }} is verwijderd",
       "delete": {
-        "question": "Bent u zeker dat u Customer {{ id }} wilt verwijderen?"
+          "question": "Bent u zeker dat u klant {{ id }} wilt verwijderen?"
       },
       "detail": {
         "title": "Klant"

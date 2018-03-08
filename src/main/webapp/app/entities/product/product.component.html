@@ -44,7 +44,7 @@
                 <td>{{product.name}}</td>
                 <td>{{product.price}}</td>
                 <td>{{product.description}}</td>
-                <td>{{product.isActive}}</td>
+                <td><input type="checkbox" readonly disabled [checked]="product.isActive"/></td>
                 <td>
                     <span *ngFor="let tags of product.tags; let last = last">
                             <a class="form-control-static" [routerLink]="['../tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}
