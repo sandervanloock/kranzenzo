@@ -25,8 +25,10 @@
         <td th:text="${'€'+order.product.price}">€50</td>
     </tr>
     <tr th:if="${order.includeBatteries}">
-        <td>Batterijen voor LED-licht</td>
-        <td>€0.5</td>
+        <td>Batterijen</td>
+        <td th:text="${'€'+T(be.sandervl.kransenzo.domain.Order).PRICE_FOR_BATTERIES*order.product.numberOfBatteries}">€
+            0.5
+        </td>
     </tr>
     <tr th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).DELIVERED)}">
         <td>Levering</td>

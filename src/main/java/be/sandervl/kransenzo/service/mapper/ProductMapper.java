@@ -14,14 +14,14 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product>
 
     @Mapping(target = "images")
     @Mapping(target = "orders", ignore = true)
-    Product toEntity( ProductDTO productDTO );
+    Product toEntity(ProductDTO productDTO);
 
-    default Product fromId( Long id ) {
-        if ( id == null ) {
+    default Product fromId(Long id){
+        if (id == null){
             return null;
         }
         Product product = new Product();
-        product.setId( id );
+        product.setId(id);
         return product;
     }
 }

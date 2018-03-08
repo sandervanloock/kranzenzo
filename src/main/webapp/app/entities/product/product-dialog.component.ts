@@ -22,8 +22,7 @@ export class ProductDialogComponent implements OnInit {
 
     tags: Tag[];
 
-    constructor( public activeModal: NgbActiveModal,
-                 private alertService: JhiAlertService,
+    constructor( public activeModal: NgbActiveModal, private jhiAlertService: JhiAlertService,
                  private productService: ProductService,
                  private tagService: TagService,
                  private eventManager: JhiEventManager ) {
@@ -66,7 +65,7 @@ export class ProductDialogComponent implements OnInit {
     }
 
     private subscribeToSaveResponse( result: Observable<Product> ) {
-        result.subscribe( ( res: Product ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError( res ) );
+        result.subscribe( ( res: Product ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError() );
     }
 
     private onSaveSuccess( result: Product ) {
@@ -75,18 +74,12 @@ export class ProductDialogComponent implements OnInit {
         this.activeModal.dismiss( result );
     }
 
-    private onSaveError( error ) {
-        try {
-            error.json();
-        } catch ( exception ) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError( error );
     }
 
-    private onError( error ) {
-        this.alertService.error( error.message, null, null );
+    private onError( error: any ) {
+        this.jhiAlertService.error( error.message, null, null );
     }
 }
 

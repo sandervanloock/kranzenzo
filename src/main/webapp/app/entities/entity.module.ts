@@ -9,13 +9,13 @@ import {KransenzoLocationModule} from './location/location.module';
 
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
-@NgModule({
-    imports: [KransenzoProductModule, KransenzoImageModule, KransenzoTagModule, KransenzoCustomerModule, KransenzoOrderModule, KransenzoLocationModule,
-        /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
-    ],
-    declarations: [],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
-export class KransenzoEntityModule {}
+@NgModule( {
+               imports: [KransenzoProductModule, KransenzoImageModule, KransenzoTagModule, KransenzoCustomerModule, KransenzoOrderModule, KransenzoLocationModule,
+                   /* jhipster-needle-add-entity-module - JHipster will add entity modules here */],
+               declarations: [],
+               entryComponents: [],
+               providers: [],
+               schemas: [CUSTOM_ELEMENTS_SCHEMA]
+           } )
+export class KransenzoEntityModule {
+}

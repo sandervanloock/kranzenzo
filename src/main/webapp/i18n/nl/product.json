@@ -21,7 +21,8 @@
         "description": "Beschrijving",
         "isActive": "Zichtbaar",
         "images": "Afbeeldingen",
-      "orders": "Orders",
+        "numberOfBatteries": "Aantal batterijen",
+        "orders": "Orders",
         "tags": "Groepen"
     }
   }

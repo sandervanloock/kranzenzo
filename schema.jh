@@ -1,8 +1,9 @@
 entity Product {
     name String maxlength(200) required
     price Float min(0) required
-    description String maxlength(5000) 
+    description String maxlength(5000)
     isActive Boolean
+    numberOfBatteries Integer min(0) max(10)
 }
 
 entity Image {
@@ -39,7 +40,7 @@ entity Location{
 
 enum OrderState{
 	NEW, PAYED, CANCELLED, DONE
-} 
+}
 
 enum DeliveryType{
 	DELIVERED, PICKUP

@@ -1,8 +1,6 @@
 package be.sandervl.kransenzo.service.dto;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -11,8 +9,7 @@ import java.util.Set;
 /**
  * A DTO for the Product entity.
  */
-public class ProductDTO implements Serializable
-{
+public class ProductDTO implements Serializable{
 
     private Long id;
 
@@ -29,6 +26,10 @@ public class ProductDTO implements Serializable
 
     private Boolean isActive;
 
+    @Min(value = 0)
+    @Max(value = 10)
+    private Integer numberOfBatteries;
+
     private Set<TagDTO> tags = new HashSet<>();
 
 	private Set<ImageDTO> images = new HashSet<>();
@@ -37,47 +38,55 @@ public class ProductDTO implements Serializable
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id){
         this.id = id;
     }
 
-    public String getName() {
+    public String getName(){
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name){
         this.name = name;
     }
 
-    public Float getPrice() {
+    public Float getPrice(){
         return price;
     }
 
-    public void setPrice( Float price ) {
+    public void setPrice(Float price){
         this.price = price;
     }
 
-    public String getDescription() {
+    public String getDescription(){
         return description;
     }
 
-    public void setDescription( String description ) {
+    public void setDescription(String description){
         this.description = description;
     }
 
-    public Boolean isIsActive() {
+    public Boolean isIsActive(){
         return isActive;
     }
 
-    public void setIsActive( Boolean isActive ) {
+    public void setIsActive(Boolean isActive){
         this.isActive = isActive;
     }
 
-    public Set<TagDTO> getTags() {
+    public Integer getNumberOfBatteries(){
+        return numberOfBatteries;
+    }
+
+    public void setNumberOfBatteries(Integer numberOfBatteries){
+        this.numberOfBatteries = numberOfBatteries;
+    }
+
+    public Set<TagDTO> getTags(){
         return tags;
     }
 
-    public void setTags( Set<TagDTO> tags ) {
+    public void setTags(Set<TagDTO> tags){
         this.tags = tags;
     }
 
@@ -90,34 +99,35 @@ public class ProductDTO implements Serializable
 	}
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o){
+        if (this == o){
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()){
             return false;
         }
 
         ProductDTO productDTO = (ProductDTO) o;
-        if ( productDTO.getId() == null || getId() == null ) {
+        if (productDTO.getId() == null || getId() == null){
             return false;
         }
-        return Objects.equals( getId(), productDTO.getId() );
+        return Objects.equals(getId(), productDTO.getId());
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode( getId() );
+    public int hashCode(){
+        return Objects.hashCode(getId());
     }
 
     @Override
-    public String toString() {
+    public String toString(){
         return "ProductDTO{" +
-                "id=" + getId() +
-                ", name='" + getName() + "'" +
-                ", price='" + getPrice() + "'" +
-                ", description='" + getDescription() + "'" +
-                ", isActive='" + isIsActive() + "'" +
-                "}";
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", price=" + getPrice() +
+            ", description='" + getDescription() + "'" +
+            ", isActive='" + isIsActive() + "'" +
+            ", numberOfBatteries=" + getNumberOfBatteries() +
+            "}";
     }
 }

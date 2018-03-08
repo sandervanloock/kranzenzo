@@ -214,7 +214,7 @@ public class Order implements Serializable
             result += this.deliveryPrice;
         }
         if ( includeBatteries ) {
-            result += PRICE_FOR_BATTERIES;
+            result += PRICE_FOR_BATTERIES * product.getNumberOfBatteries();
         }
         return result;
     }

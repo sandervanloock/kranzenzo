@@ -2,6 +2,7 @@ package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.service.ProductService;
 import be.sandervl.kransenzo.service.dto.ProductDTO;
+import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -21,15 +22,13 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
-public class ProductResource
-{
+public class ProductResource{
 
     private static final String ENTITY_NAME = "product";
-    private final Logger log = LoggerFactory.getLogger( ProductResource.class );
-
+    private final Logger log = LoggerFactory.getLogger(ProductResource.class);
     private final ProductService productService;
 
-    public ProductResource( ProductService productService ) {
+    public ProductResource(ProductService productService){
         this.productService = productService;
     }
 
@@ -42,17 +41,15 @@ public class ProductResource
      */
     @PostMapping("/products")
     @Timed
-    public ResponseEntity<ProductDTO> createProduct( @Valid @RequestBody ProductDTO productDTO ) throws URISyntaxException {
-        log.debug( "REST request to save Product : {}", productDTO );
-        if ( productDTO.getId() != null ) {
-            return ResponseEntity.badRequest().headers( HeaderUtil.createFailureAlert( ENTITY_NAME, "idexists",
-                                                                                       "A new product cannot already have an ID" ) )
-                                 .body( null );
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO productDTO) throws URISyntaxException{
+        log.debug("REST request to save Product : {}", productDTO);
+        if (productDTO.getId() != null){
+            throw new BadRequestAlertException("A new product cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ProductDTO result = productService.save( productDTO );
-        return ResponseEntity.created( new URI( "/api/products/" + result.getId() ) )
-                             .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
-                             .body( result );
+        ProductDTO result = productService.save(productDTO);
+        return ResponseEntity.created(new URI("/api/products/" + result.getId()))
+                             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -66,16 +63,15 @@ public class ProductResource
      */
     @PutMapping("/products")
     @Timed
-    public ResponseEntity<ProductDTO> updateProduct( @Valid @RequestBody ProductDTO productDTO ) throws URISyntaxException {
-        log.debug( "REST request to update Product : {}", productDTO );
-        if ( productDTO.getId() == null ) {
-            return createProduct( productDTO );
+    public ResponseEntity<ProductDTO> updateProduct(@Valid @RequestBody ProductDTO productDTO) throws URISyntaxException{
+        log.debug("REST request to update Product : {}", productDTO);
+        if (productDTO.getId() == null){
+            return createProduct(productDTO);
         }
-        ProductDTO result = productService.save( productDTO );
+        ProductDTO result = productService.save(productDTO);
         return ResponseEntity.ok()
-                             .headers(
-                                     HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, productDTO.getId().toString() ) )
-                             .body( result );
+                             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, productDTO.getId().toString()))
+                             .body(result);
     }
 
     /**
@@ -100,10 +96,10 @@ public class ProductResource
      */
     @GetMapping("/products/{id}")
     @Timed
-    public ResponseEntity<ProductDTO> getProduct( @PathVariable Long id ) {
-        log.debug( "REST request to get Product : {}", id );
-        ProductDTO productDTO = productService.findOne( id );
-        return ResponseUtil.wrapOrNotFound( Optional.ofNullable( productDTO ) );
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id){
+        log.debug("REST request to get Product : {}", id);
+        ProductDTO productDTO = productService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(productDTO));
     }
 
     /**
@@ -114,11 +110,10 @@ public class ProductResource
      */
     @DeleteMapping("/products/{id}")
     @Timed
-    public ResponseEntity<Void> deleteProduct( @PathVariable Long id ) {
-        log.debug( "REST request to delete Product : {}", id );
-        productService.delete( id );
-        return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
-                             .build();
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id){
+        log.debug("REST request to delete Product : {}", id);
+        productService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
     /**
@@ -130,9 +125,9 @@ public class ProductResource
      */
     @GetMapping("/_search/products")
     @Timed
-    public List<ProductDTO> searchProducts( @RequestParam String query ) {
-        log.debug( "REST request to search Products for query {}", query );
-        return productService.search( query );
+    public List<ProductDTO> searchProducts(@RequestParam String query){
+        log.debug("REST request to search Products for query {}", query);
+        return productService.search(query);
     }
 
 }

@@ -90,9 +90,10 @@
                             </small>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" *ngIf="product.numberOfBatteries">
                         <label class="form-control-label">
-                            Ik wil een AA-batterij bij de LED-verlichting. (0,5 €)
+                            Ik wil een AA-batterij bij de LED-verlichting. (€ {{product.numberOfBatteries*0.5}} voor
+                            {{product.numberOfBatteries}} batterijen)
                         </label>
                         <input class="form-control" type="checkbox" name="led"
                                value="1" [(ngModel)]="this.order.includeBatteries">
@@ -119,8 +120,8 @@
                                     <td>€ {{this.product.price}}</td>
                                 </tr>
                                 <tr *ngIf="this.order.includeBatteries">
-                                    <td>Batterijen voor LED-licht</td>
-                                    <td>€ 0.5</td>
+                                    <td>Batterijen</td>
+                                    <td>€ {{product.numberOfBatteries*0.5}}</td>
                                 </tr>
                                 <tr *ngIf="this.order.deliveryType === 0 && this.order.deliveryPrice">
                                     <td>Levering</td>
@@ -169,8 +170,8 @@
                             <td>€ {{this.product.price}}</td>
                         </tr>
                         <tr *ngIf="this.order.includeBatteries">
-                            <td>Batterijen voor LED-licht</td>
-                            <td>€ 0.5</td>
+                            <td>Batterijen</td>
+                            <td>€ {{product.numberOfBatteries*0.5}}</td>
                         </tr>
                         <tr *ngIf="this.order.deliveryType === 0">
                             <td>Levering</td>
@@ -186,12 +187,12 @@
 
                 <p>Gelieve € {{this.getTotalPrice()}} over te schrijven op <b>{{this.vatNumber}}</b></p>
                 <p *ngIf="this.order.deliveryType === 0">
-                    Zodra het geld is overgemaakt zal het stuk worden geleverd in {{customer.street}} te
+                    Zodra het geld is overgemaakt zal het stuk na afspraak worden geleverd in {{customer.street}} te
                     {{customer.city}}.
                 </p>
 
                 <p *ngIf="this.order.deliveryType === 1">
-                    Zodra het geld is overgemaakt zal je melding krijgen van KranzEnzo voor een afspraak te maken om het
+                    Zodra het geld is overgemaakt zal je melding krijgen van Kranzenzo voor een afspraak te maken om het
                     stuk te kunnen ophalen.
                 </p>
                 <a class="btn btn-light" (click)="this.step=2">Terug</a>

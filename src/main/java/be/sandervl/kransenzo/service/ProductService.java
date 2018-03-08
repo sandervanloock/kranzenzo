@@ -22,10 +22,9 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
  */
 @Service
 @Transactional
-public class ProductService
-{
+public class ProductService{
 
-    private final Logger log = LoggerFactory.getLogger( ProductService.class );
+    private final Logger log = LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
 
@@ -33,9 +32,9 @@ public class ProductService
 
     private final ProductSearchRepository productSearchRepository;
 
-    public ProductService( ProductRepository productRepository,
-                           ProductMapper productMapper,
-                           ProductSearchRepository productSearchRepository ) {
+    public ProductService(ProductRepository productRepository,
+                          ProductMapper productMapper,
+                          ProductSearchRepository productSearchRepository){
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.productSearchRepository = productSearchRepository;
@@ -47,20 +46,19 @@ public class ProductService
      * @param productDTO the entity to save
      * @return the persisted entity
      */
-    public ProductDTO save( ProductDTO productDTO ) {
-        log.debug( "Request to save Product : {}", productDTO );
-        Product product = productMapper.toEntity( productDTO );
-        product = productRepository.save( product );
-        ProductDTO result = productMapper.toDto( product );
-        productSearchRepository.save( product );
+    public ProductDTO save(ProductDTO productDTO){
+        log.debug("Request to save Product : {}", productDTO);
+        Product product = productMapper.toEntity(productDTO);
+        product = productRepository.save(product);
+        ProductDTO result = productMapper.toDto(product);
+        productSearchRepository.save(product);
         return result;
     }
 
     /**
-     *  Get all the products.
+     * Get all the products.
      *
-     *  @return the list of entities
-     * @param activeOnly
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public List<ProductDTO> findAll( Boolean activeOnly ) {
@@ -78,41 +76,41 @@ public class ProductService
     }
 
     /**
-     *  Get one product by id.
+     * Get one product by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
-    public ProductDTO findOne( Long id ) {
-        log.debug( "Request to get Product : {}", id );
-        Product product = productRepository.findOneWithEagerRelationships( id );
-        return productMapper.toDto( product );
+    public ProductDTO findOne(Long id){
+        log.debug("Request to get Product : {}", id);
+        Product product = productRepository.findOneWithEagerRelationships(id);
+        return productMapper.toDto(product);
     }
 
     /**
-     *  Delete the  product by id.
+     * Delete the product by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
-    public void delete( Long id ) {
-        log.debug( "Request to delete Product : {}", id );
-        productRepository.delete( id );
-        productSearchRepository.delete( id );
+    public void delete(Long id){
+        log.debug("Request to delete Product : {}", id);
+        productRepository.delete(id);
+        productSearchRepository.delete(id);
     }
 
     /**
      * Search for the product corresponding to the query.
      *
-     *  @param query the query of the search
-     *  @return the list of entities
+     * @param query the query of the search
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<ProductDTO> search( String query ) {
-        log.debug( "Request to search Products for query {}", query );
+    public List<ProductDTO> search(String query){
+        log.debug("Request to search Products for query {}", query);
         return StreamSupport
-                .stream( productSearchRepository.search( queryStringQuery( query ) ).spliterator(), false )
-                .map( productMapper::toDto )
-                .collect( Collectors.toList() );
+            .stream(productSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(productMapper::toDto)
+            .collect(Collectors.toList());
     }
 }

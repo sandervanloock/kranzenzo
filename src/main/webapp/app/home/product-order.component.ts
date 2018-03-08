@@ -33,7 +33,10 @@ export class ProductOrderComponent implements OnInit {
 
     constructor(
         private loginModalService: LoginModalService,
-        private principal: Principal, private eventManager: JhiEventManager, private productService: ProductService, private productPopupService: ProductPopupService,
+        private principal: Principal,
+        private eventManager: JhiEventManager,
+        private productService: ProductService,
+        private productPopupService: ProductPopupService,
         private route: ActivatedRoute,
         private http: Http,
         private userService: UserService,
@@ -69,9 +72,9 @@ export class ProductOrderComponent implements OnInit {
             price += this.order.deliveryPrice;
         }
         if ( this.order.includeBatteries ) {
-            price += PRICE_BATTERIES_INCLUDED;
+            price += PRICE_BATTERIES_INCLUDED * this.product.numberOfBatteries;
         }
-        return price;
+        return Math.round( price * 100 ) / 100;
     }
 
     registerAuthenticationSuccess() {
@@ -119,8 +122,13 @@ export class ProductOrderComponent implements OnInit {
         this.order.deliveryPrice = price;
     }
 
+    validateEmail( email ) {
+        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test( String( email ).toLowerCase() );
+    }
+
     gotoStepTwo() {
-        if ( this.customer.user.lastName && this.customer.user.firstName && this.customer.user.email ) {
+        if ( this.customer.user.lastName && this.customer.user.firstName && this.customer.user.email && this.validateEmail( this.customer.user.email ) ) {
             this.step = 2;
             this.createCustomer()
         }
