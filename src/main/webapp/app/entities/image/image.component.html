@@ -30,7 +30,7 @@
             <thead>
             <tr>
                 <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="kransenzoApp.image.data">Data</span></th>
+                <th><span>Afbeelding</span></th>
                 <th><span jhiTranslate="kransenzoApp.image.product">Product</span></th>
                 <th></th>
             </tr>
@@ -39,10 +39,10 @@
             <tr *ngFor="let image of images ;trackBy: trackId">
                 <td><a [routerLink]="['../image', image.id ]">{{image.id}}</a></td>
                 <td>
-                    <a *ngIf="image.data" (click)="openFile(image.dataContentType, image.data)">
-                        <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" style="max-height: 30px;" alt="image image"/>
+                    <a *ngIf="image.endpoint" [href]="image.endpoint" target="_blank">
+                        <img [src]="image.endpoint" style="max-height: 30px;" alt="image image"/>
                     </a>
-                    <span *ngIf="image.data">{{image.dataContentType}}, {{byteSize(image.data)}}</span>
+                    <span *ngIf="image.data">{{image.dataContentType}}</span>
                 </td>
                 <td>
                     <div *ngIf="image.productId">

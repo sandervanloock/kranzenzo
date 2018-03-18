@@ -34,5 +34,18 @@
 			<!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
 		</createTable>
 
-	</changeSet>
+    </changeSet>
+
+    <changeSet id="201803181439" author="svl">
+        <dropNotNullConstraint tableName="image" columnName="data" columnDataType="longblob"/>
+    </changeSet>
+
+    <changeSet id="201803181453" author="svl">
+        <addColumn tableName="image">
+            <column name="endpoint" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

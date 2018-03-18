@@ -1,93 +1,100 @@
 package be.sandervl.kransenzo.service.dto;
 
 import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * A DTO for the Image entity.
  */
-public class ImageDTO implements Serializable
-{
+public class ImageDTO implements Serializable{
 
-	private Long id;
+    private Long id;
 
-	@NotNull
-	@Lob
-	private byte[] data;
-	private String dataContentType;
+    @Lob
+    private byte[] data;
+    private String dataContentType;
 
-	private Long productId;
+    private String endpoint;
 
-	private String productName;
+    private Long productId;
 
-	public Long getId() {
-		return id;
-	}
+    private String productName;
 
-	public void setId( Long id ) {
-		this.id = id;
-	}
+    public Long getId(){
+        return id;
+    }
 
-	public byte[] getData() {
-		return data;
-	}
+    public void setId(Long id){
+        this.id = id;
+    }
 
-	public void setData( byte[] data ) {
-		this.data = data;
-	}
+    public byte[] getData(){
+        return data;
+    }
 
-	public String getDataContentType() {
-		return dataContentType;
-	}
+    public void setData(byte[] data){
+        this.data = data;
+    }
 
-	public void setDataContentType( String dataContentType ) {
-		this.dataContentType = dataContentType;
-	}
+    public String getDataContentType(){
+        return dataContentType;
+    }
 
-	public Long getProductId() {
-		return productId;
-	}
+    public void setDataContentType(String dataContentType){
+        this.dataContentType = dataContentType;
+    }
 
-	public void setProductId( Long productId ) {
-		this.productId = productId;
-	}
+    public String getEndpoint(){
+        return endpoint;
+    }
 
-	public String getProductName() {
-		return productName;
-	}
+    public void setEndpoint(String endpoint){
+        this.endpoint = endpoint;
+    }
 
-	public void setProductName( String productName ) {
-		this.productName = productName;
-	}
+    public Long getProductId(){
+        return productId;
+    }
 
-	@Override
-	public boolean equals( Object o ) {
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
+    public void setProductId(Long productId){
+        this.productId = productId;
+    }
 
-		ImageDTO imageDTO = (ImageDTO) o;
-		if ( imageDTO.getId() == null || getId() == null ) {
-			return false;
-		}
-		return Objects.equals( getId(), imageDTO.getId() );
-	}
+    public String getProductName(){
+        return productName;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode( getId() );
-	}
+    public void setProductName(String productName){
+        this.productName = productName;
+    }
 
-	@Override
-	public String toString() {
-		return "ImageDTO{" +
-				"id=" + getId() +
-				", data='" + getData() + "'" +
-				"}";
-	}
+    @Override
+    public boolean equals(Object o){
+        if (this == o){
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()){
+            return false;
+        }
+
+        ImageDTO imageDTO = (ImageDTO) o;
+        if (imageDTO.getId() == null || getId() == null){
+            return false;
+        }
+        return Objects.equals(getId(), imageDTO.getId());
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString(){
+        return "ImageDTO{" +
+            "id=" + getId() +
+            ", data='" + getData() + "'" +
+            "}";
+    }
 }

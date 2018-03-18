@@ -117,3 +117,8 @@ jhipster:
 application:
     mail:
         confirmation: confirmation@mail.com
+
+aws:
+  s3:
+    endpointUrl: https://s3.eu-west-1.amazonaws.com
+    bucketName: test-bucket

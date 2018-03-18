@@ -1,26 +1,27 @@
 {
-  "fluentMethods": true,
-  "relationships": [
-    {
-      "relationshipType": "many-to-one",
-      "relationshipName": "product",
-      "otherEntityName": "product",
-      "otherEntityField": "name"
-    }
-  ],
-  "fields": [
-    {
-      "fieldName": "data",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "image",
-      "fieldValidateRules": [
-        "required"
-      ]
-    }
-  ],
-  "changelogDate": "20171212225538",
-  "entityTableName": "image",
-  "dto": "mapstruct",
-  "pagination": "no",
-  "service": "no"
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "product",
+            "otherEntityName": "product",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "data",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "endpoint",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20171212225538",
+    "entityTableName": "image",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no"
 }

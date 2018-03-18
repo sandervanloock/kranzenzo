@@ -10,7 +10,7 @@
 
         <ngb-carousel *ngIf="product.images.length">
             <ng-template ngbSlide *ngFor="let image of product.images">
-                <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" alt="Random first slide"
+                <img [src]="image.endpoint" alt="Random first slide"
                      width="100%">
                 <div class="carousel-caption">
                     <!--<h3>First slide label</h3>-->
