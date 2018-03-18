@@ -76,6 +76,7 @@ export class JhiAlertErrorComponent implements OnDestroy {
                     } else {
                         this.addErrorAlert( httpResponse._body() );
                     }
+                    break;
                 default:
                     if ( httpResponse.text() !== '' && httpResponse.json() && httpResponse.json().message ) {
                         this.addErrorAlert( httpResponse.json().message );
