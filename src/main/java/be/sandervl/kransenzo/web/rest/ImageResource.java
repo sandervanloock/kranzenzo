@@ -156,7 +156,9 @@ public class ImageResource{
     public ResponseEntity<Void> deleteImage(@PathVariable Long id){
         log.debug("REST request to delete Image : {}", id);
         Image image = imageRepository.findOne(id);
-        awsImageUpload.deleteFromS3(image.getEndpoint());
+        if (StringUtils.isNotBlank(image.getEndpoint())){
+            awsImageUpload.deleteFromS3(image.getEndpoint());
+        }
         imageRepository.delete(id);
         imageSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

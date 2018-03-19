@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -52,7 +53,14 @@ public class AwsImageUpload{
     }
 
     public boolean deleteFromS3(String endpoint){
-        String fileName = endpoint.substring(endpoint.lastIndexOf("/") + 1);
+        if (StringUtils.isBlank(endpoint)){
+            return false;
+        }
+        int lastIndexOf = endpoint.lastIndexOf("/");
+        if (lastIndexOf == -1){
+            return false;
+        }
+        String fileName = endpoint.substring(lastIndexOf + 1);
         try{
             s3client.deleteObject(new DeleteObjectRequest(s3.getBucketName(), fileName));
         }
