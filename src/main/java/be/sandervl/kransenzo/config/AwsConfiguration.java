@@ -1,6 +1,5 @@
 package be.sandervl.kransenzo.config;
 
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
@@ -34,9 +33,7 @@ public class AwsConfiguration{
     @Bean
     @Profile("prod")
     public AmazonS3 amazonS3(){
-        return AmazonS3ClientBuilder.standard()
-                                    .withCredentials(new InstanceProfileCredentialsProvider(false))
-                                    .build();
+        return AmazonS3ClientBuilder.defaultClient();
     }
 
     @Bean
