@@ -9,9 +9,8 @@
         </div>
 
         <ngb-carousel *ngIf="product.images.length">
-            <ng-template ngbSlide *ngFor="let image of product.images">
-                <img [src]="image.endpoint" alt="Random first slide"
-                     width="100%">
+            <ng-template ngbSlide *ngFor="let image of images">
+                <img [src]="image" width="100%">
                 <div class="carousel-caption">
                     <!--<h3>First slide label</h3>-->
                 </div>
@@ -19,7 +18,7 @@
         </ngb-carousel>
 
         <img class="card-img-top" *ngIf="product.images.length==0"
-             [src]="'https://via.placeholder.com/350x150?text='+product.name"/>
+             [src]="'https://via.placeholder.com/800x400?text='+product.name"/>
 
         <div class="jumbotron">
             <div class="row">

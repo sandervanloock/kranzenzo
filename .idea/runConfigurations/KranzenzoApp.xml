@@ -6,16 +6,6 @@
     <option name="ALTERNATIVE_JRE_PATH" />
     <module name="kransenzo" />
     <envs />
-    <method>
-      <option name="NpmBeforeRunTask" enabled="true">
-        <package-json value="$PROJECT_DIR$/package.json" />
-        <command value="run" />
-        <scripts>
-          <script value="start" />
-        </scripts>
-        <node-interpreter value="project" />
-        <envs />
-      </option>
-    </method>
+    <method />
   </configuration>
 </component>

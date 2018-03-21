@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Product, ProductService} from '../entities/product';
-import {JhiAlertService, JhiEventManager, JhiAlert} from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
+import {Image} from '../entities/image';
 
 // import {C} from '@ng-bootstrap/ng-bootstrap/carousel'
 
@@ -15,6 +16,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private subscription: Subscription;
     private eventSubscriber: Subscription;
     submittedAlert: any;
+    images: string[] = [];
 
     constructor( private eventManager: JhiEventManager, private alertService: JhiAlertService, private productService: ProductService, private route: ActivatedRoute ) {
     }
@@ -24,12 +26,15 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             this.load( params['id'] );
         } );
         this.registerChangeInProducts();
-
     }
 
     load( id ) {
         this.productService.find( id ).subscribe( ( product ) => {
             this.product = product;
+            this.product.images.forEach( ( img: Image ) => {
+                const lastIndexOf = img.endpoint.lastIndexOf( '/' );
+                this.images.push( ['http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/800x400', img.endpoint.slice( lastIndexOf, img.endpoint.length )].join( '' ) );
+            } )
         } );
     }
 
