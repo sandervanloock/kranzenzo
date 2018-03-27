@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,6 +22,12 @@ public class ImageConversion{
         File temp = File.createTempFile(name, "." + contentType);
         FileUtils.writeByteArrayToFile(temp, input);
         return temp;
+    }
+
+    public static byte[] convertToByteArray(String contentType, BufferedImage transformedImage) throws IOException{
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(transformedImage, contentType, os);
+        return os.toByteArray();
     }
 
 }

@@ -4,9 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,11 +19,13 @@ public class ImageTransformationService{
     public byte[] rotateAccordingExif(byte[] image, String name, String contentType){
         try{
             BufferedImage bufferedImage = ImageConversion.convertToBufferedImage(image);
+            if (bufferedImage == null){
+                log.warn("Given image can not be converted to BufferedImage, not doing any transformations");
+                return image;
+            }
             File file = ImageConversion.convertToFile(image, name, contentType);
             BufferedImage transformedImage = ImageTransformation.rotateFromExif(bufferedImage, file);
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            ImageIO.write(transformedImage, contentType, os);
-            return os.toByteArray();
+            return ImageConversion.convertToByteArray(contentType, transformedImage);
         }
 
         catch (IOException e){

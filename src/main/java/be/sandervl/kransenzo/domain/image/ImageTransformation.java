@@ -27,7 +27,7 @@ public class ImageTransformation{
             return transformImage(input, exifTransformation);
         }
         catch (IOException | MetadataException | ImageProcessingException e){
-            log.error("Unable to rotate {} accordign to exif due to {}", input, e.getCause(), e);
+            log.error("Unable to rotate {} according to exif due to {}", input, e.getCause(), e);
             return input;
         }
     }

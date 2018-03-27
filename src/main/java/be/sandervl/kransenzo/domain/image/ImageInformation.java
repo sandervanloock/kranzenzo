@@ -39,13 +39,7 @@ public class ImageInformation{
         if (directory == null || jpegDirectory == null){
             throw new MetadataException("Unable to get correct metadata from imageFile");
         }
-        int orientation = 1;
-        try{
-            orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
-        }
-        catch (MetadataException me){
-            log.warn("Could not get orientation");
-        }
+        int orientation = directory.getInt(ExifIFD0Directory.TAG_ORIENTATION);
         int width = jpegDirectory.getImageWidth();
         int height = jpegDirectory.getImageHeight();
 
