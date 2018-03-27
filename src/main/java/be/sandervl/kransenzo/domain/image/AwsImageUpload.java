@@ -23,21 +23,27 @@ import java.util.Optional;
 @Component
 public class AwsImageUpload{
 
-    private static Logger LOG = LoggerFactory.getLogger(AwsImageUpload.class);
+    private static Logger log = LoggerFactory.getLogger(AwsImageUpload.class);
 
     private final AmazonS3 s3client;
     private final AwsConfiguration.AwsS3Configuration s3;
+    private final ImageTransformationService imageTransformationService;
 
-    public AwsImageUpload(AmazonS3 s3client, AwsConfiguration awsConfiguration){
+    public AwsImageUpload(AmazonS3 s3client,
+                          AwsConfiguration awsConfiguration,
+                          ImageTransformationService imageTransformationService){
         this.s3client = s3client;
         this.s3 = awsConfiguration.getS3();
+        this.imageTransformationService = imageTransformationService;
     }
 
     public Optional<String> uploadToS3(byte[] data, String name, String contentType){
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(contentType);
         String generateFileName = generateFileName(name);
-        LOG.debug("Uploading file {} with generated name {} to ", s3);
+        log.debug("Uploading file {} with generated name {} to ", s3);
+        data = imageTransformationService.rotateAccordingExif(data, generateFileName,
+                                                              contentType.replace("image/", ""));
         PutObjectRequest putObjectRequest = new PutObjectRequest(s3.getBucketName(),
                                                                  generateFileName,
                                                                  new ByteArrayInputStream(data),
@@ -47,7 +53,7 @@ public class AwsImageUpload{
             return Optional.of(s3.getEndpointUrl() + "/" + s3.getBucketName() + "/" + generateFileName);
         }
         catch (SdkClientException e){
-            LOG.error("Unable to upload {} to S3 due to {}", generateFileName, e.getMessage(), e);
+            log.error("Unable to upload {} to S3 due to {}", generateFileName, e.getMessage(), e);
             return Optional.empty();
         }
     }
@@ -65,7 +71,7 @@ public class AwsImageUpload{
             s3client.deleteObject(new DeleteObjectRequest(s3.getBucketName(), fileName));
         }
         catch (SdkClientException e){
-            LOG.error("Unable to delete {} from S3 due to {}", endpoint, e.getMessage(), e);
+            log.error("Unable to delete {} from S3 due to {}", endpoint, e.getMessage(), e);
             return false;
         }
         return true;
