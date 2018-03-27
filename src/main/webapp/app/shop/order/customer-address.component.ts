@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Customer} from '../entities/customer';
-import {ORDER_DELIVERY_ORIGIN, PRICE_PER_KILOMETER_PER_KM} from '../app.constants';
+import {Customer} from '../../entities/customer';
+import {ORDER_DELIVERY_ORIGIN, PRICE_PER_KILOMETER_PER_KM} from '../../app.constants';
 
 declare var google: any;
 declare var $: any;

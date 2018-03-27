@@ -5,8 +5,6 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
 import {Image} from '../entities/image';
 
-// import {C} from '@ng-bootstrap/ng-bootstrap/carousel'
-
 @Component( {
                 selector: 'jhi-product-detail', templateUrl: './product-detail.component.html', styleUrls: ['product-detail.css']
             } )

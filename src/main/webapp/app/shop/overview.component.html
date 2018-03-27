@@ -1,0 +1,19 @@
+<div class="row">
+    <div class="col-md-6" *ngFor="let item of items" style="margin-top:20px;">
+        <a routerLink="shop/product/{{item.id}}" routerLinkActive="active" class="card-image-link">
+            <div class="card">
+                <img class="card-img-top" *ngIf="item.images.length"
+                     [src]="getImageUrl(item)">
+                <img class="card-img-top" *ngIf="item.images.length==0"
+                     [src]="'https://via.placeholder.com/800x400?text='+item.name"/>
+                <div class="card-body">
+                    <h4 class="card-title">{{item.name}}</h4>
+                    <p class="card-text">
+                        {{item.description ? item.description : '&nbsp;'}}
+                    </p>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
