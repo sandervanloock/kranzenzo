@@ -43,6 +43,9 @@ export class ProductService {
         if ( req && req.activeOnly ) {
             options.params.set( 'activeOnly', req.activeOnly );
         }
+        if ( req && req.tagName ) {
+            options.params.set( 'tagName', req.tagName );
+        }
         return this.http.get( this.resourceUrl, options )
             .map( ( res: Response ) => this.convertResponse( res ) );
     }

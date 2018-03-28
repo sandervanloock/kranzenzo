@@ -82,10 +82,11 @@ public class ProductResource{
     @GetMapping("/products")
     @Timed
     public List<ProductDTO> getAllProducts(
-            @RequestParam(required = false, name = "activeOnly") Boolean activeOnly
+        @RequestParam(required = false, name = "activeOnly") Boolean activeOnly,
+        @RequestParam(required = false, name = "tagName") String tagName
     ) {
         log.debug( "REST request to get all Products" );
-        return productService.findAll( activeOnly );
+        return productService.findAll(activeOnly, tagName);
     }
 
     /**
