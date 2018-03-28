@@ -1,5 +1,10 @@
 {
     "info": {
-        "title": "Over kranzenzo"
+        "contact": {
+            "title": "Contacteer Kranzenzo"
+        },
+        "faq": {
+            "title": "Veelgestelde vragen"
+        }
     }
 }
