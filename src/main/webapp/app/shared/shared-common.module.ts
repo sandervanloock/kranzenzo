@@ -1,20 +1,14 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import {LOCALE_ID, NgModule} from '@angular/core';
+import {Title} from '@angular/platform-browser';
 
-import {
-    KransenzoSharedLibsModule,
-    JhiLanguageHelper,
-    FindLanguageFromKeyPipe,
-    JhiAlertComponent,
-    JhiAlertErrorComponent
-} from './';
+import {FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent, JhiLanguageHelper, KransenzoSharedLibsModule, S3ImageResizePipe} from './';
 
 @NgModule({
     imports: [
         KransenzoSharedLibsModule
     ],
     declarations: [
-        FindLanguageFromKeyPipe,
+        FindLanguageFromKeyPipe, S3ImageResizePipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ],
@@ -28,7 +22,7 @@ import {
     ],
     exports: [
         KransenzoSharedLibsModule,
-        FindLanguageFromKeyPipe,
+        FindLanguageFromKeyPipe, S3ImageResizePipe,
         JhiAlertComponent,
         JhiAlertErrorComponent
     ]

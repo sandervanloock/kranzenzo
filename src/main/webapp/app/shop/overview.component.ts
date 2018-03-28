@@ -16,7 +16,7 @@ export class OverviewComponent implements OnInit {
 
     ngOnInit() {
         this.route.queryParams
-            .subscribe( params => {
+            .subscribe( ( params ) => {
                 if ( params.tag ) {
                     this.tagName = params.tag;
                 }
@@ -32,15 +32,6 @@ export class OverviewComponent implements OnInit {
         this.productService.query( req )
             .subscribe( ( data: ResponseWrapper ) => this.items = data.json );
 
-    }
-
-    getImageUrl( item: Product ) {
-        if ( item.images.length ) {
-            const imageUrl = item.images[0].endpoint;
-            const lastIndexOf = imageUrl.lastIndexOf( '/' );
-            return ['http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/800x400', imageUrl.slice( lastIndexOf, imageUrl.length )]
-                .join( '' );
-        }
     }
 
 }

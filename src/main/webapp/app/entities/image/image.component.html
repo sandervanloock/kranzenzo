@@ -40,7 +40,7 @@
                 <td><a [routerLink]="['../image', image.id ]">{{image.id}}</a></td>
                 <td>
                     <a *ngIf="image.endpoint" [href]="image.endpoint" target="_blank">
-                        <img [src]="image.endpoint" style="max-height: 30px;" alt="image image"/>
+                        <img [src]="image.endpoint | s3ImageResize: '50x50'" style="max-height: 50px;" alt="image image"/>
                     </a>
                     <span *ngIf="image.data">{{image.dataContentType}}</span>
                 </td>
