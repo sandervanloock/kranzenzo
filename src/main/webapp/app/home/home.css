@@ -11,3 +11,8 @@ only screen and (        min-device-pixel-ratio: 2),
 only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx) {
 }
+
+.homepage-image {
+    width: 1000px;
+    height: 500px;
+}

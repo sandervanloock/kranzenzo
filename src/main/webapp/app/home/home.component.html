@@ -1,2 +1,14 @@
-<h1>Welkom bij Kranzenzo</h1>
-<img src="../../content/images/logo.jpg"/>
+<div class="container-fluid center-block col-lg-10" style="text-align: center">
+    <h1>Welkom bij Kranzenzo</h1>
+    <div>
+        <ngb-carousel *ngIf="homepageImages" style="width:1000px;margin:auto;">
+            <ng-template ngbSlide *ngFor="let image of homepageImages">
+                <img [src]="image.url" class="homepage-image" [alt]="image.caption">
+                <div class="carousel-caption">
+                    <h3>{{image.caption}}</h3>
+                    <p>{{image.subcaption}}</p>
+                </div>
+            </ng-template>
+        </ngb-carousel>
+    </div>
+</div>
