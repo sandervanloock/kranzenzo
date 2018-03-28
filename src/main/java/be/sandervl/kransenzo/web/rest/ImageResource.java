@@ -76,7 +76,7 @@ public class ImageResource{
 
         image = imageRepository.save(image);
         ImageDTO result = imageMapper.toDto(image);
-        imageSearchRepository.save(image);
+//        imageSearchRepository.save(image);
         return ResponseEntity.created(new URI("/api/images/" + result.getId()))
                              .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
                              .body(result);
@@ -111,7 +111,7 @@ public class ImageResource{
 
         image = imageRepository.save(image);
         ImageDTO result = imageMapper.toDto(image);
-        imageSearchRepository.save(image);
+//        imageSearchRepository.save(image);
         return ResponseEntity.ok()
                              .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, imageDTO.getId().toString()))
                              .body(result);
@@ -160,7 +160,7 @@ public class ImageResource{
             awsImageUpload.deleteFromS3(image.getEndpoint());
         }
         imageRepository.delete(id);
-        imageSearchRepository.delete(id);
+//        imageSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 

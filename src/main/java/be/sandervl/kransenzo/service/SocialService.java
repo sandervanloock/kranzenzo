@@ -130,7 +130,7 @@ public class SocialService {
         newUser.setLangKey(langKey);
         newUser.setImageUrl(imageUrl);
 
-        userSearchRepository.save(newUser);
+//        userSearchRepository.save(newUser);
         return userRepository.save(newUser);
     }
 

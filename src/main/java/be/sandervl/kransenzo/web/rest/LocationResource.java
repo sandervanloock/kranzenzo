@@ -66,7 +66,7 @@ public class LocationResource
 		Location location = locationMapper.toEntity( locationDTO );
 		location = locationRepository.save( location );
 		LocationDTO result = locationMapper.toDto( location );
-		locationSearchRepository.save( location );
+//		locationSearchRepository.save( location );
 		return ResponseEntity.created( new URI( "/api/locations/" + result.getId() ) )
 		                     .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
 		                     .body( result );
@@ -91,7 +91,7 @@ public class LocationResource
 		Location location = locationMapper.toEntity( locationDTO );
 		location = locationRepository.save( location );
 		LocationDTO result = locationMapper.toDto( location );
-		locationSearchRepository.save( location );
+//		locationSearchRepository.save( location );
 		return ResponseEntity.ok()
 		                     .headers(
 				                     HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, locationDTO.getId().toString() ) )
@@ -137,7 +137,7 @@ public class LocationResource
 	public ResponseEntity<Void> deleteLocation( @PathVariable Long id ) {
 		log.debug( "REST request to delete Location : {}", id );
 		locationRepository.delete( id );
-		locationSearchRepository.delete( id );
+//		locationSearchRepository.delete( id );
 		return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
 		                     .build();
 	}

@@ -75,7 +75,7 @@ public class OrderService
         Order order = orderMapper.toEntity( orderDTO );
         order = orderRepository.save( order );
         OrderDTO result = orderMapper.toDto( order );
-        orderSearchRepository.save( order );
+//        orderSearchRepository.save( order );
         updateProductVisibility( order );
         return result;
     }
@@ -93,7 +93,7 @@ public class OrderService
         orderDTO.setState( OrderState.NEW );
         Order order = orderMapper.toEntity( orderDTO );
         order = orderRepository.save( order );
-        orderSearchRepository.save( order );
+//        orderSearchRepository.save( order );
         updateProductVisibility( order );
         if ( order.getCustomer() != null ) {
             //fetch customer eager so all information for sending the email is present on the order
@@ -141,7 +141,7 @@ public class OrderService
         log.debug( "Request to delete Order : {}", id );
         updateProductVisibility( orderRepository.findOne( id ) );
         orderRepository.delete( id );
-        orderSearchRepository.delete( id );
+//        orderSearchRepository.delete( id );
     }
 
     /**

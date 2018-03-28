@@ -52,7 +52,7 @@ public class ProductService{
         Product product = productMapper.toEntity(productDTO);
         product = productRepository.save(product);
         ProductDTO result = productMapper.toDto(product);
-        productSearchRepository.save(product);
+//        productSearchRepository.save(product);
         return result;
     }
 
@@ -99,7 +99,7 @@ public class ProductService{
     public void delete(Long id){
         log.debug("Request to delete Product : {}", id);
         productRepository.delete(id);
-        productSearchRepository.delete(id);
+//        productSearchRepository.delete(id);
     }
 
     /**

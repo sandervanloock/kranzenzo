@@ -85,7 +85,7 @@ public class CustomerResource
         setUserLoginAndPassword( customer );
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
-        customerSearchRepository.save( customer );
+//        customerSearchRepository.save( customer );
         return ResponseEntity.created( new URI( "/api/customers/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
                              .body( result );
@@ -137,7 +137,7 @@ public class CustomerResource
         setUserLoginAndPassword( customer );
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
-        customerSearchRepository.save( customer );
+//        customerSearchRepository.save( customer );
         return ResponseEntity.ok()
                              .headers(
                                      HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, customerDTO.getId().toString() ) )
@@ -183,7 +183,7 @@ public class CustomerResource
     public ResponseEntity<Void> deleteCustomer( @PathVariable Long id ) {
         log.debug( "REST request to delete Customer : {}", id );
         customerRepository.delete( id );
-        customerSearchRepository.delete( id );
+//        customerSearchRepository.delete( id );
         return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
                              .build();
     }

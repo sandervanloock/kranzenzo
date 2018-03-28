@@ -135,8 +135,8 @@ public class ImageResourceIntTest{
         assertThat(testImage.getDataContentType()).isEqualTo(DEFAULT_DATA_CONTENT_TYPE);
 
         // Validate the Image in Elasticsearch
-        Image imageEs = imageSearchRepository.findOne(testImage.getId());
-        assertThat(imageEs).isEqualToComparingFieldByField(testImage);
+//        Image imageEs = imageSearchRepository.findOne(testImage.getId());
+//        assertThat(imageEs).isEqualToComparingFieldByField(testImage);
     }
 
     @Test
@@ -230,8 +230,8 @@ public class ImageResourceIntTest{
         assertThat(testImage.getDataContentType()).isEqualTo(UPDATED_DATA_CONTENT_TYPE);
 
         // Validate the Image in Elasticsearch
-        Image imageEs = imageSearchRepository.findOne(testImage.getId());
-        assertThat(imageEs).isEqualToComparingFieldByField(testImage);
+//        Image imageEs = imageSearchRepository.findOne(testImage.getId());
+//        assertThat(imageEs).isEqualToComparingFieldByField(testImage);
     }
 
     @Test
@@ -267,8 +267,8 @@ public class ImageResourceIntTest{
                         .andExpect(status().isOk());
 
         // Validate Elasticsearch is empty
-        boolean imageExistsInEs = imageSearchRepository.exists(image.getId());
-        assertThat(imageExistsInEs).isFalse();
+//        boolean imageExistsInEs = imageSearchRepository.exists(image.getId());
+//        assertThat(imageExistsInEs).isFalse();
 
         // Validate the database is empty
         List<Image> imageList = imageRepository.findAll();
