@@ -14,6 +14,7 @@ import {KransenzoInfoModule} from './info/info.module';
 import {customHttpProvider} from './blocks/interceptor/http.provider';
 import {PaginationConfig} from './blocks/config/uib-pagination.config';
 import {ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent, NavbarComponent, PageRibbonComponent, ProfileService} from './layouts';
+import {KransenzoShopModule} from './shop/shop.module';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -25,8 +26,7 @@ import {ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent, 
         KransenzoSharedModule,
         KransenzoHomeModule,
         KransenzoAdminModule,
-        KransenzoAccountModule,
-        KransenzoEntityModule, KransenzoInfoModule,
+        KransenzoAccountModule, KransenzoEntityModule, KransenzoInfoModule, KransenzoShopModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

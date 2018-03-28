@@ -9,8 +9,8 @@
         </div>
 
         <ngb-carousel *ngIf="product.images.length">
-            <ng-template ngbSlide *ngFor="let image of images">
-                <img [src]="image" width="100%">
+            <ng-template ngbSlide *ngFor="let image of product.images">
+                <img [src]="image.endpoint | s3ImageResize: '800x400'" width="100%">
                 <div class="carousel-caption">
                     <!--<h3>First slide label</h3>-->
                 </div>
@@ -40,7 +40,7 @@
             </p>
             <p class="lead">
                 <a class="btn btn-primary btn-lg"
-                   [routerLink]="['/', { outlets: { popup: 'product/'+ product.id + '/order'} }]"
+                   [routerLink]="['/', { outlets: { popup: 'shop/product/'+ product.id + '/order'} }]"
                    replaceUrl="true"
                    role="button">
                     Bestellen

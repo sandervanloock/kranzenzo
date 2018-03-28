@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {JhiEventManager} from 'ng-jhipster';
-import {LoginModalService, Principal, User, UserService} from '../shared';
+import {LoginModalService, Principal, User, UserService} from '../../shared';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {Product, ProductPopupService, ProductService} from '../entities/product';
+import {Product, ProductPopupService, ProductService} from '../../entities/product';
 import {ActivatedRoute} from '@angular/router';
-import {Customer, CustomerService} from '../entities/customer';
+import {Customer, CustomerService} from '../../entities/customer';
 import {Http} from '@angular/http';
-import {Order, OrderService} from '../entities/order';
+import {Order, OrderService} from '../../entities/order';
 import {Observable} from 'rxjs/Observable';
-import {PRICE_BATTERIES_INCLUDED, VAT_NUMBER} from '../app.constants';
+import {PRICE_BATTERIES_INCLUDED, VAT_NUMBER} from '../../app.constants';
 
 declare var google: any;
 
@@ -20,7 +20,7 @@ Inspired by https://www.google.com/design/spec/components/steppers.html#steppers
 And leveraging the Creative Tim Material Bootstrap Library - http://demos.creative-tim.com/material-kit/index.html
  */
 @Component( {
-                selector: 'jhi-product-order', templateUrl: './product-order.component.html', styleUrls: ['stepper.css']
+                selector: 'jhi-product-order', templateUrl: './product-order.component.html', styleUrls: ['product-order.css']
             } )
 export class ProductOrderComponent implements OnInit {
     step: number;
