@@ -19,11 +19,12 @@ export class HomeComponent implements OnInit {
             this.account = account;
         } );
         this.registerAuthenticationSuccess();
-        this.homepageImages = [new HomepageImage( 'https://thescoopdxb.files.wordpress.com/2014/03/20140311_134512-1.jpg', 'Mijn winkel' ),
-                               new HomepageImage( 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Flower_Shop%2C_Shad_Thames%2C_London_SE1_-_geograph.org.uk_-_1703738.jpg',
-                                                  'Bezoek mijn webshop', 'Deel met al je vrienden' ), new HomepageImage(
-                'https://cmkt-image-prd.global.ssl.fastly.net/0.1.0/ps/66249/1160/772/m1/fpnw/wm0/01_creative-market-flower-shop-flyer-templates-kinzi21-.jpg?1390024406&s=dac700063c35a06a6b35c084b2d6f4c6',
-                'Ook bonnen te verkrijgen' )];
+        this.homepageImages = [new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_1.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_5.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_6.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/1522343524-a504e7a6-0287-4114-92f4-52dcc8570481',
+                                                  'Mijn winkel' ),
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_11.jpg', 'Mijn winkel' ),];
 
     }
 
