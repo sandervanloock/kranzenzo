@@ -56,7 +56,7 @@ spring:
     thymeleaf:
         cache: true
     application:
-        url: https://kransenzo.sandervl.be
+        url: https://www.kransenzo.be
 
 liquibase:
     contexts: prod

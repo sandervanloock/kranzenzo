@@ -19,12 +19,12 @@ export class HomeComponent implements OnInit {
             this.account = account;
         } );
         this.registerAuthenticationSuccess();
-        this.homepageImages = [new HomepageImage( 'https://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_1.jpg', 'Mijn winkel' ),
-                               new HomepageImage( 'https://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_5.jpg', 'Mijn winkel' ),
-                               new HomepageImage( 'https://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_6.jpg', 'Mijn winkel' ),
-                               new HomepageImage( 'https://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/1522343524-a504e7a6-0287-4114-92f4-52dcc8570481',
+        this.homepageImages = [new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_1.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_5.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_6.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/1522343524-a504e7a6-0287-4114-92f4-52dcc8570481',
                                                   'Mijn winkel' ),
-                               new HomepageImage( 'https://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_11.jpg', 'Mijn winkel' ),];
+                               new HomepageImage( 'http://kranzenzo-images.s3-website-eu-west-1.amazonaws.com/1000x500/home_11.jpg', 'Mijn winkel' ),];
 
     }
 
