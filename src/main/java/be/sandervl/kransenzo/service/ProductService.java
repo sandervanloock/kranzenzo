@@ -57,12 +57,14 @@ public class ProductService{
         final Product product = productMapper.toEntity(productDTO);
 
         //unlink existing images
-        productRepository.findOneWithEagerRelationships(productDTO.getId())
-                         .getImages()
-                         .stream()
-                         .filter(image -> !product.getImages().contains(image))
-                         .peek(image -> image.setProduct(null))
-                         .forEach(imageRepository::save);
+        Product existing = productRepository.findOneWithEagerRelationships(productDTO.getId());
+        if (existing != null){
+            existing.getImages()
+                    .stream()
+                    .filter(image -> !product.getImages().contains(image))
+                    .peek(image -> image.setProduct(null))
+                    .forEach(imageRepository::save);
+        }
 
         //link new images
         productRepository.save(product)
