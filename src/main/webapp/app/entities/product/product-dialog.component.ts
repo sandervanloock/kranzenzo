@@ -11,6 +11,8 @@ import {ProductPopupService} from './product-popup.service';
 import {ProductService} from './product.service';
 import {Tag, TagService} from '../tag';
 import {ResponseWrapper} from '../../shared';
+import {S3ImageResizePipe} from '../../shared/image/s3-image-resize.pipe';
+import {Image} from '../image/image.model';
 
 @Component( {
                 selector: 'jhi-product-dialog', templateUrl: './product-dialog.component.html'
@@ -21,11 +23,10 @@ export class ProductDialogComponent implements OnInit {
     isSaving: boolean;
 
     tags: Tag[];
+    imageEndpoints: string[] = [];
 
     constructor( public activeModal: NgbActiveModal, private jhiAlertService: JhiAlertService,
-                 private productService: ProductService,
-                 private tagService: TagService,
-                 private eventManager: JhiEventManager ) {
+                 private productService: ProductService, private tagService: TagService, private eventManager: JhiEventManager, private s3ImageResizePipe: S3ImageResizePipe ) {
     }
 
     ngOnInit() {
@@ -34,6 +35,14 @@ export class ProductDialogComponent implements OnInit {
             .subscribe( ( res: ResponseWrapper ) => {
                 this.tags = res.json;
             }, ( res: ResponseWrapper ) => this.onError( res.json ) );
+        if ( this.product ) {
+            if ( !this.product.images ) {
+                this.product.images = [];
+            }
+            this.product.images.forEach( image => {
+                this.imageEndpoints.push( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) );
+            } )
+        }
     }
 
     clear() {
@@ -62,6 +71,19 @@ export class ProductDialogComponent implements OnInit {
             }
         }
         return option;
+    }
+
+    onImageRemoved( $event: any ) {
+        this.product.images.forEach( ( image: Image, index: number ) => {
+            if ( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) === $event.src ) {
+                this.product.images.splice( index, 1 );
+            }
+        } );
+    }
+
+    onImageUploadFinished( $event: any ) {
+        const image = new Image( JSON.parse( $event.serverResponse._body ).id );
+        this.product.images.push( image );
     }
 
     private subscribeToSaveResponse( result: Observable<Product> ) {

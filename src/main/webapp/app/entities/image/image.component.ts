@@ -8,7 +8,7 @@ import {ImageService} from './image.service';
 import {Principal, ResponseWrapper} from '../../shared';
 
 @Component( {
-                selector: 'jhi-image', templateUrl: './image.component.html'
+                selector: 'jhi-image', templateUrl: './image.component.html', styleUrls: ['image-component.css']
             } )
 export class ImageComponent implements OnInit, OnDestroy {
     images: Image[];

@@ -38,6 +38,7 @@ spring:
     http:
         multipart:
             max-request-size: 12Mb
+            max-file-size: 12Mb
     jackson:
         serialization.write_dates_as_timestamps: false
     jpa:

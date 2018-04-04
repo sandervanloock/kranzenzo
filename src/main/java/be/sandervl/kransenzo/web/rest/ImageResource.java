@@ -11,12 +11,16 @@ import be.sandervl.kransenzo.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -52,6 +56,17 @@ public class ImageResource{
         this.imageMapper = imageMapper;
         this.imageSearchRepository = imageSearchRepository;
         this.awsImageUpload = awsImageUpload;
+    }
+
+    @PostMapping(value = "/images/raw")
+    @Timed
+    public ResponseEntity<ImageDTO> createEmptyImage(@RequestPart("image") @Valid @NotNull @NotBlank MultipartFile file)
+        throws URISyntaxException, IOException{
+        log.debug("REST request to create raw Image : {}", file);
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setData(file.getBytes());
+        imageDTO.setDataContentType(file.getContentType());
+        return createImage(imageDTO);
     }
 
     /**

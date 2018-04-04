@@ -1,6 +1,7 @@
 package be.sandervl.kransenzo.service;
 
 import be.sandervl.kransenzo.domain.Product;
+import be.sandervl.kransenzo.repository.ImageRepository;
 import be.sandervl.kransenzo.repository.ProductRepository;
 import be.sandervl.kransenzo.repository.search.ProductSearchRepository;
 import be.sandervl.kransenzo.service.dto.ProductDTO;
@@ -33,12 +34,16 @@ public class ProductService{
 
     private final ProductSearchRepository productSearchRepository;
 
+    private final ImageRepository imageRepository;
+
     public ProductService(ProductRepository productRepository,
                           ProductMapper productMapper,
-                          ProductSearchRepository productSearchRepository){
+                          ProductSearchRepository productSearchRepository,
+                          ImageRepository imageRepository){
         this.productRepository = productRepository;
         this.productMapper = productMapper;
         this.productSearchRepository = productSearchRepository;
+        this.imageRepository = imageRepository;
     }
 
     /**
@@ -49,8 +54,23 @@ public class ProductService{
      */
     public ProductDTO save(ProductDTO productDTO){
         log.debug("Request to save Product : {}", productDTO);
-        Product product = productMapper.toEntity(productDTO);
-        product = productRepository.save(product);
+        final Product product = productMapper.toEntity(productDTO);
+
+        //unlink existing images
+        productRepository.findOneWithEagerRelationships(productDTO.getId())
+                         .getImages()
+                         .stream()
+                         .filter(image -> !product.getImages().contains(image))
+                         .peek(image -> image.setProduct(null))
+                         .forEach(imageRepository::save);
+
+        //link new images
+        productRepository.save(product)
+                         .getImages()
+                         .stream()
+                         .filter(image -> image.getId() != null)
+                         .peek(image -> image.setProduct(product))
+                         .forEach(imageRepository::save);
         ProductDTO result = productMapper.toDto(product);
 //        productSearchRepository.save(product);
         return result;
