@@ -23,6 +23,11 @@ export class CustomerAddressComponent implements OnInit {
         const options = {componentRestrictions: {country: 'be'}};
         this.searchBox = new google.maps.places.Autocomplete( input, options );
         this.searchBox.addListener( 'place_changed', () => this.updateAddress() );
+        google.maps.event.addDomListener( input, 'keydown', function( event ) {
+            if ( event.keyCode === 13 ) {
+                event.preventDefault();
+            }
+        } );
     }
 
     private updateAddress() {
@@ -46,6 +51,13 @@ export class CustomerAddressComponent implements OnInit {
                 this.setLocationAndDeliveryPrice( place );
 
             }
+        } else {
+            this.customer.street = null;
+            this.customer.city = null;
+            this.customer.province = null;
+            this.customer.zipCode = null;
+            this.customer.description = null;
+
         }
     }
 
