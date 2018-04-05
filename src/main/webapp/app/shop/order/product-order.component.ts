@@ -86,57 +86,48 @@ export class ProductOrderComponent implements OnInit {
     }
 
     submitForm() {
-        this.orderService.create( this.order ).subscribe( ( order: Order ) => {
-            this.order = order;
-            this.productPopupService.close();
-            this.eventManager.broadcast( {
-                                             name: 'productOrderCompleted', content: {
-                    type: 'success', msg: 'product.submitted.success',
-                }
-                                         } );
+        this.updateCustomer().flatMap( ( customer ) => {
+            this.customer = customer;
+            this.order.customerId = customer.id;
+            return this.orderService.create( this.order );
+        } ).subscribe( ( order: Order ) => {
+            this.handleSuccessfulOrder( order );
         }, ( error ) => {
-            this.eventManager.broadcast( {
-                                             name: 'productOrderCompleted', content: {
-                    type: 'error', msg: 'product.submitted.error',
-                }
-                                         } );
+            this.handleFailedOrder();
         } )
     }
 
-    createCustomer() {
-        if ( this.customer.id === undefined ) {
-            this.updateCustomer( this.customerService.create( this.customer ) );
-        } else {
-            this.updateCustomer( this.customerService.update( this.customer ) );
-        }
+    gotoStepTwo() {
+        this.step = 2;
     }
 
-    private updateCustomer( observable: Observable<Customer> ) {
-        observable.subscribe( ( res: Customer ) => {
-            this.customer = res;
-            this.order.customerId = res.id;
-        } )
+    gotoStepTree() {
+        this.step = 3;
+    }
+
+    private handleFailedOrder() {
+        this.eventManager.broadcast( {
+                                         name: 'productOrderCompleted', content: {type: 'error', msg: 'product.submitted.error',}
+                                     } );
     }
 
     updateDeliveryPrice( price: number ) {
         this.order.deliveryPrice = price;
     }
 
-    validateEmail( email ) {
-        const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test( String( email ).toLowerCase() );
+    private handleSuccessfulOrder( order: Order ) {
+        this.order = order;
+        this.productPopupService.close();
+        this.eventManager.broadcast( {
+                                         name: 'productOrderCompleted', content: {type: 'success', msg: 'product.submitted.success',}
+                                     } );
     }
 
-    gotoStepTwo() {
-        if ( this.customer.user.lastName && this.customer.user.firstName && this.customer.user.email && this.validateEmail( this.customer.user.email ) ) {
-            this.step = 2;
-            this.createCustomer()
-        }
-    }
-
-    gotoStepTree() {
-        if ( !(this.order.deliveryType === 0 && (!this.customer.street || !this.customer.city)) ) {
-            this.step = 3;
+    private updateCustomer(): Observable<Customer> {
+        if ( this.customer.id === undefined ) {
+            return this.customerService.create( this.customer );
+        } else {
+            return this.customerService.update( this.customer );
         }
     }
 }

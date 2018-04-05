@@ -25,19 +25,23 @@
                         <label for="lastName">Voornaam*</label>
                         <input required type="text" class="form-control" id="firstName"
                                aria-describedby="firstName" placeholder="Voornaam"
-                               name="firstName" [(ngModel)]="this.customer.user.firstName">
+                               name="firstName" [(ngModel)]="this.customer.user.firstName"
+                               #firstName="ngModel">
                     </div>
                     <div class="form-group">
                         <label for="lastName">Naam*</label>
                         <input required type="text" class="form-control" id="lastName"
                                aria-describedby="lastName" placeholder="Naam"
-                               name="lastName" [(ngModel)]="this.customer.user.lastName">
+                               name="lastName" [(ngModel)]="this.customer.user.lastName"
+                               #lastName="ngModel">
                     </div>
                     <div class="form-group">
                         <label for="email">Emailadres*</label>
                         <input required type="email" class="form-control" id="email" name="email"
                                aria-describedby="email" placeholder="Emailadres"
-                               [(ngModel)]="this.customer.user.email">
+                               [(ngModel)]="this.customer.user.email"
+                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                               #email="ngModel">
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber">Telefoonnummer</label>
@@ -46,13 +50,10 @@
                                [(ngModel)]="this.customer.phoneNumber">
                     </div>
                 </fieldset>
-                <jhi-customer-address [customer]="this.customer"
-                                      (updateDeliveryPrice)="updateDeliveryPrice($event)">
-                </jhi-customer-address>
                 <small class="user-form-legend">* verplicht</small>
-                <small class="user-form-legend">** verplicht bij levering</small>
                 <div class="stepper-actions">
-                    <button type="button" class="btn btn-primary" (click)="gotoStepTwo()">
+                    <button type="button" class="btn btn-primary" (click)="gotoStepTwo()"
+                            [disabled]="!(firstName.valid && lastName.valid && email.valid)">
                         Verder
                     </button>
                 </div>
@@ -73,7 +74,7 @@
                             </div>
                     <div class="form-group">
                         <label class="form-control-label">
-                                    Ik wil mijn stuk thuis bezorgd (€1 per km / max 10 km)
+                            Ik wil mijn stuk thuis bezorgd
                         </label>
                         <input required class="form-control" type="radio" name="deliveryType"
                                [value]="0" [(ngModel)]="this.order.deliveryType"/>
@@ -82,14 +83,13 @@
                         </small>
                         <small class="form-text text-muted" *ngIf="this.order.deliveryPrice">
                             Kostprijs voor levering naar {{this.customer.street}} te {{this.customer.city}} is
-                            {{this.order.deliveryPrice}}. (€1 per km)
+                            {{this.order.deliveryPrice}}. (€1/km)
                         </small>
-                        <div [hidden]="!(this.order.deliveryType == 0 && (!this.customer.street || !this.customer.city))">
-                            <small class="form-text text-danger">
-                                Gelieve je adres in de vorige stap op te geven
-                            </small>
-                        </div>
                     </div>
+                    <jhi-customer-address *ngIf="this.order.deliveryType === 0"
+                                          [customer]="this.customer"
+                                          (updateDeliveryPrice)="updateDeliveryPrice($event)">
+                    </jhi-customer-address>
                     <div class="form-group" *ngIf="product.numberOfBatteries">
                         <label class="form-control-label">
                             Ik wil een AA-batterij bij de LED-verlichting. (€ {{product.numberOfBatteries*0.5}} voor
@@ -139,7 +139,9 @@
                         <button type="button" class="btn btn-light" (click)="this.step=1">
                             Terug
                         </button>
-                        <button type="button" class="btn btn-primary" (click)="gotoStepTree()">
+                        <button type="button" class="btn btn-primary"
+                                [disabled]="(this.order.deliveryType === 0 && (!this.customer.street || !this.customer.city))"
+                                (click)="gotoStepTree()">
                             Verder
                         </button>
                     </div>
