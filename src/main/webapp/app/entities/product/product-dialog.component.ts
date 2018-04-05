@@ -39,7 +39,7 @@ export class ProductDialogComponent implements OnInit {
             if ( !this.product.images ) {
                 this.product.images = [];
             }
-            this.product.images.forEach( image => {
+            this.product.images.forEach( ( image: Image ) => {
                 this.imageEndpoints.push( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) );
             } )
         }
@@ -82,8 +82,11 @@ export class ProductDialogComponent implements OnInit {
     }
 
     onImageUploadFinished( $event: any ) {
-        const image = new Image( JSON.parse( $event.serverResponse._body ).id );
-        this.product.images.push( image );
+        const id = JSON.parse( $event.serverResponse._body ).id;
+        if ( id ) {
+            const image = new Image( id );
+            this.product.images.push( image );
+        }
     }
 
     private subscribeToSaveResponse( result: Observable<Product> ) {

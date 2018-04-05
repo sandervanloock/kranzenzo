@@ -70,7 +70,7 @@ public class ProductService{
         productRepository.save(product)
                          .getImages()
                          .stream()
-                         .filter(image -> image.getId() != null)
+                         .filter(image -> image.getId() != null && StringUtils.isNotBlank(image.getDataContentType()))
                          .peek(image -> image.setProduct(product))
                          .forEach(imageRepository::save);
         ProductDTO result = productMapper.toDto(product);
