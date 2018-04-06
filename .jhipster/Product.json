@@ -1,62 +1,72 @@
 {
-  "fluentMethods": true,
-  "relationships": [
-    {
-      "relationshipType": "one-to-many",
-      "relationshipName": "images",
-      "otherEntityName": "image",
-      "otherEntityRelationshipName": "product"
-    },
-    {
-      "relationshipType": "one-to-many",
-      "relationshipName": "orders",
-      "otherEntityName": "order",
-      "otherEntityRelationshipName": "product"
-    },
-    {
-      "relationshipType": "many-to-many",
-      "otherEntityRelationshipName": "tags",
-      "relationshipName": "tags",
-      "otherEntityName": "tag",
-      "otherEntityField": "name",
-      "ownerSide": true
-    }
-  ],
-  "fields": [
-    {
-      "fieldName": "name",
-      "fieldType": "String",
-      "fieldValidateRules": [
-        "maxlength",
-        "required"
-      ],
-      "fieldValidateRulesMaxlength": 200
-    },
-    {
-      "fieldName": "price",
-      "fieldType": "Float",
-      "fieldValidateRules": [
-        "min",
-        "required"
-      ],
-      "fieldValidateRulesMin": 0
-    },
-    {
-      "fieldName": "description",
-      "fieldType": "String",
-      "fieldValidateRules": [
-        "maxlength"
-      ],
-      "fieldValidateRulesMaxlength": 5000
-    },
-    {
-      "fieldName": "isActive",
-      "fieldType": "Boolean"
-    }
-  ],
-  "changelogDate": "20171212225537",
-  "entityTableName": "product",
-  "dto": "mapstruct",
-  "pagination": "no",
-  "service": "serviceClass"
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "images",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "product"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "orders",
+            "otherEntityName": "order",
+            "otherEntityRelationshipName": "product"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "tags",
+            "relationshipName": "tags",
+            "otherEntityName": "tag",
+            "otherEntityField": "name",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": 200
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "min",
+                "required"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 5000
+        },
+        {
+            "fieldName": "isActive",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "numberOfBatteries",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 10
+        }
+    ],
+    "changelogDate": "20171212225537",
+    "entityTableName": "product",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "serviceClass"
 }

@@ -17,6 +17,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.image.data" for="field_data">Data</label>
             <div>
+                <img [src]="image.endpoint" style="max-height: 100px;" *ngIf="image.endpoint" alt="uploaded image"/>
                 <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" style="max-height: 100px;" *ngIf="image.data" alt="image image"/>
                 <div *ngIf="image.data" class="form-text text-danger clearfix">
                     <span class="pull-left">{{image.dataContentType}}, {{byteSize(image.data)}}</span>
@@ -27,7 +28,9 @@
                 <input type="file" id="fileImage" (change)="setFileData($event, image, 'data', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
             </div>
             <input type="hidden" class="form-control" name="data" id="field_data"
-                   [(ngModel)]="image.data" required/>
+                   [(ngModel)]="image.data"/>
+            <input type="hidden" class="form-control" name="data" id="field_endpoint"
+                   [(ngModel)]="image.endpoint"/>
             <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
                    [(ngModel)]="image.dataContentType"/>
             <div [hidden]="!(editForm.controls.data?.dirty && editForm.controls.data?.invalid)">

@@ -35,6 +35,10 @@ spring:
         # Otherwise, it will be filled in by maven when building the WAR file
         # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
         active: #spring.profiles.active#
+    http:
+        multipart:
+            max-request-size: 12Mb
+            max-file-size: 12Mb
     jackson:
         serialization.write_dates_as_timestamps: false
     jpa:
@@ -125,3 +129,8 @@ jhipster:
 application:
   mail:
     confirmation: sandervl34@gmail.com #TODO change this to annemie.rousseau@telenet.be
+
+aws:
+  s3:
+    endpointUrl: https://s3.eu-west-1.amazonaws.com
+    bucketName: kranzenzo-images

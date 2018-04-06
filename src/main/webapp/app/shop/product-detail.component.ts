@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Product, ProductService} from '../entities/product';
-import {JhiAlertService, JhiEventManager, JhiAlert} from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
 
@@ -23,7 +23,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             this.load( params['id'] );
         } );
         this.registerChangeInProducts();
-
     }
 
     load( id ) {

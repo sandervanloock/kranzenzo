@@ -10,8 +10,7 @@
 
         <ngb-carousel *ngIf="product.images.length">
             <ng-template ngbSlide *ngFor="let image of product.images">
-                <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" alt="Random first slide"
-                     width="100%">
+                <img [src]="image.endpoint | s3ImageResize: '800x400'" width="100%">
                 <div class="carousel-caption">
                     <!--<h3>First slide label</h3>-->
                 </div>
@@ -19,7 +18,7 @@
         </ngb-carousel>
 
         <img class="card-img-top" *ngIf="product.images.length==0"
-             [src]="'https://via.placeholder.com/350x150?text='+product.name"/>
+             [src]="'https://via.placeholder.com/800x400?text='+product.name"/>
 
         <div class="jumbotron">
             <div class="row">
@@ -32,24 +31,24 @@
             <p class="lead">{{product.description}}</p>
             <hr class="my-4">
             <p>
-            <div *ngIf="product.tags.length">
-                <svg class="icon icon-home" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
-                </svg>
-                <span *ngFor="let tag of product.tags">
-                    <a class="btn btn-outline-secondary">{{tag.name}}</a>
-                </span>
-            </div>
             </p>
             <p class="lead">
                 <a class="btn btn-primary btn-lg"
-                   [routerLink]="['/', { outlets: { popup: 'product/'+ product.id + '/order'} }]"
+                   [routerLink]="['/', { outlets: { popup: 'shop/product/'+ product.id + '/order'} }]"
                    replaceUrl="true"
                    role="button">
                     Bestellen
                 </a>
             </p>
+        </div>
+        <div *ngIf="product.tags.length">
+            <svg class="icon icon-home" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 0h24v24H0z" fill="none"/>
+                <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+            </svg>
+            <span *ngFor="let tag of product.tags">
+                    <a class="btn btn-secondary" routerLink="/shop" [queryParams]="{tag: tag.name}">{{tag.name}}</a>
+                </span>
         </div>
 
     </div>

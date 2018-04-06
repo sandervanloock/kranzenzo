@@ -4,10 +4,11 @@ import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiLanguageService} from 'ng-jhipster';
 
 import {ProfileService} from '../profiles/profile.service';
-import {JhiLanguageHelper, LoginModalService, LoginService, Principal} from '../../shared';
+import {JhiLanguageHelper, LoginModalService, LoginService, Principal, ResponseWrapper} from '../../shared';
 
 import {VERSION} from '../../app.constants';
 import {DeactivateService} from '../../account/deactivate/deactivate.service';
+import {Tag, TagService} from '../../entities/tag';
 
 @Component({
     selector: 'jhi-navbar',
@@ -23,6 +24,7 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+    tags: Tag[];
 
     constructor(
         private loginService: LoginService,
@@ -30,7 +32,10 @@ export class NavbarComponent implements OnInit {
         private languageHelper: JhiLanguageHelper,
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private profileService: ProfileService, private router: Router, private deactivateService: DeactivateService
+        private profileService: ProfileService,
+        private router: Router,
+        private deactivateService: DeactivateService,
+        private tagService: TagService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -45,6 +50,9 @@ export class NavbarComponent implements OnInit {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
+        this.tagService.query().subscribe( ( res: ResponseWrapper ) => {
+            this.tags = res.json;
+        } );
     }
 
     changeLanguage(languageKey: string) {

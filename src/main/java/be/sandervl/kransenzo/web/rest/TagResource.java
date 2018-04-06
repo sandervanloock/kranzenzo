@@ -64,7 +64,7 @@ public class TagResource
 		Tag tag = tagMapper.toEntity( tagDTO );
 		tag = tagRepository.save( tag );
 		TagDTO result = tagMapper.toDto( tag );
-		tagSearchRepository.save( tag );
+//		tagSearchRepository.save( tag );
 		return ResponseEntity.created( new URI( "/api/tags/" + result.getId() ) )
 		                     .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
 		                     .body( result );
@@ -89,7 +89,7 @@ public class TagResource
 		Tag tag = tagMapper.toEntity( tagDTO );
 		tag = tagRepository.save( tag );
 		TagDTO result = tagMapper.toDto( tag );
-		tagSearchRepository.save( tag );
+//		tagSearchRepository.save( tag );
 		return ResponseEntity.ok()
 		                     .headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, tagDTO.getId().toString() ) )
 		                     .body( result );
@@ -134,7 +134,7 @@ public class TagResource
 	public ResponseEntity<Void> deleteTag( @PathVariable Long id ) {
 		log.debug( "REST request to delete Tag : {}", id );
 		tagRepository.delete( id );
-		tagSearchRepository.delete( id );
+//		tagSearchRepository.delete( id );
 		return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
 		                     .build();
 	}

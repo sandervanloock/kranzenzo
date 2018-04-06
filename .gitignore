@@ -57,6 +57,7 @@ local.properties
 .idea/libraries
 .idea/sonarlint
 .idea/artifacts
+.idea/encodings.xml
 .idea/datasources.local.xml
 *.iml
 *.iws

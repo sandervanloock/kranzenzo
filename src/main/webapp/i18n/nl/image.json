@@ -3,7 +3,7 @@
     "image": {
       "home": {
         "title": "Afbeeldingen",
-        "createLabel": "Maak een nieuwe Afbeelding",
+          "createLabel": "Afbeelding toevoegen",
         "createOrEditLabel": "Maak of wijzig een Afbeelding",
         "search": "Search for Afbeelding"
       },

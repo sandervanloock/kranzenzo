@@ -1,4 +1,3 @@
-
 <div *ngIf="product">
     <h2><span jhiTranslate="kransenzoApp.product.detail.title">Product</span> {{product.id}}</h2>
     <hr>
@@ -19,6 +18,10 @@
         <dt><span jhiTranslate="kransenzoApp.product.isActive">Is Active</span></dt>
         <dd>
             <span>{{product.isActive}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.product.numberOfBatteries">Number Of Batteries</span></dt>
+        <dd>
+            <span>{{product.numberOfBatteries}}</span>
         </dd>
         <dt><span jhiTranslate="kransenzoApp.product.tags">Tags</span></dt>
         <dd>

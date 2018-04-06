@@ -11,6 +11,8 @@ import {ProductPopupService} from './product-popup.service';
 import {ProductService} from './product.service';
 import {Tag, TagService} from '../tag';
 import {ResponseWrapper} from '../../shared';
+import {S3ImageResizePipe} from '../../shared/image/s3-image-resize.pipe';
+import {Image} from '../image/image.model';
 
 @Component( {
                 selector: 'jhi-product-dialog', templateUrl: './product-dialog.component.html'
@@ -21,12 +23,10 @@ export class ProductDialogComponent implements OnInit {
     isSaving: boolean;
 
     tags: Tag[];
+    imageEndpoints: string[] = [];
 
-    constructor( public activeModal: NgbActiveModal,
-                 private alertService: JhiAlertService,
-                 private productService: ProductService,
-                 private tagService: TagService,
-                 private eventManager: JhiEventManager ) {
+    constructor( public activeModal: NgbActiveModal, private jhiAlertService: JhiAlertService,
+                 private productService: ProductService, private tagService: TagService, private eventManager: JhiEventManager, private s3ImageResizePipe: S3ImageResizePipe ) {
     }
 
     ngOnInit() {
@@ -35,6 +35,14 @@ export class ProductDialogComponent implements OnInit {
             .subscribe( ( res: ResponseWrapper ) => {
                 this.tags = res.json;
             }, ( res: ResponseWrapper ) => this.onError( res.json ) );
+        if ( this.product ) {
+            if ( !this.product.images ) {
+                this.product.images = [];
+            }
+            this.product.images.forEach( ( image: Image ) => {
+                this.imageEndpoints.push( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) );
+            } )
+        }
     }
 
     clear() {
@@ -65,8 +73,24 @@ export class ProductDialogComponent implements OnInit {
         return option;
     }
 
+    onImageRemoved( $event: any ) {
+        this.product.images.forEach( ( image: Image, index: number ) => {
+            if ( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) === $event.src ) {
+                this.product.images.splice( index, 1 );
+            }
+        } );
+    }
+
+    onImageUploadFinished( $event: any ) {
+        const id = JSON.parse( $event.serverResponse._body ).id;
+        if ( id ) {
+            const image = new Image( id );
+            this.product.images.push( image );
+        }
+    }
+
     private subscribeToSaveResponse( result: Observable<Product> ) {
-        result.subscribe( ( res: Product ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError( res ) );
+        result.subscribe( ( res: Product ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError() );
     }
 
     private onSaveSuccess( result: Product ) {
@@ -75,18 +99,12 @@ export class ProductDialogComponent implements OnInit {
         this.activeModal.dismiss( result );
     }
 
-    private onSaveError( error ) {
-        try {
-            error.json();
-        } catch ( exception ) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError( error );
     }
 
-    private onError( error ) {
-        this.alertService.error( error.message, null, null );
+    private onError( error: any ) {
+        this.jhiAlertService.error( error.message, null, null );
     }
 }
 

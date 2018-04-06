@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 
-import {Principal, ResponseWrapper} from '../shared';
-import {Product, ProductService} from '../entities/product';
+import {Principal} from '../shared';
 import {JhiEventManager} from 'ng-jhipster';
 
 @Component( {
@@ -10,9 +9,9 @@ import {JhiEventManager} from 'ng-jhipster';
             } )
 export class HomeComponent implements OnInit {
     account: Account;
-    items: Product[] = [];
+    homepageImages: HomepageImage[];
 
-    constructor( private principal: Principal, private eventManager: JhiEventManager, private productService: ProductService ) {
+    constructor( private principal: Principal, private eventManager: JhiEventManager ) {
     }
 
     ngOnInit() {
@@ -20,9 +19,12 @@ export class HomeComponent implements OnInit {
             this.account = account;
         } );
         this.registerAuthenticationSuccess();
+        this.homepageImages = [new HomepageImage( 'https://images.kranzenzo.be/1000x500/home_1.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'https://images.kranzenzo.be/1000x500/home_5.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'https://images.kranzenzo.be/1000x500/home_6.jpg', 'Mijn winkel' ),
+                               new HomepageImage( 'https://images.kranzenzo.be/1000x500/1522343524-a504e7a6-0287-4114-92f4-52dcc8570481', 'Mijn winkel' ),
+                               new HomepageImage( 'https://images.kranzenzo.be/1000x500/home_11.jpg', 'Mijn winkel' ),];
 
-        this.productService.query( {activeOnly: true} )
-            .subscribe( ( data: ResponseWrapper ) => this.items = data.json );
     }
 
     registerAuthenticationSuccess() {
@@ -33,4 +35,9 @@ export class HomeComponent implements OnInit {
         } );
     }
 
+}
+
+class HomepageImage {
+    constructor( public url: string, public caption?: string, public subcaption?: string ) {
+    }
 }

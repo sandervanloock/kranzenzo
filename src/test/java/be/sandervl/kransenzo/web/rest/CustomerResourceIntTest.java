@@ -156,8 +156,8 @@ public class CustomerResourceIntTest
         assertThat( testCustomer.getPhoneNumber() ).isEqualTo( DEFAULT_PHONE_NUMBER );
 
         // Validate the Customer in Elasticsearch
-        Customer customerEs = customerSearchRepository.findOne( testCustomer.getId() );
-        assertThat( customerEs ).isEqualToComparingFieldByField( testCustomer );
+//        Customer customerEs = customerSearchRepository.findOne( testCustomer.getId() );
+//        assertThat( customerEs ).isEqualToComparingFieldByField( testCustomer );
     }
 
     @Test
@@ -259,8 +259,8 @@ public class CustomerResourceIntTest
         assertThat( testCustomer.getPhoneNumber() ).isEqualTo( UPDATED_PHONE_NUMBER );
 
         // Validate the Customer in Elasticsearch
-        Customer customerEs = customerSearchRepository.findOne( testCustomer.getId() );
-        assertThat( customerEs ).isEqualToComparingFieldByField( testCustomer );
+//        Customer customerEs = customerSearchRepository.findOne( testCustomer.getId() );
+//        assertThat( customerEs ).isEqualToComparingFieldByField( testCustomer );
     }
 
     @Test
@@ -287,7 +287,7 @@ public class CustomerResourceIntTest
     public void deleteCustomer() throws Exception {
         // Initialize the database
         customerRepository.saveAndFlush( customer );
-        customerSearchRepository.save( customer );
+//        customerSearchRepository.save( customer );
         int databaseSizeBeforeDelete = customerRepository.findAll().size();
 
         // Get the customer
@@ -296,8 +296,8 @@ public class CustomerResourceIntTest
                            .andExpect( status().isOk() );
 
         // Validate Elasticsearch is empty
-        boolean customerExistsInEs = customerSearchRepository.exists( customer.getId() );
-        assertThat( customerExistsInEs ).isFalse();
+//        boolean customerExistsInEs = customerSearchRepository.exists( customer.getId() );
+//        assertThat( customerExistsInEs ).isFalse();
 
         // Validate the database is empty
         List<Customer> customerList = customerRepository.findAll();

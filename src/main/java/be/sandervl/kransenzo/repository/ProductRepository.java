@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>
 {
-    
+
     @Query("select distinct product from Product product left join fetch product.tags left join fetch product.images")
     List<Product> findAllWithEagerRelationships();
 

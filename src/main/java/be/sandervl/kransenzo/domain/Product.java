@@ -6,9 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,8 +19,7 @@ import java.util.Set;
 @Table(name = "product")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "product")
-public class Product implements Serializable
-{
+public class Product implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -47,6 +44,11 @@ public class Product implements Serializable
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Min(value = 0)
+    @Max(value = 10)
+    @Column(name = "number_of_batteries")
+    private Integer numberOfBatteries;
+
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -60,173 +62,189 @@ public class Product implements Serializable
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "product_tags",
-            joinColumns = @JoinColumn(name = "products_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id"))
+        joinColumns = @JoinColumn(name = "products_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "tags_id", referencedColumnName = "id"))
     private Set<Tag> tags = new HashSet<>();
 
-    public Long getId() {
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    public Long getId(){
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id){
         this.id = id;
     }
 
-    public String getName() {
+    public String getName(){
         return name;
     }
 
-    public Product name( String name ) {
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public Product name(String name){
         this.name = name;
         return this;
     }
 
-    public void setName( String name ) {
-        this.name = name;
-    }
-
-    public Float getPrice() {
+    public Float getPrice(){
         return price;
     }
 
-    public Product price( Float price ) {
+    public void setPrice(Float price){
+        this.price = price;
+    }
+
+    public Product price(Float price){
         this.price = price;
         return this;
     }
 
-    public void setPrice( Float price ) {
-        this.price = price;
-    }
-
-    public String getDescription() {
+    public String getDescription(){
         return description;
     }
 
-    public Product description( String description ) {
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public Product description(String description){
         this.description = description;
         return this;
     }
 
-    public void setDescription( String description ) {
-        this.description = description;
-    }
-
-    public Boolean isIsActive() {
+    public Boolean isIsActive(){
         return isActive;
     }
 
-    public Product isActive( Boolean isActive ) {
+    public Product isActive(Boolean isActive){
         this.isActive = isActive;
         return this;
     }
 
-    public void setIsActive( Boolean isActive ) {
+    public void setIsActive(Boolean isActive){
         this.isActive = isActive;
     }
 
-    public Set<Image> getImages() {
+    public Integer getNumberOfBatteries(){
+        return numberOfBatteries;
+    }
+
+    public void setNumberOfBatteries(Integer numberOfBatteries){
+        this.numberOfBatteries = numberOfBatteries;
+    }
+
+    public Product numberOfBatteries(Integer numberOfBatteries){
+        this.numberOfBatteries = numberOfBatteries;
+        return this;
+    }
+
+    public Set<Image> getImages(){
         return images;
     }
 
-    public Product images( Set<Image> images ) {
+    public void setImages(Set<Image> images){
+        this.images = images;
+    }
+
+    public Product images(Set<Image> images){
         this.images = images;
         return this;
     }
 
-    public Product addImages( Image image ) {
-        this.images.add( image );
-        image.setProduct( this );
+    public Product addImages(Image image){
+        this.images.add(image);
+        image.setProduct(this);
         return this;
     }
 
-    public Product removeImages( Image image ) {
-        this.images.remove( image );
-        image.setProduct( null );
+    public Product removeImages(Image image){
+        this.images.remove(image);
+        image.setProduct(null);
         return this;
     }
 
-    public void setImages( Set<Image> images ) {
-        this.images = images;
-    }
-
-    public Set<Order> getOrders() {
+    public Set<Order> getOrders(){
         return orders;
     }
 
-    public Product orders( Set<Order> orders ) {
+    public void setOrders(Set<Order> orders){
+        this.orders = orders;
+    }
+
+    public Product orders(Set<Order> orders){
         this.orders = orders;
         return this;
     }
 
-    public Product addOrders( Order order ) {
-        this.orders.add( order );
-        order.setProduct( this );
+    public Product addOrders(Order order){
+        this.orders.add(order);
+        order.setProduct(this);
         return this;
     }
 
-    public Product removeOrders( Order order ) {
-        this.orders.remove( order );
-        order.setProduct( null );
+    public Product removeOrders(Order order){
+        this.orders.remove(order);
+        order.setProduct(null);
         return this;
     }
 
-    public void setOrders( Set<Order> orders ) {
-        this.orders = orders;
-    }
-
-    public Set<Tag> getTags() {
+    public Set<Tag> getTags(){
         return tags;
     }
 
-    public Product tags( Set<Tag> tags ) {
+    public void setTags(Set<Tag> tags){
+        this.tags = tags;
+    }
+
+    public Product tags(Set<Tag> tags){
         this.tags = tags;
         return this;
     }
 
-    public Product addTags( Tag tag ) {
-        this.tags.add( tag );
-        tag.getTags().add( this );
+    public Product addTags(Tag tag){
+        this.tags.add(tag);
+        tag.getTags().add(this);
         return this;
     }
 
-    public Product removeTags( Tag tag ) {
-        this.tags.remove( tag );
-        tag.getTags().remove( this );
+    public Product removeTags(Tag tag){
+        this.tags.remove(tag);
+        tag.getTags().remove(this);
         return this;
     }
-
-    public void setTags( Set<Tag> tags ) {
-        this.tags = tags;
-    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o){
+        if (this == o){
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()){
             return false;
         }
         Product product = (Product) o;
-        if ( product.getId() == null || getId() == null ) {
+        if (product.getId() == null || getId() == null){
             return false;
         }
-        return Objects.equals( getId(), product.getId() );
+        return Objects.equals(getId(), product.getId());
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hashCode( getId() );
+    public int hashCode(){
+        return Objects.hashCode(getId());
     }
 
     @Override
-    public String toString() {
+    public String toString(){
         return "Product{" +
-                "id=" + getId() +
-                ", name='" + getName() + "'" +
-                ", price='" + getPrice() + "'" +
-                ", description='" + getDescription() + "'" +
-                ", isActive='" + isIsActive() + "'" +
-                "}";
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", price=" + getPrice() +
+            ", description='" + getDescription() + "'" +
+            ", isActive='" + isIsActive() + "'" +
+            ", numberOfBatteries=" + getNumberOfBatteries() +
+            "}";
     }
 }

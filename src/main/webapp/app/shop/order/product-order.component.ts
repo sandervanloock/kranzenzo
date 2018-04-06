@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {JhiEventManager} from 'ng-jhipster';
-import {LoginModalService, Principal, User, UserService} from '../shared';
+import {LoginModalService, Principal, User, UserService} from '../../shared';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {Product, ProductPopupService, ProductService} from '../entities/product';
+import {Product, ProductPopupService, ProductService} from '../../entities/product';
 import {ActivatedRoute} from '@angular/router';
-import {Customer, CustomerService} from '../entities/customer';
+import {Customer, CustomerService} from '../../entities/customer';
 import {Http} from '@angular/http';
-import {Order, OrderService} from '../entities/order';
+import {Order, OrderService} from '../../entities/order';
 import {Observable} from 'rxjs/Observable';
-import {PRICE_BATTERIES_INCLUDED, VAT_NUMBER} from '../app.constants';
+import {PRICE_BATTERIES_INCLUDED, VAT_NUMBER} from '../../app.constants';
 
 declare var google: any;
 
@@ -20,7 +20,7 @@ Inspired by https://www.google.com/design/spec/components/steppers.html#steppers
 And leveraging the Creative Tim Material Bootstrap Library - http://demos.creative-tim.com/material-kit/index.html
  */
 @Component( {
-                selector: 'jhi-product-order', templateUrl: './product-order.component.html', styleUrls: ['stepper.css']
+                selector: 'jhi-product-order', templateUrl: './product-order.component.html', styleUrls: ['product-order.css']
             } )
 export class ProductOrderComponent implements OnInit {
     step: number;
@@ -33,7 +33,10 @@ export class ProductOrderComponent implements OnInit {
 
     constructor(
         private loginModalService: LoginModalService,
-        private principal: Principal, private eventManager: JhiEventManager, private productService: ProductService, private productPopupService: ProductPopupService,
+        private principal: Principal,
+        private eventManager: JhiEventManager,
+        private productService: ProductService,
+        private productPopupService: ProductPopupService,
         private route: ActivatedRoute,
         private http: Http,
         private userService: UserService,
@@ -69,9 +72,9 @@ export class ProductOrderComponent implements OnInit {
             price += this.order.deliveryPrice;
         }
         if ( this.order.includeBatteries ) {
-            price += PRICE_BATTERIES_INCLUDED;
+            price += PRICE_BATTERIES_INCLUDED * this.product.numberOfBatteries;
         }
-        return price;
+        return Math.round( price * 100 ) / 100;
     }
 
     registerAuthenticationSuccess() {
@@ -83,52 +86,48 @@ export class ProductOrderComponent implements OnInit {
     }
 
     submitForm() {
-        this.orderService.create( this.order ).subscribe( ( order: Order ) => {
-            this.order = order;
-            this.productPopupService.close();
-            this.eventManager.broadcast( {
-                                             name: 'productOrderCompleted', content: {
-                    type: 'success', msg: 'product.submitted.success',
-                }
-                                         } );
+        this.updateCustomer().flatMap( ( customer ) => {
+            this.customer = customer;
+            this.order.customerId = customer.id;
+            return this.orderService.create( this.order );
+        } ).subscribe( ( order: Order ) => {
+            this.handleSuccessfulOrder( order );
         }, ( error ) => {
-            this.eventManager.broadcast( {
-                                             name: 'productOrderCompleted', content: {
-                    type: 'error', msg: 'product.submitted.error',
-                }
-                                         } );
+            this.handleFailedOrder();
         } )
     }
 
-    createCustomer() {
-        if ( this.customer.id === undefined ) {
-            this.updateCustomer( this.customerService.create( this.customer ) );
-        } else {
-            this.updateCustomer( this.customerService.update( this.customer ) );
-        }
+    gotoStepTwo() {
+        this.step = 2;
     }
 
-    private updateCustomer( observable: Observable<Customer> ) {
-        observable.subscribe( ( res: Customer ) => {
-            this.customer = res;
-            this.order.customerId = res.id;
-        } )
+    gotoStepTree() {
+        this.step = 3;
+    }
+
+    private handleFailedOrder() {
+        this.eventManager.broadcast( {
+                                         name: 'productOrderCompleted', content: {type: 'error', msg: 'product.submitted.error',}
+                                     } );
     }
 
     updateDeliveryPrice( price: number ) {
         this.order.deliveryPrice = price;
     }
 
-    gotoStepTwo() {
-        if ( this.customer.user.lastName && this.customer.user.firstName && this.customer.user.email ) {
-            this.step = 2;
-            this.createCustomer()
-        }
+    private handleSuccessfulOrder( order: Order ) {
+        this.order = order;
+        this.productPopupService.close();
+        this.eventManager.broadcast( {
+                                         name: 'productOrderCompleted', content: {type: 'success', msg: 'product.submitted.success',}
+                                     } );
     }
 
-    gotoStepTree() {
-        if ( !(this.order.deliveryType === 0 && (!this.customer.street || !this.customer.city)) ) {
-            this.step = 3;
+    private updateCustomer(): Observable<Customer> {
+        if ( this.customer.id === undefined ) {
+            return this.customerService.create( this.customer );
+        } else {
+            return this.customerService.update( this.customer );
         }
     }
 }

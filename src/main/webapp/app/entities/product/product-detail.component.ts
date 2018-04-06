@@ -30,6 +30,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
             this.product = product;
         } );
     }
+
     previousState() {
         window.history.back();
     }
