@@ -2,14 +2,23 @@
     <div class="col-xl-6" *ngFor="let item of items" style="margin-top:20px;">
         <a routerLink="product/{{item.id}}" routerLinkActive="active" class="card-image-link">
             <div class="card">
-                <img class="card-img-top" *ngIf="item.images.length"
-                     [src]=" item.images[0].endpoint | s3ImageResize: '800x400'">
-                <img class="card-img-top" *ngIf="item.images.length==0"
-                     [src]="'https://via.placeholder.com/800x400?text='+item.name"/>
+                <picture *ngIf="item.images.length">
+                    <source media="(min-width: 1200px)" class="card-img-top" [srcset]="item.images[0].endpoint | s3ImageResize: '400x200'">
+                    <source media="(min-width: 992px)" class="card-img-top" [srcset]="item.images[0].endpoint | s3ImageResize: '800x400'">
+                    <img [src]="item.images[0].endpoint | s3ImageResize: '400x200'" class="card-img-top" [alt]="item.name">
+                </picture>
+                <picture *ngIf="item.images.length==0">
+                    <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text='+item.name">
+                    <source media="(max-width: 992px)" [srcset]="'https://via.placeholder.com/800x400?text='+item.name">
+                    <img [src]="'https://via.placeholder.com/400x200?text='+item.name" [alt]="item.name">
+                </picture>
                 <div class="card-body">
                     <h4 class="card-title">{{item.name}}</h4>
                     <p class="card-text">
                         {{item.description ? item.description : '&nbsp;'}}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">€ {{item.price}}</small>
                     </p>
                 </div>
             </div>
