@@ -128,7 +128,7 @@ jhipster:
 
 application:
   mail:
-    confirmation: sandervl34@gmail.com #TODO change this to annemie.rousseau@telenet.be
+    confirmation: annemie.rousseau@telenet.be
 
 aws:
   s3:
