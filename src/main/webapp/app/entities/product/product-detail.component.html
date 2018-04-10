@@ -2,35 +2,47 @@
     <h2><span jhiTranslate="kransenzoApp.product.detail.title">Product</span> {{product.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kransenzoApp.product.name">Name</span></dt>
-        <dd>
-            <span>{{product.name}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.product.price">Price</span></dt>
-        <dd>
-            <span>{{product.price}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.product.description">Description</span></dt>
-        <dd>
-            <span>{{product.description}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.product.isActive">Is Active</span></dt>
-        <dd>
-            <span>{{product.isActive}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.product.numberOfBatteries">Number Of Batteries</span></dt>
-        <dd>
-            <span>{{product.numberOfBatteries}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.product.tags">Tags</span></dt>
-        <dd>
-            <span *ngFor="let tags of product.tags; let last = last">
-                <a [routerLink]="['/tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-    </dl>
-
+    <div class="row">
+        <div class="col-md-6">
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kransenzoApp.product.name">Name</span></dt>
+                <dd>
+                    <span>{{product.name}}</span>
+                </dd>
+                <dt><span jhiTranslate="kransenzoApp.product.price">Price</span></dt>
+                <dd>
+                    <span>{{product.price}}</span>
+                </dd>
+                <dt><span jhiTranslate="kransenzoApp.product.description">Description</span></dt>
+                <dd>
+                    <span>{{product.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="kransenzoApp.product.isActive">Is Active</span></dt>
+                <dd>
+                    <span>{{product.isActive}}</span>
+                </dd>
+                <dt><span jhiTranslate="kransenzoApp.product.numberOfBatteries">Number Of Batteries</span></dt>
+                <dd>
+                    <span>{{product.numberOfBatteries}}</span>
+                </dd>
+                <dt><span jhiTranslate="kransenzoApp.product.tags">Tags</span></dt>
+                <dd>
+                <span *ngFor="let tags of product.tags; let last = last">
+                    <a [routerLink]="['/tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}
+                </span>
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-6">
+            <ngb-carousel *ngIf="product.images.length">
+                <ng-template ngbSlide *ngFor="let image of product.images">
+                    <img [src]="image.endpoint | s3ImageResize: '400x200'" width="100%">
+                    <div class="carousel-caption">
+                    </div>
+                </ng-template>
+            </ngb-carousel>
+        </div>
+    </div>
     <button type="submit"
             (click)="previousState()"
             class="btn btn-info">
