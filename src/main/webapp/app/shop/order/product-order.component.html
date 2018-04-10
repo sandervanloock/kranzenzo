@@ -79,11 +79,11 @@
                         <input required class="form-control" type="radio" name="deliveryType"
                                [value]="0" [(ngModel)]="this.order.deliveryType"/>
                         <small class="form-text text-muted">
-                            Levering gaat enkel binnen een straal van 10 kilometer vanuit Sint-Katelijne-Waver.
+                            Levering gaat enkel binnen een straal van 20 kilometer vanuit Sint-Katelijne-Waver.
                         </small>
                         <small class="form-text text-muted" *ngIf="this.order.deliveryPrice">
                             Kostprijs voor levering naar {{this.customer.street}} te {{this.customer.city}} is
-                            {{this.order.deliveryPrice}}. (€1/km)
+                            {{this.order.deliveryPrice}}. (€0,5/km)
                         </small>
                     </div>
                     <jhi-customer-address *ngIf="this.order.deliveryType === 0"
