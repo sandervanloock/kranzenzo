@@ -26,10 +26,13 @@ public class ImageTransformation{
 
             return transformImage(input, exifTransformation);
         }
-        catch (IOException | MetadataException | ImageProcessingException e){
-            log.error("Unable to rotate {} according to exif due to {}", input, e.getCause(), e);
-            return input;
+        catch (MetadataException e){
+            log.debug("This image could not be rotated because metadata could not be retrieved {}", input);
         }
+        catch (IOException | ImageProcessingException e){
+            log.error("Unable to rotate {} according to exif due to {}", input, e.getCause(), e);
+        }
+        return input;
     }
 
     private static BufferedImage transformImage(BufferedImage bsrc, AffineTransform at){
