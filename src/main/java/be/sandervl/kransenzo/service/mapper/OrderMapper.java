@@ -8,23 +8,19 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity Order and its DTO OrderDTO.
  */
-@Mapper(componentModel = "spring", uses = { CustomerMapper.class, LocationMapper.class, ProductMapper.class, })
+@Mapper(componentModel = "spring", uses = {CustomerMapper.class, LocationMapper.class, ProductMapper.class})
 public interface OrderMapper extends EntityMapper<OrderDTO, Order>
 {
 
     @Mapping(source = "customer.id", target = "customerId")
-
     @Mapping(source = "deliveryAddress.id", target = "deliveryAddressId")
-
     @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "product.name", target = "productName")
     @Mapping(source = "customer", target = "customer")
     OrderDTO toDto( Order order );
 
     @Mapping(source = "customerId", target = "customer")
-
     @Mapping(source = "deliveryAddressId", target = "deliveryAddress")
-
     @Mapping(source = "productId", target = "product")
     Order toEntity( OrderDTO orderDTO );
 

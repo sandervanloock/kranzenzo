@@ -5,6 +5,7 @@ import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.domain.Product;
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
+import be.sandervl.kransenzo.domain.enumeration.PaymentType;
 import be.sandervl.kransenzo.repository.OrderRepository;
 import be.sandervl.kransenzo.repository.search.OrderSearchRepository;
 import be.sandervl.kransenzo.service.OrderService;
@@ -32,6 +33,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+import static be.sandervl.kransenzo.web.rest.TestUtil.createFormattingConversionService;
 import static be.sandervl.kransenzo.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -48,11 +50,11 @@ public class OrderResourceIntTest
 {
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant( Instant.ofEpochMilli( 0L ),
-                                                                                  ZoneOffset.UTC );
+        ZoneOffset.UTC );
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 );
 
     private static final ZonedDateTime DEFAULT_UPDATED = ZonedDateTime.ofInstant( Instant.ofEpochMilli( 0L ),
-                                                                                  ZoneOffset.UTC );
+        ZoneOffset.UTC );
     private static final ZonedDateTime UPDATED_UPDATED = ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 );
 
     private static final OrderState DEFAULT_STATE = OrderState.NEW;
@@ -69,6 +71,9 @@ public class OrderResourceIntTest
 
     private static final Float DEFAULT_DELIVERY_PRICE = 0F;
     private static final Float UPDATED_DELIVERY_PRICE = 1F;
+
+    private static final PaymentType DEFAULT_PAYMENT_TYPE = PaymentType.CASH;
+    private static final PaymentType UPDATED_PAYMENT_TYPE = PaymentType.TRANSFER;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -106,13 +111,14 @@ public class OrderResourceIntTest
      */
     public static Order createEntity( EntityManager em ) {
         Order order = new Order()
-                .created( DEFAULT_CREATED )
-                .updated( DEFAULT_UPDATED )
-                .state( DEFAULT_STATE )
-                .deliveryType( DEFAULT_DELIVERY_TYPE )
-                .includeBatteries( DEFAULT_INCLUDE_BATTERIES )
-                .description( DEFAULT_DESCRIPTION )
-                .deliveryPrice( DEFAULT_DELIVERY_PRICE );
+            .created( DEFAULT_CREATED )
+            .updated( DEFAULT_UPDATED )
+            .state( DEFAULT_STATE )
+            .deliveryType( DEFAULT_DELIVERY_TYPE )
+            .includeBatteries( DEFAULT_INCLUDE_BATTERIES )
+            .description( DEFAULT_DESCRIPTION )
+            .deliveryPrice( DEFAULT_DELIVERY_PRICE )
+            .paymentType( DEFAULT_PAYMENT_TYPE );
         // Add required entity
         Product product = ProductResourceIntTest.createEntity( em );
         em.persist( product );
@@ -124,10 +130,11 @@ public class OrderResourceIntTest
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
-        OrderResource orderResource = new OrderResource( orderService );
+        final OrderResource orderResource = new OrderResource( orderService );
         this.restOrderMockMvc = MockMvcBuilders.standaloneSetup( orderResource )
                                                .setCustomArgumentResolvers( pageableArgumentResolver )
                                                .setControllerAdvice( exceptionTranslator )
+                                               .setConversionService( createFormattingConversionService() )
                                                .setMessageConverters( jacksonMessageConverter ).build();
     }
 
@@ -145,8 +152,8 @@ public class OrderResourceIntTest
         // Create the Order
         OrderDTO orderDTO = orderMapper.toDto( order );
         restOrderMockMvc.perform( post( "/api/orders" )
-                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+            .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+            .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
                         .andExpect( status().isCreated() );
 
         // Validate the Order in the database
@@ -174,13 +181,32 @@ public class OrderResourceIntTest
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOrderMockMvc.perform( post( "/api/orders" )
-                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+            .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+            .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
                         .andExpect( status().isBadRequest() );
 
-        // Validate the Alice in the database
+        // Validate the Order in the database
         List<Order> orderList = orderRepository.findAll();
         assertThat( orderList ).hasSize( databaseSizeBeforeCreate );
+    }
+
+    @Test
+    @Transactional
+    public void checkPaymentTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = orderRepository.findAll().size();
+        // set the field null
+        order.setPaymentType( null );
+
+        // Create the Order, which fails.
+        OrderDTO orderDTO = orderMapper.toDto( order );
+
+        restOrderMockMvc.perform( post( "/api/orders" )
+            .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+            .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+                        .andExpect( status().isBadRequest() );
+
+        List <Order> orderList = orderRepository.findAll();
+        assertThat( orderList ).hasSize( databaseSizeBeforeTest );
     }
 
     @Test
@@ -223,7 +249,8 @@ public class OrderResourceIntTest
                         .andExpect( jsonPath( "$.deliveryType" ).value( DEFAULT_DELIVERY_TYPE.toString() ) )
                         .andExpect( jsonPath( "$.includeBatteries" ).value( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) )
                         .andExpect( jsonPath( "$.description" ).value( DEFAULT_DESCRIPTION.toString() ) )
-                        .andExpect( jsonPath( "$.deliveryPrice" ).value( DEFAULT_DELIVERY_PRICE.doubleValue() ) );
+                        .andExpect( jsonPath( "$.deliveryPrice" ).value( DEFAULT_DELIVERY_PRICE.doubleValue() ) )
+                        .andExpect( jsonPath( "$.paymentType" ).value( DEFAULT_PAYMENT_TYPE.toString() ) );
     }
 
     @Test
@@ -244,18 +271,22 @@ public class OrderResourceIntTest
 
         // Update the order
         Order updatedOrder = orderRepository.findOne( order.getId() );
+        // Disconnect from session so that the updates on updatedOrder are not directly saved in db
+        em.detach( updatedOrder );
         updatedOrder
-                .created( UPDATED_CREATED )
-                .updated( UPDATED_UPDATED )
-                .state( UPDATED_STATE )
-                .deliveryType( UPDATED_DELIVERY_TYPE )
-                .includeBatteries( UPDATED_INCLUDE_BATTERIES )
-                .description( UPDATED_DESCRIPTION );
+            .created( UPDATED_CREATED )
+            .updated( UPDATED_UPDATED )
+            .state( UPDATED_STATE )
+            .deliveryType( UPDATED_DELIVERY_TYPE )
+            .includeBatteries( UPDATED_INCLUDE_BATTERIES )
+            .description( UPDATED_DESCRIPTION )
+            .deliveryPrice( UPDATED_DELIVERY_PRICE )
+            .paymentType( UPDATED_PAYMENT_TYPE );
         OrderDTO orderDTO = orderMapper.toDto( updatedOrder );
 
         restOrderMockMvc.perform( put( "/api/orders" )
-                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+            .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+            .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
                         .andExpect( status().isOk() );
 
         // Validate the Order in the database
@@ -283,8 +314,8 @@ public class OrderResourceIntTest
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restOrderMockMvc.perform( put( "/api/orders" )
-                                          .contentType( TestUtil.APPLICATION_JSON_UTF8 )
-                                          .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
+            .contentType( TestUtil.APPLICATION_JSON_UTF8 )
+            .content( TestUtil.convertObjectToJsonBytes( orderDTO ) ) )
                         .andExpect( status().isCreated() );
 
         // Validate the Order in the database
@@ -302,7 +333,7 @@ public class OrderResourceIntTest
 
         // Get the order
         restOrderMockMvc.perform( delete( "/api/orders/{id}", order.getId() )
-                                          .accept( TestUtil.APPLICATION_JSON_UTF8 ) )
+            .accept( TestUtil.APPLICATION_JSON_UTF8 ) )
                         .andExpect( status().isOk() );
 
         // Validate Elasticsearch is empty
@@ -335,7 +366,9 @@ public class OrderResourceIntTest
                                             .value( hasItem( DEFAULT_INCLUDE_BATTERIES.booleanValue() ) ) )
                         .andExpect( jsonPath( "$.[*].description" ).value( hasItem( DEFAULT_DESCRIPTION.toString() ) ) )
                         .andExpect( jsonPath( "$.[*].deliveryPrice" )
-                                            .value( hasItem( DEFAULT_DELIVERY_PRICE.doubleValue() ) ) );
+                            .value( hasItem( DEFAULT_DELIVERY_PRICE.doubleValue() ) ) )
+                        .andExpect( jsonPath( "$.[*].paymentType" )
+                            .value( hasItem( DEFAULT_PAYMENT_TYPE.toString() ) ) );
     }
 
     @Test

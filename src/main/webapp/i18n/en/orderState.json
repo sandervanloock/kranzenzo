@@ -1,11 +1,11 @@
 {
-  "kransenzoApp": {
-    "OrderState": {
-      "null": "",
-      "NEW": "NEW",
-      "PAYED": "PAYED",
-      "CANCELLED": "CANCELLED",
-      "DONE": "DONE"
+    "kransenzoApp": {
+        "OrderState": {
+            "null": "",
+            "NEW": "NEW",
+            "PAYED": "PAYED",
+            "CANCELLED": "CANCELLED",
+            "DONE": "DONE"
+        }
     }
-  }
 }
