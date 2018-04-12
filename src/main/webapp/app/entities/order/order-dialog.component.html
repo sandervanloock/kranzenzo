@@ -31,18 +31,18 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.order.state" for="field_state">State</label>
             <select class="form-control" name="state" [(ngModel)]="order.state" id="field_state">
-                <option value="NEW" jhiTranslate="kransenzoApp.OrderState.NEW">NEW</option>
-                <option value="PAYED" jhiTranslate="kransenzoApp.OrderState.PAYED">PAYED</option>
-                <option value="CANCELLED" jhiTranslate="kransenzoApp.OrderState.CANCELLED">CANCELLED</option>
-                <option value="DONE" jhiTranslate="kransenzoApp.OrderState.DONE">DONE</option>
+                <option value="NEW">{{'kransenzoApp.OrderState.NEW' | translate}}</option>
+                <option value="PAYED">{{'kransenzoApp.OrderState.PAYED' | translate}}</option>
+                <option value="CANCELLED">{{'kransenzoApp.OrderState.CANCELLED' | translate}}</option>
+                <option value="DONE">{{'kransenzoApp.OrderState.DONE' | translate}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.order.deliveryType" for="field_deliveryType">Delivery
                 Type</label>
             <select class="form-control" name="deliveryType" [(ngModel)]="order.deliveryType" id="field_deliveryType">
-                <option value="DELIVERED" jhiTranslate="kransenzoApp.DeliveryType.DELIVERED">DELIVERED</option>
-                <option value="PICKUP" jhiTranslate="kransenzoApp.DeliveryType.PICKUP">PICKUP</option>
+                <option value="DELIVERED">{{'kransenzoApp.DeliveryType.DELIVERED' | translate}}</option>
+                <option value="PICKUP">{{'kransenzoApp.DeliveryType.PICKUP' | translate}}</option>
             </select>
         </div>
         <div class="form-group">
@@ -78,9 +78,23 @@
                 </small>
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.paymentType" for="field_paymentType">Payment
+                Type</label>
+            <select class="form-control" name="paymentType" [(ngModel)]="order.paymentType" id="field_paymentType" required>
+                <option value="CASH">{{'kransenzoApp.PaymentType.CASH' | translate}}</option>
+                <option value="TRANSFER">{{'kransenzoApp.PaymentType.TRANSFER' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.paymentType?.dirty && editForm.controls.paymentType?.invalid)">
+                <small class="form-text text-danger"
+                       [hidden]="!editForm.controls.paymentType?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
+                </small>
+            </div>
+        </div>
 
         <div class="form-group">
-            <label jhiTranslate="kransenzoApp.order.customer" for="field_customer">Customer</label>
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.customer" for="field_customer">Customer</label>
             <select class="form-control" id="field_customer" name="customer" [(ngModel)]="order.customerId">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackCustomerById">
@@ -89,7 +103,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label jhiTranslate="kransenzoApp.order.deliveryAddress" for="field_deliveryAddress">Delivery
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.deliveryAddress" for="field_deliveryAddress">Delivery
                 Address</label>
             <select class="form-control" id="field_deliveryAddress" name="deliveryAddress" [(ngModel)]="order.deliveryAddressId">
                 <option [ngValue]="null"></option>
@@ -99,8 +113,9 @@
             </select>
         </div>
         <div class="form-group">
-            <label jhiTranslate="kransenzoApp.order.product" for="field_product">Product</label>
+            <label class="form-control-label" jhiTranslate="kransenzoApp.order.product" for="field_product">Product</label>
             <select class="form-control" id="field_product" name="product" [(ngModel)]="order.productId" required>
+                <option *ngIf="!editForm.value.product" [ngValue]="null" selected></option>
                 <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">
                     {{productOption.name}}
                 </option>
@@ -114,7 +129,7 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="clear()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">

@@ -71,7 +71,7 @@
                                 </label>
                         <input required class="form-control" checked type="radio" name="deliveryType"
                                [value]="1" [(ngModel)]="this.order.deliveryType">
-                            </div>
+                    </div>
                     <div class="form-group">
                         <label class="form-control-label">
                             Ik wil mijn stuk thuis bezorgd
@@ -186,17 +186,40 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label">
+                        Ik wil cash betalen
+                    </label>
+                    <input required class="form-control" checked type="radio" name="paymentType"
+                           [value]="0" [(ngModel)]="this.order.paymentType">
+                    <label class="form-control-label">
+                        Ik wil overschrijven
+                    </label>
+                    <input required class="form-control" type="radio" name="paymentType"
+                           [value]="1" [(ngModel)]="this.order.paymentType">
+                </div>
+                <div *ngIf="this.order.paymentType === 0">
+                    <p *ngIf="this.order.deliveryType === 0">
+                        Gelieve € {{this.getTotalPrice()}} te betalen bij levering.
+                    </p>
 
-                <p>Gelieve € {{this.getTotalPrice()}} over te schrijven op <b>{{this.vatNumber}}</b></p>
-                <p *ngIf="this.order.deliveryType === 0">
-                    Zodra het geld is overgemaakt zal het stuk na afspraak worden geleverd in {{customer.street}} te
-                    {{customer.city}}.
-                </p>
+                    <p *ngIf="this.order.deliveryType === 1">
+                        Gelieve € {{this.getTotalPrice()}} te betalen bij ophaling.
+                    </p>
+                </div>
+                <div *ngIf="this.order.paymentType === 1">
+                    <p>Gelieve € {{this.getTotalPrice()}} over te schrijven op <b>{{this.vatNumber}}</b></p>
+                    <p *ngIf="this.order.deliveryType === 0">
+                        Zodra het geld is overgemaakt zal het stuk na afspraak worden geleverd in {{customer.street}} te
+                        {{customer.city}}.
+                    </p>
 
-                <p *ngIf="this.order.deliveryType === 1">
-                    Zodra het geld is overgemaakt zal je melding krijgen van Kranzenzo voor een afspraak te maken om het
-                    stuk te kunnen ophalen.
-                </p>
+                    <p *ngIf="this.order.deliveryType === 1">
+                        Zodra het geld is overgemaakt zal je melding krijgen van Kranzenzo voor een afspraak te maken om
+                        het
+                        stuk te kunnen ophalen.
+                    </p>
+                </div>
                 <a class="btn btn-light" (click)="this.step=2">Terug</a>
                 <button type="submit" class="btn btn-success">Verzenden</button>
             </div>

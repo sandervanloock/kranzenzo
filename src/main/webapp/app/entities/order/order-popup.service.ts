@@ -23,9 +23,9 @@ export class OrderPopupService {
             if ( id ) {
                 this.orderService.find( id ).subscribe( ( order ) => {
                     order.created = this.datePipe
-                        .transform( order.created, 'yyyy-MM-ddThh:mm' );
+                        .transform( order.created, 'yyyy-MM-ddTHH:mm:ss' );
                     order.updated = this.datePipe
-                        .transform( order.updated, 'yyyy-MM-ddThh:mm' );
+                        .transform( order.updated, 'yyyy-MM-ddTHH:mm:ss' );
                     this.ngbModalRef = this.orderModalRef( component, order );
                     resolve( this.ngbModalRef );
                 } );

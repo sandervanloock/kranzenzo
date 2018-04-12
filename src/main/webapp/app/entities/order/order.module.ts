@@ -18,7 +18,7 @@ import {
 const ENTITY_STATES = [...orderRoute, ...orderPopupRoute,];
 
 @NgModule( {
-               imports: [KransenzoSharedModule, RouterModule.forRoot( ENTITY_STATES, {useHash: true} )],
+               imports: [KransenzoSharedModule, RouterModule.forChild( ENTITY_STATES )],
                declarations: [OrderComponent, OrderDetailComponent, OrderDialogComponent, OrderDeleteDialogComponent, OrderPopupComponent, OrderDeletePopupComponent,],
                entryComponents: [OrderComponent, OrderDialogComponent, OrderPopupComponent, OrderDeleteDialogComponent, OrderDeletePopupComponent,],
                providers: [OrderService, OrderPopupService,],

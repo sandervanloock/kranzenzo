@@ -28,8 +28,7 @@ export class OrderDialogComponent implements OnInit {
 
     products: Product[];
 
-    constructor( public activeModal: NgbActiveModal,
-                 private alertService: JhiAlertService,
+    constructor( public activeModal: NgbActiveModal, private jhiAlertService: JhiAlertService,
                  private orderService: OrderService,
                  private customerService: CustomerService,
                  private locationService: LocationService,
@@ -76,7 +75,7 @@ export class OrderDialogComponent implements OnInit {
     }
 
     private subscribeToSaveResponse( result: Observable<Order> ) {
-        result.subscribe( ( res: Order ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError( res ) );
+        result.subscribe( ( res: Order ) => this.onSaveSuccess( res ), ( res: Response ) => this.onSaveError() );
     }
 
     private onSaveSuccess( result: Order ) {
@@ -85,18 +84,12 @@ export class OrderDialogComponent implements OnInit {
         this.activeModal.dismiss( result );
     }
 
-    private onSaveError( error ) {
-        try {
-            error.json();
-        } catch ( exception ) {
-            error.message = error.text();
-        }
+    private onSaveError() {
         this.isSaving = false;
-        this.onError( error );
     }
 
-    private onError( error ) {
-        this.alertService.error( error.message, null, null );
+    private onError( error: any ) {
+        this.jhiAlertService.error( error.message, null, null );
     }
 
     trackCustomerById( index: number, item: Customer ) {
