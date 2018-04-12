@@ -1,26 +1,35 @@
 {
-  "fluentMethods": true,
-  "relationships": [
-    {
-      "relationshipType": "many-to-many",
-      "relationshipName": "tags",
-      "otherEntityName": "product",
-      "ownerSide": false,
-      "otherEntityRelationshipName": "tags"
-    }
-  ],
-  "fields": [
-    {
-      "fieldName": "name",
-      "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
-    }
-  ],
-  "changelogDate": "20171212225539",
-  "entityTableName": "tag",
-  "dto": "mapstruct",
-  "pagination": "no",
-  "service": "no"
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "tags",
+            "otherEntityName": "product",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "tags"
+        },
+        {
+            "relationshipName": "image",
+            "otherEntityName": "image",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "tag"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20171212225539",
+    "dto": "mapstruct",
+    "service": "no",
+    "entityTableName": "tag",
+    "jpaMetamodelFiltering": false,
+    "pagination": "no"
 }

@@ -18,7 +18,7 @@ export class TagComponent implements OnInit, OnDestroy {
 
     constructor(
         private tagService: TagService,
-        private alertService: JhiAlertService,
+        private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
         private principal: Principal ) {
@@ -50,7 +50,6 @@ export class TagComponent implements OnInit, OnDestroy {
         this.currentSearch = '';
         this.loadAll();
     }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then( ( account ) => {
@@ -66,12 +65,11 @@ export class TagComponent implements OnInit, OnDestroy {
     trackId( index: number, item: Tag ) {
         return item.id;
     }
-
     registerChangeInTags() {
         this.eventSubscriber = this.eventManager.subscribe( 'tagListModification', ( response ) => this.loadAll() );
     }
 
     private onError( error ) {
-        this.alertService.error( error.message, null, null );
+        this.jhiAlertService.error( error.message, null, null );
     }
 }

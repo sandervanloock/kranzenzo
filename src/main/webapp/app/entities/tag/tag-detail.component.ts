@@ -30,7 +30,6 @@ export class TagDetailComponent implements OnInit, OnDestroy {
             this.tag = tag;
         } );
     }
-
     previousState() {
         window.history.back();
     }

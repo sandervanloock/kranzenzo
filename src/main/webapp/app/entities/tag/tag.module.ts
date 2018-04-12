@@ -14,11 +14,12 @@ import {
     tagRoute,
     TagService,
 } from './';
+import {ImageUploadModule} from 'angular2-image-upload';
 
 const ENTITY_STATES = [...tagRoute, ...tagPopupRoute,];
 
 @NgModule( {
-               imports: [KransenzoSharedModule, RouterModule.forRoot( ENTITY_STATES, {useHash: true} )],
+               imports: [KransenzoSharedModule, RouterModule.forChild( ENTITY_STATES ), ImageUploadModule.forRoot(),],
                declarations: [TagComponent, TagDetailComponent, TagDialogComponent, TagDeleteDialogComponent, TagPopupComponent, TagDeletePopupComponent,],
                entryComponents: [TagComponent, TagDialogComponent, TagPopupComponent, TagDeleteDialogComponent, TagDeletePopupComponent,],
                providers: [TagService, TagPopupService,],

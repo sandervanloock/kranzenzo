@@ -28,4 +28,12 @@
 		</createTable>
 
 	</changeSet>
+    
+    <changeSet id="201804120945" author="svl">
+        <addColumn tableName="tag">
+            <column name="image_id" type="bigint">
+                <constraints unique="true" nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

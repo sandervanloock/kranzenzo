@@ -2,7 +2,12 @@
     <div class="col-xl-6" *ngFor="let tag of tags" style="margin-top:20px;">
         <a routerLink="/shop" routerLinkActive="active" [queryParams]="{tag: tag.name}" class="card-image-link">
             <div class="m-block__image">
-                <picture>
+                <picture *ngIf="tag.image">
+                    <source media="(min-width: 1200px)" class="card-img-top" [srcset]="tag.image.endpoint | s3ImageResize: '400x200'">
+                    <source media="(min-width: 992px)" class="card-img-top" [srcset]="tag.image.endpoint | s3ImageResize: '800x400'">
+                    <img [src]="tag.image.endpoint | s3ImageResize: '400x200'" class="card-img-top" [alt]="tag.name">
+                </picture>
+                <picture *ngIf="!tag.image">
                     <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text= '">
                     <source media="(max-width: 992px)" [srcset]="'https://via.placeholder.com/800x400?text= '">
                     <img [src]="'https://via.placeholder.com/400x200?text= '" class="img-fluid img-thumbnail" [alt]="tag.name">

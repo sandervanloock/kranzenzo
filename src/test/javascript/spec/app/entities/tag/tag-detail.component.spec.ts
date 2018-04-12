@@ -1,6 +1,5 @@
 /* tslint:disable max-line-length */
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {OnInit} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {Observable} from 'rxjs/Rx';

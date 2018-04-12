@@ -9,13 +9,13 @@ import java.util.List;
  * @param <E> - Entity type parameter.
  */
 
-public interface EntityMapper <D, E>{
+public interface EntityMapper <D, E> {
 
     public E toEntity(D dto);
 
     public D toDto(E entity);
 
-    public List<E> toEntity(List<D> dtoList);
+    public List <E> toEntity( List <D> dtoList );
 
-    public List<D> toDto(List<E> entityList);
+    public List <D> toDto( List <E> entityList );
 }
