@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {Observable} from 'rxjs/Rx';
+import {SERVER_API_URL} from '../../app.constants';
 
 import {Tag} from './tag.model';
 import {createRequestOption, ResponseWrapper} from '../../shared';
@@ -8,8 +9,8 @@ import {createRequestOption, ResponseWrapper} from '../../shared';
 @Injectable()
 export class TagService {
 
-    private resourceUrl = 'api/tags';
-    private resourceSearchUrl = 'api/_search/tags';
+    private resourceUrl = SERVER_API_URL + 'api/tags';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/tags';
 
     constructor( private http: Http ) {
     }
@@ -17,20 +18,23 @@ export class TagService {
     create( tag: Tag ): Observable<Tag> {
         const copy = this.convert( tag );
         return this.http.post( this.resourceUrl, copy ).map( ( res: Response ) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer( jsonResponse );
         } );
     }
 
     update( tag: Tag ): Observable<Tag> {
         const copy = this.convert( tag );
         return this.http.put( this.resourceUrl, copy ).map( ( res: Response ) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer( jsonResponse );
         } );
     }
 
     find( id: number ): Observable<Tag> {
         return this.http.get( `${this.resourceUrl}/${id}` ).map( ( res: Response ) => {
-            return res.json();
+            const jsonResponse = res.json();
+            return this.convertItemFromServer( jsonResponse );
         } );
     }
 
@@ -52,9 +56,24 @@ export class TagService {
 
     private convertResponse( res: Response ): ResponseWrapper {
         const jsonResponse = res.json();
-        return new ResponseWrapper( res.headers, jsonResponse, res.status );
+        const result = [];
+        for ( let i = 0; i < jsonResponse.length; i++ ) {
+            result.push( this.convertItemFromServer( jsonResponse[i] ) );
+        }
+        return new ResponseWrapper( res.headers, result, res.status );
     }
 
+    /**
+     * Convert a returned JSON object to Tag.
+     */
+    private convertItemFromServer( json: any ): Tag {
+        const entity: Tag = Object.assign( new Tag(), json );
+        return entity;
+    }
+
+    /**
+     * Convert a Tag to a JSON which can be sent to the server.
+     */
     private convert( tag: Tag ): Tag {
         const copy: Tag = Object.assign( {}, tag );
         return copy;

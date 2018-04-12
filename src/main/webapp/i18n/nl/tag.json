@@ -10,7 +10,7 @@
         "created": "Een nieuwe groep is aangemaakt met id {{ param }}",
         "updated": "Een groep met id {{ param }} is gewijzigd",
         "deleted": "Een groep met id {{ param }} is verwijderd",
-      "delete": {
+        "delete": {
           "question": "Bent u zeker dat u groep {{ id }} wilt verwijderen?"
       },
       "detail": {

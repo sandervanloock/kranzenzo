@@ -7,56 +7,65 @@ import java.util.Objects;
 /**
  * A DTO for the Tag entity.
  */
-public class TagDTO implements Serializable
-{
+public class TagDTO implements Serializable {
 
-	private Long id;
+    private Long id;
 
-	@NotNull
-	private String name;
+    @NotNull
+    private String name;
 
-	public Long getId() {
-		return id;
-	}
+    private ImageDTO image;
 
-	public void setId( Long id ) {
-		this.id = id;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setId( Long id ) {
+        this.id = id;
+    }
 
-	public void setName( String name ) {
-		this.name = name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public boolean equals( Object o ) {
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
+    public void setName( String name ) {
+        this.name = name;
+    }
 
-		TagDTO tagDTO = (TagDTO) o;
-		if ( tagDTO.getId() == null || getId() == null ) {
-			return false;
-		}
-		return Objects.equals( getId(), tagDTO.getId() );
-	}
+    public ImageDTO getImage() {
+        return image;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hashCode( getId() );
-	}
+    public void setImage( ImageDTO image ) {
+        this.image = image;
+    }
 
-	@Override
-	public String toString() {
-		return "TagDTO{" +
-				"id=" + getId() +
-				", name='" + getName() + "'" +
-				"}";
-	}
+    @Override
+    public boolean equals( Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( o == null || getClass() != o.getClass() ) {
+            return false;
+        }
+
+        TagDTO tagDTO = (TagDTO) o;
+        if ( tagDTO.getId() == null || getId() == null ) {
+            return false;
+        }
+        return Objects.equals( getId(), tagDTO.getId() );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode( getId() );
+    }
+
+    @Override
+    public String toString() {
+        return "TagDTO{" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            "}";
+    }
 }
