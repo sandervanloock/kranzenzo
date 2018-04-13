@@ -13,4 +13,4 @@ export const SERVER_API_URL = _SERVER_API_URL;
 export const PRICE_BATTERIES_INCLUDED = 0.5;
 export const PRICE_PER_KILOMETER_PER_KM = 0.5;
 export const ORDER_DELIVERY_ORIGIN = {lat: 51.055410, lng: 4.490185};
-export const VAT_NUMBER = 'BE 71 7332 4014 6811 4';
+export const VAT_NUMBER = 'BE71 7332 4014 6869';
