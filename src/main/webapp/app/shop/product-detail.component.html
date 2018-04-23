@@ -8,6 +8,13 @@
             </ngb-alert>
         </div>
 
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="">{{product.name}}</a></li>
+            </ol>
+        </nav>
+
         <ngb-carousel *ngIf="product.images.length">
             <ng-template ngbSlide *ngFor="let image of product.images">
                 <img [src]="image.endpoint | s3ImageResize: '800x400'" width="100%">
@@ -22,15 +29,18 @@
 
         <div class="jumbotron">
             <div class="row">
-                <h1 class="display-3 col-md-8">{{product.name}}</h1>
-                <div class="display-4 col-md-4">€ {{product.price}}</div>
-                <button shareButton="facebook">Share</button>
-                <button shareButton="twitter">Tweet</button>
-                <button shareButton="pinterest">Pin</button>
+                <h1 class="display-3">
+                    {{product.name}}
+                    <span class="badge badge-secondary">{{product.price | currency:'EUR':'symbol'}}</span>
+                </h1>
             </div>
+            <button shareButton="facebook">Share</button>
+            <button shareButton="twitter">Tweet</button>
+            <button shareButton="pinterest">Pin</button>
             <p class="lead">{{product.description}}</p>
             <hr class="my-4">
             <p>
+
             </p>
             <p class="lead">
                 <a class="btn btn-primary btn-lg"
