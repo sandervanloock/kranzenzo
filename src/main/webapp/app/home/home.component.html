@@ -4,10 +4,10 @@
         <ngb-carousel *ngIf="homepageImages">
             <ng-template ngbSlide *ngFor="let image of homepageImages">
                 <img [src]="image.url" class="homepage-image" [alt]="image.caption">
-                <div class="carousel-caption">
-                    <h3>{{image.caption}}</h3>
-                    <p>{{image.subcaption}}</p>
-                </div>
+                <!--<div class="carousel-caption">-->
+                <!--<h3>{{image.caption}}</h3>-->
+                <!--<p>{{image.subcaption}}</p>-->
+                <!--</div>-->
             </ng-template>
         </ngb-carousel>
     </div>
