@@ -40,18 +40,20 @@
     </tr>
     </tbody>
 </table>
-<p th:inline="text">Gelieve € [[${order.totalPrice}]] over te schrijven op <b>[[${T(be.sandervl.kransenzo.config.Constants).VAT_NUMBER}]]</b>
-</p>
-<p th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).DELIVERED)}"
-   th:inline="text">
-    Zodra het geld is overgemaakt zal het stuk worden geleverd in [[${order.customer.street}]] te
-    [[${order.customer.city}]].
-</p>
+<th:block th:if="${order.paymentType.equals(T(be.sandervl.kransenzo.domain.enumeration.PaymentType).TRANSFER)}">
+    <p th:inline="text">Gelieve € [[${order.totalPrice}]] over te schrijven op <b>[[${T(be.sandervl.kransenzo.config.Constants).VAT_NUMBER}]]</b>
+    </p>
+    <p th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).DELIVERED)}"
+       th:inline="text">
+        Zodra het geld is overgemaakt zal het stuk worden geleverd in [[${order.customer.street}]] te
+        [[${order.customer.city}]].
+    </p>
+    <p th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).PICKUP)}">
+        Zodra het geld is overgemaakt zal je melding krijgen van Kranzenzo voor een afspraak te maken om het
+        stuk te kunnen ophalen.
+    </p>
+</th:block>
 
-<p th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).PICKUP)}">
-    Zodra het geld is overgemaakt zal je melding krijgen van Kranzenzo voor een afspraak te maken om het
-    stuk te kunnen ophalen.
-</p>
 <p>
     <span th:text="#{email.order.confirmation.text2}">Regards, </span>
     <br/>
