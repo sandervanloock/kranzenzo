@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -104,17 +105,23 @@ public class CustomerResource
 
     private void setUserLoginAndPassword( Customer customer ) {
         User user = customer.getUser();
+        Optional.ofNullable( userRepository.findOne( user.getId() ) )
+                .ifPresent( keepOriginalLoginAndPassword( user ) );
         userRepository.findOneByEmailIgnoreCase( user.getEmail() )
-                      .ifPresent( existing -> {
-                          user.setId( existing.getId() );
-                          user.setLogin( existing.getLogin() );
-                          user.setPassword( existing.getPassword() );
-                      } );
+                      .ifPresent( keepOriginalLoginAndPassword( user ) );
         if ( StringUtils.isAnyBlank( user.getLogin(), user.getPassword() ) ) {
             user.setLogin( UUID.randomUUID().toString() );
             user.setPassword( passwordEncoder.encode( "NO_PASS" ) );
             customer.setUser( userRepository.save( user ) );
         }
+    }
+
+    private Consumer <User> keepOriginalLoginAndPassword( User user ) {
+        return existing -> {
+            user.setId( existing.getId() );
+            user.setLogin( existing.getLogin() );
+            user.setPassword( existing.getPassword() );
+        };
     }
 
     /**
