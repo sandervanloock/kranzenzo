@@ -17,6 +17,9 @@
                 </div>
             </div>
         </div>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="this.productPopupService.close()">
+            &times;
+        </button>
         <form name="editForm" novalidate role="form" #editForm="ngForm" (ngSubmit)="submitForm()">
             <div class="stepper-content" *ngIf="step===1">
                 <fieldset class="form-group">
@@ -52,6 +55,9 @@
                 </fieldset>
                 <small class="user-form-legend">* verplicht</small>
                 <div class="stepper-actions">
+                    <button type="button" class="btn btn-light" (click)="this.productPopupService.close()">
+                        Terug
+                    </button>
                     <button type="button" class="btn btn-primary" (click)="gotoStepTwo()"
                             [disabled]="!(firstName.valid && lastName.valid && email.valid)">
                         Verder
