@@ -16,3 +16,7 @@ only screen and (                min-resolution: 2dppx) {
     width: 1000px;
     height: 500px;
 }
+
+.m-home_text-block {
+    text-align: left;
+}

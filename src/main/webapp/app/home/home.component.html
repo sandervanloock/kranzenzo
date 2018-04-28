@@ -1,19 +1,54 @@
 <div class="container-fluid center-block col-lg-offset-2 col-lg-10" style="text-align:center;">
     <h1>Welkom bij Kranzenzo</h1>
-    <div>
+
+    <div class="row mt-5 m-home_first-block">
+        <div class="col-4 mt-1">
+            <img src="../../content/images/logov2.png" class="img-fluid"/>
+        </div>
+        <div class="col m-home_text-block">
+            <p>
+                Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke
+                materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en
+                creativiteit maak ik unieke, goedkope en duurzame stukken. </p>
+            <p>
+                Ik probeer de prijs zo laag mogelijk te houden omdat ik het vooral heel graag doe en er ook anderen blij
+                wil mee maken. </p>
+            <p>
+                Gratis levering binnen een straal van 10 km. </p>
+            <p>
+                Via mijn webwinkel kan je mijn producten bekijken en bestellen. Jullie zijn uiteraard steeds welkom bij
+                mij thuis na een telefoontje op het nummer 0477 45 75 20 of via mijn mailadres:
+                <a href="mailto:annemie.rousseau@telenet.be">annemie.rousseau@telenet.be</a>. </p>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-5 m-home_first-block">
+        <div class="col-4">
+            <img [src]="'https://via.placeholder.com/400x200?text=Gelegenheden'" alt="Gelegenheden">
+        </div>
+        <div class="col-4">
+            <img [src]="'https://via.placeholder.com/400x200?text=Kransen'" alt="Kransen">
+        </div>
+        <div class="col-4">
+            <img [src]="'https://via.placeholder.com/400x200?text=Decoratie'" alt="Decoratie">
+        </div>
+    </div>
+
+    <!--<div>
         <ngb-carousel *ngIf="homepageImages">
             <ng-template ngbSlide *ngFor="let image of homepageImages">
                 <img [src]="image.url" class="homepage-image" [alt]="image.caption">
-                <!--<div class="carousel-caption">-->
-                <!--<h3>{{image.caption}}</h3>-->
-                <!--<p>{{image.subcaption}}</p>-->
-                <!--</div>-->
+                &lt;!&ndash;<div class="carousel-caption">&ndash;&gt;
+                &lt;!&ndash;<h3>{{image.caption}}</h3>&ndash;&gt;
+                &lt;!&ndash;<p>{{image.subcaption}}</p>&ndash;&gt;
+                &lt;!&ndash;</div>&ndash;&gt;
             </ng-template>
         </ngb-carousel>
-    </div>
-    <div class="row mt-5">
+    </div>-->
+
+    <!--<div class="row mt-5">
         <button type="button" class="btn btn-secondary btn-lg btn-block" routerLink="shop/tags">
             Ga naar mijn webshop
         </button>
-    </div>
+    </div>-->
 </div>
