@@ -2,8 +2,10 @@ package be.sandervl.kransenzo.service.dto;
 
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
+import be.sandervl.kransenzo.domain.enumeration.PaymentType;
 
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -32,6 +34,9 @@ public class OrderDTO implements Serializable
 
     @DecimalMin(value = "0")
     private Float deliveryPrice;
+
+    @NotNull
+    private PaymentType paymentType;
 
     private Long customerId;
 
@@ -107,6 +112,14 @@ public class OrderDTO implements Serializable
         this.deliveryPrice = deliveryPrice;
     }
 
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType( PaymentType paymentType ) {
+        this.paymentType = paymentType;
+    }
+
     public Long getCustomerId() {
         return customerId;
     }
@@ -171,14 +184,15 @@ public class OrderDTO implements Serializable
     @Override
     public String toString() {
         return "OrderDTO{" +
-                "id=" + getId() +
-                ", created='" + getCreated() + "'" +
-                ", updated='" + getUpdated() + "'" +
-                ", state='" + getState() + "'" +
-                ", deliveryType='" + getDeliveryType() + "'" +
-                ", includeBatteries='" + isIncludeBatteries() + "'" +
-                ", description='" + getDescription() + "'" +
-                ", deliveryPrice='" + getDeliveryPrice() + "'" +
-                "}";
+            "id=" + getId() +
+            ", created='" + getCreated() + "'" +
+            ", updated='" + getUpdated() + "'" +
+            ", state='" + getState() + "'" +
+            ", deliveryType='" + getDeliveryType() + "'" +
+            ", includeBatteries='" + isIncludeBatteries() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", deliveryPrice=" + getDeliveryPrice() +
+            ", paymentType='" + getPaymentType() + "'" +
+            "}";
     }
 }

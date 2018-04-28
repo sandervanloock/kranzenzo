@@ -20,6 +20,7 @@
       "updated": "Aangepast op",
       "state": "Status",
       "deliveryType": "Aflever type",
+        "paymentType": "Betaalwijze",
       "includeBatteries": "Batterijen inbegrepen",
       "description": "Beschrijving",
       "deliveryPrice": "Prijs voor aflevering",

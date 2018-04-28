@@ -2,6 +2,7 @@ package be.sandervl.kransenzo.domain;
 
 import be.sandervl.kransenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kransenzo.domain.enumeration.OrderState;
+import be.sandervl.kransenzo.domain.enumeration.PaymentType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -22,8 +23,7 @@ import java.util.Objects;
 @Table(name = "jhi_order")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "order")
-public class Order implements Serializable
-{
+public class Order implements Serializable {
 
     public static final float PRICE_FOR_BATTERIES = 0.5f;
     private static final long serialVersionUID = 1L;
@@ -45,6 +45,11 @@ public class Order implements Serializable
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_type")
     private DeliveryType deliveryType = DeliveryType.PICKUP;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "payment_type", nullable = false)
+    private PaymentType paymentType = PaymentType.CASH;
 
     @Column(name = "include_batteries")
     private Boolean includeBatteries = false;
@@ -158,12 +163,25 @@ public class Order implements Serializable
         return deliveryPrice;
     }
 
+    public Order deliveryPrice( Float deliveryPrice ) {
+        this.deliveryPrice = deliveryPrice;
+        return this;
+    }
+
     public void setDeliveryPrice( Float deliveryPrice ) {
         this.deliveryPrice = deliveryPrice;
     }
 
-    public Order deliveryPrice( Float deliveryPrice ) {
-        this.deliveryPrice = deliveryPrice;
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType( PaymentType paymentType ) {
+        this.paymentType = paymentType;
+    }
+
+    public Order paymentType( PaymentType paymentType ) {
+        this.paymentType = paymentType;
         return this;
     }
 
@@ -242,14 +260,15 @@ public class Order implements Serializable
     @Override
     public String toString() {
         return "Order{" +
-                "id=" + getId() +
-                ", created='" + getCreated() + "'" +
-                ", updated='" + getUpdated() + "'" +
-                ", state='" + getState() + "'" +
-                ", deliveryType='" + getDeliveryType() + "'" +
-                ", includeBatteries='" + isIncludeBatteries() + "'" +
-                ", description='" + getDescription() + "'" +
-                ", deliveryPrice='" + getDeliveryPrice() + "'" +
-                "}";
+            "id=" + getId() +
+            ", created='" + getCreated() + "'" +
+            ", updated='" + getUpdated() + "'" +
+            ", state='" + getState() + "'" +
+            ", deliveryType='" + getDeliveryType() + "'" +
+            ", includeBatteries='" + isIncludeBatteries() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", deliveryPrice=" + getDeliveryPrice() +
+            ", paymentType='" + getPaymentType() + "'" +
+            "}";
     }
 }
