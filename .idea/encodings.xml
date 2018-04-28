@@ -3,5 +3,10 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources/i18n/messages_en.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../resto/web.resto.site.base/src/main/resources/application-dev.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../resto/web.resto.site.base/src/main/resources/application-production-be.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../resto/web.resto.site.base/src/main/resources/application-production-lu.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../resto/web.resto.site.base/src/main/resources/application.properties" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../resto/web.resto.webserviceapi.base/src/main/resources/application-production.properties" charset="UTF-8" />
   </component>
 </project>

@@ -74,7 +74,9 @@ export class CustomerAddressComponent implements OnInit {
                                  }, ( response, status ) => {
             if ( status === 'OK' ) {
                 if ( response.routes.length && response.routes[0].legs.length ) {
-                    const price = Math.round( ((response.routes[0].legs[0].distance.value / 1000) * PRICE_PER_KILOMETER_PER_KM) * 100 ) / 100;
+                    const distance = response.routes[0].legs[0].distance.value;
+                    const distanceWithDiscount = Math.max( 0, distance - 10000 );
+                    const price = Math.round( ((distanceWithDiscount / 1000) * PRICE_PER_KILOMETER_PER_KM) * 100 ) / 100;
                     this.updateDeliveryPrice.emit( price );
                 }
             } else {
