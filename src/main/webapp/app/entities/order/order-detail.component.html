@@ -32,6 +32,10 @@
         <dd>
             <span>{{order.deliveryPrice}}</span>
         </dd>
+        <dt><span jhiTranslate="kransenzoApp.order.paymentType">Payment Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'kransenzoApp.PaymentType.' + order.paymentType}}">{{order.paymentType}}</span>
+        </dd>
         <dt><span jhiTranslate="kransenzoApp.order.customer">Customer</span></dt>
         <dd>
             <div *ngIf="order.customerId">

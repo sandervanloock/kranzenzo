@@ -17,8 +17,7 @@ export class OrderComponent implements OnInit, OnDestroy {
     currentSearch: string;
 
     constructor(
-        private orderService: OrderService,
-        private alertService: JhiAlertService,
+        private orderService: OrderService, private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
         private principal: Principal ) {
@@ -70,6 +69,6 @@ export class OrderComponent implements OnInit, OnDestroy {
     }
 
     private onError( error ) {
-        this.alertService.error( error.message, null, null );
+        this.jhiAlertService.error( error.message, null, null );
     }
 }

@@ -150,6 +150,9 @@
       <option name="FINALLY_ON_NEW_LINE" value="true" />
       <option name="ALIGN_MULTILINE_CHAINED_METHODS" value="true" />
       <option name="ALIGN_MULTILINE_ARRAY_INITIALIZER_EXPRESSION" value="true" />
+      <option name="SPACE_WITHIN_METHOD_CALL_PARENTHESES" value="true" />
+      <option name="SPACE_WITHIN_METHOD_PARENTHESES" value="true" />
+      <option name="SPACE_WITHIN_IF_PARENTHESES" value="true" />
       <option name="SPACE_BEFORE_ELSE_LBRACE" value="false" />
       <option name="SPACE_BEFORE_WHILE_LBRACE" value="false" />
       <option name="SPACE_BEFORE_FOR_LBRACE" value="false" />
@@ -174,6 +177,9 @@
     <codeStyleSettings language="JSON">
       <option name="KEEP_LINE_BREAKS" value="false" />
       <option name="KEEP_BLANK_LINES_IN_CODE" value="1" />
+      <indentOptions>
+        <option name="TAB_SIZE" value="2" />
+      </indentOptions>
     </codeStyleSettings>
     <codeStyleSettings language="JSP">
       <indentOptions>
