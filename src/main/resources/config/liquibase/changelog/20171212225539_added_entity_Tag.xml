@@ -36,4 +36,16 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="201804281825" author="svl">
+        <addColumn tableName="tag">
+            <column name="homepage" type="bit">
+                <constraints nullable="true"/>
+            </column>
+            <column name="parent_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

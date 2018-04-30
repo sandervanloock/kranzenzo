@@ -17,7 +17,9 @@
           "title": "Groep"
       },
         "name": "Naam",
-        "tags": "Groepen"
+        "tags": "Groepen",
+        "homepage": "Toon op homepagina",
+        "parent": "Hoofdgroep"
     }
   }
 }

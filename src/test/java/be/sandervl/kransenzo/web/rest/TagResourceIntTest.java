@@ -42,6 +42,9 @@ public class TagResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_HOMEPAGE = false;
+    private static final Boolean UPDATED_HOMEPAGE = true;
+
     @Autowired
     private TagRepository tagRepository;
 
@@ -67,18 +70,6 @@ public class TagResourceIntTest {
 
     private Tag tag;
 
-    /**
-     * Create an entity for this test.
-     * <p>
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static Tag createEntity( EntityManager em ) {
-        Tag tag = new Tag()
-            .name( DEFAULT_NAME );
-        return tag;
-    }
-
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
@@ -88,6 +79,19 @@ public class TagResourceIntTest {
                                              .setControllerAdvice( exceptionTranslator )
                                              .setConversionService( createFormattingConversionService() )
                                              .setMessageConverters( jacksonMessageConverter ).build();
+    }
+
+    /**
+     * Create an entity for this test.
+     * <p>
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static Tag createEntity( EntityManager em ) {
+        Tag tag = new Tag()
+            .name( DEFAULT_NAME )
+            .homepage( DEFAULT_HOMEPAGE );
+        return tag;
     }
 
     @Before
@@ -113,6 +117,7 @@ public class TagResourceIntTest {
         assertThat( tagList ).hasSize( databaseSizeBeforeCreate + 1 );
         Tag testTag = tagList.get( tagList.size() - 1 );
         assertThat( testTag.getName() ).isEqualTo( DEFAULT_NAME );
+        assertThat( testTag.isHomepage() ).isEqualTo( DEFAULT_HOMEPAGE );
 
         // Validate the Tag in Elasticsearch
         // Tag tagEs = tagSearchRepository.findOne( testTag.getId() );
@@ -169,7 +174,8 @@ public class TagResourceIntTest {
                       .andExpect( status().isOk() )
                       .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
                       .andExpect( jsonPath( "$.[*].id" ).value( hasItem( tag.getId().intValue() ) ) )
-                      .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) );
+                      .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) )
+                      .andExpect( jsonPath( "$.[*].homepage" ).value( hasItem( DEFAULT_HOMEPAGE.booleanValue() ) ) );
     }
 
     @Test
@@ -183,7 +189,8 @@ public class TagResourceIntTest {
                       .andExpect( status().isOk() )
                       .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
                       .andExpect( jsonPath( "$.id" ).value( tag.getId().intValue() ) )
-                      .andExpect( jsonPath( "$.name" ).value( DEFAULT_NAME.toString() ) );
+                      .andExpect( jsonPath( "$.name" ).value( DEFAULT_NAME.toString() ) )
+                      .andExpect( jsonPath( "$.homepage" ).value( DEFAULT_HOMEPAGE.booleanValue() ) );
     }
 
     @Test
@@ -207,7 +214,8 @@ public class TagResourceIntTest {
         // Disconnect from session so that the updates on updatedTag are not directly saved in db
         em.detach( updatedTag );
         updatedTag
-            .name( UPDATED_NAME );
+            .name( UPDATED_NAME )
+            .homepage( UPDATED_HOMEPAGE );
         TagDTO tagDTO = tagMapper.toDto( updatedTag );
 
         restTagMockMvc.perform( put( "/api/tags" )
@@ -220,6 +228,7 @@ public class TagResourceIntTest {
         assertThat( tagList ).hasSize( databaseSizeBeforeUpdate );
         Tag testTag = tagList.get( tagList.size() - 1 );
         assertThat( testTag.getName() ).isEqualTo( UPDATED_NAME );
+        assertThat( testTag.isHomepage() ).isEqualTo( UPDATED_HOMEPAGE );
 
         // Validate the Tag in Elasticsearch
         // Tag tagEs = tagSearchRepository.findOne( testTag.getId() );
@@ -279,7 +288,8 @@ public class TagResourceIntTest {
                       .andExpect( status().isOk() )
                       .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
                       .andExpect( jsonPath( "$.[*].id" ).value( hasItem( tag.getId().intValue() ) ) )
-                      .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) );
+                      .andExpect( jsonPath( "$.[*].name" ).value( hasItem( DEFAULT_NAME.toString() ) ) )
+                      .andExpect( jsonPath( "$.[*].homepage" ).value( hasItem( DEFAULT_HOMEPAGE.booleanValue() ) ) );
     }
 
     @Test

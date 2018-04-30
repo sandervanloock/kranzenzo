@@ -31,6 +31,7 @@
             <tr>
                 <th><span jhiTranslate="global.field.id">ID</span></th>
                 <th><span jhiTranslate="kransenzoApp.tag.name">Name</span></th>
+                <th><span jhiTranslate="kransenzoApp.tag.homepage">Homepage</span></th>
                 <th></th>
             </tr>
             </thead>
@@ -38,6 +39,7 @@
             <tr *ngFor="let tag of tags ;trackBy: trackId">
                 <td><a [routerLink]="['../tag', tag.id ]">{{tag.id}}</a></td>
                 <td>{{tag.name}}</td>
+                <td><input type="checkbox" readonly disabled [checked]="tag.homepage"/></td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

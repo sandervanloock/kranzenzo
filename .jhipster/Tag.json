@@ -15,6 +15,12 @@
             "otherEntityField": "id",
             "ownerSide": true,
             "otherEntityRelationshipName": "tag"
+        },
+        {
+            "relationshipName": "parent",
+            "otherEntityName": "tag",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
         }
     ],
     "fields": [
@@ -24,6 +30,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "homepage",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20171212225539",

@@ -26,6 +26,8 @@ export class TagDialogComponent implements OnInit {
 
     images: Image[];
 
+    tags: Tag[];
+
     constructor( public activeModal: NgbActiveModal,
                  private jhiAlertService: JhiAlertService,
                  private tagService: TagService,
@@ -53,6 +55,10 @@ export class TagDialogComponent implements OnInit {
                             this.images = [subRes].concat( res.json );
                         }, ( subRes: ResponseWrapper ) => this.onError( subRes.json ) );
                 }
+            }, ( res: ResponseWrapper ) => this.onError( res.json ) );
+        this.tagService.query()
+            .subscribe( ( res: ResponseWrapper ) => {
+                this.tags = res.json;
             }, ( res: ResponseWrapper ) => this.onError( res.json ) );
         if ( this.tag.image ) {
             this.imageEndpoint = [this.s3ImageResizePipe.transform( this.tag.image.endpoint, '50x50' )];
