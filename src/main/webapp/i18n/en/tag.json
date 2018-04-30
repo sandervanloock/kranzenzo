@@ -17,8 +17,10 @@
                 "title": "Tag"
             },
             "name": "Name",
+            "homepage": "Homepage",
             "tags": "Tags",
-            "image": "Image"
+            "image": "Image",
+            "parent": "Parent"
         }
     }
 }

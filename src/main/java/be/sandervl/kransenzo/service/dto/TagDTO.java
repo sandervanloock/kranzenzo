@@ -14,7 +14,13 @@ public class TagDTO implements Serializable {
     @NotNull
     private String name;
 
+    private Boolean homepage;
+
     private ImageDTO image;
+
+    private Long parentId;
+
+    private String parentName;
 
     public Long getId() {
         return id;
@@ -32,12 +38,36 @@ public class TagDTO implements Serializable {
         this.name = name;
     }
 
+    public Boolean isHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage( Boolean homepage ) {
+        this.homepage = homepage;
+    }
+
     public ImageDTO getImage() {
         return image;
     }
 
     public void setImage( ImageDTO image ) {
         this.image = image;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId( Long tagId ) {
+        this.parentId = tagId;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName( String tagName ) {
+        this.parentName = tagName;
     }
 
     @Override
@@ -66,6 +96,7 @@ public class TagDTO implements Serializable {
         return "TagDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", homepage='" + isHomepage() + "'" +
             "}";
     }
 }

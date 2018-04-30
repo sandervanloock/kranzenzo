@@ -2,6 +2,7 @@ import {BaseEntity} from './../../shared';
 import {Image} from '../image';
 
 export class Tag implements BaseEntity {
-    constructor( public id?: number, public name?: string, public tags?: BaseEntity[], public image?: Image, ) {
+    constructor( public id?: number, public name?: string, public homepage?: boolean, public tags?: BaseEntity[], public image?: Image, public parentId?: number, ) {
+        this.homepage = false;
     }
 }
