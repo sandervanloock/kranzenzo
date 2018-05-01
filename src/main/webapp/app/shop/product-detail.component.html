@@ -34,9 +34,9 @@
                     <span class="badge badge-secondary">{{product.price | currency:'EUR':'symbol'}}</span>
                 </h1>
             </div>
-            <button shareButton="facebook">Share</button>
-            <button shareButton="twitter">Tweet</button>
-            <button shareButton="pinterest">Pin</button>
+            <div class="m-product__social-share">
+                <button shareButton="twitter" [style.backgroundColor]="share.prop.twitter.color"></button>
+            </div>
             <p class="lead">{{product.description}}</p>
             <hr class="my-4">
             <p>

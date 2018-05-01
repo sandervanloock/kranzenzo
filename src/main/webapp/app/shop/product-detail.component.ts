@@ -3,7 +3,7 @@ import {Product, ProductService} from '../entities/product';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Rx';
-
+import {ShareButtons} from '@ngx-share/core';
 
 @Component( {
                 selector: 'jhi-product-detail', templateUrl: './product-detail.component.html', styleUrls: ['product-detail.css']
@@ -15,7 +15,12 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
     submittedAlert: any;
 
-    constructor( private eventManager: JhiEventManager, private alertService: JhiAlertService, private productService: ProductService, private route: ActivatedRoute ) {
+    constructor(
+        private eventManager: JhiEventManager,
+        private alertService: JhiAlertService,
+        private productService: ProductService,
+        private route: ActivatedRoute,
+        public share: ShareButtons ) {
     }
 
     ngOnInit() {
