@@ -25,16 +25,24 @@
     <div class="row mt-5 mb-5 m-home_first-block">
         <div class="col-lg-4 col-sm-6 col-xs-12" *ngFor="let tag of homepageTags">
             <a routerLink="/shop/tags" routerLinkActive="active" [queryParams]="{parentId: tag.id}" class="card-image-link">
-                <picture *ngIf="tag.image">
-                    <source media="(min-width: 1200px)" class="card-img-top" [srcset]="tag.image.endpoint | s3ImageResize: '400x200'">
-                    <source media="(min-width: 992px)" class="card-img-top" [srcset]="tag.image.endpoint | s3ImageResize: '800x400'">
-                    <img [src]="tag.image.endpoint | s3ImageResize: '400x200'" class="card-img-top" [alt]="tag.name">
-                </picture>
-                <picture *ngIf="!tag.image">
-                    <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text= '">
-                    <source media="(max-width: 992px)" [srcset]="'https://via.placeholder.com/800x400?text= '">
-                    <img [src]="'https://via.placeholder.com/400x200?text= '" class="img-fluid img-thumbnail" [alt]="tag.name">
-                </picture>
+                <div class="m-block__image">
+                    <picture *ngIf="tag.image">
+                        <source media="(min-width: 1200px)" class="card-img-top" [srcset]="tag.image.endpoint | s3ImageResize: '400x200'">
+                        <source media="(min-width: 992px)" class="card-img-top" [srcset]="tag.image.endpoint | s3ImageResize: '800x400'">
+                        <img [src]="tag.image.endpoint | s3ImageResize: '400x200'" class="card-img-top" [alt]="tag.name">
+                    </picture>
+                    <picture *ngIf="!tag.image">
+                        <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text= '">
+                        <source media="(max-width: 992px)" [srcset]="'https://via.placeholder.com/800x400?text= '">
+                        <img [src]="'https://via.placeholder.com/400x200?text= '" class="img-fluid img-thumbnail" [alt]="tag.name">
+                    </picture>
+                </div>
+                <div class="m-block__content">
+                    <div class="m-block__title">
+                        {{tag.name}}
+                    </div>
+                    <div class="m-block__subtitle"></div>
+                </div>
             </a>
         </div>
     </div>

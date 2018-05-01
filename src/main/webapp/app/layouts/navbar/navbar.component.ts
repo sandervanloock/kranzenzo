@@ -52,9 +52,9 @@ export class NavbarComponent implements OnInit {
         });
         this.tagService.query().subscribe( ( res: ResponseWrapper ) => {
             this.tags = res.json;
-            this.tags.filter( tag => tag.parentId != null )
-                .forEach( child => {
-                    const parent = this.tags.find( p => p.id === child.parentId );
+            this.tags.filter( ( tag ) => tag.parentId != null )
+                .forEach( ( child ) => {
+                    const parent = this.tags.find( ( p ) => p.id === child.parentId );
                     if ( !parent.children ) {
                         parent.children = [];
                     }

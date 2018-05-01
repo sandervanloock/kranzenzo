@@ -20,3 +20,43 @@ only screen and (                min-resolution: 2dppx) {
 .m-home_text-block {
     text-align: left;
 }
+
+.m-block__content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-shadow: 2px 2px #4a3948;
+    text-align: center;
+    z-index: 21;
+    color: white;
+    width: 300px;
+}
+
+.m-block__title {
+    font-size: 2.1875rem;
+    line-height: 1.8125rem;
+}
+
+.m-block__image {
+    height: 220px;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    display: block;
+}
+
+.m-block__image img {
+    min-height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
+.m-block__image img:hover {
+    opacity: .8;
+}
