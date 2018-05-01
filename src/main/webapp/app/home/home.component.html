@@ -2,7 +2,7 @@
     <h1>Welkom bij Kranzenzo</h1>
 
     <div class="row mt-5 m-home_first-block">
-        <div class="col-4 mt-1">
+        <div class="col-md-4 visible-md">
             <img src="../../content/images/logov2.png" class="img-fluid"/>
         </div>
         <div class="col m-home_text-block">
@@ -23,7 +23,7 @@
     </div>
 
     <div class="row mt-5 mb-5 m-home_first-block">
-        <div class="col-4" *ngFor="let tag of homepageTags">
+        <div class="col-lg-4 col-sm-6 col-xs-12" *ngFor="let tag of homepageTags">
             <a routerLink="/shop/tags" routerLinkActive="active" [queryParams]="{parentId: tag.id}" class="card-image-link">
                 <picture *ngIf="tag.image">
                     <source media="(min-width: 1200px)" class="card-img-top" [srcset]="tag.image.endpoint | s3ImageResize: '400x200'">

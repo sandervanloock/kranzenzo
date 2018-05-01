@@ -18,6 +18,7 @@
       },
         "name": "Naam",
         "tags": "Groepen",
+        "image": "Afbeelding",
         "homepage": "Toon op homepagina",
         "parent": "Hoofdgroep"
     }
