@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+
 /**
  * A Tag.
  */
@@ -31,6 +32,9 @@ public class Tag implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "homepage")
+    private Boolean homepage;
+
     @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -39,6 +43,9 @@ public class Tag implements Serializable {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Image image;
+
+    @ManyToOne
+    private Tag parent;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -53,21 +60,30 @@ public class Tag implements Serializable {
         return name;
     }
 
-    public void setName( String name ) {
-        this.name = name;
-    }
-
     public Tag name( String name ) {
         this.name = name;
         return this;
     }
 
-    public Set <Product> getTags() {
-        return tags;
+    public void setName( String name ) {
+        this.name = name;
     }
 
-    public void setTags( Set <Product> products ) {
-        this.tags = products;
+    public Boolean isHomepage() {
+        return homepage;
+    }
+
+    public Tag homepage( Boolean homepage ) {
+        this.homepage = homepage;
+        return this;
+    }
+
+    public void setHomepage( Boolean homepage ) {
+        this.homepage = homepage;
+    }
+
+    public Set <Product> getTags() {
+        return tags;
     }
 
     public Tag tags( Set <Product> products ) {
@@ -87,16 +103,33 @@ public class Tag implements Serializable {
         return this;
     }
 
+    public void setTags( Set <Product> products ) {
+        this.tags = products;
+    }
+
     public Image getImage() {
         return image;
+    }
+
+    public Tag image( Image image ) {
+        this.image = image;
+        return this;
     }
 
     public void setImage( Image image ) {
         this.image = image;
     }
 
-    public Tag image( Image image ) {
-        this.image = image;
+    public Tag getParent() {
+        return parent;
+    }
+
+    public void setParent( Tag tag ) {
+        this.parent = tag;
+    }
+
+    public Tag parent( Tag tag ) {
+        this.parent = tag;
         return this;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
@@ -126,6 +159,7 @@ public class Tag implements Serializable {
         return "Tag{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", homepage='" + isHomepage() + "'" +
             "}";
     }
 }

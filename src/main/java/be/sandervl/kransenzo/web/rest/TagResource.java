@@ -20,6 +20,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -31,8 +32,10 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 @RequestMapping("/api")
 public class TagResource {
 
-    private static final String ENTITY_NAME = "tag";
     private final Logger log = LoggerFactory.getLogger( TagResource.class );
+
+    private static final String ENTITY_NAME = "tag";
+
     private final TagRepository tagRepository;
 
     private final TagMapper tagMapper;
@@ -100,10 +103,21 @@ public class TagResource {
      */
     @GetMapping("/tags")
     @Timed
-    public List <TagDTO> getAllTags() {
+    public List <TagDTO> getAllTags(
+        @RequestParam(required = false, name = "homepage") Boolean homepage,
+        @RequestParam(required = false, name = "parentId") Long parentId
+    ) {
         log.debug( "REST request to get all Tags" );
         List <Tag> tags = tagRepository.findAll();
-        return tagMapper.toDto( tags );
+        Stream <Tag> tagStream = tags.stream();
+        if ( homepage != null ) {
+            tagStream = tagStream.filter( tag -> tag.isHomepage().equals( homepage ) );
+        }
+        if ( parentId != null ) {
+            tagStream = tagStream.filter( tag -> tag.getParent() != null && tag.getParent().getId()
+                                                                               .equals( parentId ) );
+        }
+        return tagMapper.toDto( tagStream.collect( Collectors.toList() ) );
     }
 
     /**

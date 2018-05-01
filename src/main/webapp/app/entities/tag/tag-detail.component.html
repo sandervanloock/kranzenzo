@@ -1,3 +1,4 @@
+
 <div *ngIf="tag">
     <h2><span jhiTranslate="kransenzoApp.tag.detail.title">Tag</span> {{tag.id}}</h2>
     <hr>
@@ -6,6 +7,17 @@
         <dt><span jhiTranslate="kransenzoApp.tag.name">Name</span></dt>
         <dd>
             <span>{{tag.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.tag.homepage">Homepage</span></dt>
+        <dd>
+            <span><input type="checkbox" readonly disabled [checked]="tag.homepage"/></span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.tag.image">Image</span></dt>
+        <dt><span jhiTranslate="kransenzoApp.tag.parent">Parent</span></dt>
+        <dd>
+            <div *ngIf="tag.parentId">
+                <a [routerLink]="['/tag', tag.parentId]">{{tag.parentName}}</a>
+            </div>
         </dd>
     </dl>
 

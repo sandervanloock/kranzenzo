@@ -19,9 +19,7 @@ export class TagComponent implements OnInit, OnDestroy {
     constructor(
         private tagService: TagService,
         private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal ) {
+        private eventManager: JhiEventManager, private activatedRoute: ActivatedRoute, private principal: Principal ) {
         this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
     }
 

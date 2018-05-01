@@ -12,10 +12,13 @@ import org.mapstruct.Mapping;
 public interface TagMapper extends EntityMapper <TagDTO, Tag> {
 
     @Mapping(source = "image", target = "image")
+    @Mapping(source = "parent.id", target = "parentId")
+    @Mapping(source = "parent.name", target = "parentName")
     TagDTO toDto( Tag tag );
 
     @Mapping(target = "tags", ignore = true)
     @Mapping(source = "image", target = "image")
+    @Mapping(source = "parentId", target = "parent")
     Tag toEntity( TagDTO tagDTO );
 
     default Tag fromId( Long id ) {

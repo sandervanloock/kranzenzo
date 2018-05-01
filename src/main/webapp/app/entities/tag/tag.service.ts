@@ -40,6 +40,12 @@ export class TagService {
 
     query( req?: any ): Observable<ResponseWrapper> {
         const options = createRequestOption( req );
+        if ( req && req.homepage ) {
+            options.params.set( 'homepage', req.homepage );
+        }
+        if ( req && req.parentId ) {
+            options.params.set( 'parentId', req.parentId );
+        }
         return this.http.get( this.resourceUrl, options )
             .map( ( res: Response ) => this.convertResponse( res ) );
     }
