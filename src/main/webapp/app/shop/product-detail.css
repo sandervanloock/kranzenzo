@@ -19,3 +19,9 @@
     font-size: 30px;
     vertical-align: middle;
 }
+
+.m-product__social-share {
+    position: absolute;
+    top: 50%;
+    left: 75%;
+}

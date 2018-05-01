@@ -23,6 +23,11 @@
                 </div>
             </ng-template>
         </ngb-carousel>
+        <div class="m-product__social-share">
+            <share-button button="facebook" text="Share"></share-button>
+            <share-button button="pinterest" text="Share"></share-button>
+            <share-button button="twitter" text="Share"></share-button>
+        </div>
 
         <img class="card-img-top" *ngIf="product.images.length==0"
              [src]="'https://via.placeholder.com/800x400?text='+product.name"/>
@@ -34,14 +39,9 @@
                     <span class="badge badge-secondary">{{product.price | currency:'EUR':'symbol'}}</span>
                 </h1>
             </div>
-            <div class="m-product__social-share">
-                <button shareButton="twitter" [style.backgroundColor]="share.prop.twitter.color"></button>
-            </div>
-            <p class="lead">{{product.description}}</p>
-            <hr class="my-4">
-            <p>
 
-            </p>
+            <hr class="my-4">
+            <p class="lead">{{product.description}}</p>
             <p class="lead">
                 <a class="btn btn-primary btn-lg"
                    [routerLink]="['/', { outlets: { popup: 'shop/product/'+ product.id + '/order'} }]"
