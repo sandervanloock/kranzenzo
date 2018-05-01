@@ -60,7 +60,7 @@ export class NavbarComponent implements OnInit {
                     }
                     parent.children.push( child )
                 } );
-            this.tags = this.tags.filter( tag => tag.homepage );
+            this.tags = this.tags.filter( ( tag ) => tag.homepage );
         } );
     }
 
