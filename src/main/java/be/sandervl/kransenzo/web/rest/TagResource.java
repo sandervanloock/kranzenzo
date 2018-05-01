@@ -111,7 +111,7 @@ public class TagResource {
         List <Tag> tags = tagRepository.findAll();
         Stream <Tag> tagStream = tags.stream();
         if ( homepage != null ) {
-            tagStream = tagStream.filter( tag -> tag.isHomepage().equals( homepage ) );
+            tagStream = tagStream.filter( tag -> tag.isHomepage() != null && tag.isHomepage().equals( homepage ) );
         }
         if ( parentId != null ) {
             tagStream = tagStream.filter( tag -> tag.getParent() != null && tag.getParent().getId()
