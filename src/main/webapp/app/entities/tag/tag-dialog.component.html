@@ -29,7 +29,7 @@
             <label class="form-control-label" jhiTranslate="kransenzoApp.tag.parent" for="field_parent">Parent</label>
             <select class="form-control" id="field_parent" name="parent" [(ngModel)]="tag.parentId">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="tagOption.id" *ngFor="let tagOption of tags; trackBy: trackTagById">
+                <option [ngValue]="tagOption.id" *ngFor="let tagOption of tags">
                     {{tagOption.name}}
                 </option>
             </select>
