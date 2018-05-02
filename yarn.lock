@@ -200,18 +200,6 @@
     magic-string "^0.22.3"
     source-map "^0.5.6"
 
-"@ngx-share/button@^5.3.1":
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/@ngx-share/button/-/button-5.3.1.tgz#a9296727d0fde0c1d67b4def34baeccee7917e73"
-  dependencies:
-    tslib "^1.7.1"
-
-"@ngx-share/core@^5.3.1":
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/@ngx-share/core/-/core-5.3.1.tgz#6b0a66c6149e7b69aebcee4db2c91b2aab5a2477"
-  dependencies:
-    tslib "^1.7.1"
-
 "@ngx-translate/core@7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@ngx-translate/core/-/core-7.0.0.tgz#5b6f63bd4042164d44cd85f68703af96e9392e7d"
@@ -5375,6 +5363,10 @@ ngx-cookie@1.0.0:
 ngx-infinite-scroll@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-0.5.1.tgz#dd9452c602ff7c3222f0ca168481aa14140286b7"
+
+ngx-sharebuttons@4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-sharebuttons/-/ngx-sharebuttons-4.0.1.tgz#919b38e5900f08137607d65880fd20e510721f1d"
 
 no-case@^2.2.0:
   version "2.3.2"

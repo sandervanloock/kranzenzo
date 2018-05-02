@@ -24,9 +24,7 @@
             </ng-template>
         </ngb-carousel>
         <div class="m-product__social-share">
-            <share-button button="facebook" text="Share"></share-button>
-            <share-button button="pinterest" text="Share"></share-button>
-            <share-button button="twitter" text="Share"></share-button>
+            <share-buttons [include]="['facebook','pinterest','email','print']" [theme]="'default'" [show]="5"></share-buttons>
         </div>
 
         <img class="card-img-top" *ngIf="product.images.length==0"
