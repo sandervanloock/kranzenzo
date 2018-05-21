@@ -105,14 +105,20 @@ public class CustomerResource
 
     private void setUserLoginAndPassword( Customer customer ) {
         User user = customer.getUser();
-        Optional.ofNullable( userRepository.findOne( user.getId() ) )
-                .ifPresent( keepOriginalLoginAndPassword( user ) );
-        userRepository.findOneByEmailIgnoreCase( user.getEmail() )
-                      .ifPresent( keepOriginalLoginAndPassword( user ) );
-        if ( StringUtils.isAnyBlank( user.getLogin(), user.getPassword() ) ) {
-            user.setLogin( UUID.randomUUID().toString() );
-            user.setPassword( passwordEncoder.encode( "NO_PASS" ) );
-            customer.setUser( userRepository.save( user ) );
+        if ( user != null ) {
+            if ( user.getId() != null ) {
+                Optional.ofNullable( userRepository.findOne( user.getId() ) )
+                        .ifPresent( keepOriginalLoginAndPassword( user ) );
+            }
+            if ( StringUtils.isNotBlank( user.getEmail() ) ) {
+                userRepository.findOneByEmailIgnoreCase( user.getEmail() )
+                              .ifPresent( keepOriginalLoginAndPassword( user ) );
+            }
+            if ( StringUtils.isAnyBlank( user.getLogin(), user.getPassword() ) ) {
+                user.setLogin( UUID.randomUUID().toString() );
+                user.setPassword( passwordEncoder.encode( "NO_PASS" ) );
+                customer.setUser( userRepository.save( user ) );
+            }
         }
     }
 
