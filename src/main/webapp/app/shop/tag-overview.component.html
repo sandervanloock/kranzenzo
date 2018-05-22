@@ -9,8 +9,8 @@
                 </picture>
                 <picture *ngIf="!tag.image">
                     <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text= '">
-                    <source media="(max-width: 992px)" [srcset]="'https://via.placeholder.com/800x400?text= '">
-                    <img [src]="'https://via.placeholder.com/400x200?text= '" class="img-fluid img-thumbnail" [alt]="tag.name">
+                    <source media="(max-width: 992px)" class="card-img-top" [srcset]="'https://via.placeholder.com/800x400?text= '">
+                    <img [src]="'https://via.placeholder.com/400x200?text= '" class="ard-img-top" [alt]="tag.name">
                 </picture>
             </div>
             <div class="m-block__content">

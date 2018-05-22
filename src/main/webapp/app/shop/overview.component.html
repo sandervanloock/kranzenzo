@@ -9,8 +9,8 @@
                 </picture>
                 <picture *ngIf="item.images.length==0">
                     <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text='+item.name">
-                    <source media="(max-width: 992px)" [srcset]="'https://via.placeholder.com/800x400?text='+item.name">
-                    <img [src]="'https://via.placeholder.com/400x200?text='+item.name" [alt]="item.name">
+                    <source media="(max-width: 992px)" class="card-img-top" [srcset]="'https://via.placeholder.com/800x400?text='+item.name">
+                    <img [src]="'https://via.placeholder.com/400x200?text='+item.name" class="card-img-top" [alt]="item.name">
                 </picture>
                 <div class="card-body">
                     <h4 class="card-title">{{item.name}}</h4>
