@@ -60,11 +60,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             test: /\.css$/,
             loaders: ['to-string-loader', 'css-loader'],
             exclude: /(vendor\.css|global\.css)/
-        }, {
-                test: /\.scss$/,
-                exclude: /node_modules/,
-                loaders: ['raw-loader', 'sass-loader']
-            },
+        },
         {
             test: /(vendor\.css|global\.css)/,
             loaders: ['style-loader', 'css-loader']

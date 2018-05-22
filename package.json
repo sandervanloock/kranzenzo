@@ -16,7 +16,6 @@
     "@angular/platform-browser": "4.3.2",
     "@angular/platform-browser-dynamic": "4.3.2",
     "@angular/router": "4.3.2",
-    "@fortawesome/angular-fontawesome": "^0.1.0-9",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.5",
     "angular2-image-upload": "^1.0.0-rc.0",
     "bootstrap": "4.0.0-beta.2",
