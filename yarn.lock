@@ -161,28 +161,6 @@
   version "0.1.0-9"
   resolved "https://registry.yarnpkg.com/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.1.0-9.tgz#fb57a37050234602a7244d9224f9f53225199d33"
 
-"@fortawesome/fontawesome-common-types@^0.2.0-6":
-  version "0.2.0-6"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.0-6.tgz#2e472bfbdfd05dcfe910e9f1649b2832eab6201e"
-
-"@fortawesome/fontawesome-svg-core@^1.2.0-11":
-  version "1.2.0-11"
-  resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.0-11.tgz#b8ee99b3a078f5253623a631a122ff60a6e5bb4c"
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.0-6"
-
-"@fortawesome/free-brands-svg-icons@^5.1.0-8":
-  version "5.1.0-8"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-brands-svg-icons/-/free-brands-svg-icons-5.1.0-8.tgz#44ed7a3b49d1708f42f74e9b053975894dfe2ae2"
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.0-6"
-
-"@fortawesome/free-solid-svg-icons@^5.1.0-8":
-  version "5.1.0-8"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.1.0-8.tgz#ea061224673b8bf225be4e4641d81cbb6fe098d0"
-  dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.0-6"
-
 "@ng-bootstrap/ng-bootstrap@1.0.0-beta.5":
   version "1.0.0-beta.5"
   resolved "https://registry.yarnpkg.com/@ng-bootstrap/ng-bootstrap/-/ng-bootstrap-1.0.0-beta.5.tgz#da2b9066b3701a284cac5a16168a77def947b4ab"
@@ -5363,10 +5341,6 @@ ngx-cookie@1.0.0:
 ngx-infinite-scroll@0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-0.5.1.tgz#dd9452c602ff7c3222f0ca168481aa14140286b7"
-
-ngx-sharebuttons@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/ngx-sharebuttons/-/ngx-sharebuttons-4.0.1.tgz#919b38e5900f08137607d65880fd20e510721f1d"
 
 no-case@^2.2.0:
   version "2.3.2"

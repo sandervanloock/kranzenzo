@@ -23,9 +23,6 @@
                 </div>
             </ng-template>
         </ngb-carousel>
-        <div class="m-product__social-share">
-            <share-buttons [include]="['facebook','pinterest','email','print']" [theme]="'default'" [show]="5"></share-buttons>
-        </div>
 
         <img class="card-img-top" *ngIf="product.images.length==0"
              [src]="'https://via.placeholder.com/800x400?text='+product.name"/>
