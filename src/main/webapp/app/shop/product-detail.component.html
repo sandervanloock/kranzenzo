@@ -34,11 +34,9 @@
                     <span class="badge badge-secondary">{{product.price | currency:'EUR':'symbol'}}</span>
                 </h1>
             </div>
-            <p class="lead">{{product.description}}</p>
-            <hr class="my-4">
-            <p>
 
-            </p>
+            <hr class="my-4">
+            <p class="lead">{{product.description}}</p>
             <p class="lead">
                 <a class="btn btn-primary btn-lg"
                    [routerLink]="['/', { outlets: { popup: 'shop/product/'+ product.id + '/order'} }]"

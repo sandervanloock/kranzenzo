@@ -9,7 +9,7 @@ import {CustomerAddressComponent} from './order/customer-address.component';
 import {TagOverviewComponent} from './tag-overview.component';
 
 @NgModule( {
-               imports: [KransenzoSharedModule, RouterModule.forChild( SHOP_ROUTE )],
+               imports: [KransenzoSharedModule, RouterModule.forChild( SHOP_ROUTE ),],
                declarations: [OverviewComponent, ProductDetailComponent, ProductOrderComponent, ProductOrderPopupComponent, CustomerAddressComponent, TagOverviewComponent],
                entryComponents: [ProductOrderComponent]
            } )

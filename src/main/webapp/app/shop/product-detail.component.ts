@@ -14,7 +14,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
     submittedAlert: any;
 
-    constructor( private eventManager: JhiEventManager, private alertService: JhiAlertService, private productService: ProductService, private route: ActivatedRoute ) {
+    constructor(
+        private eventManager: JhiEventManager,
+        private alertService: JhiAlertService,
+        private productService: ProductService, private route: ActivatedRoute ) {
     }
 
     ngOnInit() {
