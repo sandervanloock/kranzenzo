@@ -43,14 +43,16 @@
                         <input required type="email" class="form-control" id="email" name="email"
                                aria-describedby="email" placeholder="Emailadres"
                                [(ngModel)]="this.customer.user.email"
-                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual="emailConfirmation"
                                #email="ngModel">
                     </div>
                     <div class="form-group">
+                        <label for="email">Bevestig Emailadres*</label>
+                        <input required type="email" class="form-control" id="emailConfirmation" name="emailConfirmation" aria-describedby="emailConfirmation" placeholder="Bevestig Emailadres" [(ngModel)]="this.customer.user.confirmEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual="email" #emailConfirmation="ngModel">
+                    </div>
+                    <div class="form-group">
                         <label for="phoneNumber">Telefoonnummer</label>
-                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber"
-                               aria-describedby="phoneNumber" placeholder="Telefoonnummer"
-                               [(ngModel)]="this.customer.phoneNumber">
+                        <input type="tel" class="form-control" id="phoneNumber" name="phoneNumber" aria-describedby="phoneNumber" placeholder="Telefoonnummer" [(ngModel)]="this.customer.phoneNumber">
                     </div>
                 </fieldset>
                 <small class="user-form-legend">* verplicht</small>
@@ -58,8 +60,7 @@
                     <button type="button" class="btn btn-light" (click)="this.productPopupService.close()">
                         Terug
                     </button>
-                    <button type="button" class="btn btn-primary" (click)="gotoStepTwo()"
-                            [disabled]="!(firstName.valid && lastName.valid && email.valid)">
+                    <button type="button" class="btn btn-primary" (click)="gotoStepTwo()" [disabled]="!(firstName.valid && lastName.valid && email.valid && emailConfirmation.valid)">
                         Verder
                     </button>
                 </div>

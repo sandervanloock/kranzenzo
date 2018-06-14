@@ -4,6 +4,7 @@ export class User {
     public firstName?: string;
     public lastName?: string;
     public email?: string;
+    public confirmEmail?: string;
     public activated?: Boolean;
     public langKey?: string;
     public authorities?: any[];
@@ -18,7 +19,7 @@ export class User {
         login?: string,
         firstName?: string,
         lastName?: string,
-        email?: string,
+        email?: string, confirmEmail?: string,
         activated?: Boolean,
         langKey?: string,
         authorities?: any[],
