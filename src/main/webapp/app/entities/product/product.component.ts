@@ -27,9 +27,9 @@ export class ProductComponent implements OnInit, OnDestroy {
 
     loadAll() {
         if ( this.currentSearch ) {
-            this.productService.search( {
-                                            query: this.currentSearch,
-                                        } ).subscribe( ( res: ResponseWrapper ) => this.products = res.json, ( res: ResponseWrapper ) => this.onError( res.json ) );
+            this.products = this.products.filter( ( p: Product ) => {
+                return (p.name != null && p.name.indexOf( this.currentSearch ) !== -1) || (p.description != null && p.description.indexOf( this.currentSearch ) !== -1);
+            } );
             return;
         }
         this.productService.query().subscribe( ( res: ResponseWrapper ) => {
