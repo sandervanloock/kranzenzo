@@ -40,7 +40,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let product of products ;trackBy: trackId">
+            <tr *ngFor="let product of productsFiltered ;trackBy: trackId">
                 <td><a [routerLink]="['../product', product.id ]">{{product.id}}</a></td>
                 <td>{{product.name}}</td>
                 <td>{{product.price}}</td>

@@ -12,6 +12,7 @@ import {Principal, ResponseWrapper} from '../../shared';
             } )
 export class ProductComponent implements OnInit, OnDestroy {
     products: Product[];
+    productsFiltered: Product[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
@@ -27,13 +28,15 @@ export class ProductComponent implements OnInit, OnDestroy {
 
     loadAll() {
         if ( this.currentSearch ) {
-            this.products = this.products.filter( ( p: Product ) => {
-                return (p.name != null && p.name.indexOf( this.currentSearch ) !== -1) || (p.description != null && p.description.indexOf( this.currentSearch ) !== -1);
+            this.productsFiltered = this.products.filter( ( p: Product ) => {
+                return (p.name != null && p.name.toLowerCase().indexOf( this.currentSearch.toLowerCase() ) !== -1) || (p.description != null && p.description.toLowerCase().indexOf(
+                    this.currentSearch.toLowerCase() ) !== -1);
             } );
             return;
         }
         this.productService.query().subscribe( ( res: ResponseWrapper ) => {
             this.products = res.json;
+            this.productsFiltered = res.json;
             this.currentSearch = '';
         }, ( res: ResponseWrapper ) => this.onError( res.json ) );
     }
