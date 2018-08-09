@@ -7,10 +7,15 @@ import {KransenzoCustomerModule} from './customer/customer.module';
 import {KransenzoOrderModule} from './order/order.module';
 import {KransenzoLocationModule} from './location/location.module';
 
+import {KransenzoWorkshopSubscriptionModule} from './workshop-subscription/workshop-subscription.module';
+import {KransenzoWorkshopDateModule} from './workshop-date/workshop-date.module';
+import {KransenzoWorkshopModule} from './workshop/workshop.module';
+
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule( {
                imports: [KransenzoProductModule, KransenzoImageModule, KransenzoTagModule, KransenzoCustomerModule, KransenzoOrderModule, KransenzoLocationModule,
+                         KransenzoWorkshopSubscriptionModule, KransenzoWorkshopDateModule, KransenzoWorkshopModule,
                    /* jhipster-needle-add-entity-module - JHipster will add entity modules here */],
                declarations: [],
                entryComponents: [],

@@ -1,0 +1,57 @@
+<div *ngIf="workshop">
+    <h2><span jhiTranslate="kransenzoApp.workshop.detail.title">Workshop</span> {{workshop.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kransenzoApp.workshop.name">Name</span></dt>
+        <dd>
+            <span>{{workshop.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.description">Description</span></dt>
+        <dd>
+            <span>{{workshop.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.neededMaterials">Needed Materials</span></dt>
+        <dd>
+            <span>{{workshop.neededMaterials}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.includedInPrice">Included In Price</span></dt>
+        <dd>
+            <span>{{workshop.includedInPrice}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.durationInMinutes">Duration In Minutes</span></dt>
+        <dd>
+            <span>{{workshop.durationInMinutes}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.price">Price</span></dt>
+        <dd>
+            <span>{{workshop.price}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.maxSubscriptions">Max Subscriptions</span></dt>
+        <dd>
+            <span>{{workshop.maxSubscriptions}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.isActive">Is Active</span></dt>
+        <dd>
+            <span>{{workshop.isActive}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.showOnHomepage">Show On Homepage</span></dt>
+        <dd>
+            <span>{{workshop.showOnHomepage}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.tags">Tags</span></dt>
+        <dd>
+            <span *ngFor="let tags of workshop.tags; let last = last">
+                <a [routerLink]="['/tag', tags?.id ]">{{tags.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit" (click)="previousState()" class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" [routerLink]="['/', { outlets: { popup: 'workshop/'+ workshop.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

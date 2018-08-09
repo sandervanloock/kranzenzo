@@ -16,6 +16,9 @@
               "customer": "Customer",
               "order": "Order",
               "location": "Location",
+                "workshopSubscription": "Workshop Subscription",
+                "workshopDate": "Workshop Date",
+                "workshop": "Workshop",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

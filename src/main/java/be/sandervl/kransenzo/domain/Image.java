@@ -37,6 +37,9 @@ public class Image implements Serializable{
     @ManyToOne
     private Product product;
 
+    @ManyToOne
+    private Workshop workshop;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId(){
         return id;
@@ -97,6 +100,20 @@ public class Image implements Serializable{
         this.product = product;
         return this;
     }
+
+    public Workshop getWorkshop() {
+        return workshop;
+    }
+
+    public void setWorkshop( Workshop workshop ) {
+        this.workshop = workshop;
+    }
+
+    public Image workshop( Workshop workshop ) {
+        this.workshop = workshop;
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

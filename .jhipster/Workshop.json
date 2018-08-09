@@ -1,0 +1,93 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "dates",
+            "otherEntityName": "workshopDate",
+            "otherEntityRelationshipName": "workshop"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "images",
+            "otherEntityName": "image",
+            "otherEntityRelationshipName": "workshop"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "workshops",
+            "relationshipName": "tags",
+            "otherEntityName": "tag",
+            "otherEntityField": "name",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 255
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 5000
+        },
+        {
+            "fieldName": "neededMaterials",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 5000
+        },
+        {
+            "fieldName": "includedInPrice",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 5000
+        },
+        {
+            "fieldName": "durationInMinutes",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "maxSubscriptions",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "isActive",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "showOnHomepage",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20180809200003",
+    "entityTableName": "workshop",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

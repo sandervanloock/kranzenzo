@@ -3,6 +3,12 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipName": "workshop",
+            "otherEntityName": "workshop",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "product",
             "otherEntityName": "product",
             "otherEntityField": "name"
@@ -12,16 +18,16 @@
         {
             "fieldName": "data",
             "fieldType": "byte[]",
-            "fieldTypeBlobContent": "image"
-        },
-        {
-            "fieldName": "endpoint",
-            "fieldType": "String"
+            "fieldTypeBlobContent": "image",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20171212225538",
     "entityTableName": "image",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "no"
+    "service": "no",
+    "jpaMetamodelFiltering": false
 }

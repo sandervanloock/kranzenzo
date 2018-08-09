@@ -10,12 +10,12 @@
         {
             "relationshipType": "one-to-many",
             "relationshipName": "orders",
-            "otherEntityName": "order",
+            "otherEntityName": "productOrder",
             "otherEntityRelationshipName": "product"
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "tags",
+            "otherEntityRelationshipName": "products",
             "relationshipName": "tags",
             "otherEntityName": "tag",
             "otherEntityField": "name",
@@ -68,5 +68,6 @@
     "entityTableName": "product",
     "dto": "mapstruct",
     "pagination": "no",
-    "service": "serviceClass"
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": false
 }

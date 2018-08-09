@@ -50,10 +50,19 @@ public class CacheConfiguration{
             cm.createCache(be.sandervl.kransenzo.domain.Image.class.getName(), jcacheConfiguration);
             cm.createCache(be.sandervl.kransenzo.domain.Tag.class.getName(), jcacheConfiguration);
             cm.createCache(be.sandervl.kransenzo.domain.Tag.class.getName() + ".tags", jcacheConfiguration);
+            cm.createCache( be.sandervl.kransenzo.domain.Tag.class.getName() + ".workshops", jcacheConfiguration );
             cm.createCache(be.sandervl.kransenzo.domain.Customer.class.getName(), jcacheConfiguration);
             cm.createCache(be.sandervl.kransenzo.domain.Customer.class.getName() + ".orders", jcacheConfiguration);
             cm.createCache(be.sandervl.kransenzo.domain.Order.class.getName(), jcacheConfiguration);
             cm.createCache(be.sandervl.kransenzo.domain.Location.class.getName(), jcacheConfiguration);
+            cm.createCache( be.sandervl.kransenzo.domain.WorkshopSubscription.class.getName(), jcacheConfiguration );
+            cm.createCache( be.sandervl.kransenzo.domain.WorkshopDate.class.getName(), jcacheConfiguration );
+            cm.createCache( be.sandervl.kransenzo.domain.WorkshopDate.class
+                .getName() + ".subscriptions", jcacheConfiguration );
+            cm.createCache( be.sandervl.kransenzo.domain.Workshop.class.getName(), jcacheConfiguration );
+            cm.createCache( be.sandervl.kransenzo.domain.Workshop.class.getName() + ".dates", jcacheConfiguration );
+            cm.createCache( be.sandervl.kransenzo.domain.Workshop.class.getName() + ".images", jcacheConfiguration );
+            cm.createCache( be.sandervl.kransenzo.domain.Workshop.class.getName() + ".tags", jcacheConfiguration );
             // jhipster-needle-ehcache-add-entry
         };
     }
