@@ -3,6 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Workshop, WorkshopPopupService} from '../../entities/workshop';
 import {WorkshopDate} from '../../entities/workshop-date';
 import {User} from '../../shared';
+import {SubscriptionState, WorkshopSubscription, WorkshopSubscriptionService} from '../../entities/workshop-subscription';
 
 @Component( {
                 selector: 'jhi-workshop-subscription', templateUrl: './workshop-subscription.component.html', styles: []
@@ -12,25 +13,24 @@ export class WorkshopSubscriptionComponent implements OnInit {
     workshop: Workshop = new Workshop();
     workshopDate: WorkshopDate = new WorkshopDate();
 
-    constructor( private route: ActivatedRoute, public workshopPopupService: WorkshopPopupService, ) {
+    constructor( private route: ActivatedRoute, public workshopPopupService: WorkshopPopupService, private workshopSubscriptionService: WorkshopSubscriptionService, ) {
     }
 
     ngOnInit() {
         this.route.data.subscribe( ( data ) => {
-            this.load( data['date'] );
+            this.load( data['date'] ); //TODO correct date
         } );
     }
 
     submitForm() {
-        /*this.updateCustomer().flatMap( ( customer ) => {
-            this.customer = customer;
-            this.order.customerId = customer.id;
-            return this.orderService.create( this.order );
-        } ).subscribe( ( order: Order ) => {
-            this.handleSuccessfulOrder( order );
-        }, ( error ) => {
-            this.handleFailedOrder();
-        } )*/
+        const subscription = new WorkshopSubscription();
+        subscription.state = SubscriptionState.NEW;
+        subscription.workshopId = this.workshopDate.id;
+        subscription.user = this.user;
+
+        this.workshopSubscriptionService.create( subscription ).subscribe();
+
+        this.workshopPopupService.close();
     }
 
     private load( id: number ) {

@@ -35,7 +35,9 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true" (click)="this.workshopPopupService.close()">
                 Sluiten
             </button>
-            <button type="submit" class="btn btn-success">Verzenden</button>
+            <button type="submit" class="btn btn-success" [disabled]="!(firstName.valid && lastName.valid && email.valid && emailConfirmation.valid)">
+                Verzenden
+            </button>
         </div>
     </form>
 </div>

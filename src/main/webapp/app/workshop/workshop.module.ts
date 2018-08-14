@@ -5,9 +5,10 @@ import {WorkshopDetailComponent} from './workshop-detail/workshop-detail.compone
 import {KransenzoSharedModule} from '../shared';
 import {WorkshopSubscriptionComponent, WorkshopSubscriptionPopupComponent} from './workshop-subscription/workshop-subscription.component';
 import {FloorPipe} from './workshop-detail/FloorPipe';
+import {OrderModule} from '../shop/order/order.module';
 
 @NgModule( {
-               imports: [KransenzoSharedModule, RouterModule.forChild( SHOP_ROUTE ),],
+               imports: [KransenzoSharedModule, RouterModule.forChild( SHOP_ROUTE ), OrderModule],
                declarations: [WorkshopDetailComponent, WorkshopSubscriptionComponent, WorkshopSubscriptionPopupComponent, FloorPipe],
                entryComponents: [WorkshopSubscriptionComponent]
            } )

@@ -150,5 +150,8 @@ public class MailService {
     }
 
     public void sendWorkshopSubscriptionMails( WorkshopSubscription workshopSubscription ) {
+        log.debug( "Sending confirmation of subscription to '{}'", workshopSubscription.getUser().getEmail() );
+        log.debug( "Sending notification of new subscription to '{}'", applicationProperties.getMail()
+                                                                                            .getConfirmation() );
     }
 }

@@ -6,6 +6,7 @@ import be.sandervl.kransenzo.repository.WorkshopSubscriptionRepository;
 import be.sandervl.kransenzo.repository.search.WorkshopSubscriptionSearchRepository;
 import be.sandervl.kransenzo.service.MailService;
 import be.sandervl.kransenzo.service.UserService;
+import be.sandervl.kransenzo.service.dto.UserDTO;
 import be.sandervl.kransenzo.service.dto.WorkshopSubscriptionDTO;
 import be.sandervl.kransenzo.service.mapper.WorkshopSubscriptionMapper;
 import be.sandervl.kransenzo.web.rest.errors.BadRequestAlertException;
@@ -66,10 +67,14 @@ public class WorkshopSubscriptionResource {
             throw new BadRequestAlertException( "A new workshopSubscription cannot already have an ID", ENTITY_NAME, "idexists" );
         }
         WorkshopSubscription workshopSubscription = workshopSubscriptionMapper.toEntity( workshopSubscriptionDTO );
-        if ( workshopSubscriptionDTO.getUser() != null ) {
+        UserDTO userDTO = workshopSubscriptionDTO.getUser();
+        if ( userDTO != null ) {
             //fetch customer eager so all information for sending the email is present on the order
-            User user = userService.findUserByEmail( workshopSubscriptionDTO.getUser().getEmail() )
-                                   .orElseGet( () -> userService.createUser( workshopSubscriptionDTO.getUser() ) );
+            User user = userService.findUserByEmail( userDTO.getEmail() )
+                                   .orElseGet( () -> {
+                                       userDTO.setLogin( userDTO.getEmail() );
+                                       return userService.createUser( userDTO );
+                                   } );
             workshopSubscription.setUser( user );
             mailService.sendWorkshopSubscriptionMails( workshopSubscription );
         }
