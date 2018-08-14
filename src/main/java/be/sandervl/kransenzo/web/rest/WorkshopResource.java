@@ -62,7 +62,7 @@ public class WorkshopResource {
         Workshop workshop = workshopMapper.toEntity( workshopDTO );
         workshop = workshopRepository.save( workshop );
         WorkshopDTO result = workshopMapper.toDto( workshop );
-        workshopSearchRepository.save( workshop );
+        //workshopSearchRepository.save( workshop );
         return ResponseEntity.created( new URI( "/api/workshops/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
                              .body( result );
@@ -87,7 +87,7 @@ public class WorkshopResource {
         Workshop workshop = workshopMapper.toEntity( workshopDTO );
         workshop = workshopRepository.save( workshop );
         WorkshopDTO result = workshopMapper.toDto( workshop );
-        workshopSearchRepository.save( workshop );
+        //workshopSearchRepository.save( workshop );
         return ResponseEntity.ok()
                              .headers( HeaderUtil
                                  .createEntityUpdateAlert( ENTITY_NAME, workshopDTO.getId().toString() ) )
@@ -133,7 +133,7 @@ public class WorkshopResource {
     public ResponseEntity <Void> deleteWorkshop( @PathVariable Long id ) {
         log.debug( "REST request to delete Workshop : {}", id );
         workshopRepository.delete( id );
-        workshopSearchRepository.delete( id );
+        //workshopSearchRepository.delete( id );
         return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
                              .build();
     }

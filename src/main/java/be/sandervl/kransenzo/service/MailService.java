@@ -3,6 +3,7 @@ package be.sandervl.kransenzo.service;
 import be.sandervl.kransenzo.config.ApplicationProperties;
 import be.sandervl.kransenzo.domain.Order;
 import be.sandervl.kransenzo.domain.User;
+import be.sandervl.kransenzo.domain.WorkshopSubscription;
 import io.github.jhipster.config.JHipsterProperties;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
@@ -146,5 +147,8 @@ public class MailService {
         String subject = messageSource.getMessage( "email.order.confirmation.client.title", null,
                                                    Locale.forLanguageTag( "nl" ) );
         sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
+    }
+
+    public void sendWorkshopSubscriptionMails( WorkshopSubscription workshopSubscription ) {
     }
 }

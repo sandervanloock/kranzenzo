@@ -35,7 +35,19 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="workshop_subscription" columnName="created" columnDataType="datetime"/>
+
+    </changeSet>
     
+    <changeSet id="201808142252" author="svl">
+        <addColumn tableName="workshop_subscription">
+            <column name="user_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="workshop_subscription" baseColumnNames="user_id"
+                                 constraintName="fk_workshop_subscription_user"
+                                 referencedTableName="jhi_user"
+                                 referencedColumnNames="id"/>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -1,28 +1,40 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Workshop, WorkshopPopupService} from '../../entities/workshop';
-import {WorkshopDate, WorkshopDateService} from '../../entities/workshop-date';
+import {WorkshopDate} from '../../entities/workshop-date';
+import {User} from '../../shared';
 
 @Component( {
                 selector: 'jhi-workshop-subscription', templateUrl: './workshop-subscription.component.html', styles: []
             } )
 export class WorkshopSubscriptionComponent implements OnInit {
+    user: User = new User();
     workshop: Workshop = new Workshop();
-    workshopDate: WorkshopDate;
+    workshopDate: WorkshopDate = new WorkshopDate();
 
-    constructor( private route: ActivatedRoute, private workshopDateService: WorkshopDateService ) {
+    constructor( private route: ActivatedRoute, public workshopPopupService: WorkshopPopupService, ) {
     }
 
     ngOnInit() {
-        this.route.params.subscribe( ( params ) => {
-            this.load( params['id'] );
+        this.route.data.subscribe( ( data ) => {
+            this.load( data['date'] );
         } );
     }
 
+    submitForm() {
+        /*this.updateCustomer().flatMap( ( customer ) => {
+            this.customer = customer;
+            this.order.customerId = customer.id;
+            return this.orderService.create( this.order );
+        } ).subscribe( ( order: Order ) => {
+            this.handleSuccessfulOrder( order );
+        }, ( error ) => {
+            this.handleFailedOrder();
+        } )*/
+    }
+
     private load( id: number ) {
-        this.workshopDateService.find( id ).subscribe( ( workshopDate ) => {
-            this.workshopDate = workshopDate
-        } );
+        this.workshopDate = this.workshop.dates[0]; //TODO
     }
 }
 
@@ -33,7 +45,7 @@ export class WorkshopSubscriptionPopupComponent implements OnInit, OnDestroy {
 
     routeSub: any;
 
-    constructor( private route: ActivatedRoute, private workshopPopupService: WorkshopPopupService, private workshopDateService: WorkshopDateService ) {
+    constructor( private route: ActivatedRoute, private workshopPopupService: WorkshopPopupService ) {
     }
 
     ngOnInit() {
@@ -47,4 +59,3 @@ export class WorkshopSubscriptionPopupComponent implements OnInit, OnDestroy {
         this.routeSub.unsubscribe();
     }
 }
-

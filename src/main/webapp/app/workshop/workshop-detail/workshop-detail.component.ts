@@ -25,7 +25,7 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-        this.eventManager.destroy( this.eventSubscriber );
+        //this.eventManager.destroy( this.eventSubscriber );
     }
 
     registerChangeInWorkshop() {

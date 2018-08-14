@@ -34,6 +34,10 @@ export class WorkshopPopupService {
         } );
     }
 
+    close() {
+        this.ngbModalRef.close();
+    }
+
     workshopModalRef( component: Component, workshop: Workshop ): NgbModalRef {
         const modalRef = this.modalService.open( component, {size: 'lg', backdrop: 'static'} );
         modalRef.componentInstance.workshop = workshop;

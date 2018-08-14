@@ -62,7 +62,7 @@ public class WorkshopDateResource {
         WorkshopDate workshopDate = workshopDateMapper.toEntity( workshopDateDTO );
         workshopDate = workshopDateRepository.save( workshopDate );
         WorkshopDateDTO result = workshopDateMapper.toDto( workshopDate );
-        workshopDateSearchRepository.save( workshopDate );
+        //workshopDateSearchRepository.save( workshopDate );
         return ResponseEntity.created( new URI( "/api/workshop-dates/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
                              .body( result );
@@ -87,7 +87,7 @@ public class WorkshopDateResource {
         WorkshopDate workshopDate = workshopDateMapper.toEntity( workshopDateDTO );
         workshopDate = workshopDateRepository.save( workshopDate );
         WorkshopDateDTO result = workshopDateMapper.toDto( workshopDate );
-        workshopDateSearchRepository.save( workshopDate );
+        //workshopDateSearchRepository.save( workshopDate );
         return ResponseEntity.ok()
                              .headers( HeaderUtil
                                  .createEntityUpdateAlert( ENTITY_NAME, workshopDateDTO.getId().toString() ) )
@@ -133,7 +133,7 @@ public class WorkshopDateResource {
     public ResponseEntity <Void> deleteWorkshopDate( @PathVariable Long id ) {
         log.debug( "REST request to delete WorkshopDate : {}", id );
         workshopDateRepository.delete( id );
-        workshopDateSearchRepository.delete( id );
+        //workshopDateSearchRepository.delete( id );
         return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
                              .build();
     }
