@@ -1,4 +1,6 @@
 import {BaseEntity} from './../../shared';
+import {Image} from '../image';
+import {WorkshopDate} from '../workshop-date';
 
 export class Workshop implements BaseEntity {
     constructor(
@@ -11,9 +13,7 @@ export class Workshop implements BaseEntity {
         public price?: number,
         public maxSubscriptions?: number,
         public isActive?: boolean,
-        public showOnHomepage?: boolean,
-        public dates?: BaseEntity[],
-        public images?: BaseEntity[],
+        public showOnHomepage?: boolean, public dates?: WorkshopDate[], public images?: Image[],
         public tags?: BaseEntity[], ) {
         this.isActive = false;
         this.showOnHomepage = false;

@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity Workshop and its DTO WorkshopDTO.
  */
-@Mapper(componentModel = "spring", uses = {TagMapper.class})
+@Mapper(componentModel = "spring", uses = {TagMapper.class, ImageMapper.class, WorkshopDateMapper.class})
 public interface WorkshopMapper extends EntityMapper <WorkshopDTO, Workshop> {
 
     @Mapping(target = "dates", ignore = true)

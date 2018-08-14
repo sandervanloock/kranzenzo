@@ -14,7 +14,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface WorkshopRepository extends JpaRepository <Workshop, Long> {
-    @Query("select distinct workshop from Workshop workshop left join fetch workshop.tags")
+    @Query("select distinct workshop from Workshop workshop left join fetch workshop.tags left join fetch workshop.images left join fetch workshop.dates")
     List <Workshop> findAllWithEagerRelationships();
 
     @Query("select workshop from Workshop workshop left join fetch workshop.tags where workshop.id =:id")

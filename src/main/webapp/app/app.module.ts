@@ -16,6 +16,7 @@ import {PaginationConfig} from './blocks/config/uib-pagination.config';
 import {ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent, NavbarComponent, PageRibbonComponent, ProfileService} from './layouts';
 import {KransenzoShopModule} from './shop/shop.module';
 import {OrderModule} from './shop/order/order.module';
+import {WorkshopModule} from './workshop/workshop.module';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -25,8 +26,7 @@ import {OrderModule} from './shop/order/order.module';
         KransenzoAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
         KransenzoSharedModule,
-        KransenzoHomeModule,
-        KransenzoAdminModule, KransenzoAccountModule, KransenzoEntityModule, KransenzoInfoModule, KransenzoShopModule, OrderModule
+        KransenzoHomeModule, KransenzoAdminModule, KransenzoAccountModule, KransenzoEntityModule, KransenzoInfoModule, KransenzoShopModule, OrderModule, WorkshopModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
