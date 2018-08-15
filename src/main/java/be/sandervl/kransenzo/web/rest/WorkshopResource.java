@@ -2,6 +2,7 @@ package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.domain.Workshop;
 import be.sandervl.kransenzo.repository.ImageRepository;
+import be.sandervl.kransenzo.repository.WorkshopDateRepository;
 import be.sandervl.kransenzo.repository.WorkshopRepository;
 import be.sandervl.kransenzo.repository.search.WorkshopSearchRepository;
 import be.sandervl.kransenzo.service.dto.WorkshopDTO;
@@ -40,12 +41,14 @@ public class WorkshopResource {
 
     private final WorkshopSearchRepository workshopSearchRepository;
     private final ImageRepository imageRepository;
+    private final WorkshopDateRepository workshopDateRepository;
 
-    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper, WorkshopSearchRepository workshopSearchRepository, ImageRepository imageRepository ) {
+    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper, WorkshopSearchRepository workshopSearchRepository, ImageRepository imageRepository, WorkshopDateRepository workshopDateRepository ) {
         this.workshopRepository = workshopRepository;
         this.workshopMapper = workshopMapper;
         this.workshopSearchRepository = workshopSearchRepository;
         this.imageRepository = imageRepository;
+        this.workshopDateRepository = workshopDateRepository;
     }
 
     /**
@@ -100,15 +103,22 @@ public class WorkshopResource {
     private Workshop handleImages( WorkshopDTO workshopDTO ) {
         final Workshop workshop = workshopMapper.toEntity( workshopDTO );
 
-        //unlink existing images
         Workshop existing = workshopRepository.findOneWithEagerRelationships( workshopDTO.getId() );
         if ( existing != null ) {
+            //unlink existing images
             existing.getImages()
                     .stream()
                     .filter( image -> !workshop.getImages().contains( image ) )
                     .peek( image -> image.setWorkshop( null ) )
                     .forEach( imageRepository::save );
+
         }
+
+        //save new dates
+        workshop.getDates()
+                .stream()
+                .peek( date -> date.setWorkshop( workshop ) )
+                .forEach( workshopDateRepository::save );
 
         //link new images
         workshopRepository.save( workshop )
@@ -119,6 +129,14 @@ public class WorkshopResource {
                           .map( image -> imageRepository.findOne( image.getId() ) )
                           .peek( image -> image.setWorkshop( workshop ) )
                           .forEach( imageRepository::save );
+
+        if ( existing != null ) {
+            //delete removed dates
+            existing.getDates()
+                    .stream()
+                    .filter( date -> !workshop.getDates().contains( date ) )
+                    .forEach( workshopDateRepository::delete );
+        }
         return workshop;
     }
 

@@ -13,6 +13,7 @@ import {Tag, TagService} from '../tag';
 import {ResponseWrapper} from '../../shared';
 import {Image} from '../image/image.model';
 import {S3ImageResizePipe} from '../../shared/image/s3-image-resize.pipe';
+import {WorkshopDate} from '../workshop-date';
 
 @Component( {
                 selector: 'jhi-workshop-dialog', templateUrl: './workshop-dialog.component.html'
@@ -43,7 +44,10 @@ export class WorkshopDialogComponent implements OnInit {
             }
             this.workshop.images.forEach( ( image: Image ) => {
                 this.imageEndpoints.push( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) );
-            } )
+            } );
+            this.workshop.dates.forEach( ( workshopDate ) => {
+                workshopDate.date = workshopDate.date.substr( 0, 19 );
+            } );
         }
     }
 
@@ -53,6 +57,9 @@ export class WorkshopDialogComponent implements OnInit {
 
     save() {
         this.isSaving = true;
+        this.workshop.dates.forEach( ( workshopDate ) => {
+            workshopDate.date = workshopDate.date + '+02:00';
+        } );
         if ( this.workshop.id !== undefined ) {
             this.subscribeToSaveResponse( this.workshopService.update( this.workshop ) );
         } else {
@@ -89,6 +96,14 @@ export class WorkshopDialogComponent implements OnInit {
             const image = new Image( id );
             this.workshop.images.push( image );
         }
+    }
+
+    addWorkshopDate() {
+        this.workshop.dates.push( new WorkshopDate() )
+    }
+
+    removeWorkshopDate( index ) {
+        this.workshop.dates.splice( index, 1 );
     }
 
     private subscribeToSaveResponse( result: Observable<Workshop> ) {
