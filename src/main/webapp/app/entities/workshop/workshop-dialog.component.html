@@ -24,35 +24,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.description" for="field_description">Description</label>
-            <input type="text" class="form-control" name="description" id="field_description" [(ngModel)]="workshop.description" maxlength="5000"/>
-            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
-                <small class="form-text text-danger" [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
-                    This field cannot be longer than 5000 characters.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.neededMaterials" for="field_neededMaterials">Needed
-                Materials</label>
-            <input type="text" class="form-control" name="neededMaterials" id="field_neededMaterials" [(ngModel)]="workshop.neededMaterials" maxlength="5000"/>
-            <div [hidden]="!(editForm.controls.neededMaterials?.dirty && editForm.controls.neededMaterials?.invalid)">
-                <small class="form-text text-danger" [hidden]="!editForm.controls.neededMaterials?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
-                    This field cannot be longer than 5000 characters.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.includedInPrice" for="field_includedInPrice">Included
-                In Price</label>
-            <input type="text" class="form-control" name="includedInPrice" id="field_includedInPrice" [(ngModel)]="workshop.includedInPrice" maxlength="5000"/>
-            <div [hidden]="!(editForm.controls.includedInPrice?.dirty && editForm.controls.includedInPrice?.invalid)">
-                <small class="form-text text-danger" [hidden]="!editForm.controls.includedInPrice?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
-                    This field cannot be longer than 5000 characters.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.durationInMinutes" for="field_durationInMinutes">Duration
                 In Minutes</label>
             <input type="number" class="form-control" name="durationInMinutes" id="field_durationInMinutes" [(ngModel)]="workshop.durationInMinutes" required/>
@@ -83,15 +54,50 @@
             <input type="number" class="form-control" name="maxSubscriptions" id="field_maxSubscriptions" [(ngModel)]="workshop.maxSubscriptions"/>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.isActive" for="field_isActive">Is
-                Active</label>
-            <input type="checkbox" class="form-control" name="isActive" id="field_isActive" [(ngModel)]="workshop.isActive"/>
+            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.description" for="field_description">Description</label>
+            <textarea class="form-control" name="description" id="field_description" [(ngModel)]="workshop.description" maxlength="5000">
+
+            </textarea>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger" [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
+                    This field cannot be longer than 5000 characters.
+                </small>
+            </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.showOnHomepage" for="field_showOnHomepage">Show
-                On Homepage</label>
-            <input type="checkbox" class="form-control" name="showOnHomepage" id="field_showOnHomepage" [(ngModel)]="workshop.showOnHomepage"/>
+            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.neededMaterials" for="field_neededMaterials">Needed
+                Materials</label>
+            <textarea class="form-control" name="neededMaterials" id="field_neededMaterials" [(ngModel)]="workshop.neededMaterials" maxlength="5000">
+
+            </textarea>
+            <div [hidden]="!(editForm.controls.neededMaterials?.dirty && editForm.controls.neededMaterials?.invalid)">
+                <small class="form-text text-danger" [hidden]="!editForm.controls.neededMaterials?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
+                    This field cannot be longer than 5000 characters.
+                </small>
+            </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="kransenzoApp.workshop.includedInPrice" for="field_includedInPrice">Included
+                In Price</label>
+            <textarea class="form-control" name="includedInPrice" id="field_includedInPrice" [(ngModel)]="workshop.includedInPrice" maxlength="5000">
+
+            </textarea>
+            <div [hidden]="!(editForm.controls.includedInPrice?.dirty && editForm.controls.includedInPrice?.invalid)">
+                <small class="form-text text-danger" [hidden]="!editForm.controls.includedInPrice?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
+                    This field cannot be longer than 5000 characters.
+                </small>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+        <!--<label class="form-control-label" jhiTranslate="kransenzoApp.workshop.isActive" for="field_isActive">Is-->
+        <!--Active</label>-->
+        <!--<input type="checkbox" class="form-control" name="isActive" id="field_isActive" [(ngModel)]="workshop.isActive"/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label class="form-control-label" jhiTranslate="kransenzoApp.workshop.showOnHomepage" for="field_showOnHomepage">Show-->
+        <!--On Homepage</label>-->
+        <!--<input type="checkbox" class="form-control" name="showOnHomepage" id="field_showOnHomepage" [(ngModel)]="workshop.showOnHomepage"/>-->
+        <!--</div>-->
 
         <div class="form-group">
             <label jhiTranslate="kransenzoApp.workshop.tags" for="field_tags">Tags</label>
@@ -100,6 +106,10 @@
                     {{tagOption.name}}
                 </option>
             </select>
+        </div>
+
+        <div class="form-group">
+            <image-upload id="field_images" [max]="5" [url]="'/api/images/raw'" [maxFileSize]="10000000" [buttonCaption]="'Afbeelding kiezen'" [dropBoxMessage]="'Drop je afbeeldingen hier!'" [extensions]="['jpg','png','jpeg']" [uploadedFiles]="imageEndpoints" (removed)="onImageRemoved($event)" (uploadFinished)="onImageUploadFinished($event)"></image-upload>
         </div>
     </div>
     <div class="modal-footer">

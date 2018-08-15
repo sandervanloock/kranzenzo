@@ -21,6 +21,10 @@ public class ImageDTO implements Serializable{
 
     private String productName;
 
+    private Long workshopId;
+
+    private String workshopName;
+
     public Long getId(){
         return id;
     }
@@ -67,6 +71,22 @@ public class ImageDTO implements Serializable{
 
     public void setProductName(String productName){
         this.productName = productName;
+    }
+
+    public Long getWorkshopId() {
+        return workshopId;
+    }
+
+    public void setWorkshopId( Long workshopId ) {
+        this.workshopId = workshopId;
+    }
+
+    public String getWorkshopName() {
+        return workshopName;
+    }
+
+    public void setWorkshopName( String workshopName ) {
+        this.workshopName = workshopName;
     }
 
     @Override

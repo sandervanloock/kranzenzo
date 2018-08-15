@@ -1,6 +1,7 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.domain.Workshop;
+import be.sandervl.kransenzo.repository.ImageRepository;
 import be.sandervl.kransenzo.repository.WorkshopRepository;
 import be.sandervl.kransenzo.repository.search.WorkshopSearchRepository;
 import be.sandervl.kransenzo.service.dto.WorkshopDTO;
@@ -38,11 +39,13 @@ public class WorkshopResource {
     private final WorkshopMapper workshopMapper;
 
     private final WorkshopSearchRepository workshopSearchRepository;
+    private final ImageRepository imageRepository;
 
-    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper, WorkshopSearchRepository workshopSearchRepository ) {
+    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper, WorkshopSearchRepository workshopSearchRepository, ImageRepository imageRepository ) {
         this.workshopRepository = workshopRepository;
         this.workshopMapper = workshopMapper;
         this.workshopSearchRepository = workshopSearchRepository;
+        this.imageRepository = imageRepository;
     }
 
     /**
@@ -59,8 +62,8 @@ public class WorkshopResource {
         if ( workshopDTO.getId() != null ) {
             throw new BadRequestAlertException( "A new workshop cannot already have an ID", ENTITY_NAME, "idexists" );
         }
-        Workshop workshop = workshopMapper.toEntity( workshopDTO );
-        workshop = workshopRepository.save( workshop );
+        Workshop workshop = handleImages( workshopDTO );
+
         WorkshopDTO result = workshopMapper.toDto( workshop );
         //workshopSearchRepository.save( workshop );
         return ResponseEntity.created( new URI( "/api/workshops/" + result.getId() ) )
@@ -84,14 +87,39 @@ public class WorkshopResource {
         if ( workshopDTO.getId() == null ) {
             return createWorkshop( workshopDTO );
         }
-        Workshop workshop = workshopMapper.toEntity( workshopDTO );
-        workshop = workshopRepository.save( workshop );
+        Workshop workshop = handleImages( workshopDTO );
+
         WorkshopDTO result = workshopMapper.toDto( workshop );
         //workshopSearchRepository.save( workshop );
         return ResponseEntity.ok()
                              .headers( HeaderUtil
                                  .createEntityUpdateAlert( ENTITY_NAME, workshopDTO.getId().toString() ) )
                              .body( result );
+    }
+
+    private Workshop handleImages( WorkshopDTO workshopDTO ) {
+        final Workshop workshop = workshopMapper.toEntity( workshopDTO );
+
+        //unlink existing images
+        Workshop existing = workshopRepository.findOneWithEagerRelationships( workshopDTO.getId() );
+        if ( existing != null ) {
+            existing.getImages()
+                    .stream()
+                    .filter( image -> !workshop.getImages().contains( image ) )
+                    .peek( image -> image.setWorkshop( null ) )
+                    .forEach( imageRepository::save );
+        }
+
+        //link new images
+        workshopRepository.save( workshop )
+                          .getImages()
+                          .stream()
+                          .filter( image -> image.getId() != null )
+                          //get image from database
+                          .map( image -> imageRepository.findOne( image.getId() ) )
+                          .peek( image -> image.setWorkshop( workshop ) )
+                          .forEach( imageRepository::save );
+        return workshop;
     }
 
     /**

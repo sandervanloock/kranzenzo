@@ -8,14 +8,17 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity Image and its DTO ImageDTO.
  */
-@Mapper(componentModel = "spring", uses = {ProductMapper.class})
+@Mapper(componentModel = "spring", uses = {ProductMapper.class, WorkshopMapper.class})
 public interface ImageMapper extends EntityMapper<ImageDTO, Image>{
 
     @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "product.name", target = "productName")
+    @Mapping(source = "workshop.id", target = "workshopId")
+    @Mapping(source = "workshop.name", target = "workshopName")
     ImageDTO toDto(Image image);
 
     @Mapping(source = "productId", target = "product")
+    @Mapping(source = "workshopId", target = "workshop")
     @Mapping(target = "data", ignore = true)
     Image toEntity(ImageDTO imageDTO);
 

@@ -11,8 +11,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {TagMapper.class, ImageMapper.class, WorkshopDateMapper.class})
 public interface WorkshopMapper extends EntityMapper <WorkshopDTO, Workshop> {
 
-    @Mapping(target = "dates", ignore = true)
-    @Mapping(target = "images", ignore = true)
+    @Mapping(target = "images")
+    @Mapping(target = "dates")
     Workshop toEntity( WorkshopDTO workshopDTO );
 
     default Workshop fromId( Long id ) {

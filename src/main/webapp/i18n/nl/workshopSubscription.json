@@ -16,8 +16,8 @@
             "detail": {
                 "title": "Workshop Subscription"
             },
-            "created": "Created",
-            "state": "State",
+            "created": "Aanmaakdatum",
+            "state": "Status",
             "workshop": "Workshop"
         }
     }

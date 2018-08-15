@@ -14,10 +14,10 @@
                 "question": "Bent u zeker dat u Workshop Date {{ id }} wilt verwijderen?"
             },
             "detail": {
-                "title": "Workshop Date"
+                "title": "Workshop Datum"
             },
-            "date": "Date",
-            "subscriptions": "Subscriptions",
+            "date": "Datum",
+            "subscriptions": "Inschrijvingen",
             "workshop": "Workshop"
         }
     }

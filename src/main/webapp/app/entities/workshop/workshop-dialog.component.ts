@@ -11,6 +11,8 @@ import {WorkshopPopupService} from './workshop-popup.service';
 import {WorkshopService} from './workshop.service';
 import {Tag, TagService} from '../tag';
 import {ResponseWrapper} from '../../shared';
+import {Image} from '../image/image.model';
+import {S3ImageResizePipe} from '../../shared/image/s3-image-resize.pipe';
 
 @Component( {
                 selector: 'jhi-workshop-dialog', templateUrl: './workshop-dialog.component.html'
@@ -21,12 +23,12 @@ export class WorkshopDialogComponent implements OnInit {
     isSaving: boolean;
 
     tags: Tag[];
+    imageEndpoints: string[] = [];
 
     constructor( public activeModal: NgbActiveModal,
                  private jhiAlertService: JhiAlertService,
                  private workshopService: WorkshopService,
-                 private tagService: TagService,
-                 private eventManager: JhiEventManager ) {
+                 private tagService: TagService, private eventManager: JhiEventManager, private s3ImageResizePipe: S3ImageResizePipe ) {
     }
 
     ngOnInit() {
@@ -35,6 +37,14 @@ export class WorkshopDialogComponent implements OnInit {
             .subscribe( ( res: ResponseWrapper ) => {
                 this.tags = res.json;
             }, ( res: ResponseWrapper ) => this.onError( res.json ) );
+        if ( this.workshop ) {
+            if ( !this.workshop.images ) {
+                this.workshop.images = [];
+            }
+            this.workshop.images.forEach( ( image: Image ) => {
+                this.imageEndpoints.push( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) );
+            } )
+        }
     }
 
     clear() {
@@ -63,6 +73,22 @@ export class WorkshopDialogComponent implements OnInit {
             }
         }
         return option;
+    }
+
+    onImageRemoved( $event: any ) {
+        this.workshop.images.forEach( ( image: Image, index: number ) => {
+            if ( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) === $event.src ) {
+                this.workshop.images.splice( index, 1 );
+            }
+        } );
+    }
+
+    onImageUploadFinished( $event: any ) {
+        const id = JSON.parse( $event.serverResponse._body ).id;
+        if ( id ) {
+            const image = new Image( id );
+            this.workshop.images.push( image );
+        }
     }
 
     private subscribeToSaveResponse( result: Observable<Workshop> ) {

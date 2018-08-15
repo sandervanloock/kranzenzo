@@ -63,17 +63,17 @@ public class Workshop implements Serializable {
     @Column(name = "show_on_homepage")
     private Boolean showOnHomepage;
 
-    @OneToMany(mappedBy = "workshop", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "workshop")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set <WorkshopDate> dates = new HashSet <>();
 
-    @OneToMany(mappedBy = "workshop", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "workshop")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set <Image> images = new HashSet <>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "workshop_tags",
         joinColumns = @JoinColumn(name = "workshops_id", referencedColumnName = "id"),
