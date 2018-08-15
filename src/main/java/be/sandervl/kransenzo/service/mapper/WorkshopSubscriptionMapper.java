@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity WorkshopSubscription and its DTO WorkshopSubscriptionDTO.
  */
-@Mapper(componentModel = "spring", uses = {WorkshopDateMapper.class})
+@Mapper(componentModel = "spring", uses = {WorkshopDateMapper.class, UserMapper.class})
 public interface WorkshopSubscriptionMapper extends EntityMapper <WorkshopSubscriptionDTO, WorkshopSubscription> {
 
     @Mapping(source = "workshop.id", target = "workshopId")
