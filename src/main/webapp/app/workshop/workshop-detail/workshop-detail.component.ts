@@ -29,7 +29,7 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInWorkshop() {
-        //:this.eventSubscriber = this.eventManager.subscribe( 'productListModification', ( response ) => this.load( this.workshop.id ) );
+        //this.eventSubscriber = this.eventManager.subscribe( 'productListModification', ( response ) => this.load( this.workshop.id ) );
         //this.eventManager.subscribe( 'productOrderCompleted', ( response ) => this.setSubmittedAlert( response.content ) );
     }
 

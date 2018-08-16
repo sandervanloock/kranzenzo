@@ -13,13 +13,13 @@ export class WorkshopSubscriptionComponent implements OnInit {
     workshop: Workshop = new Workshop();
     workshopDate: WorkshopDate = new WorkshopDate();
 
-    constructor( private route: ActivatedRoute, public workshopPopupService: WorkshopPopupService, private workshopSubscriptionService: WorkshopSubscriptionService, ) {
+    constructor( private route: ActivatedRoute, public workshopPopupService: WorkshopPopupService, private workshopSubscriptionService: WorkshopSubscriptionService ) {
     }
 
     ngOnInit() {
-        this.route.data.subscribe( ( data ) => {
-            this.load( data['date'] ); //TODO correct date
-        } );
+        this.route.children[2].params.subscribe( ( params ) => {
+            this.load( parseInt( params['date'], 10 ) );
+        } )
     }
 
     submitForm() {
@@ -33,8 +33,10 @@ export class WorkshopSubscriptionComponent implements OnInit {
         this.workshopPopupService.close();
     }
 
-    private load( id: number ) {
-        this.workshopDate = this.workshop.dates[0]; //TODO
+    load( id: number ) {
+        this.workshopDate = this.workshop.dates.find( ( date ) => {
+            return date.id === id;
+        } );
     }
 }
 
