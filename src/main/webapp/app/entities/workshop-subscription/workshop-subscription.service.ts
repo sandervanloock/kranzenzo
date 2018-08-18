@@ -40,6 +40,12 @@ export class WorkshopSubscriptionService {
         } );
     }
 
+    findByWorkshopDate( workshopDateId: number ): Observable<ResponseWrapper> {
+        return this.http.get( `${this.resourceUrl}?workshopDate=${workshopDateId}` ).map( ( res: Response ) => {
+            return this.convertResponse( res );
+        } );
+    }
+
     query( req?: any ): Observable<ResponseWrapper> {
         const options = createRequestOption( req );
         return this.http.get( this.resourceUrl, options )

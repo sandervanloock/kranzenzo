@@ -35,7 +35,7 @@ public class WorkshopSubscription implements Serializable {
     @ManyToOne
     private WorkshopDate workshop;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 

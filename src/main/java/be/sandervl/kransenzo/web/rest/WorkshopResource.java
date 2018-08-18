@@ -1,9 +1,11 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.domain.Workshop;
+import be.sandervl.kransenzo.domain.enumeration.SubscriptionState;
 import be.sandervl.kransenzo.repository.ImageRepository;
 import be.sandervl.kransenzo.repository.WorkshopDateRepository;
 import be.sandervl.kransenzo.repository.WorkshopRepository;
+import be.sandervl.kransenzo.repository.WorkshopSubscriptionRepository;
 import be.sandervl.kransenzo.repository.search.WorkshopSearchRepository;
 import be.sandervl.kransenzo.service.dto.WorkshopDTO;
 import be.sandervl.kransenzo.service.mapper.WorkshopMapper;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,13 +45,15 @@ public class WorkshopResource {
     private final WorkshopSearchRepository workshopSearchRepository;
     private final ImageRepository imageRepository;
     private final WorkshopDateRepository workshopDateRepository;
+    private final WorkshopSubscriptionRepository workshopSubscriptionRepository;
 
-    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper, WorkshopSearchRepository workshopSearchRepository, ImageRepository imageRepository, WorkshopDateRepository workshopDateRepository ) {
+    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper, WorkshopSearchRepository workshopSearchRepository, ImageRepository imageRepository, WorkshopDateRepository workshopDateRepository, WorkshopSubscriptionRepository workshopSubscriptionRepository ) {
         this.workshopRepository = workshopRepository;
         this.workshopMapper = workshopMapper;
         this.workshopSearchRepository = workshopSearchRepository;
         this.imageRepository = imageRepository;
         this.workshopDateRepository = workshopDateRepository;
+        this.workshopSubscriptionRepository = workshopSubscriptionRepository;
     }
 
     /**
@@ -114,12 +119,6 @@ public class WorkshopResource {
 
         }
 
-        //save new dates
-        workshop.getDates()
-                .stream()
-                .peek( date -> date.setWorkshop( workshop ) )
-                .forEach( workshopDateRepository::save );
-
         //link new images
         workshopRepository.save( workshop )
                           .getImages()
@@ -129,6 +128,12 @@ public class WorkshopResource {
                           .map( image -> imageRepository.findOne( image.getId() ) )
                           .peek( image -> image.setWorkshop( workshop ) )
                           .forEach( imageRepository::save );
+
+        //save new dates
+        workshop.getDates()
+                .stream()
+                .peek( date -> date.setWorkshop( workshop ) )
+                .forEach( workshopDateRepository::save );
 
         if ( existing != null ) {
             //delete removed dates
@@ -164,6 +169,16 @@ public class WorkshopResource {
     public ResponseEntity <WorkshopDTO> getWorkshop( @PathVariable Long id ) {
         log.debug( "REST request to get Workshop : {}", id );
         Workshop workshop = workshopRepository.findOneWithEagerRelationships( id );
+
+        log.debug( "Filter out past dates and dates with max subscriptions" );
+        workshop.setDates( workshop.getDates()
+                                   .stream()
+                                   .filter( date -> date.getDate().isAfter( ZonedDateTime.now() ) )
+                                   .filter( date -> workshopSubscriptionRepository
+                                       .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
+                                       .getMaxSubscriptions() )
+                                   .collect( Collectors.toSet() ) );
+
         WorkshopDTO workshopDTO = workshopMapper.toDto( workshop );
         return ResponseUtil.wrapOrNotFound( Optional.ofNullable( workshopDTO ) );
     }

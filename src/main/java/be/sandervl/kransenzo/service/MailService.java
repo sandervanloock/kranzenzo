@@ -149,9 +149,42 @@ public class MailService {
         sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
     }
 
-    public void sendWorkshopSubscriptionMails( WorkshopSubscription workshopSubscription ) {
-        log.debug( "Sending confirmation of subscription to '{}'", workshopSubscription.getUser().getEmail() );
+    public void sendWorkshopSubscriptionMails( WorkshopSubscription subscription ) {
+        User user = subscription.getUser();
+        log.debug( "Sending confirmation of subscription to '{}'", user.getEmail() );
+        Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
+        Context context = new Context( locale );
+        context.setVariable( USER, user );
+        context.setVariable( "subscription", subscription );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        String content = templateEngine.process( "workshopSubscriptionConfirmationCustomer", context );
+        String subject = messageSource.getMessage( "email.workshop.subscription.confirmation.title", null, locale );
+        sendEmail( user.getEmail(), subject, content, false, true );
+
         log.debug( "Sending notification of new subscription to '{}'", applicationProperties.getMail()
                                                                                             .getConfirmation() );
+        context = new Context( Locale.forLanguageTag( "nl" ) );
+        context.setVariable( "subscriptionLink", jHipsterProperties.getMail()
+                                                                   .getBaseUrl() + "#/workshop-subscription/" + subscription
+            .getId() );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        content = templateEngine.process( "workshopSubscriptionConfirmationClient", context );
+        subject = messageSource.getMessage( "email.workshop.subscription.confirmation.client.title", null,
+            Locale.forLanguageTag( "nl" ) );
+        sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
+    }
+
+    public void sendWorkshopConfirmationMail( WorkshopSubscription subscription ) {
+        User user = subscription.getUser();
+        log.debug( "Sending confirmation of payed subscription to '{}'", user.getEmail() );
+        Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
+        Context context = new Context( locale );
+        context.setVariable( USER, user );
+        context.setVariable( "subscription", subscription );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        String content = templateEngine.process( "workshopSubscriptionPayedCustomer", context );
+        String subject = messageSource.getMessage( "email.workshop.subscription.payed.customer.title", null,
+            Locale.forLanguageTag( "nl" ) );
+        sendEmail( user.getEmail(), subject, content, false, true );
     }
 }

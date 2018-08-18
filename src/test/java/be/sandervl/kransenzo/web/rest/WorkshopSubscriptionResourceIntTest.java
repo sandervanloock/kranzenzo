@@ -3,6 +3,8 @@ package be.sandervl.kransenzo.web.rest;
 import be.sandervl.kransenzo.KransenzoApp;
 import be.sandervl.kransenzo.domain.WorkshopSubscription;
 import be.sandervl.kransenzo.domain.enumeration.SubscriptionState;
+import be.sandervl.kransenzo.repository.WorkshopDateRepository;
+import be.sandervl.kransenzo.repository.WorkshopRepository;
 import be.sandervl.kransenzo.repository.WorkshopSubscriptionRepository;
 import be.sandervl.kransenzo.repository.search.WorkshopSubscriptionSearchRepository;
 import be.sandervl.kransenzo.service.MailService;
@@ -70,6 +72,12 @@ public class WorkshopSubscriptionResourceIntTest {
     private MailService mailService;
 
     @Autowired
+    private WorkshopRepository workshopRepository;
+
+    @Autowired
+    private WorkshopDateRepository workshopDateRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -102,7 +110,7 @@ public class WorkshopSubscriptionResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks( this );
         final WorkshopSubscriptionResource workshopSubscriptionResource =
-            new WorkshopSubscriptionResource( workshopSubscriptionRepository, workshopSubscriptionMapper, workshopSubscriptionSearchRepository, userService, mailService );
+            new WorkshopSubscriptionResource( workshopSubscriptionRepository, workshopSubscriptionMapper, workshopSubscriptionSearchRepository, userService, mailService, workshopDateRepository, workshopRepository );
         this.restWorkshopSubscriptionMockMvc = MockMvcBuilders.standaloneSetup( workshopSubscriptionResource )
                                                               .setCustomArgumentResolvers( pageableArgumentResolver )
                                                               .setControllerAdvice( exceptionTranslator )

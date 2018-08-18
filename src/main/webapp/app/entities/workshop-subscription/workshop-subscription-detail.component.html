@@ -4,19 +4,17 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kransenzoApp.workshopSubscription.created">Created</span></dt>
-        <dd>
-            <span>{{workshopSubscription.created | date:'medium'}}</span>
-        </dd>
         <dt><span jhiTranslate="kransenzoApp.workshopSubscription.state">State</span></dt>
         <dd>
             <span jhiTranslate="{{'kransenzoApp.SubscriptionState.' + workshopSubscription.state}}">{{workshopSubscription.state}}</span>
         </dd>
-        <dt><span jhiTranslate="kransenzoApp.workshopSubscription.workshop">Workshop</span></dt>
+        <dt><span>Naam</span></dt>
         <dd>
-            <div *ngIf="workshopSubscription.workshopId">
-                <a [routerLink]="['/workshop-date', workshopSubscription.workshopId]">{{workshopSubscription.workshopDate}}</a>
-            </div>
+            {{workshopSubscription.user.firstName}} {{workshopSubscription.user.lastName}}
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+            {{workshopSubscription.user.email}}
         </dd>
     </dl>
 

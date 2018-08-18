@@ -5,6 +5,7 @@ import {JhiEventManager} from 'ng-jhipster';
 
 import {WorkshopDate} from './workshop-date.model';
 import {WorkshopDateService} from './workshop-date.service';
+import {WorkshopSubscription, WorkshopSubscriptionService} from '../workshop-subscription';
 
 @Component( {
                 selector: 'jhi-workshop-date-detail', templateUrl: './workshop-date-detail.component.html'
@@ -12,10 +13,15 @@ import {WorkshopDateService} from './workshop-date.service';
 export class WorkshopDateDetailComponent implements OnInit, OnDestroy {
 
     workshopDate: WorkshopDate;
+    subscriptions: WorkshopSubscription[];
     private subscription: Subscription;
     private eventSubscriber: Subscription;
 
-    constructor( private eventManager: JhiEventManager, private workshopDateService: WorkshopDateService, private route: ActivatedRoute ) {
+    constructor(
+        private eventManager: JhiEventManager,
+        private workshopDateService: WorkshopDateService,
+        private subscriptionService: WorkshopSubscriptionService,
+        private route: ActivatedRoute ) {
     }
 
     ngOnInit() {
@@ -29,6 +35,9 @@ export class WorkshopDateDetailComponent implements OnInit, OnDestroy {
         this.workshopDateService.find( id ).subscribe( ( workshopDate ) => {
             this.workshopDate = workshopDate;
         } );
+        this.subscriptionService.findByWorkshopDate( id ).subscribe( ( subscriptions ) => {
+            this.subscriptions = subscriptions.json;
+        } )
     }
 
     previousState() {

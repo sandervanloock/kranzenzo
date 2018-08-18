@@ -161,6 +161,10 @@
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-afterburner</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-java8time</artifactId>
+        </dependency>
         <!--https://github.com/drewnoakes/metadata-extractor-->
         <!--used to extract exif information from image (to get the correct orientation)-->
         <dependency>

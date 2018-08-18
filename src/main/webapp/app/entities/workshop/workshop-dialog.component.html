@@ -37,11 +37,15 @@
             </div>
         </div>
 
-        <a href="#" (click)="addWorkshopDate()"> <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
-        <div class="input-group mb-3" *ngFor="let workshopDate of workshop.dates ;let i = index">
+        <h4 jhiTranslate="kransenzoApp.workshop.dates">Data</h4>
+        <button type="button" class="btn btn-lg" style="background-color:transparent;" (click)="addWorkshopDate()">
+            <i class="fa fa-plus-circle" aria-hidden="true"></i> Toevoegen
+        </button>
+        <div class="form-group" *ngFor="let workshopDate of workshop.dates ;let i = index">
             <div class="input-group-prepend">
                 <div class="input-group-text">
-                    <a href="#" (click)="removeWorkshopDate(i)"> <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                    <a (click)="removeWorkshopDate(i)" style="margin: 1em;">
+                        <i class="fa fa-minus-circle" aria-hidden="true"></i>
                     </a>
                 </div>
             </div>

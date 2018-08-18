@@ -5,6 +5,7 @@ import be.sandervl.kransenzo.domain.Workshop;
 import be.sandervl.kransenzo.repository.ImageRepository;
 import be.sandervl.kransenzo.repository.WorkshopDateRepository;
 import be.sandervl.kransenzo.repository.WorkshopRepository;
+import be.sandervl.kransenzo.repository.WorkshopSubscriptionRepository;
 import be.sandervl.kransenzo.repository.search.WorkshopSearchRepository;
 import be.sandervl.kransenzo.service.dto.WorkshopDTO;
 import be.sandervl.kransenzo.service.mapper.WorkshopMapper;
@@ -84,6 +85,9 @@ public class WorkshopResourceIntTest {
     private WorkshopDateRepository workshopDateRepository;
 
     @Autowired
+    private WorkshopSubscriptionRepository workshopSubscriptionRepository;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -123,7 +127,7 @@ public class WorkshopResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks( this );
         final WorkshopResource workshopResource =
-            new WorkshopResource( workshopRepository, workshopMapper, workshopSearchRepository, imageRepository, workshopDateRepository );
+            new WorkshopResource( workshopRepository, workshopMapper, workshopSearchRepository, imageRepository, workshopDateRepository, workshopSubscriptionRepository );
         this.restWorkshopMockMvc = MockMvcBuilders.standaloneSetup( workshopResource )
                                                   .setCustomArgumentResolvers( pageableArgumentResolver )
                                                   .setControllerAdvice( exceptionTranslator )

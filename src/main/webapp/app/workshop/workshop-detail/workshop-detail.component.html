@@ -46,7 +46,7 @@
             <h5>Data</h5>
             <div class="btn-group" role="group" aria-label="Inschrijvingen">
                 <button type="button" class="btn btn-primary btn-lg" [routerLink]="['/', { outlets: { popup: 'kranzenzo-workshop/'+ workshop.id + '/subscription/'+date.id} }]" replaceUrl="true" role="button" *ngFor="let date of workshop.dates">
-                    {{date.date | date:'dd-MM-yyyy hh:mm'}}
+                    {{date.date | date:'dd-MM-yyyy HH:mm'}}
                 </button>
             </div>
         </div>

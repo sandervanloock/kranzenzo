@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Response} from '@angular/http';
+import {DatePipe} from '@angular/common';
 
 import {Observable} from 'rxjs/Rx';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import {JhiAlertService, JhiDateUtils, JhiEventManager} from 'ng-jhipster';
 
 import {Workshop} from './workshop.model';
 import {WorkshopPopupService} from './workshop-popup.service';
@@ -29,7 +30,11 @@ export class WorkshopDialogComponent implements OnInit {
     constructor( public activeModal: NgbActiveModal,
                  private jhiAlertService: JhiAlertService,
                  private workshopService: WorkshopService,
-                 private tagService: TagService, private eventManager: JhiEventManager, private s3ImageResizePipe: S3ImageResizePipe ) {
+                 private tagService: TagService,
+                 private eventManager: JhiEventManager,
+                 private s3ImageResizePipe: S3ImageResizePipe,
+                 private datePipe: DatePipe,
+                 private dateUtils: JhiDateUtils ) {
     }
 
     ngOnInit() {
@@ -45,8 +50,12 @@ export class WorkshopDialogComponent implements OnInit {
             this.workshop.images.forEach( ( image: Image ) => {
                 this.imageEndpoints.push( this.s3ImageResizePipe.transform( image.endpoint, '50x50' ) );
             } );
+            if ( !this.workshop.dates ) {
+                this.workshop.dates = [];
+            }
             this.workshop.dates.forEach( ( workshopDate ) => {
-                workshopDate.date = workshopDate.date.substr( 0, 19 );
+                workshopDate.date = this.datePipe
+                    .transform( workshopDate.date, 'yyyy-MM-ddTHH:mm:ss' )
             } );
         }
     }
@@ -58,7 +67,7 @@ export class WorkshopDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         this.workshop.dates.forEach( ( workshopDate ) => {
-            workshopDate.date = workshopDate.date + '+02:00';
+            workshopDate.date = this.dateUtils.toDate( workshopDate.date );
         } );
         if ( this.workshop.id !== undefined ) {
             this.subscribeToSaveResponse( this.workshopService.update( this.workshop ) );

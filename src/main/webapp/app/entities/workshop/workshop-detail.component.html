@@ -7,6 +7,13 @@
         <dd>
             <span>{{workshop.name}}</span>
         </dd>
+        <dd>
+            <span>{{workshop.durationInMinutes}}</span>
+        </dd>
+        <dt><span jhiTranslate="kransenzoApp.workshop.price">Price</span></dt>
+        <dd>
+            <span>{{workshop.price}}</span>
+        </dd>
         <dt><span jhiTranslate="kransenzoApp.workshop.description">Description</span></dt>
         <dd>
             <span>{{workshop.description}}</span>
@@ -20,25 +27,26 @@
             <span>{{workshop.includedInPrice}}</span>
         </dd>
         <dt><span jhiTranslate="kransenzoApp.workshop.durationInMinutes">Duration In Minutes</span></dt>
-        <dd>
-            <span>{{workshop.durationInMinutes}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.workshop.price">Price</span></dt>
-        <dd>
-            <span>{{workshop.price}}</span>
-        </dd>
         <dt><span jhiTranslate="kransenzoApp.workshop.maxSubscriptions">Max Subscriptions</span></dt>
         <dd>
             <span>{{workshop.maxSubscriptions}}</span>
         </dd>
-        <dt><span jhiTranslate="kransenzoApp.workshop.isActive">Is Active</span></dt>
+        <!--<dt><span jhiTranslate="kransenzoApp.workshop.isActive">Is Active</span></dt>-->
+        <!--<dd>-->
+        <!--<span>{{workshop.isActive}}</span>-->
+        <!--</dd>-->
+        <!--<dt><span jhiTranslate="kransenzoApp.workshop.showOnHomepage">Show On Homepage</span></dt>-->
+        <!--<dd>-->
+        <!--<span>{{workshop.showOnHomepage}}</span>-->
+        <dt><span jhiTranslate="kransenzoApp.workshop.dates">Date</span></dt>
         <dd>
-            <span>{{workshop.isActive}}</span>
+            <ul *ngFor="let date of workshop.dates">
+                <li>
+                    <a [routerLink]="['/workshop-date', date?.id ]">{{date.date | date:'dd-MM-yyyy HH:mm'}}</a>
+                </li>
+            </ul>
         </dd>
-        <dt><span jhiTranslate="kransenzoApp.workshop.showOnHomepage">Show On Homepage</span></dt>
-        <dd>
-            <span>{{workshop.showOnHomepage}}</span>
-        </dd>
+        <!--</dd>-->
         <dt><span jhiTranslate="kransenzoApp.workshop.tags">Tags</span></dt>
         <dd>
             <span *ngFor="let tags of workshop.tags; let last = last">
