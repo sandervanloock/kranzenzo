@@ -95,6 +95,11 @@ public class WorkshopSubscription implements Serializable {
         this.user = user;
     }
 
+    public WorkshopSubscription user( User user ) {
+        this.user = user;
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

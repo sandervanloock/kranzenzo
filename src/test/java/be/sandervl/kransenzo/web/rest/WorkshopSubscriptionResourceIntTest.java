@@ -1,8 +1,12 @@
 package be.sandervl.kransenzo.web.rest;
 
 import be.sandervl.kransenzo.KransenzoApp;
+import be.sandervl.kransenzo.domain.User;
+import be.sandervl.kransenzo.domain.Workshop;
+import be.sandervl.kransenzo.domain.WorkshopDate;
 import be.sandervl.kransenzo.domain.WorkshopSubscription;
 import be.sandervl.kransenzo.domain.enumeration.SubscriptionState;
+import be.sandervl.kransenzo.repository.UserRepository;
 import be.sandervl.kransenzo.repository.WorkshopDateRepository;
 import be.sandervl.kransenzo.repository.WorkshopRepository;
 import be.sandervl.kransenzo.repository.WorkshopSubscriptionRepository;
@@ -68,6 +72,8 @@ public class WorkshopSubscriptionResourceIntTest {
     @Autowired
     private UserService userService;
 
+    private static User USER;
+
     @Autowired
     private MailService mailService;
 
@@ -92,6 +98,10 @@ public class WorkshopSubscriptionResourceIntTest {
     private MockMvc restWorkshopSubscriptionMockMvc;
 
     private WorkshopSubscription workshopSubscription;
+    private static WorkshopDate WORKSHOP_DATE;
+    private static Workshop WORKSHOP;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Create an entity for this test.
@@ -122,6 +132,16 @@ public class WorkshopSubscriptionResourceIntTest {
     public void initTest() {
         workshopSubscriptionSearchRepository.deleteAll();
         workshopSubscription = createEntity( em );
+        USER = UserResourceIntTest.createEntity( em );
+        USER.setLangKey( "nl" );
+        userRepository.saveAndFlush( USER );
+        workshopSubscription.setUser( USER );
+        WORKSHOP_DATE = WorkshopDateResourceIntTest.createEntity( em );
+        workshopDateRepository.saveAndFlush( WORKSHOP_DATE );
+        WORKSHOP = WorkshopResourceIntTest.createEntity( em );
+        workshopRepository.saveAndFlush( WORKSHOP );
+        WORKSHOP_DATE.setWorkshop( WORKSHOP );
+        workshopSubscription.setWorkshop( WORKSHOP_DATE );
     }
 
     @Test
@@ -141,7 +161,7 @@ public class WorkshopSubscriptionResourceIntTest {
         assertThat( workshopSubscriptionList ).hasSize( databaseSizeBeforeCreate + 1 );
         WorkshopSubscription testWorkshopSubscription = workshopSubscriptionList.get( workshopSubscriptionList
             .size() - 1 );
-        assertThat( testWorkshopSubscription.getCreated() ).isEqualTo( DEFAULT_CREATED );
+        //assertThat( testWorkshopSubscription.getCreated() ).isEqualTo( DEFAULT_CREATED );
         assertThat( testWorkshopSubscription.getState() ).isEqualTo( DEFAULT_STATE );
 
         // Validate the WorkshopSubscription in Elasticsearch

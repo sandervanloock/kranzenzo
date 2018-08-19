@@ -31,8 +31,8 @@ export class WorkshopService {
         } );
     }
 
-    find( id: number ): Observable<Workshop> {
-        return this.http.get( `${this.resourceUrl}/${id}` ).map( ( res: Response ) => {
+    find( id: number, filterDates?: boolean ): Observable<Workshop> {
+        return this.http.get( `${this.resourceUrl}/${id}?filterDates=${filterDates ? filterDates : false}` ).map( ( res: Response ) => {
             const jsonResponse = res.json();
             return this.convertItemFromServer( jsonResponse );
         } );

@@ -34,7 +34,7 @@ export class WorkshopDetailComponent implements OnInit, OnDestroy {
     }
 
     private load( id: number ) {
-        this.workshopService.find( id ).subscribe( ( workshop ) => {
+        this.workshopService.find( id, true ).subscribe( ( workshop ) => {
             this.workshop = workshop
         } );
     }

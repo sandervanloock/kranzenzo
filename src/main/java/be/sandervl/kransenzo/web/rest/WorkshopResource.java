@@ -166,18 +166,21 @@ public class WorkshopResource {
      */
     @GetMapping("/workshops/{id}")
     @Timed
-    public ResponseEntity <WorkshopDTO> getWorkshop( @PathVariable Long id ) {
+    public ResponseEntity <WorkshopDTO> getWorkshop( @PathVariable Long id, @RequestParam(value = "filterDates", required = false) Boolean filterDates ) {
         log.debug( "REST request to get Workshop : {}", id );
         Workshop workshop = workshopRepository.findOneWithEagerRelationships( id );
 
-        log.debug( "Filter out past dates and dates with max subscriptions" );
-        workshop.setDates( workshop.getDates()
-                                   .stream()
-                                   .filter( date -> date.getDate().isAfter( ZonedDateTime.now() ) )
-                                   .filter( date -> workshopSubscriptionRepository
-                                       .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
-                                       .getMaxSubscriptions() )
-                                   .collect( Collectors.toSet() ) );
+        if ( workshop != null && workshop.getDates() != null && !workshop.getDates().isEmpty() && filterDates ) {
+            log.debug( "Filter out past dates and dates with max subscriptions" );
+            workshop.setDates( workshop.getDates()
+                                       .stream()
+                                       .filter( date -> date.getDate().isAfter( ZonedDateTime.now() ) )
+                                       .filter( date -> workshopSubscriptionRepository
+                                           .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
+                                           .getMaxSubscriptions() )
+                                       .collect( Collectors.toSet() ) );
+
+        }
 
         WorkshopDTO workshopDTO = workshopMapper.toDto( workshop );
         return ResponseUtil.wrapOrNotFound( Optional.ofNullable( workshopDTO ) );
