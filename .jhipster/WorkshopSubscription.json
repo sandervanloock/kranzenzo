@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "workshop",
+            "otherEntityName": "workshopDate",
+            "otherEntityField": "date"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "SubscriptionState",
+            "fieldValues": "NEW,PAYED,CANCELLED"
+        }
+    ],
+    "changelogDate": "20180809200005",
+    "entityTableName": "workshop_subscription",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

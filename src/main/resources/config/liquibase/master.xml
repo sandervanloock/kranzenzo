@@ -13,6 +13,12 @@
     <include file="config/liquibase/changelog/20171212225541_added_entity_Order.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171212225542_added_entity_Location.xml"
              relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180809200005_added_entity_WorkshopSubscription.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180809200004_added_entity_WorkshopDate.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180809200003_added_entity_Workshop.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20171212225537_added_entity_constraints_Product.xml"
              relativeToChangelogFile="false"/>
@@ -23,6 +29,12 @@
     <include file="config/liquibase/changelog/20171212225541_added_entity_constraints_Order.xml"
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20171212225539_added_entity_constraints_Tag.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180809200005_added_entity_constraints_WorkshopSubscription.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180809200004_added_entity_constraints_WorkshopDate.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180809200003_added_entity_constraints_Workshop.xml"
              relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

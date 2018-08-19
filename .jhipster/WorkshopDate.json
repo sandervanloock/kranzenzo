@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "subscriptions",
+            "otherEntityName": "workshopSubscription",
+            "otherEntityRelationshipName": "workshop"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "workshop",
+            "otherEntityName": "workshop",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180809200004",
+    "entityTableName": "workshop_date",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

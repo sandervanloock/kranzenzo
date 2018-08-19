@@ -22,7 +22,7 @@ entity Customer {
     phoneNumber String
 }
 
-entity Order{
+entity ProductOrder{
 	created ZonedDateTime
     updated ZonedDateTime
     state OrderState
@@ -38,24 +38,65 @@ entity Location{
     description String
 }
 
+entity Workshop{
+	name String required maxlength(255)
+    description String maxlength(5000)
+    neededMaterials String maxlength(5000)
+    includedInPrice String maxlength(5000)
+    durationInMinutes Integer required
+    price Float min(0)
+    maxSubscriptions Integer 
+    isActive Boolean
+    showOnHomepage Boolean
+}
+
+entity WorkshopDate{
+	date ZonedDateTime required
+}
+
+entity WorkshopSubscription{
+    created ZonedDateTime
+    state SubscriptionState
+}
+
 enum OrderState{
 	NEW, PAYED, CANCELLED, DONE
+}
+
+enum SubscriptionState{
+	NEW, PAYED, CANCELLED
 }
 
 enum DeliveryType{
 	DELIVERED, PICKUP
 }
 
+relationship OneToMany{
+	Workshop{dates} to WorkshopDate{workshop(name)}
+}
+
+relationship OneToMany{
+	WorkshopDate{subscriptions} to WorkshopSubscription{workshop(date)}
+}
+
 relationship OneToOne{
-	Order{deliveryAddress} to Location
+	ProductOrder{deliveryAddress} to Location
 }
 
 relationship OneToOne{
 	Customer{address} to Location
 }
 
+relationship ManyToMany{
+	Workshop{tags(name)} to Tag{workshops(name)}
+}
+
 relationship ManyToMany {
-	Product{tags(name)} to Tag{tags(name)}
+	Product{tags(name)} to Tag{products(name)}
+}
+
+relationship OneToMany{
+	Workshop{images} to Image{workshop(name)}
 }
 
 relationship OneToMany{
@@ -63,15 +104,15 @@ relationship OneToMany{
 }
 
 relationship OneToMany{
-	Customer{orders} to Order
+	Customer{orders} to ProductOrder
 }
 
 relationship OneToMany{
-	Product{orders} to Order{product(name) required}
+	Product{orders} to ProductOrder{product(name) required}
 }
 
 
 dto * with mapstruct
 
-service Order with serviceClass
+service ProductOrder with serviceClass
 service Product with serviceClass

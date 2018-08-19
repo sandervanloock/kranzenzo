@@ -3,6 +3,7 @@ import {Component, OnInit} from '@angular/core';
 import {Principal} from '../shared';
 import {JhiEventManager} from 'ng-jhipster';
 import {Tag, TagService} from '../entities/tag';
+import {Workshop, WorkshopService} from '../entities/workshop';
 
 @Component( {
                 selector: 'jhi-home', templateUrl: './home.component.html', styleUrls: ['home.css']
@@ -10,10 +11,11 @@ import {Tag, TagService} from '../entities/tag';
             } )
 export class HomeComponent implements OnInit {
     account: Account;
+    workshop: Workshop;
     homepageImages: HomepageImage[];
     homepageTags: Tag[];
 
-    constructor( private principal: Principal, private eventManager: JhiEventManager, private tagService: TagService ) {
+    constructor( private principal: Principal, private eventManager: JhiEventManager, private tagService: TagService, private workshopService: WorkshopService ) {
     }
 
     ngOnInit() {
@@ -30,6 +32,9 @@ export class HomeComponent implements OnInit {
         this.tagService.query( {homepage: true} ).subscribe( ( data ) => {
             this.homepageTags = data.json
         } );
+        this.workshopService.find( 1 ).subscribe( ( ws ) => {
+            this.workshop = ws;
+        } )
     }
 
     registerAuthenticationSuccess() {

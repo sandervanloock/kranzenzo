@@ -47,5 +47,13 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="201808092229" author="svl">
+        <addColumn tableName="image">
+            <column name="workshop_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

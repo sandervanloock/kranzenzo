@@ -1,0 +1,24 @@
+{
+    "kransenzoApp": {
+        "workshopSubscription": {
+            "home": {
+                "title": "Workshop Subscriptions",
+                "createLabel": "Maak een nieuwe Workshop Subscription",
+                "createOrEditLabel": "Maak of wijzig een Workshop Subscription",
+                "search": "Search for Workshop Subscription"
+            },
+            "created": "A new Workshop Subscription is created with identifier {{ param }}",
+            "updated": "A Workshop Subscription is updated with identifier {{ param }}",
+            "deleted": "A Workshop Subscription is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Workshop Subscription {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Workshop Subscription"
+            },
+            "created": "Aanmaakdatum",
+            "state": "Status",
+            "workshop": "Workshop"
+        }
+    }
+}

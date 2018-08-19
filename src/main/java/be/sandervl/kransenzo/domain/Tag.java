@@ -40,6 +40,11 @@ public class Tag implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set <Product> tags = new HashSet <>();
 
+    @ManyToMany(mappedBy = "tags")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set <Workshop> workshops = new HashSet <>();
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Image image;
@@ -105,6 +110,14 @@ public class Tag implements Serializable {
 
     public void setTags( Set <Product> products ) {
         this.tags = products;
+    }
+
+    public Set <Workshop> getWorkshops() {
+        return workshops;
+    }
+
+    public void setWorkshops( Set <Workshop> workshops ) {
+        this.workshops = workshops;
     }
 
     public Image getImage() {

@@ -1,0 +1,10 @@
+{
+    "kransenzoApp": {
+        "SubscriptionState": {
+            "null": "",
+            "NEW": "Nieuw",
+            "PAYED": "Betaald",
+            "CANCELLED": "Geanulleerd"
+        }
+    }
+}

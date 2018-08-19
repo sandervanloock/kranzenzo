@@ -15,4 +15,12 @@
 		                         referencedTableName="product"/>
 
 	</changeSet>
+    
+    <changeSet id="201808092231" author="svl">
+        <addForeignKeyConstraint baseColumnNames="workshop_id"
+                                 baseTableName="image"
+                                 constraintName="fk_image_workshop_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="workshop"/>
+    </changeSet>
 </databaseChangeLog>

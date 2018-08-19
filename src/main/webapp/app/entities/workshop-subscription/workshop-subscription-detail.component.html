@@ -1,0 +1,28 @@
+<div *ngIf="workshopSubscription">
+    <h2><span jhiTranslate="kransenzoApp.workshopSubscription.detail.title">Workshop Subscription</span>
+        {{workshopSubscription.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="kransenzoApp.workshopSubscription.state">State</span></dt>
+        <dd>
+            <span jhiTranslate="{{'kransenzoApp.SubscriptionState.' + workshopSubscription.state}}">{{workshopSubscription.state}}</span>
+        </dd>
+        <dt><span>Naam</span></dt>
+        <dd>
+            {{workshopSubscription.user.firstName}} {{workshopSubscription.user.lastName}}
+        </dd>
+        <dt><span>Email</span></dt>
+        <dd>
+            {{workshopSubscription.user.email}}
+        </dd>
+    </dl>
+
+    <button type="submit" (click)="previousState()" class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" [routerLink]="['/', { outlets: { popup: 'workshop-subscription/'+ workshopSubscription.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

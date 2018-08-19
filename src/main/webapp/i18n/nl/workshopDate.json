@@ -1,0 +1,24 @@
+{
+    "kransenzoApp": {
+        "workshopDate": {
+            "home": {
+                "title": "Workshop Dates",
+                "createLabel": "Maak een nieuwe Workshop Date",
+                "createOrEditLabel": "Maak of wijzig een Workshop Date",
+                "search": "Search for Workshop Date"
+            },
+            "created": "A new Workshop Date is created with identifier {{ param }}",
+            "updated": "A Workshop Date is updated with identifier {{ param }}",
+            "deleted": "A Workshop Date is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Workshop Date {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Workshop Datum"
+            },
+            "date": "Datum",
+            "subscriptions": "Inschrijvingen",
+            "workshop": "Workshop"
+        }
+    }
+}
