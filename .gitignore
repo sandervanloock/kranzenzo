@@ -59,6 +59,7 @@ local.properties
 .idea/artifacts
 .idea/encodings.xml
 .idea/datasources.local.xml
+.idea/dataSources/**
 *.iml
 *.iws
 *.ipr
