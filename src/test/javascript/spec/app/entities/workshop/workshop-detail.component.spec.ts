@@ -1,51 +1,40 @@
 /* tslint:disable max-line-length */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {DatePipe} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Rx';
-import {JhiDataUtils, JhiDateUtils, JhiEventManager} from 'ng-jhipster';
-import {KransenzoTestModule} from '../../../test.module';
-import {MockActivatedRoute} from '../../../helpers/mock-route.service';
-import {WorkshopDetailComponent} from '../../../../../../main/webapp/app/entities/workshop/workshop-detail.component';
-import {WorkshopService} from '../../../../../../main/webapp/app/entities/workshop/workshop.service';
-import {Workshop} from '../../../../../../main/webapp/app/entities/workshop/workshop.model';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
-describe( 'Component Tests', () => {
+import { KranzenzoTestModule } from '../../../test.module';
+import { WorkshopDetailComponent } from 'app/entities/workshop/workshop-detail.component';
+import { Workshop } from 'app/shared/model/workshop.model';
 
-    describe( 'Workshop Management Detail Component', () => {
+describe('Component Tests', () => {
+    describe('Workshop Management Detail Component', () => {
         let comp: WorkshopDetailComponent;
         let fixture: ComponentFixture<WorkshopDetailComponent>;
-        let service: WorkshopService;
+        const route = ({ data: of({ workshop: new Workshop(123) }) } as any) as ActivatedRoute;
 
-        beforeEach( async( () => {
-            TestBed.configureTestingModule( {
-                                                imports: [KransenzoTestModule], declarations: [WorkshopDetailComponent], providers: [JhiDateUtils, JhiDataUtils, DatePipe, {
-                    provide: ActivatedRoute, useValue: new MockActivatedRoute( {id: 123} )
-                }, WorkshopService, JhiEventManager]
-                                            } ).overrideTemplate( WorkshopDetailComponent, '' )
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [KranzenzoTestModule],
+                declarations: [WorkshopDetailComponent],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
+            })
+                .overrideTemplate(WorkshopDetailComponent, '')
                 .compileComponents();
-        } ) );
-
-        beforeEach( () => {
-            fixture = TestBed.createComponent( WorkshopDetailComponent );
+            fixture = TestBed.createComponent(WorkshopDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get( WorkshopService );
-        } );
+        });
 
-        describe( 'OnInit', () => {
-            it( 'Should call load all on init', () => {
+        describe('OnInit', () => {
+            it('Should call load all on init', () => {
                 // GIVEN
-
-                spyOn( service, 'find' ).and.returnValue( Observable.of( new Workshop( 10 ) ) );
 
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect( service.find ).toHaveBeenCalledWith( 123 );
-                expect( comp.workshop ).toEqual( jasmine.objectContaining( {id: 10} ) );
-            } );
-        } );
-    } );
-
-} );
+                expect(comp.workshop).toEqual(jasmine.objectContaining({ id: 123 }));
+            });
+        });
+    });
+});

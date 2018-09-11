@@ -1,23 +1,22 @@
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { Renderer, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { KransenzoTestModule } from '../../../../test.module';
-import { PasswordResetInitComponent } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.component';
-import { PasswordResetInitService } from '../../../../../../../main/webapp/app/account/password-reset/init/password-reset-init.service';
-import { EMAIL_NOT_FOUND_TYPE } from '../../../../../../../main/webapp/app/shared';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { ElementRef, Renderer } from '@angular/core';
+import { of, throwError } from 'rxjs';
+
+import { KranzenzoTestModule } from '../../../../test.module';
+import { PasswordResetInitComponent } from 'app/account/password-reset/init/password-reset-init.component';
+import { PasswordResetInitService } from 'app/account/password-reset/init/password-reset-init.service';
+import { EMAIL_NOT_FOUND_TYPE } from 'app/shared';
 
 describe('Component Tests', () => {
-
     describe('PasswordResetInitComponent', () => {
         let fixture: ComponentFixture<PasswordResetInitComponent>;
         let comp: PasswordResetInitComponent;
 
         beforeEach(() => {
             fixture = TestBed.configureTestingModule({
-                imports: [KransenzoTestModule],
+                imports: [KranzenzoTestModule],
                 declarations: [PasswordResetInitComponent],
                 providers: [
-                    PasswordResetInitService,
                     {
                         provide: Renderer,
                         useValue: {
@@ -29,8 +28,9 @@ describe('Component Tests', () => {
                         useValue: new ElementRef(null)
                     }
                 ]
-            }).overrideTemplate(PasswordResetInitComponent, '')
-            .createComponent(PasswordResetInitComponent);
+            })
+                .overrideTemplate(PasswordResetInitComponent, '')
+                .createComponent(PasswordResetInitComponent);
             comp = fixture.componentInstance;
             comp.ngOnInit();
         });
@@ -42,7 +42,8 @@ describe('Component Tests', () => {
             expect(comp.resetAccount).toEqual({});
         });
 
-        it('sets focus after the view has been initialized',
+        it(
+            'sets focus after the view has been initialized',
             inject([ElementRef], (elementRef: ElementRef) => {
                 const element = fixture.nativeElement;
                 const node = {
@@ -60,9 +61,10 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of success upon successful requestReset',
+        it(
+            'notifies of success upon successful requestReset',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.of({}));
+                spyOn(service, 'save').and.returnValue(of({}));
                 comp.resetAccount.email = 'user@domain.com';
 
                 comp.requestReset();
@@ -74,14 +76,15 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of unknown email upon email address not registered/400',
+        it(
+            'notifies of unknown email upon email address not registered/400',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.throw({
-                    status: 400,
-                    json() {
-                        return {type : EMAIL_NOT_FOUND_TYPE}
-                    }
-                }));
+                spyOn(service, 'save').and.returnValue(
+                    throwError({
+                        status: 400,
+                        error: { type: EMAIL_NOT_FOUND_TYPE }
+                    })
+                );
                 comp.resetAccount.email = 'user@domain.com';
 
                 comp.requestReset();
@@ -93,12 +96,15 @@ describe('Component Tests', () => {
             })
         );
 
-        it('notifies of error upon error response',
+        it(
+            'notifies of error upon error response',
             inject([PasswordResetInitService], (service: PasswordResetInitService) => {
-                spyOn(service, 'save').and.returnValue(Observable.throw({
-                    status: 503,
-                    data: 'something else'
-                }));
+                spyOn(service, 'save').and.returnValue(
+                    throwError({
+                        status: 503,
+                        data: 'something else'
+                    })
+                );
                 comp.resetAccount.email = 'user@domain.com';
 
                 comp.requestReset();
@@ -109,6 +115,5 @@ describe('Component Tests', () => {
                 expect(comp.error).toEqual('ERROR');
             })
         );
-
     });
 });

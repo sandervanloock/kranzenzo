@@ -4,21 +4,18 @@
         "browsehappy": "U gebruikt een <strong>verouderde</strong> browser. <a href=\"http://browsehappy.com/?locale=en\">upgrade uw browser</a> om de bruikbaarheid te verbeteren.",
         "menu": {
             "home": "Startpagina",
-            "shop": "Webshop",
-            "contact": "Contact",
-            "faq": "FAQ",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
-                "main": "Instellingen",
-                "product": "Producten",
-                "image": "Afbeeldingen",
-                "tag": "Groepen",
-                "customer": "Klanten",
-                "order": "Orders",
-                "location": "Locaties",
-                "workshopSubscription": "Workshop Subscription",
-                "workshopDate": "Workshop Date",
+                "main": "Entiteiten",
+                "product": "Product",
+                "image": "Image",
+                "tag": "Tag",
+                "customer": "Customer",
+                "productOrder": "Product Order",
+                "location": "Location",
                 "workshop": "Workshop",
+                "workshopDate": "Workshop Date",
+                "workshopSubscription": "Workshop Subscription",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -27,7 +24,6 @@
                 "password": "Wachtwoord",
                 "sessions": "Sessions",
                 "login": "Aanmelden",
-                "deactivate": "Deactiveren",
                 "logout": "Afmelden",
                 "register": "Registreren"
             },
@@ -49,6 +45,8 @@
         "form": {
             "username": "Username",
             "username.placeholder": "Uw username",
+            "currentpassword": "Current password",
+            "currentpassword.placeholder": "Current password",
             "newpassword": "Nieuw wachtwoord",
             "newpassword.placeholder": "Nieuw wachtwoord",
             "confirmpassword": "Nieuw wachtwoord bevestigen",
@@ -135,7 +133,8 @@
         "Size": "Field {{fieldName}} does not meet min/max size requirements!",
         "userexists": "Login name already used!",
         "emailexists": "Email is already in use!",
-        "idexists": "A new {{entityName}} cannot already have an ID"
+        "idexists": "A new {{entityName}} cannot already have an ID",
+        "idnull": "Invalid ID"
     },
     "footer": "Dit is uw voettekst"
 }

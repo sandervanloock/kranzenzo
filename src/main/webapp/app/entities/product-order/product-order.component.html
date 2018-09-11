@@ -1,0 +1,82 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="kranzenzoApp.productOrder.home.title">Product Orders</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-product-order" [routerLink]="['/product-order/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span jhiTranslate="kranzenzoApp.productOrder.home.createLabel">
+            Create new Product Order
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="table-responsive" *ngIf="productOrders">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.created">Created</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.updated">Updated</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.state">State</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.deliveryType">Delivery Type</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.includeBatteries">Include Batteries</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.description">Description</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.deliveryPrice">Delivery Price</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.paymentType">Payment Type</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.customer">Customer</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.deliveryAddress">Delivery Address</span></th>
+                <th><span jhiTranslate="kranzenzoApp.productOrder.product">Product</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let productOrder of productOrders ;trackBy: trackId">
+                <td><a [routerLink]="['/product-order', productOrder.id, 'view' ]">{{productOrder.id}}</a></td>
+                <td>{{productOrder.created | date:'medium'}}</td>
+                <td>{{productOrder.updated | date:'medium'}}</td>
+                <td jhiTranslate="{{'kranzenzoApp.OrderState.' + productOrder.state}}">{{productOrder.state}}</td>
+                <td jhiTranslate="{{'kranzenzoApp.DeliveryType.' + productOrder.deliveryType}}">
+                    {{productOrder.deliveryType}}
+                </td>
+                <td>{{productOrder.includeBatteries}}</td>
+                <td>{{productOrder.description}}</td>
+                <td>{{productOrder.deliveryPrice}}</td>
+                <td jhiTranslate="{{'kranzenzoApp.PaymentType.' + productOrder.paymentType}}">
+                    {{productOrder.paymentType}}
+                </td>
+                <td>
+                    <div *ngIf="productOrder.customerId">
+                        <a [routerLink]="['../customer', productOrder.customerId , 'view' ]">{{productOrder.customerId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="productOrder.deliveryAddressId">
+                        <a [routerLink]="['../location', productOrder.deliveryAddressId , 'view' ]">{{productOrder.deliveryAddressId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="productOrder.productId">
+                        <a [routerLink]="['../product', productOrder.productId , 'view' ]">{{productOrder.productName}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit" [routerLink]="['/product-order', productOrder.id, 'view' ]" class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit" [routerLink]="['/product-order', productOrder.id, 'edit']" class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'product-order/'+ productOrder.id + '/delete'} }]" replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

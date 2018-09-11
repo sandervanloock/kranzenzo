@@ -3,7 +3,6 @@
 ######################
 /target/www/**
 /src/test/javascript/coverage/
-/src/test/javascript/PhantomJS*/
 
 ######################
 # Node
@@ -13,6 +12,7 @@ node_tmp/
 node_modules/
 npm-debug.log.*
 /.awcache/*
+/.cache-loader/*
 
 ######################
 # SASS
@@ -53,19 +53,14 @@ local.properties
 ######################
 # Intellij
 ######################
-.idea/workspace.xml
-.idea/libraries
-.idea/sonarlint
-.idea/artifacts
-.idea/encodings.xml
-.idea/datasources.local.xml
-.idea/dataSources/**
+.idea/
 *.iml
 *.iws
 *.ipr
 *.ids
 *.orig
 classes/
+out/
 
 ######################
 # Visual Studio Code
@@ -147,8 +142,3 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml

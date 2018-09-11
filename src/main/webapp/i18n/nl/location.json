@@ -1,24 +1,23 @@
 {
-  "kransenzoApp": {
-    "location": {
-      "home": {
-        "title": "Locations",
-        "createLabel": "Maak een nieuwe Location",
-        "createOrEditLabel": "Maak of wijzig een Location",
-        "search": "Search for Location"
-      },
-      "created": "A new Location is created with identifier {{ param }}",
-      "updated": "A Location is updated with identifier {{ param }}",
-      "deleted": "A Location is deleted with identifier {{ param }}",
-      "delete": {
-        "question": "Bent u zeker dat u Location {{ id }} wilt verwijderen?"
-      },
-      "detail": {
-        "title": "Location"
-      },
-      "latitude": "Latitude",
-      "longitude": "Longitude",
-      "description": "Description"
+    "kranzenzoApp": {
+        "location": {
+            "home": {
+                "title": "Locations",
+                "createLabel": "Maak een nieuwe Location",
+                "createOrEditLabel": "Maak of wijzig een Location"
+            },
+            "created": "A new Location is created with identifier {{ param }}",
+            "updated": "A Location is updated with identifier {{ param }}",
+            "deleted": "A Location is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Location {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Location"
+            },
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "description": "Description"
+        }
     }
-  }
 }

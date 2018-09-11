@@ -1,35 +1,39 @@
-<div *ngIf="image">
-    <h2><span jhiTranslate="kransenzoApp.image.detail.title">Image</span> {{image.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kransenzoApp.image.data">Data</span></dt>
-        <dd>
-            <div *ngIf="image.data">
-                <a (click)="openFile(image.dataContentType, image.data)">
-                    <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" style="max-width: 100%;" alt="image image"/>
-                </a>
-                {{image.dataContentType}}, {{byteSize(image.data)}}
-            </div>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.image.product">Product</span></dt>
-        <dd>
-            <div *ngIf="image.productId">
-                <a [routerLink]="['/product', image.productId]">{{image.productName}}</a>
-            </div>
-        </dd>
-    </dl>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="image">
+            <h2><span jhiTranslate="kranzenzoApp.image.detail.title">Image</span> {{image.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kranzenzoApp.image.data">Data</span></dt>
+                <dd>
+                    <div *ngIf="image.data">
+                        <a (click)="openFile(image.dataContentType, image.data)">
+                            <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" style="max-width: 100%;" alt="image image"/>
+                        </a> {{image.dataContentType}}, {{byteSize(image.data)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.image.workshop">Workshop</span></dt>
+                <dd>
+                    <div *ngIf="image.workshopId">
+                        <a [routerLink]="['/workshop', image.workshopId, 'view']">{{image.workshopName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.image.product">Product</span></dt>
+                <dd>
+                    <div *ngIf="image.productId">
+                        <a [routerLink]="['/product', image.productId, 'view']">{{image.productName}}</a>
+                    </div>
+                </dd>
+            </dl>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
+            <button type="submit" (click)="previousState()" class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'image/'+ image.id + '/edit'} }]"
-            replaceUrl="true"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <button type="button" [routerLink]="['/image', image.id, 'edit']" class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

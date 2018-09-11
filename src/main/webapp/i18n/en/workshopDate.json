@@ -1,11 +1,10 @@
 {
-    "kransenzoApp": {
+    "kranzenzoApp": {
         "workshopDate": {
             "home": {
                 "title": "Workshop Dates",
                 "createLabel": "Create a new Workshop Date",
-                "createOrEditLabel": "Create or edit a Workshop Date",
-                "search": "Search for Workshop Date"
+                "createOrEditLabel": "Create or edit a Workshop Date"
             },
             "created": "A new Workshop Date is created with identifier {{ param }}",
             "updated": "A Workshop Date is updated with identifier {{ param }}",

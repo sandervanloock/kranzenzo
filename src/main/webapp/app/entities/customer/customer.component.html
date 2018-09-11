@@ -1,47 +1,32 @@
 <div>
-    <h2>
-        <span jhiTranslate="kransenzoApp.customer.home.title">Customers</span>
-        <button class="btn btn-primary float-right jh-create-entity create-customer" [routerLink]="['/', { outlets: { popup: ['customer-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down" jhiTranslate="kransenzoApp.customer.home.createLabel">
+    <h2 id="page-heading">
+        <span jhiTranslate="kranzenzoApp.customer.home.title">Customers</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-customer" [routerLink]="['/customer/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span jhiTranslate="kranzenzoApp.customer.home.createLabel">
             Create new Customer
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'kransenzoApp.customer.home.search' | translate }}">
-                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="customers">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="kransenzoApp.customer.street">Street</span></th>
-                <th><span jhiTranslate="kransenzoApp.customer.city">City</span></th>
-                <th><span jhiTranslate="kransenzoApp.customer.zipCode">Zip Code</span></th>
-                <th><span jhiTranslate="kransenzoApp.customer.province">Province</span></th>
-                <th><span jhiTranslate="kransenzoApp.customer.phoneNumber">Phone Number</span></th>
-                <th><span jhiTranslate="kransenzoApp.customer.address">Address</span></th>
+                <th><span jhiTranslate="kranzenzoApp.customer.street">Street</span></th>
+                <th><span jhiTranslate="kranzenzoApp.customer.city">City</span></th>
+                <th><span jhiTranslate="kranzenzoApp.customer.zipCode">Zip Code</span></th>
+                <th><span jhiTranslate="kranzenzoApp.customer.province">Province</span></th>
+                <th><span jhiTranslate="kranzenzoApp.customer.phoneNumber">Phone Number</span></th>
+                <th><span jhiTranslate="kranzenzoApp.customer.address">Address</span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let customer of customers ;trackBy: trackId">
-                <td><a [routerLink]="['../customer', customer.id ]">{{customer.id}}</a></td>
+                <td><a [routerLink]="['/customer', customer.id, 'view' ]">{{customer.id}}</a></td>
                 <td>{{customer.street}}</td>
                 <td>{{customer.city}}</td>
                 <td>{{customer.zipCode}}</td>
@@ -49,30 +34,27 @@
                 <td>{{customer.phoneNumber}}</td>
                 <td>
                     <div *ngIf="customer.addressId">
-                        <a [routerLink]="['../location', customer.addressId  ]">{{customer.addressId}}</a>
+                        <a [routerLink]="['../location', customer.addressId , 'view' ]">{{customer.addressId}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../customer', customer.id ]"
+                        <button type="submit" [routerLink]="['/customer', customer.id, 'view' ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.view">View</span>
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'customer/'+ customer.id + '/edit'} }]"
-                                replaceUrl="true"
+                        <button type="submit" [routerLink]="['/customer', customer.id, 'edit']"
                                 class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.edit">Edit</span>
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'customer/'+ customer.id + '/delete'} }]"
-                                replaceUrl="true"
+                                replaceUrl="true" queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="hidden-md-down" jhiTranslate="entity.action.delete">Delete</span>
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>
                 </td>

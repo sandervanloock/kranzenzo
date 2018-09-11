@@ -1,32 +1,26 @@
-import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { Renderer, ElementRef } from '@angular/core';
+import { ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { of, throwError } from 'rxjs';
+import { ElementRef, Renderer } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LoginModalService } from '../../../../../../../main/webapp/app/shared';
-import { KransenzoTestModule } from '../../../../test.module';
-import { PasswordResetFinishComponent } from '../../../../../../../main/webapp/app/account/password-reset/finish/password-reset-finish.component';
-import { PasswordResetFinishService } from '../../../../../../../main/webapp/app/account/password-reset/finish/password-reset-finish.service';
+
+import { KranzenzoTestModule } from '../../../../test.module';
+import { PasswordResetFinishComponent } from 'app/account/password-reset/finish/password-reset-finish.component';
+import { PasswordResetFinishService } from 'app/account/password-reset/finish/password-reset-finish.service';
 import { MockActivatedRoute } from '../../../../helpers/mock-route.service';
 
 describe('Component Tests', () => {
-
     describe('PasswordResetFinishComponent', () => {
-
         let fixture: ComponentFixture<PasswordResetFinishComponent>;
         let comp: PasswordResetFinishComponent;
 
         beforeEach(() => {
             fixture = TestBed.configureTestingModule({
-                imports: [KransenzoTestModule],
+                imports: [KranzenzoTestModule],
                 declarations: [PasswordResetFinishComponent],
                 providers: [
-                    PasswordResetFinishService,
-                    {
-                        provide: LoginModalService,
-                        useValue: null
-                    },
                     {
                         provide: ActivatedRoute,
-                        useValue: new MockActivatedRoute({'key': 'XYZPDQ'})
+                        useValue: new MockActivatedRoute({ key: 'XYZPDQ' })
                     },
                     {
                         provide: Renderer,
@@ -39,9 +33,15 @@ describe('Component Tests', () => {
                         useValue: new ElementRef(null)
                     }
                 ]
-            }).overrideTemplate(PasswordResetFinishComponent, '')
-            .createComponent(PasswordResetFinishComponent);
+            })
+                .overrideTemplate(PasswordResetFinishComponent, '')
+                .createComponent(PasswordResetFinishComponent);
+        });
+
+        beforeEach(() => {
+            fixture = TestBed.createComponent(PasswordResetFinishComponent);
             comp = fixture.componentInstance;
+            comp.ngOnInit();
         });
 
         it('should define its initial state', () => {
@@ -52,7 +52,8 @@ describe('Component Tests', () => {
             expect(comp.resetAccount).toEqual({});
         });
 
-        it('sets focus after the view has been initialized',
+        it(
+            'sets focus after the view has been initialized',
             inject([ElementRef], (elementRef: ElementRef) => {
                 const element = fixture.nativeElement;
                 const node = {
@@ -70,5 +71,58 @@ describe('Component Tests', () => {
             })
         );
 
+        it('should ensure the two passwords entered match', () => {
+            comp.resetAccount.password = 'password';
+            comp.confirmPassword = 'non-matching';
+
+            comp.finishReset();
+
+            expect(comp.doNotMatch).toEqual('ERROR');
+        });
+
+        it(
+            'should update success to OK after resetting password',
+            inject(
+                [PasswordResetFinishService],
+                fakeAsync((service: PasswordResetFinishService) => {
+                    spyOn(service, 'save').and.returnValue(of({}));
+
+                    comp.resetAccount.password = 'password';
+                    comp.confirmPassword = 'password';
+
+                    comp.finishReset();
+                    tick();
+
+                    expect(service.save).toHaveBeenCalledWith({
+                        key: 'XYZPDQ',
+                        newPassword: 'password'
+                    });
+                    expect(comp.success).toEqual('OK');
+                })
+            )
+        );
+
+        it(
+            'should notify of generic error',
+            inject(
+                [PasswordResetFinishService],
+                fakeAsync((service: PasswordResetFinishService) => {
+                    spyOn(service, 'save').and.returnValue(throwError('ERROR'));
+
+                    comp.resetAccount.password = 'password';
+                    comp.confirmPassword = 'password';
+
+                    comp.finishReset();
+                    tick();
+
+                    expect(service.save).toHaveBeenCalledWith({
+                        key: 'XYZPDQ',
+                        newPassword: 'password'
+                    });
+                    expect(comp.success).toBeNull();
+                    expect(comp.error).toEqual('ERROR');
+                })
+            )
+        );
     });
 });

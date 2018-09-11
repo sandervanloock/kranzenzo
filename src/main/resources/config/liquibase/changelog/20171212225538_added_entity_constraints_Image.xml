@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-	<!--
-		Added the constraints for entity Image.
-	-->
-	<changeSet id="20171212225538-2" author="jhipster">
-
-		<addForeignKeyConstraint baseColumnNames="product_id"
-		                         baseTableName="image"
-		                         constraintName="fk_image_product_id"
-		                         referencedColumnNames="id"
-		                         referencedTableName="product"/>
-
-	</changeSet>
-    
-    <changeSet id="201808092231" author="svl">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Image.
+    -->
+    <changeSet id="20171212225538-2" author="jhipster">
+        
         <addForeignKeyConstraint baseColumnNames="workshop_id"
                                  baseTableName="image"
                                  constraintName="fk_image_workshop_id"
                                  referencedColumnNames="id"
                                  referencedTableName="workshop"/>
+        
+        <addForeignKeyConstraint baseColumnNames="product_id"
+                                 baseTableName="image"
+                                 constraintName="fk_image_product_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="product"/>
+    
     </changeSet>
 </databaseChangeLog>

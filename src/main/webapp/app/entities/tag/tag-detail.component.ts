@@ -1,45 +1,24 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {Tag} from './tag.model';
-import {TagService} from './tag.service';
+import { ITag } from 'app/shared/model/tag.model';
 
-@Component( {
-                selector: 'jhi-tag-detail', templateUrl: './tag-detail.component.html'
-            } )
-export class TagDetailComponent implements OnInit, OnDestroy {
+@Component({
+    selector: 'jhi-tag-detail',
+    templateUrl: './tag-detail.component.html'
+})
+export class TagDetailComponent implements OnInit {
+    tag: ITag;
 
-    tag: Tag;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor( private eventManager: JhiEventManager, private tagService: TagService, private route: ActivatedRoute ) {
-    }
+    constructor(private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe( ( params ) => {
-            this.load( params['id'] );
-        } );
-        this.registerChangeInTags();
+        this.activatedRoute.data.subscribe(({ tag }) => {
+            this.tag = tag;
+        });
     }
 
-    load( id ) {
-        this.tagService.find( id ).subscribe( ( tag ) => {
-            this.tag = tag;
-        } );
-    }
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy( this.eventSubscriber );
-    }
-
-    registerChangeInTags() {
-        this.eventSubscriber = this.eventManager.subscribe( 'tagListModification', ( response ) => this.load( this.tag.id ) );
     }
 }

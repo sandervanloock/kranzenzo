@@ -1,73 +1,58 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
-import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
-import {Tag} from './tag.model';
-import {TagService} from './tag.service';
-import {Principal, ResponseWrapper} from '../../shared';
+import { ITag } from 'app/shared/model/tag.model';
+import { Principal } from 'app/core';
+import { TagService } from './tag.service';
 
-@Component( {
-                selector: 'jhi-tag', templateUrl: './tag.component.html'
-            } )
+@Component({
+    selector: 'jhi-tag',
+    templateUrl: './tag.component.html'
+})
 export class TagComponent implements OnInit, OnDestroy {
-    tags: Tag[];
+    tags: ITag[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private tagService: TagService,
         private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager, private activatedRoute: ActivatedRoute, private principal: Principal ) {
-        this.currentSearch = activatedRoute.snapshot.params['search'] ? activatedRoute.snapshot.params['search'] : '';
-    }
+        private eventManager: JhiEventManager,
+        private principal: Principal
+    ) {}
 
     loadAll() {
-        if ( this.currentSearch ) {
-            this.tagService.search( {
-                                        query: this.currentSearch,
-                                    } ).subscribe( ( res: ResponseWrapper ) => this.tags = res.json, ( res: ResponseWrapper ) => this.onError( res.json ) );
-            return;
-        }
-        this.tagService.query().subscribe( ( res: ResponseWrapper ) => {
-            this.tags = res.json;
-            this.currentSearch = '';
-        }, ( res: ResponseWrapper ) => this.onError( res.json ) );
+        this.tagService.query().subscribe(
+            (res: HttpResponse<ITag[]>) => {
+                this.tags = res.body;
+            },
+            (res: HttpErrorResponse) => this.onError(res.message)
+        );
     }
 
-    search( query ) {
-        if ( !query ) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
-    clear() {
-        this.currentSearch = '';
-        this.loadAll();
-    }
     ngOnInit() {
         this.loadAll();
-        this.principal.identity().then( ( account ) => {
+        this.principal.identity().then(account => {
             this.currentAccount = account;
-        } );
+        });
         this.registerChangeInTags();
     }
 
     ngOnDestroy() {
-        this.eventManager.destroy( this.eventSubscriber );
+        this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId( index: number, item: Tag ) {
+    trackId(index: number, item: ITag) {
         return item.id;
     }
+
     registerChangeInTags() {
-        this.eventSubscriber = this.eventManager.subscribe( 'tagListModification', ( response ) => this.loadAll() );
+        this.eventSubscriber = this.eventManager.subscribe('tagListModification', response => this.loadAll());
     }
 
-    private onError( error ) {
-        this.jhiAlertService.error( error.message, null, null );
+    private onError(errorMessage: string) {
+        this.jhiAlertService.error(errorMessage, null, null);
     }
 }

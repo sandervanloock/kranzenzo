@@ -1,93 +1,72 @@
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
-import {SERVER_API_URL} from '../../app.constants';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+import { map } from 'rxjs/operators';
 
-import {JhiDateUtils} from 'ng-jhipster';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IWorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
 
-import {WorkshopSubscription} from './workshop-subscription.model';
-import {createRequestOption, ResponseWrapper} from '../../shared';
+type EntityResponseType = HttpResponse<IWorkshopSubscription>;
+type EntityArrayResponseType = HttpResponse<IWorkshopSubscription[]>;
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class WorkshopSubscriptionService {
-
     private resourceUrl = SERVER_API_URL + 'api/workshop-subscriptions';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/workshop-subscriptions';
 
-    constructor( private http: Http, private dateUtils: JhiDateUtils ) {
+    constructor(private http: HttpClient) {}
+
+    create(workshopSubscription: IWorkshopSubscription): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(workshopSubscription);
+        return this.http
+            .post<IWorkshopSubscription>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    create( workshopSubscription: WorkshopSubscription ): Observable<WorkshopSubscription> {
-        const copy = this.convert( workshopSubscription );
-        return this.http.post( this.resourceUrl, copy ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    update(workshopSubscription: IWorkshopSubscription): Observable<EntityResponseType> {
+        const copy = this.convertDateFromClient(workshopSubscription);
+        return this.http
+            .put<IWorkshopSubscription>(this.resourceUrl, copy, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    update( workshopSubscription: WorkshopSubscription ): Observable<WorkshopSubscription> {
-        const copy = this.convert( workshopSubscription );
-        return this.http.put( this.resourceUrl, copy ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    find(id: number): Observable<EntityResponseType> {
+        return this.http
+            .get<IWorkshopSubscription>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+            .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
-    find( id: number ): Observable<WorkshopSubscription> {
-        return this.http.get( `${this.resourceUrl}/${id}` ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    query(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http
+            .get<IWorkshopSubscription[]>(this.resourceUrl, { params: options, observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
     }
 
-    findByWorkshopDate( workshopDateId: number ): Observable<ResponseWrapper> {
-        return this.http.get( `${this.resourceUrl}?workshopDate=${workshopDateId}` ).map( ( res: Response ) => {
-            return this.convertResponse( res );
-        } );
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    query( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        return this.http.get( this.resourceUrl, options )
-            .map( ( res: Response ) => this.convertResponse( res ) );
-    }
-
-    delete( id: number ): Observable<Response> {
-        return this.http.delete( `${this.resourceUrl}/${id}` );
-    }
-
-    search( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        return this.http.get( this.resourceSearchUrl, options )
-            .map( ( res: any ) => this.convertResponse( res ) );
-    }
-
-    private convertResponse( res: Response ): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for ( let i = 0; i < jsonResponse.length; i++ ) {
-            result.push( this.convertItemFromServer( jsonResponse[i] ) );
-        }
-        return new ResponseWrapper( res.headers, result, res.status );
-    }
-
-    /**
-     * Convert a returned JSON object to WorkshopSubscription.
-     */
-    private convertItemFromServer( json: any ): WorkshopSubscription {
-        const entity: WorkshopSubscription = Object.assign( new WorkshopSubscription(), json );
-        entity.created = this.dateUtils
-            .convertDateTimeFromServer( json.created );
-        return entity;
-    }
-
-    /**
-     * Convert a WorkshopSubscription to a JSON which can be sent to the server.
-     */
-    private convert( workshopSubscription: WorkshopSubscription ): WorkshopSubscription {
-        const copy: WorkshopSubscription = Object.assign( {}, workshopSubscription );
-
-        copy.created = this.dateUtils.toDate( workshopSubscription.created );
+    private convertDateFromClient(workshopSubscription: IWorkshopSubscription): IWorkshopSubscription {
+        const copy: IWorkshopSubscription = Object.assign({}, workshopSubscription, {
+            created:
+                workshopSubscription.created != null && workshopSubscription.created.isValid()
+                    ? workshopSubscription.created.toJSON()
+                    : null
+        });
         return copy;
+    }
+
+    private convertDateFromServer(res: EntityResponseType): EntityResponseType {
+        res.body.created = res.body.created != null ? moment(res.body.created) : null;
+        return res;
+    }
+
+    private convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
+        res.body.forEach((workshopSubscription: IWorkshopSubscription) => {
+            workshopSubscription.created = workshopSubscription.created != null ? moment(workshopSubscription.created) : null;
+        });
+        return res;
     }
 }

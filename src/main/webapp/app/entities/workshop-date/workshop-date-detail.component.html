@@ -1,58 +1,30 @@
-<div *ngIf="workshopDate">
-    <h2><span jhiTranslate="kransenzoApp.workshopDate.detail.title">Workshop Date</span> {{workshopDate.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="kransenzoApp.workshopDate.date">Date</span></dt>
-        <dd>
-            <span>{{workshopDate.date | date:'medium'}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.workshopDate.workshop">Workshop</span></dt>
-        <dd>
-            <div *ngIf="workshopDate.workshopId">
-                <a [routerLink]="['/workshop', workshopDate.workshopId]">{{workshopDate.workshopName}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.workshopDate.subscriptions">Subscriptions</span></dt>
-        <dd>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th><span>Persoon</span></th>
-                    <th><span jhiTranslate="kransenzoApp.workshopSubscription.state">State</span></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let subscription of subscriptions">
-                    <td>{{subscription.user.firstName}} {{subscription.user.lastName}}</td>
-                    <td jhiTranslate="{{'kransenzoApp.SubscriptionState.' + subscription.state}}">
-                        {{subscription.state}}
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit" [routerLink]="['../../workshop-subscription', subscription.id ]" class="btn btn-info btn-sm">
-                                <span class="fa fa-eye"></span>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                            </button>
-                            <button type="submit" [routerLink]="['/', { outlets: { popup: 'workshop-subscription/'+ subscription.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary btn-sm">
-                                <span class="fa fa-pencil"></span>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                            </button>
-                        </div>
-                    </td>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="workshopDate">
+            <h2><span jhiTranslate="kranzenzoApp.workshopDate.detail.title">Workshop Date</span> {{workshopDate.id}}
+            </h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kranzenzoApp.workshopDate.date">Date</span></dt>
+                <dd>
+                    <span>{{workshopDate.date}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.workshopDate.workshop">Workshop</span></dt>
+                <dd>
+                    <div *ngIf="workshopDate.workshopId">
+                        <a [routerLink]="['/workshop', workshopDate.workshopId, 'view']">{{workshopDate.workshopName}}</a>
+                    </div>
+                </dd>
+            </dl>
 
-                </tr>
-                </tbody>
-            </table>
-        </dd>
-    </dl>
+            <button type="submit" (click)="previousState()" class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
 
-    <button type="submit" (click)="previousState()" class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button" [routerLink]="['/', { outlets: { popup: 'workshop-date/'+ workshopDate.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <button type="button" [routerLink]="['/workshop-date', workshopDate.id, 'edit']" class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

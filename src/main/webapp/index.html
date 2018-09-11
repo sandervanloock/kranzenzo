@@ -4,20 +4,11 @@
     <base href="./" />
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Kranzenzo</title>
-    <meta name="description" content="Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en creativiteit maak ik unieke, goedkope en duurzame stukken.">
+    <title>kranzenzo</title>
+    <meta name="description" content="">
     <meta name="google" value="notranslate">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
-    <meta property="og:url" content="https://www.kranzenzo.be/#/"/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:title" content="Kranzenzo.be"/>
-    <meta property="og:description" content="Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en creativiteit maak ik unieke, goedkope en duurzame stukken."/>
-    <meta property="og:image" content="https://images.kranzenzo.be/logov2.png"/>
-    <meta property="og:image:secure_url" content="https://images.kranzenzo.be/logov2.png"/>
-    <meta property="og:image:height" content="100"/>
-    <meta property="og:image:width" content="100"/>
-
     <link rel="shortcut icon" href="favicon.ico"/>
     <link rel="manifest" href="manifest.webapp"/>
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
@@ -26,12 +17,6 @@
     <!--[if lt IE 9]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <style>
-        .pac-container {
-            z-index: 10000;
-        }
-    </style>
-    <script src="https://maps.google.com/maps/api/js?key=AIzaSyBEAWCMEAcyz2I7o1wpHOGTVhLluNskK7s&libraries=places"></script>
     <jhi-main></jhi-main>
     <noscript>
         <h1>You must enable javascript to view this page.</h1>
@@ -39,23 +24,23 @@
     <!-- uncomment this for adding service worker
         <script>
             if ('serviceWorker' in navigator) {
-                 navigator.serviceWorker
-                    .register('./sw.js')
-                    .then(function() { console.log('Service Worker Registered'); });
+                window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(function () {
+                            console.log('Service Worker Registered');
+                        });
+                });
             }
         </script>
     -->
-    <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID. -->
+    <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
         function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
         e=o.createElement(i);r=o.getElementsByTagName(i)[0];
         e.src='//www.google-analytics.com/analytics.js';
         r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
-        ga( 'create',
-            'UA-116475411-1' );
-        ga( 'send',
-            'pageview' );
-    </script><!-- Global site tag (gtag.js) - Google Analytics -->
+        ga('create','UA-XXXXX-X');ga('send','pageview');
+    </script>-->
 </body>
 </html>

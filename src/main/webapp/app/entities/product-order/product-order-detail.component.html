@@ -1,0 +1,70 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="productOrder">
+            <h2><span jhiTranslate="kranzenzoApp.productOrder.detail.title">Product Order</span> {{productOrder.id}}
+            </h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.created">Created</span></dt>
+                <dd>
+                    <span>{{productOrder.created}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.updated">Updated</span></dt>
+                <dd>
+                    <span>{{productOrder.updated}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.state">State</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'kranzenzoApp.OrderState.' + productOrder.state}}">{{productOrder.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.deliveryType">Delivery Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'kranzenzoApp.DeliveryType.' + productOrder.deliveryType}}">{{productOrder.deliveryType}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.includeBatteries">Include Batteries</span></dt>
+                <dd>
+                    <span>{{productOrder.includeBatteries}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.description">Description</span></dt>
+                <dd>
+                    <span>{{productOrder.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.deliveryPrice">Delivery Price</span></dt>
+                <dd>
+                    <span>{{productOrder.deliveryPrice}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.paymentType">Payment Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'kranzenzoApp.PaymentType.' + productOrder.paymentType}}">{{productOrder.paymentType}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.customer">Customer</span></dt>
+                <dd>
+                    <div *ngIf="productOrder.customerId">
+                        <a [routerLink]="['/customer', productOrder.customerId, 'view']">{{productOrder.customerId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.deliveryAddress">Delivery Address</span></dt>
+                <dd>
+                    <div *ngIf="productOrder.deliveryAddressId">
+                        <a [routerLink]="['/location', productOrder.deliveryAddressId, 'view']">{{productOrder.deliveryAddressId}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.product">Product</span></dt>
+                <dd>
+                    <div *ngIf="productOrder.productId">
+                        <a [routerLink]="['/product', productOrder.productId, 'view']">{{productOrder.productName}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit" (click)="previousState()" class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button" [routerLink]="['/product-order', productOrder.id, 'edit']" class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

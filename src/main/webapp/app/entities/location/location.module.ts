@@ -1,29 +1,29 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {KransenzoSharedModule} from '../../shared';
+import { KranzenzoSharedModule } from 'app/shared';
 import {
     LocationComponent,
     LocationDeleteDialogComponent,
     LocationDeletePopupComponent,
     LocationDetailComponent,
-    LocationDialogComponent,
-    LocationPopupComponent,
     locationPopupRoute,
-    LocationPopupService,
     locationRoute,
-    LocationService,
+    LocationUpdateComponent
 } from './';
 
-const ENTITY_STATES = [...locationRoute, ...locationPopupRoute,];
+const ENTITY_STATES = [...locationRoute, ...locationPopupRoute];
 
-@NgModule( {
-               imports: [KransenzoSharedModule, RouterModule.forRoot( ENTITY_STATES, {useHash: true} )],
-               declarations: [LocationComponent, LocationDetailComponent, LocationDialogComponent, LocationDeleteDialogComponent, LocationPopupComponent,
-                              LocationDeletePopupComponent,],
-               entryComponents: [LocationComponent, LocationDialogComponent, LocationPopupComponent, LocationDeleteDialogComponent, LocationDeletePopupComponent,],
-               providers: [LocationService, LocationPopupService,],
-               schemas: [CUSTOM_ELEMENTS_SCHEMA]
-           } )
-export class KransenzoLocationModule {
-}
+@NgModule({
+    imports: [KranzenzoSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [
+        LocationComponent,
+        LocationDetailComponent,
+        LocationUpdateComponent,
+        LocationDeleteDialogComponent,
+        LocationDeletePopupComponent
+    ],
+    entryComponents: [LocationComponent, LocationUpdateComponent, LocationDeleteDialogComponent, LocationDeletePopupComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class KranzenzoLocationModule {}

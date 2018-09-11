@@ -1,52 +1,40 @@
 /* tslint:disable max-line-length */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {OnInit} from '@angular/core';
-import {DatePipe} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Rx';
-import {JhiDataUtils, JhiDateUtils, JhiEventManager} from 'ng-jhipster';
-import {KransenzoTestModule} from '../../../test.module';
-import {MockActivatedRoute} from '../../../helpers/mock-route.service';
-import {CustomerDetailComponent} from '../../../../../../main/webapp/app/entities/customer/customer-detail.component';
-import {CustomerService} from '../../../../../../main/webapp/app/entities/customer/customer.service';
-import {Customer} from '../../../../../../main/webapp/app/entities/customer/customer.model';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
-describe( 'Component Tests', () => {
+import { KranzenzoTestModule } from '../../../test.module';
+import { CustomerDetailComponent } from 'app/entities/customer/customer-detail.component';
+import { Customer } from 'app/shared/model/customer.model';
 
-    describe( 'Customer Management Detail Component', () => {
+describe('Component Tests', () => {
+    describe('Customer Management Detail Component', () => {
         let comp: CustomerDetailComponent;
         let fixture: ComponentFixture<CustomerDetailComponent>;
-        let service: CustomerService;
+        const route = ({ data: of({ customer: new Customer(123) }) } as any) as ActivatedRoute;
 
-        beforeEach( async( () => {
-            TestBed.configureTestingModule( {
-                                                imports: [KransenzoTestModule], declarations: [CustomerDetailComponent], providers: [JhiDateUtils, JhiDataUtils, DatePipe, {
-                    provide: ActivatedRoute, useValue: new MockActivatedRoute( {id: 123} )
-                }, CustomerService, JhiEventManager]
-                                            } ).overrideTemplate( CustomerDetailComponent, '' )
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [KranzenzoTestModule],
+                declarations: [CustomerDetailComponent],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
+            })
+                .overrideTemplate(CustomerDetailComponent, '')
                 .compileComponents();
-        } ) );
-
-        beforeEach( () => {
-            fixture = TestBed.createComponent( CustomerDetailComponent );
+            fixture = TestBed.createComponent(CustomerDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get( CustomerService );
-        } );
+        });
 
-        describe( 'OnInit', () => {
-            it( 'Should call load all on init', () => {
+        describe('OnInit', () => {
+            it('Should call load all on init', () => {
                 // GIVEN
-
-                spyOn( service, 'find' ).and.returnValue( Observable.of( new Customer( 10 ) ) );
 
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect( service.find ).toHaveBeenCalledWith( 123 );
-                expect( comp.customer ).toEqual( jasmine.objectContaining( {id: 10} ) );
-            } );
-        } );
-    } );
-
-} );
+                expect(comp.customer).toEqual(jasmine.objectContaining({ id: 123 }));
+            });
+        });
+    });
+});

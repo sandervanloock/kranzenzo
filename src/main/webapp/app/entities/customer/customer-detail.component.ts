@@ -1,45 +1,24 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {Customer} from './customer.model';
-import {CustomerService} from './customer.service';
+import { ICustomer } from 'app/shared/model/customer.model';
 
-@Component( {
-                selector: 'jhi-customer-detail', templateUrl: './customer-detail.component.html'
-            } )
-export class CustomerDetailComponent implements OnInit, OnDestroy {
+@Component({
+    selector: 'jhi-customer-detail',
+    templateUrl: './customer-detail.component.html'
+})
+export class CustomerDetailComponent implements OnInit {
+    customer: ICustomer;
 
-    customer: Customer;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor( private eventManager: JhiEventManager, private customerService: CustomerService, private route: ActivatedRoute ) {
-    }
+    constructor(private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe( ( params ) => {
-            this.load( params['id'] );
-        } );
-        this.registerChangeInCustomers();
+        this.activatedRoute.data.subscribe(({ customer }) => {
+            this.customer = customer;
+        });
     }
 
-    load( id ) {
-        this.customerService.find( id ).subscribe( ( customer ) => {
-            this.customer = customer;
-        } );
-    }
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy( this.eventSubscriber );
-    }
-
-    registerChangeInCustomers() {
-        this.eventSubscriber = this.eventManager.subscribe( 'customerListModification', ( response ) => this.load( this.customer.id ) );
     }
 }

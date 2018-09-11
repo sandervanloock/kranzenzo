@@ -1,62 +1,38 @@
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {Customer} from './customer.model';
-import {createRequestOption, ResponseWrapper} from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { ICustomer } from 'app/shared/model/customer.model';
 
-@Injectable()
+type EntityResponseType = HttpResponse<ICustomer>;
+type EntityArrayResponseType = HttpResponse<ICustomer[]>;
+
+@Injectable({ providedIn: 'root' })
 export class CustomerService {
+    private resourceUrl = SERVER_API_URL + 'api/customers';
 
-    private resourceUrl = 'api/customers';
-    private resourceSearchUrl = 'api/_search/customers';
+    constructor(private http: HttpClient) {}
 
-    constructor( private http: Http ) {
+    create(customer: ICustomer): Observable<EntityResponseType> {
+        return this.http.post<ICustomer>(this.resourceUrl, customer, { observe: 'response' });
     }
 
-    create( customer: Customer ): Observable<Customer> {
-        const copy = this.convert( customer );
-        return this.http.post( this.resourceUrl, copy ).map( ( res: Response ) => {
-            return res.json();
-        } );
+    update(customer: ICustomer): Observable<EntityResponseType> {
+        return this.http.put<ICustomer>(this.resourceUrl, customer, { observe: 'response' });
     }
 
-    update( customer: Customer ): Observable<Customer> {
-        const copy = this.convert( customer );
-        return this.http.put( this.resourceUrl, copy ).map( ( res: Response ) => {
-            return res.json();
-        } );
+    find(id: number): Observable<EntityResponseType> {
+        return this.http.get<ICustomer>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    find( id: number ): Observable<Customer> {
-        return this.http.get( `${this.resourceUrl}/${id}` ).map( ( res: Response ) => {
-            return res.json();
-        } );
+    query(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<ICustomer[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
-    query( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        return this.http.get( this.resourceUrl, options )
-            .map( ( res: Response ) => this.convertResponse( res ) );
-    }
-
-    delete( id: number ): Observable<Response> {
-        return this.http.delete( `${this.resourceUrl}/${id}` );
-    }
-
-    search( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        return this.http.get( this.resourceSearchUrl, options )
-            .map( ( res: any ) => this.convertResponse( res ) );
-    }
-
-    private convertResponse( res: Response ): ResponseWrapper {
-        const jsonResponse = res.json();
-        return new ResponseWrapper( res.headers, jsonResponse, res.status );
-    }
-
-    private convert( customer: Customer ): Customer {
-        const copy: Customer = Object.assign( {}, customer );
-        return copy;
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

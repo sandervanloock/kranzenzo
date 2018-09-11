@@ -1,11 +1,10 @@
 {
-    "kransenzoApp": {
+    "kranzenzoApp": {
         "tag": {
             "home": {
                 "title": "Tags",
                 "createLabel": "Create a new Tag",
-                "createOrEditLabel": "Create or edit a Tag",
-                "search": "Search for Tag"
+                "createOrEditLabel": "Create or edit a Tag"
             },
             "created": "A new Tag is created with identifier {{ param }}",
             "updated": "A Tag is updated with identifier {{ param }}",
@@ -17,10 +16,8 @@
                 "title": "Tag"
             },
             "name": "Name",
-            "homepage": "Homepage",
-            "tags": "Tags",
-            "image": "Image",
-            "parent": "Parent"
+            "workshops": "Workshops",
+            "products": "Products"
         }
     }
 }

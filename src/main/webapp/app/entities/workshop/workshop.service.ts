@@ -1,81 +1,38 @@
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
-import {SERVER_API_URL} from '../../app.constants';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {Workshop} from './workshop.model';
-import {createRequestOption, ResponseWrapper} from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IWorkshop } from 'app/shared/model/workshop.model';
 
-@Injectable()
+type EntityResponseType = HttpResponse<IWorkshop>;
+type EntityArrayResponseType = HttpResponse<IWorkshop[]>;
+
+@Injectable({ providedIn: 'root' })
 export class WorkshopService {
-
     private resourceUrl = SERVER_API_URL + 'api/workshops';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/workshops';
 
-    constructor( private http: Http ) {
+    constructor(private http: HttpClient) {}
+
+    create(workshop: IWorkshop): Observable<EntityResponseType> {
+        return this.http.post<IWorkshop>(this.resourceUrl, workshop, { observe: 'response' });
     }
 
-    create( workshop: Workshop ): Observable<Workshop> {
-        const copy = this.convert( workshop );
-        return this.http.post( this.resourceUrl, copy ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    update(workshop: IWorkshop): Observable<EntityResponseType> {
+        return this.http.put<IWorkshop>(this.resourceUrl, workshop, { observe: 'response' });
     }
 
-    update( workshop: Workshop ): Observable<Workshop> {
-        const copy = this.convert( workshop );
-        return this.http.put( this.resourceUrl, copy ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    find(id: number): Observable<EntityResponseType> {
+        return this.http.get<IWorkshop>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    find( id: number, filterDates?: boolean ): Observable<Workshop> {
-        return this.http.get( `${this.resourceUrl}/${id}?filterDates=${filterDates ? filterDates : false}` ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    query(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<IWorkshop[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
-    query( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        return this.http.get( this.resourceUrl, options )
-            .map( ( res: Response ) => this.convertResponse( res ) );
-    }
-
-    delete( id: number ): Observable<Response> {
-        return this.http.delete( `${this.resourceUrl}/${id}` );
-    }
-
-    search( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        return this.http.get( this.resourceSearchUrl, options )
-            .map( ( res: any ) => this.convertResponse( res ) );
-    }
-
-    private convertResponse( res: Response ): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for ( let i = 0; i < jsonResponse.length; i++ ) {
-            result.push( this.convertItemFromServer( jsonResponse[i] ) );
-        }
-        return new ResponseWrapper( res.headers, result, res.status );
-    }
-
-    /**
-     * Convert a returned JSON object to Workshop.
-     */
-    private convertItemFromServer( json: any ): Workshop {
-        const entity: Workshop = Object.assign( new Workshop(), json );
-        return entity;
-    }
-
-    /**
-     * Convert a Workshop to a JSON which can be sent to the server.
-     */
-    private convert( workshop: Workshop ): Workshop {
-        const copy: Workshop = Object.assign( {}, workshop );
-        return copy;
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

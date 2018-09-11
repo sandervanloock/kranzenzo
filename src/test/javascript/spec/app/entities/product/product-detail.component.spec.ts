@@ -1,51 +1,40 @@
 /* tslint:disable max-line-length */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {DatePipe} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Rx';
-import {JhiDataUtils, JhiDateUtils, JhiEventManager} from 'ng-jhipster';
-import {KransenzoTestModule} from '../../../test.module';
-import {MockActivatedRoute} from '../../../helpers/mock-route.service';
-import {ProductDetailComponent} from '../../../../../../main/webapp/app/entities/product/product-detail.component';
-import {ProductService} from '../../../../../../main/webapp/app/entities/product/product.service';
-import {Product} from '../../../../../../main/webapp/app/entities/product/product.model';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
-describe( 'Component Tests', () => {
+import { KranzenzoTestModule } from '../../../test.module';
+import { ProductDetailComponent } from 'app/entities/product/product-detail.component';
+import { Product } from 'app/shared/model/product.model';
 
-    describe( 'Product Management Detail Component', () => {
+describe('Component Tests', () => {
+    describe('Product Management Detail Component', () => {
         let comp: ProductDetailComponent;
         let fixture: ComponentFixture<ProductDetailComponent>;
-        let service: ProductService;
+        const route = ({ data: of({ product: new Product(123) }) } as any) as ActivatedRoute;
 
-        beforeEach( async( () => {
-            TestBed.configureTestingModule( {
-                                                imports: [KransenzoTestModule], declarations: [ProductDetailComponent], providers: [JhiDateUtils, JhiDataUtils, DatePipe, {
-                    provide: ActivatedRoute, useValue: new MockActivatedRoute( {id: 123} )
-                }, ProductService, JhiEventManager]
-                                            } ).overrideTemplate( ProductDetailComponent, '' )
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [KranzenzoTestModule],
+                declarations: [ProductDetailComponent],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
+            })
+                .overrideTemplate(ProductDetailComponent, '')
                 .compileComponents();
-        } ) );
-
-        beforeEach( () => {
-            fixture = TestBed.createComponent( ProductDetailComponent );
+            fixture = TestBed.createComponent(ProductDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get( ProductService );
-        } );
+        });
 
-        describe( 'OnInit', () => {
-            it( 'Should call load all on init', () => {
+        describe('OnInit', () => {
+            it('Should call load all on init', () => {
                 // GIVEN
-
-                spyOn( service, 'find' ).and.returnValue( Observable.of( new Product( 10 ) ) );
 
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect( service.find ).toHaveBeenCalledWith( 123 );
-                expect( comp.product ).toEqual( jasmine.objectContaining( {id: 10} ) );
-            } );
-        } );
-    } );
-
-} );
+                expect(comp.product).toEqual(jasmine.objectContaining({ id: 123 }));
+            });
+        });
+    });
+});

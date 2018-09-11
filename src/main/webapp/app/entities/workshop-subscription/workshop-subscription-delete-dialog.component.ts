@@ -1,55 +1,72 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
 
-import {WorkshopSubscription} from './workshop-subscription.model';
-import {WorkshopSubscriptionPopupService} from './workshop-subscription-popup.service';
-import {WorkshopSubscriptionService} from './workshop-subscription.service';
+import { IWorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
+import { WorkshopSubscriptionService } from './workshop-subscription.service';
 
-@Component( {
-                selector: 'jhi-workshop-subscription-delete-dialog', templateUrl: './workshop-subscription-delete-dialog.component.html'
-            } )
+@Component({
+    selector: 'jhi-workshop-subscription-delete-dialog',
+    templateUrl: './workshop-subscription-delete-dialog.component.html'
+})
 export class WorkshopSubscriptionDeleteDialogComponent {
+    workshopSubscription: IWorkshopSubscription;
 
-    workshopSubscription: WorkshopSubscription;
-
-    constructor( private workshopSubscriptionService: WorkshopSubscriptionService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager ) {
-    }
+    constructor(
+        private workshopSubscriptionService: WorkshopSubscriptionService,
+        public activeModal: NgbActiveModal,
+        private eventManager: JhiEventManager
+    ) {}
 
     clear() {
-        this.activeModal.dismiss( 'cancel' );
+        this.activeModal.dismiss('cancel');
     }
 
-    confirmDelete( id: number ) {
-        this.workshopSubscriptionService.delete( id ).subscribe( ( response ) => {
-            this.eventManager.broadcast( {
-                                             name: 'workshopSubscriptionListModification', content: 'Deleted an workshopSubscription'
-                                         } );
-            this.activeModal.dismiss( true );
-        } );
+    confirmDelete(id: number) {
+        this.workshopSubscriptionService.delete(id).subscribe(response => {
+            this.eventManager.broadcast({
+                name: 'workshopSubscriptionListModification',
+                content: 'Deleted an workshopSubscription'
+            });
+            this.activeModal.dismiss(true);
+        });
     }
 }
 
-@Component( {
-                selector: 'jhi-workshop-subscription-delete-popup', template: ''
-            } )
+@Component({
+    selector: 'jhi-workshop-subscription-delete-popup',
+    template: ''
+})
 export class WorkshopSubscriptionDeletePopupComponent implements OnInit, OnDestroy {
+    private ngbModalRef: NgbModalRef;
 
-    routeSub: any;
-
-    constructor( private route: ActivatedRoute, private workshopSubscriptionPopupService: WorkshopSubscriptionPopupService ) {
-    }
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe( ( params ) => {
-            this.workshopSubscriptionPopupService
-                .open( WorkshopSubscriptionDeleteDialogComponent as Component, params['id'] );
-        } );
+        this.activatedRoute.data.subscribe(({ workshopSubscription }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(WorkshopSubscriptionDeleteDialogComponent as Component, {
+                    size: 'lg',
+                    backdrop: 'static'
+                });
+                this.ngbModalRef.componentInstance.workshopSubscription = workshopSubscription;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
+        });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

@@ -1,9 +1,9 @@
 {
-    "kransenzoApp": {
+    "kranzenzoApp": {
         "PaymentType": {
             "null": "",
             "CASH": "CASH",
-            "TRANSFER": "OVERSCHRIJVING"
+            "TRANSFER": "TRANSFER"
         }
     }
 }

@@ -1,0 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-workshop-subscription-heading" jhiTranslate="kranzenzoApp.workshopSubscription.home.createOrEditLabel">
+                Create or edit a Workshop Subscription</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!workshopSubscription.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" [(ngModel)]="workshopSubscription.id" readonly/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshopSubscription.created" for="field_created">Created</label>
+                    <div class="d-flex">
+                        <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="created"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshopSubscription.state" for="field_state">State</label>
+                    <select class="form-control" name="state" [(ngModel)]="workshopSubscription.state" id="field_state">
+                        <option value="NEW">{{'kranzenzoApp.SubscriptionState.NEW' | translate}}</option>
+                        <option value="PAYED">{{'kranzenzoApp.SubscriptionState.PAYED' | translate}}</option>
+                        <option value="CANCELLED">{{'kranzenzoApp.SubscriptionState.CANCELLED' | translate}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshopSubscription.workshop" for="field_workshop">Workshop</label>
+                    <select class="form-control" id="field_workshop" name="workshop" [(ngModel)]="workshopSubscription.workshopId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="workshopDateOption.id" *ngFor="let workshopDateOption of workshopdates; trackBy: trackWorkshopDateById">
+                            {{workshopDateOption.date}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

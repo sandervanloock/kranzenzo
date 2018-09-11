@@ -1,11 +1,10 @@
 {
-    "kransenzoApp": {
+    "kranzenzoApp": {
         "workshopSubscription": {
             "home": {
                 "title": "Workshop Subscriptions",
                 "createLabel": "Create a new Workshop Subscription",
-                "createOrEditLabel": "Create or edit a Workshop Subscription",
-                "search": "Search for Workshop Subscription"
+                "createOrEditLabel": "Create or edit a Workshop Subscription"
             },
             "created": "A new Workshop Subscription is created with identifier {{ param }}",
             "updated": "A Workshop Subscription is updated with identifier {{ param }}",

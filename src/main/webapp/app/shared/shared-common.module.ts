@@ -1,30 +1,10 @@
-import {LOCALE_ID, NgModule} from '@angular/core';
-import {Title} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 
-import {FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent, JhiLanguageHelper, KransenzoSharedLibsModule, S3ImageResizePipe} from './';
+import { FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent, KranzenzoSharedLibsModule } from './';
 
 @NgModule({
-    imports: [
-        KransenzoSharedLibsModule
-    ],
-    declarations: [
-        FindLanguageFromKeyPipe, S3ImageResizePipe,
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ],
-    providers: [
-        JhiLanguageHelper,
-        Title,
-        {
-            provide: LOCALE_ID,
-            useValue: 'nl'
-        },
-    ],
-    exports: [
-        KransenzoSharedLibsModule,
-        FindLanguageFromKeyPipe, S3ImageResizePipe,
-        JhiAlertComponent,
-        JhiAlertErrorComponent
-    ]
+    imports: [KranzenzoSharedLibsModule],
+    declarations: [FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent],
+    exports: [KranzenzoSharedLibsModule, FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent]
 })
-export class KransenzoSharedCommonModule {}
+export class KranzenzoSharedCommonModule {}

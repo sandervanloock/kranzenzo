@@ -1,29 +1,29 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {KransenzoSharedModule} from '../../shared';
+import { KranzenzoSharedModule } from 'app/shared';
 import {
     CustomerComponent,
     CustomerDeleteDialogComponent,
     CustomerDeletePopupComponent,
     CustomerDetailComponent,
-    CustomerDialogComponent,
-    CustomerPopupComponent,
     customerPopupRoute,
-    CustomerPopupService,
     customerRoute,
-    CustomerService,
+    CustomerUpdateComponent
 } from './';
 
-const ENTITY_STATES = [...customerRoute, ...customerPopupRoute,];
+const ENTITY_STATES = [...customerRoute, ...customerPopupRoute];
 
-@NgModule( {
-               imports: [KransenzoSharedModule, RouterModule.forRoot( ENTITY_STATES, {useHash: true} )],
-               declarations: [CustomerComponent, CustomerDetailComponent, CustomerDialogComponent, CustomerDeleteDialogComponent, CustomerPopupComponent,
-                              CustomerDeletePopupComponent,],
-               entryComponents: [CustomerComponent, CustomerDialogComponent, CustomerPopupComponent, CustomerDeleteDialogComponent, CustomerDeletePopupComponent,],
-               providers: [CustomerService, CustomerPopupService,],
-               schemas: [CUSTOM_ELEMENTS_SCHEMA]
-           } )
-export class KransenzoCustomerModule {
-}
+@NgModule({
+    imports: [KranzenzoSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [
+        CustomerComponent,
+        CustomerDetailComponent,
+        CustomerUpdateComponent,
+        CustomerDeleteDialogComponent,
+        CustomerDeletePopupComponent
+    ],
+    entryComponents: [CustomerComponent, CustomerUpdateComponent, CustomerDeleteDialogComponent, CustomerDeletePopupComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class KranzenzoCustomerModule {}
