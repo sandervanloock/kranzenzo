@@ -1,8 +1,7 @@
 package be.sandervl.kranzenzo.config;
 
-import be.sandervl.kranzenzo.security.AuthoritiesConstants;
-import be.sandervl.kranzenzo.security.jwt.JWTConfigurer;
-import be.sandervl.kranzenzo.security.jwt.TokenProvider;
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
-import javax.annotation.PostConstruct;
+import be.sandervl.kranzenzo.security.AuthoritiesConstants;
+import be.sandervl.kranzenzo.security.jwt.JWTConfigurer;
+import be.sandervl.kranzenzo.security.jwt.TokenProvider;
 
 @Configuration
 @EnableWebSecurity
@@ -107,6 +108,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers( "/api/authenticate" ).permitAll()
             .antMatchers( "/api/account/reset-password/init" ).permitAll()
             .antMatchers( "/api/account/reset-password/finish" ).permitAll()
+            .antMatchers( HttpMethod.GET, "/api/tags").permitAll()
+            .antMatchers( HttpMethod.GET, "/api/products/**" ).permitAll()
+            .antMatchers( HttpMethod.GET, "/api/workshops/**" ).permitAll()
+            .antMatchers( HttpMethod.POST, "/api/customers" ).permitAll()
+            .antMatchers( HttpMethod.PUT, "/api/customers" ).permitAll()
+            .antMatchers( HttpMethod.POST, "/api/orders" ).permitAll()
+            .antMatchers( HttpMethod.POST, "/api/workshop-subscriptions" ).permitAll()
             .antMatchers( "/api/**" ).authenticated()
             .antMatchers( "/management/health" ).permitAll()
             .antMatchers( "/management/info" ).permitAll()
