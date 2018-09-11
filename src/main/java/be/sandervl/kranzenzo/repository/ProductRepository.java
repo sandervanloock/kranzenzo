@@ -18,14 +18,17 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository <Product, Long> {
 
-    @Query(value = "select distinct product from Product product left join fetch product.tags",
+    @Query(value = "select distinct product from Product product left join fetch product.tags  left join fetch product.images",
         countQuery = "select count(distinct product) from Product product")
     Page <Product> findAllWithEagerRelationships( Pageable pageable );
 
-    @Query(value = "select distinct product from Product product left join fetch product.tags")
+    @Query(value = "select distinct product from Product product left join fetch product.tags left join fetch product.images")
     List <Product> findAllWithEagerRelationships();
 
-    @Query("select product from Product product left join fetch product.tags where product.id =:id")
+    @Query("select product from Product product left join fetch product.tags left join fetch product.images where product.id =:id")
     Optional <Product> findOneWithEagerRelationships( @Param("id") Long id );
+
+    @Query("select distinct product from Product product left join fetch product.tags left join fetch product.images where product.isActive = :isActive")
+    List<Product> findAllByIsActive( @Param("isActive") boolean isActive );
 
 }

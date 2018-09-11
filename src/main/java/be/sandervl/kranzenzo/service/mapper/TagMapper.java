@@ -8,11 +8,17 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity Tag and its DTO TagDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {ImageMapper.class})
 public interface TagMapper extends EntityMapper <TagDTO, Tag> {
+
+    @Mapping(source = "image", target = "image")
+    @Mapping(source = "parent.id", target = "parentId")
+    @Mapping(source = "parent.name", target = "parentName")
+    TagDTO toDto( Tag tag );
 
     @Mapping(target = "workshops", ignore = true)
     @Mapping(target = "products", ignore = true)
+    @Mapping(source = "parentId", target = "parent")
     Tag toEntity( TagDTO tagDTO );
 
     default Tag fromId( Long id ) {

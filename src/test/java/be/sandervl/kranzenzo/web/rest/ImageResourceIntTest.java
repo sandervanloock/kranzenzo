@@ -2,6 +2,7 @@ package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
 import be.sandervl.kranzenzo.domain.Image;
+import be.sandervl.kranzenzo.domain.image.AwsImageUpload;
 import be.sandervl.kranzenzo.repository.ImageRepository;
 import be.sandervl.kranzenzo.service.dto.ImageDTO;
 import be.sandervl.kranzenzo.service.mapper.ImageMapper;
@@ -65,6 +66,8 @@ public class ImageResourceIntTest {
     private MockMvc restImageMockMvc;
 
     private Image image;
+    @Autowired
+    private AwsImageUpload awsImageUpload;
 
     /**
      * Create an entity for this test.
@@ -82,7 +85,7 @@ public class ImageResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
-        final ImageResource imageResource = new ImageResource( imageRepository, imageMapper );
+        final ImageResource imageResource = new ImageResource( imageRepository, imageMapper, awsImageUpload );
         this.restImageMockMvc = MockMvcBuilders.standaloneSetup( imageResource )
                                                .setCustomArgumentResolvers( pageableArgumentResolver )
                                                .setControllerAdvice( exceptionTranslator )

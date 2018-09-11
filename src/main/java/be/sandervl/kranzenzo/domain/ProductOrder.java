@@ -3,6 +3,7 @@ package be.sandervl.kranzenzo.domain;
 import be.sandervl.kranzenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kranzenzo.domain.enumeration.OrderState;
 import be.sandervl.kranzenzo.domain.enumeration.PaymentType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -14,6 +15,8 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import static be.sandervl.kranzenzo.config.Constants.PRICE_FOR_BATTERIES;
 
 /**
  * A ProductOrder.
@@ -30,21 +33,21 @@ public class ProductOrder implements Serializable {
     private Long id;
 
     @Column(name = "created")
-    private ZonedDateTime created;
+    private ZonedDateTime created = ZonedDateTime.now();
 
     @Column(name = "updated")
-    private ZonedDateTime updated;
+    private ZonedDateTime updated = ZonedDateTime.now();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
-    private OrderState state;
+    private OrderState state = OrderState.NEW;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_type")
-    private DeliveryType deliveryType;
+    private DeliveryType deliveryType = DeliveryType.PICKUP;
 
     @Column(name = "include_batteries")
-    private Boolean includeBatteries;
+    private Boolean includeBatteries = false;
 
     @Size(max = 5000)
     @Column(name = "description", length = 5000)
@@ -57,7 +60,7 @@ public class ProductOrder implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_type", nullable = false)
-    private PaymentType paymentType;
+    private PaymentType paymentType = PaymentType.CASH;
 
     @ManyToOne
     @JsonIgnoreProperties("orders")
@@ -217,6 +220,19 @@ public class ProductOrder implements Serializable {
 
     public void setProduct( Product product ) {
         this.product = product;
+    }
+
+    @Transient
+    @JsonIgnore
+    public float getTotalPrice() {
+        Float result = product.getPrice();
+        if ( deliveryType == DeliveryType.DELIVERED ) {
+            result += this.deliveryPrice;
+        }
+        if ( includeBatteries ) {
+            result += PRICE_FOR_BATTERIES * product.getNumberOfBatteries();
+        }
+        return result;
     }
 
     public ProductOrder product( Product product ) {

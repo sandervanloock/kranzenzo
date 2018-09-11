@@ -1,5 +1,6 @@
 package be.sandervl.kranzenzo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -62,10 +63,12 @@ public class Workshop implements Serializable {
 
     @OneToMany(mappedBy = "workshop")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set <WorkshopDate> dates = new HashSet <>();
 
     @OneToMany(mappedBy = "workshop")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set <Image> images = new HashSet <>();
 
     @ManyToMany

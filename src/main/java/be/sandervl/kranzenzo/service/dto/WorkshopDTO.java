@@ -42,6 +42,10 @@ public class WorkshopDTO implements Serializable {
 
     private Set <TagDTO> tags = new HashSet <>();
 
+    private Set <ImageDTO> images = new HashSet <>();
+
+    private Set <WorkshopDateDTO> dates = new HashSet <>();
+
     public Long getId() {
         return id;
     }
@@ -128,6 +132,19 @@ public class WorkshopDTO implements Serializable {
 
     public void setTags( Set <TagDTO> tags ) {
         this.tags = tags;
+    }
+
+    public Set <ImageDTO> getImages() {
+        return images;
+    }
+    public void setImages( Set <ImageDTO> images ) {
+        this.images = images;
+    }
+    public Set <WorkshopDateDTO> getDates() {
+        return dates;
+    }
+    public void setDates( Set <WorkshopDateDTO> dates ) {
+        this.dates = dates;
     }
 
     @Override

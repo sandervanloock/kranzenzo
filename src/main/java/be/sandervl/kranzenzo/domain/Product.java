@@ -1,5 +1,6 @@
 package be.sandervl.kranzenzo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -47,10 +48,12 @@ public class Product implements Serializable {
     private Integer numberOfBatteries;
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set <Image> images = new HashSet <>();
 
     @OneToMany(mappedBy = "product")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set <ProductOrder> orders = new HashSet <>();
 

@@ -46,7 +46,7 @@ public class ProductOrderResource {
         if ( productOrderDTO.getId() != null ) {
             throw new BadRequestAlertException( "A new productOrder cannot already have an ID", ENTITY_NAME, "idexists" );
         }
-        ProductOrderDTO result = productOrderService.save( productOrderDTO );
+        ProductOrderDTO result = productOrderService.create( productOrderDTO );
         return ResponseEntity.created( new URI( "/api/product-orders/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
                              .body( result );

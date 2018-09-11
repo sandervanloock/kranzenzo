@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity Product and its DTO ProductDTO.
  */
-@Mapper(componentModel = "spring", uses = {TagMapper.class})
+@Mapper(componentModel = "spring", uses = {TagMapper.class, ImageMapper.class})
 public interface ProductMapper extends EntityMapper <ProductDTO, Product> {
 
     @Mapping(target = "images", ignore = true)

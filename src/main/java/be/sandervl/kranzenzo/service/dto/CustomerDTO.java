@@ -12,6 +12,8 @@ public class CustomerDTO implements Serializable {
 
     private Long id;
 
+    private UserDTO user;
+
     private String street;
 
     private String city;
@@ -24,6 +26,10 @@ public class CustomerDTO implements Serializable {
 
     private String phoneNumber;
 
+    private Float latitude;
+    private Float longitude;
+    private String description;
+
     private Long addressId;
 
     public Long getId() {
@@ -32,6 +38,13 @@ public class CustomerDTO implements Serializable {
 
     public void setId( Long id ) {
         this.id = id;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+    public void setUser( UserDTO user ) {
+        this.user = user;
     }
 
     public String getStreet() {
@@ -72,6 +85,30 @@ public class CustomerDTO implements Serializable {
 
     public void setPhoneNumber( String phoneNumber ) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude( Float latitude ) {
+        this.latitude = latitude;
+    }
+
+    public Float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude( Float longitude ) {
+        this.longitude = longitude;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription( String description ) {
+        this.description = description;
     }
 
     public Long getAddressId() {

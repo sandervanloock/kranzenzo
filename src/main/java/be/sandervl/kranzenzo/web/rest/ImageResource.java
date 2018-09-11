@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.domain.Image;
+import be.sandervl.kranzenzo.domain.image.AwsImageUpload;
 import be.sandervl.kranzenzo.repository.ImageRepository;
 import be.sandervl.kranzenzo.service.dto.ImageDTO;
 import be.sandervl.kranzenzo.service.mapper.ImageMapper;
@@ -8,6 +9,7 @@ import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kranzenzo.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * REST controller for managing Image.
@@ -32,9 +35,12 @@ public class ImageResource {
 
     private final ImageMapper imageMapper;
 
-    public ImageResource( ImageRepository imageRepository, ImageMapper imageMapper ) {
+    private final AwsImageUpload awsImageUpload;
+
+    public ImageResource( ImageRepository imageRepository, ImageMapper imageMapper, AwsImageUpload awsImageUpload ) {
         this.imageRepository = imageRepository;
         this.imageMapper = imageMapper;
+        this.awsImageUpload = awsImageUpload;
     }
 
     /**
@@ -53,6 +59,9 @@ public class ImageResource {
         }
 
         Image image = imageMapper.toEntity( imageDTO );
+        String imageName = String.valueOf(UUID.randomUUID());
+        awsImageUpload.uploadToS3(imageDTO.getData(), imageName, imageDTO.getDataContentType())
+                      .ifPresent(image::setEndpoint);
         image = imageRepository.save( image );
         ImageDTO result = imageMapper.toDto( image );
         return ResponseEntity.created( new URI( "/api/images/" + result.getId() ) )
@@ -78,6 +87,14 @@ public class ImageResource {
         }
 
         Image image = imageMapper.toEntity( imageDTO );
+        if (imageDTO.getData() != null){
+            if (StringUtils.isNotBlank(imageDTO.getEndpoint())){
+                awsImageUpload.deleteFromS3(image.getEndpoint());
+            }
+            String imageName = String.valueOf(UUID.randomUUID());
+            awsImageUpload.uploadToS3(imageDTO.getData(), imageName, imageDTO.getDataContentType())
+                          .ifPresent(image::setEndpoint);
+        }
         image = imageRepository.save( image );
         ImageDTO result = imageMapper.toDto( image );
         return ResponseEntity.ok()
@@ -123,7 +140,11 @@ public class ImageResource {
     @Timed
     public ResponseEntity <Void> deleteImage( @PathVariable Long id ) {
         log.debug( "REST request to delete Image : {}", id );
-
+        imageRepository.findById(id).ifPresent( image -> {
+            if (StringUtils.isNotBlank(image.getEndpoint())){
+                awsImageUpload.deleteFromS3(image.getEndpoint());
+            }
+        } );
         imageRepository.deleteById( id );
         return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
                              .build();

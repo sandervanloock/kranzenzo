@@ -2,7 +2,10 @@ package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
 import be.sandervl.kranzenzo.domain.Workshop;
+import be.sandervl.kranzenzo.repository.ImageRepository;
+import be.sandervl.kranzenzo.repository.WorkshopDateRepository;
 import be.sandervl.kranzenzo.repository.WorkshopRepository;
+import be.sandervl.kranzenzo.repository.WorkshopSubscriptionRepository;
 import be.sandervl.kranzenzo.service.dto.WorkshopDTO;
 import be.sandervl.kranzenzo.service.mapper.WorkshopMapper;
 import be.sandervl.kranzenzo.web.rest.errors.ExceptionTranslator;
@@ -89,6 +92,12 @@ public class WorkshopResourceIntTest {
 
     @Autowired
     private EntityManager em;
+    @Autowired
+    private ImageRepository imageRepository;
+    @Autowired
+    private WorkshopDateRepository workshopDateRepository;
+    @Autowired
+    private WorkshopSubscriptionRepository workshopSubscriptionRepository;
 
     private MockMvc restWorkshopMockMvc;
 
@@ -117,7 +126,7 @@ public class WorkshopResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
-        final WorkshopResource workshopResource = new WorkshopResource( workshopRepository, workshopMapper );
+        final WorkshopResource workshopResource = new WorkshopResource( workshopRepository, workshopMapper, imageRepository, workshopDateRepository, workshopSubscriptionRepository );
         this.restWorkshopMockMvc = MockMvcBuilders.standaloneSetup( workshopResource )
                                                   .setCustomArgumentResolvers( pageableArgumentResolver )
                                                   .setControllerAdvice( exceptionTranslator )
@@ -245,7 +254,7 @@ public class WorkshopResourceIntTest {
     }
 
     public void getAllWorkshopsWithEagerRelationshipsIsEnabled() throws Exception {
-        WorkshopResource workshopResource = new WorkshopResource( workshopRepositoryMock, workshopMapper );
+        WorkshopResource workshopResource = new WorkshopResource( workshopRepositoryMock, workshopMapper, imageRepository, workshopDateRepository, workshopSubscriptionRepository );
         when( workshopRepositoryMock.findAllWithEagerRelationships( any() ) )
             .thenReturn( new PageImpl( new ArrayList <>() ) );
 
@@ -262,7 +271,7 @@ public class WorkshopResourceIntTest {
     }
 
     public void getAllWorkshopsWithEagerRelationshipsIsNotEnabled() throws Exception {
-        WorkshopResource workshopResource = new WorkshopResource( workshopRepositoryMock, workshopMapper );
+        WorkshopResource workshopResource = new WorkshopResource( workshopRepositoryMock, workshopMapper, imageRepository, workshopDateRepository, workshopSubscriptionRepository );
         when( workshopRepositoryMock.findAllWithEagerRelationships( any() ) )
             .thenReturn( new PageImpl( new ArrayList <>() ) );
         MockMvc restWorkshopMockMvc = MockMvcBuilders.standaloneSetup( workshopResource )

@@ -35,6 +35,10 @@ public class WorkshopSubscription implements Serializable {
     @JsonIgnoreProperties("subscriptions")
     private WorkshopDate workshop;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -82,6 +86,18 @@ public class WorkshopSubscription implements Serializable {
         this.workshop = workshopDate;
         return this;
     }
+
+    public User getUser() {
+        return user;
+    }
+    public void setUser( User user ) {
+        this.user = user;
+    }
+    public WorkshopSubscription user( User user ) {
+        this.user = user;
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

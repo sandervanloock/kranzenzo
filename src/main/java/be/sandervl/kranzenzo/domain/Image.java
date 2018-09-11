@@ -29,6 +29,9 @@ public class Image implements Serializable {
     @Column(name = "data_content_type", nullable = false)
     private String dataContentType;
 
+    @Column(name = "endpoint")
+    private String endpoint;
+
     @ManyToOne
     @JsonIgnoreProperties("images")
     private Workshop workshop;
@@ -56,6 +59,19 @@ public class Image implements Serializable {
 
     public Image data( byte[] data ) {
         this.data = data;
+        return this;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint( String endpoint ) {
+        this.endpoint = endpoint;
+    }
+
+    public Image endpoint( String endpoint ) {
+        this.endpoint = endpoint;
         return this;
     }
 

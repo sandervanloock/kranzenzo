@@ -10,6 +10,7 @@ import java.util.Objects;
 public class ImageDTO implements Serializable {
 
     private Long id;
+    private String endpoint;
 
     @Lob
     private byte[] data;
@@ -29,6 +30,14 @@ public class ImageDTO implements Serializable {
 
     public void setId( Long id ) {
         this.id = id;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint( String endpoint ) {
+        this.endpoint = endpoint;
     }
 
     public byte[] getData() {

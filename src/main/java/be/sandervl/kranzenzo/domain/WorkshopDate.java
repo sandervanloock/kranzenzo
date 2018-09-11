@@ -1,5 +1,6 @@
 package be.sandervl.kranzenzo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -32,6 +33,7 @@ public class WorkshopDate implements Serializable {
 
     @OneToMany(mappedBy = "workshop")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JsonIgnore
     private Set <WorkshopSubscription> subscriptions = new HashSet <>();
 
     @ManyToOne

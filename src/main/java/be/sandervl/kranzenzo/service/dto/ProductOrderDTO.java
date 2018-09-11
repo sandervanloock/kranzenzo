@@ -39,6 +39,8 @@ public class ProductOrderDTO implements Serializable {
 
     private Long customerId;
 
+    private CustomerDTO customer;
+
     private Long deliveryAddressId;
 
     private Long productId;
@@ -123,6 +125,13 @@ public class ProductOrderDTO implements Serializable {
 
     public void setCustomerId( Long customerId ) {
         this.customerId = customerId;
+    }
+
+    public CustomerDTO getCustomer(){
+        return customer;
+    }
+    public void setCustomer(CustomerDTO customer){
+        this.customer = customer;
     }
 
     public Long getDeliveryAddressId() {

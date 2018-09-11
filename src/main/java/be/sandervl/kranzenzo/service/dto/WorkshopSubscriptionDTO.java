@@ -21,6 +21,8 @@ public class WorkshopSubscriptionDTO implements Serializable {
 
     private String workshopDate;
 
+    private UserDTO user;
+
     public Long getId() {
         return id;
     }
@@ -59,6 +61,13 @@ public class WorkshopSubscriptionDTO implements Serializable {
 
     public void setWorkshopDate( String workshopDateDate ) {
         this.workshopDate = workshopDateDate;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+    public void setUser( UserDTO user ) {
+        this.user = user;
     }
 
     @Override

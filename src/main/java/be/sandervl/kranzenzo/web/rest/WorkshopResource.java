@@ -1,7 +1,11 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.domain.Workshop;
+import be.sandervl.kranzenzo.domain.enumeration.SubscriptionState;
+import be.sandervl.kranzenzo.repository.ImageRepository;
+import be.sandervl.kranzenzo.repository.WorkshopDateRepository;
 import be.sandervl.kranzenzo.repository.WorkshopRepository;
+import be.sandervl.kranzenzo.repository.WorkshopSubscriptionRepository;
 import be.sandervl.kranzenzo.service.dto.WorkshopDTO;
 import be.sandervl.kranzenzo.service.mapper.WorkshopMapper;
 import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
@@ -16,8 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Workshop.
@@ -31,10 +37,16 @@ public class WorkshopResource {
     private final WorkshopRepository workshopRepository;
 
     private final WorkshopMapper workshopMapper;
+    private final ImageRepository imageRepository;
+    private final WorkshopDateRepository workshopDateRepository;
+    private final WorkshopSubscriptionRepository workshopSubscriptionRepository;
 
-    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper ) {
+    public WorkshopResource( WorkshopRepository workshopRepository, WorkshopMapper workshopMapper, ImageRepository imageRepository, WorkshopDateRepository workshopDateRepository, WorkshopSubscriptionRepository workshopSubscriptionRepository ) {
         this.workshopRepository = workshopRepository;
         this.workshopMapper = workshopMapper;
+        this.imageRepository = imageRepository;
+        this.workshopDateRepository = workshopDateRepository;
+        this.workshopSubscriptionRepository = workshopSubscriptionRepository;
     }
 
     /**
@@ -52,8 +64,8 @@ public class WorkshopResource {
             throw new BadRequestAlertException( "A new workshop cannot already have an ID", ENTITY_NAME, "idexists" );
         }
 
-        Workshop workshop = workshopMapper.toEntity( workshopDTO );
-        workshop = workshopRepository.save( workshop );
+        Workshop workshop = handleImages( workshopDTO );
+
         WorkshopDTO result = workshopMapper.toDto( workshop );
         return ResponseEntity.created( new URI( "/api/workshops/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
@@ -77,8 +89,8 @@ public class WorkshopResource {
             throw new BadRequestAlertException( "Invalid id", ENTITY_NAME, "idnull" );
         }
 
-        Workshop workshop = workshopMapper.toEntity( workshopDTO );
-        workshop = workshopRepository.save( workshop );
+        Workshop workshop = handleImages( workshopDTO );
+
         WorkshopDTO result = workshopMapper.toDto( workshop );
         return ResponseEntity.ok()
                              .headers( HeaderUtil
@@ -108,10 +120,25 @@ public class WorkshopResource {
      */
     @GetMapping("/workshops/{id}")
     @Timed
-    public ResponseEntity <WorkshopDTO> getWorkshop( @PathVariable Long id ) {
+    public ResponseEntity <WorkshopDTO> getWorkshop( @PathVariable Long id, @RequestParam(value = "filterDates", required = false) Boolean filterDates ) {
         log.debug( "REST request to get Workshop : {}", id );
-        Optional <WorkshopDTO> workshopDTO = workshopRepository.findOneWithEagerRelationships( id )
-                                                               .map( workshopMapper::toDto );
+        Optional <WorkshopDTO> workshopDTO =
+            workshopRepository.findOneWithEagerRelationships( id )
+                              .map( workshop -> {
+                                  if ( workshop.getDates() != null && !workshop.getDates().isEmpty() && filterDates ) {
+                                      log.debug( "Filter out past dates and dates with max subscriptions" );
+                                      workshop.setDates( workshop.getDates()
+                                                                 .stream()
+                                                                 .filter( date -> date.getDate().isAfter( ZonedDateTime
+                                                                     .now() ) )
+                                                                 .filter( date -> workshopSubscriptionRepository
+                                                                     .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
+                                                                     .getMaxSubscriptions() )
+                                                                 .collect( Collectors.toSet() ) );
+                                  }
+                                  return workshop;
+                              } )
+                              .map( workshopMapper::toDto );
         return ResponseUtil.wrapOrNotFound( workshopDTO );
     }
 
@@ -129,5 +156,39 @@ public class WorkshopResource {
         workshopRepository.deleteById( id );
         return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
                              .build();
+    }
+
+    private Workshop handleImages( WorkshopDTO workshopDTO ) {
+        final Workshop workshop = workshopMapper.toEntity( workshopDTO );
+        Optional <Workshop> optionalWorkshop = workshopRepository.findOneWithEagerRelationships( workshopDTO.getId() );
+        //unlink existing images
+        optionalWorkshop.ifPresent( existing -> existing
+            .getImages()
+            .stream()
+            .filter( image -> !workshop.getImages().contains( image ) )
+            .peek( image -> image.setWorkshop( null ) )
+            .forEach( imageRepository::save ) );
+
+        //link new images
+        workshopRepository.save( workshop )
+                          .getImages()
+                          .stream()
+                          .filter( image -> image.getId() != null )
+                          //get image from database
+                          .peek( image -> imageRepository.findById( image.getId() )
+                                                         .ifPresent( i -> i.setWorkshop( workshop ) ) )
+                          .forEach( imageRepository::save );
+        //save new dates
+        workshop.getDates()
+                .stream()
+                .peek( date -> date.setWorkshop( workshop ) )
+                .forEach( workshopDateRepository::save );
+        //delete removed dates
+        optionalWorkshop.ifPresent( existing -> existing
+            .getDates()
+            .stream()
+            .filter( date -> !workshop.getDates().contains( date ) )
+            .forEach( workshopDateRepository::delete ) );
+        return workshop;
     }
 }

@@ -29,6 +29,12 @@ public class Tag implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "homepage")
+    private Boolean homepage;
+
+    @ManyToOne
+    private Tag parent;
+
     @ManyToMany(mappedBy = "tags")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -38,6 +44,10 @@ public class Tag implements Serializable {
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set <Product> products = new HashSet <>();
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(unique = true)
+    private Image image;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -110,6 +120,46 @@ public class Tag implements Serializable {
         product.getTags().remove( this );
         return this;
     }
+
+    public Tag getParent() {
+        return parent;
+    }
+
+    public void setParent( Tag parent ) {
+        this.parent = parent;
+    }
+
+    public Tag tag( Tag parent ) {
+        this.parent = parent;
+        return this;
+    }
+
+    public Boolean getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage( Boolean homepage ) {
+        this.homepage = homepage;
+    }
+
+    public Tag homepage( Boolean homepage ) {
+        this.homepage = homepage;
+        return this;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage( Image image ) {
+        this.image = image;
+    }
+
+    public Tag image( Image image ) {
+        this.image = image;
+        return this;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

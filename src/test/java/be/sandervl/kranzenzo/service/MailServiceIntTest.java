@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.service;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.ApplicationProperties;
 import be.sandervl.kranzenzo.config.Constants;
 import be.sandervl.kranzenzo.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
@@ -50,11 +51,14 @@ public class MailServiceIntTest {
 
     private MailService mailService;
 
+    @Autowired
+    private ApplicationProperties applicationProperties;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
         doNothing().when( javaMailSender ).send( any( MimeMessage.class ) );
-        mailService = new MailService( jHipsterProperties, javaMailSender, messageSource, templateEngine );
+        mailService = new MailService( jHipsterProperties, applicationProperties, javaMailSender, messageSource, templateEngine );
     }
 
     @Test

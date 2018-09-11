@@ -32,6 +32,8 @@ public class ProductDTO implements Serializable {
 
     private Set <TagDTO> tags = new HashSet <>();
 
+    private Set<ImageDTO> images = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -86,6 +88,14 @@ public class ProductDTO implements Serializable {
 
     public void setTags( Set <TagDTO> tags ) {
         this.tags = tags;
+    }
+
+    public Set <ImageDTO> getImages() {
+        return images;
+    }
+
+    public void setImages( Set <ImageDTO> images ) {
+        this.images = images;
     }
 
     @Override

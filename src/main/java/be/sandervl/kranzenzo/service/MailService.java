@@ -1,6 +1,9 @@
 package be.sandervl.kranzenzo.service;
 
+import be.sandervl.kranzenzo.config.ApplicationProperties;
+import be.sandervl.kranzenzo.domain.ProductOrder;
 import be.sandervl.kranzenzo.domain.User;
+import be.sandervl.kranzenzo.domain.WorkshopSubscription;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Optional;
 
 /**
  * Service for sending emails.
@@ -29,16 +33,19 @@ public class MailService {
     private final Logger log = LoggerFactory.getLogger( MailService.class );
     private final JHipsterProperties jHipsterProperties;
 
+    private final ApplicationProperties applicationProperties;
+
     private final JavaMailSender javaMailSender;
 
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
 
-    public MailService( JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
+    public MailService( JHipsterProperties jHipsterProperties, ApplicationProperties applicationProperties, JavaMailSender javaMailSender,
                         MessageSource messageSource, SpringTemplateEngine templateEngine ) {
 
         this.jHipsterProperties = jHipsterProperties;
+        this.applicationProperties = applicationProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
@@ -99,5 +106,64 @@ public class MailService {
     public void sendPasswordResetMail( User user ) {
         log.debug( "Sending password reset email to '{}'", user.getEmail() );
         sendEmailFromTemplate( user, "mail/passwordResetEmail", "email.reset.title" );
+    }
+
+    @Async
+    public void sendOrderCreationMails( ProductOrder order, User user ) {
+        if ( user != null ) {
+            log.debug( "Sending confirmation mail to '{}'", user.getEmail() );
+            Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
+            Context context = new Context( locale );
+            context.setVariable( USER, user );
+            context.setVariable( "order", order );
+            context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+            String content = templateEngine.process( "orderConfirmationCustomer", context );
+            String subject = messageSource.getMessage( "email.order.confirmation.title", null, locale );
+            sendEmail( user.getEmail(), subject, content, false, true );
+        }
+        log.debug( "Sending notification of new order to '{}'", applicationProperties.getMail().getConfirmation() );
+        Context context = new Context(Locale.forLanguageTag("nl"));
+        context.setVariable( "orderLink", jHipsterProperties.getMail().getBaseUrl() + "#/order/" + order.getId() );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        String content = templateEngine.process( "orderConfirmationClient", context );
+        String subject = messageSource.getMessage( "email.order.confirmation.client.title", null,
+            Locale.forLanguageTag( "nl" ) );
+        sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
+    }
+    public void sendWorkshopSubscriptionMails( WorkshopSubscription subscription ) {
+        User user = subscription.getUser();
+        log.debug( "Sending confirmation of subscription to '{}'", user.getEmail() );
+        Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
+        Context context = new Context( locale );
+        context.setVariable( USER, user );
+        context.setVariable( "subscription", subscription );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        String content = templateEngine.process( "workshopSubscriptionConfirmationCustomer", context );
+        String subject = messageSource.getMessage( "email.workshop.subscription.confirmation.title", null, locale );
+        sendEmail( user.getEmail(), subject, content, false, true );
+        log.debug( "Sending notification of new subscription to '{}'", applicationProperties.getMail()
+                                                                                            .getConfirmation() );
+        context = new Context( Locale.forLanguageTag( "nl" ) );
+        context.setVariable( "subscriptionLink", jHipsterProperties.getMail()
+                                                                   .getBaseUrl() + "#/workshop-subscription/" + subscription
+            .getId() );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        content = templateEngine.process( "workshopSubscriptionConfirmationClient", context );
+        subject = messageSource.getMessage( "email.workshop.subscription.confirmation.client.title", null,
+            Locale.forLanguageTag( "nl" ) );
+        sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
+    }
+    public void sendWorkshopConfirmationMail( WorkshopSubscription subscription ) {
+        User user = subscription.getUser();
+        log.debug( "Sending confirmation of payed subscription to '{}'", user.getEmail() );
+        Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
+        Context context = new Context( locale );
+        context.setVariable( USER, user );
+        context.setVariable( "subscription", subscription );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        String content = templateEngine.process( "workshopSubscriptionPayedCustomer", context );
+        String subject = messageSource.getMessage( "email.workshop.subscription.payed.customer.title", null,
+            Locale.forLanguageTag( "nl" ) );
+        sendEmail( user.getEmail(), subject, content, false, true );
     }
 }

@@ -1,5 +1,6 @@
 package be.sandervl.kranzenzo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -25,6 +26,10 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "street")
     private String street;
 
@@ -42,11 +47,12 @@ public class Customer implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Location address;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set <ProductOrder> orders = new HashSet <>();
 
@@ -57,6 +63,17 @@ public class Customer implements Serializable {
 
     public void setId( Long id ) {
         this.id = id;
+    }
+
+    public Customer user( User user ) {
+        this.user = user;
+        return this;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser( User user ) {
+        this.user = user;
     }
 
     public String getStreet() {

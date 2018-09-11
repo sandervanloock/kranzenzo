@@ -1,4 +1,4 @@
-package be.sandervl.kranzenzo.config
+package be.sandervl.kranzenzo.config;
 
 import com.google.common.io.Files;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.nio.charset.Charset;
 import java.util.Map;
 import java.util.Properties;
 
-import static be.sandervl.kransenzo.config.Constants.CREDENTIALS_PATH;
+import static be.sandervl.kranzenzo.config.Constants.CREDENTIALS_PATH;
 
 @Configuration
 @ConfigurationProperties("spring.mail")
