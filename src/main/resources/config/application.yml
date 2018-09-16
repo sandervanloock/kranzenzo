@@ -107,5 +107,11 @@ jhipster:
 # More documentation is available at:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
-
+application:
+    mail:
+        confirmation: annemie.rousseau@telenet.be
+aws:
+    s3:
+        endpointUrl: https://s3.eu-west-1.amazonaws.com
+        bucketName: kranzenzo-images
 # application:

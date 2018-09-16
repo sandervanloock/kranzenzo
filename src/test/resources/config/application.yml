@@ -90,7 +90,7 @@ jhipster:
         authentication:
             jwt:
                 # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-                base64-secret: 522be5f3b99d70057b3473799fcee40a9a3926fa
+                base64-secret: mysecrettokentochangeinproductionkranzenzowebtokenmysecrettokentochangeinproductionkranzenzowebtoken
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
@@ -108,4 +108,10 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+    mail:
+        confirmation: confirmation@mail.com
+aws:
+    s3:
+        endpointUrl: https://s3.eu-west-1.amazonaws.com
+        bucketName: test-bucket
