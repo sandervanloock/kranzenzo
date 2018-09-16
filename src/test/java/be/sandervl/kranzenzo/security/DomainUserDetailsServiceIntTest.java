@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.security;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.domain.User;
 import be.sandervl.kranzenzo.repository.UserRepository;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -9,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 @Transactional
 public class DomainUserDetailsServiceIntTest {
 

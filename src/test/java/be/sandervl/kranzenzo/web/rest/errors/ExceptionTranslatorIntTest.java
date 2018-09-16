@@ -1,11 +1,13 @@
 package be.sandervl.kranzenzo.web.rest.errors;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 public class ExceptionTranslatorIntTest {
 
     @Autowired

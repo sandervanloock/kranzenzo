@@ -8,9 +8,8 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity Customer and its DTO CustomerDTO.
  */
-@Mapper(componentModel = "spring", uses = {LocationMapper.class, UserMapper.class})
+@Mapper(componentModel = "spring", uses = {LocationMapper.class, UserMapper.class,})
 public interface CustomerMapper extends EntityMapper <CustomerDTO, Customer> {
-
     @Mapping(target = "latitude", source = "address.latitude")
     @Mapping(target = "longitude", source = "address.longitude")
     @Mapping(target = "description", source = "address.description")

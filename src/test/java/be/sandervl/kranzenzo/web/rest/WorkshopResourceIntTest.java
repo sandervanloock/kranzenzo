@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.domain.Workshop;
 import be.sandervl.kranzenzo.repository.ImageRepository;
 import be.sandervl.kranzenzo.repository.WorkshopDateRepository;
@@ -16,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
@@ -43,6 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 public class WorkshopResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";

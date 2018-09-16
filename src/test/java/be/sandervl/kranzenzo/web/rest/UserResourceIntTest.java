@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.domain.Authority;
 import be.sandervl.kranzenzo.domain.User;
 import be.sandervl.kranzenzo.repository.UserRepository;
@@ -18,6 +19,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -46,6 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 public class UserResourceIntTest {
 
     private static final String DEFAULT_LOGIN = "johndoe";

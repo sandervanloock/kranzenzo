@@ -1,23 +1,32 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.domain.Customer;
+import be.sandervl.kranzenzo.domain.Location;
+import be.sandervl.kranzenzo.domain.User;
 import be.sandervl.kranzenzo.repository.CustomerRepository;
+import be.sandervl.kranzenzo.repository.LocationRepository;
+import be.sandervl.kranzenzo.repository.UserRepository;
 import be.sandervl.kranzenzo.service.dto.CustomerDTO;
 import be.sandervl.kranzenzo.service.mapper.CustomerMapper;
 import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kranzenzo.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.function.Consumer;
 
 /**
  * REST controller for managing Customer.
@@ -32,9 +41,16 @@ public class CustomerResource {
 
     private final CustomerMapper customerMapper;
 
-    public CustomerResource( CustomerRepository customerRepository, CustomerMapper customerMapper ) {
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final LocationRepository locationRepository;
+
+    public CustomerResource( CustomerRepository customerRepository, CustomerMapper customerMapper, PasswordEncoder passwordEncoder, UserRepository userRepository, LocationRepository locationRepository ) {
         this.customerRepository = customerRepository;
         this.customerMapper = customerMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.locationRepository = locationRepository;
     }
 
     /**
@@ -53,6 +69,8 @@ public class CustomerResource {
         }
 
         Customer customer = customerMapper.toEntity( customerDTO );
+        setUserLocation( customer );
+        setUserLoginAndPassword( customer );
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
         return ResponseEntity.created( new URI( "/api/customers/" + result.getId() ) )
@@ -78,6 +96,7 @@ public class CustomerResource {
         }
 
         Customer customer = customerMapper.toEntity( customerDTO );
+        setUserLoginAndPassword( customer );
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
         return ResponseEntity.ok()
@@ -128,5 +147,43 @@ public class CustomerResource {
         customerRepository.deleteById( id );
         return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
                              .build();
+    }
+
+    private void setUserLoginAndPassword( Customer customer ) {
+        User user = customer.getUser();
+        if ( user != null ) {
+            if ( user.getId() != null ) {
+                userRepository.findById( user.getId() )
+                              .ifPresent( this::keepOriginalLoginAndPassword );
+            }
+            if ( StringUtils.isNotBlank( user.getEmail() ) ) {
+                userRepository.findOneByEmailIgnoreCase( user.getEmail() )
+                              .ifPresent( keepOriginalLoginAndPassword( user ) );
+            }
+            if ( StringUtils.isAnyBlank( user.getLogin(), user.getPassword() ) ) {
+                user.setLogin( UUID.randomUUID().toString() );
+                user.setPassword( passwordEncoder.encode( "NO_PASS" ) );
+                customer.setUser( userRepository.save( user ) );
+            }
+        }
+    }
+
+    private Consumer <User> keepOriginalLoginAndPassword( User user ) {
+        return existing -> {
+            user.setId( existing.getId() );
+            user.setLogin( existing.getLogin() );
+            user.setPassword( existing.getPassword() );
+        };
+    }
+
+    private void setUserLocation( Customer customer ) {
+        Location address = customer.getAddress();
+        if ( Objects.nonNull( address.getLatitude() ) && Objects.nonNull( address.getLongitude() ) ) {
+            Location location = locationRepository.save( address );
+            customer.setAddress( location );
+        }
+        else{
+            customer.setAddress( null );
+        }
     }
 }

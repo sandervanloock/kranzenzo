@@ -1,8 +1,15 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
+import be.sandervl.kranzenzo.domain.User;
+import be.sandervl.kranzenzo.domain.Workshop;
+import be.sandervl.kranzenzo.domain.WorkshopDate;
 import be.sandervl.kranzenzo.domain.WorkshopSubscription;
 import be.sandervl.kranzenzo.domain.enumeration.SubscriptionState;
+import be.sandervl.kranzenzo.repository.UserRepository;
+import be.sandervl.kranzenzo.repository.WorkshopDateRepository;
+import be.sandervl.kranzenzo.repository.WorkshopRepository;
 import be.sandervl.kranzenzo.repository.WorkshopSubscriptionRepository;
 import be.sandervl.kranzenzo.service.dto.WorkshopSubscriptionDTO;
 import be.sandervl.kranzenzo.service.mapper.WorkshopSubscriptionMapper;
@@ -13,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -42,6 +50,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 public class WorkshopSubscriptionResourceIntTest {
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant( Instant
@@ -50,6 +59,9 @@ public class WorkshopSubscriptionResourceIntTest {
 
     private static final SubscriptionState DEFAULT_STATE = SubscriptionState.NEW;
     private static final SubscriptionState UPDATED_STATE = SubscriptionState.PAYED;
+    private static User USER;
+    private static WorkshopDate WORKSHOP_DATE;
+    private static Workshop WORKSHOP;
 
     @Autowired
     private WorkshopSubscriptionRepository workshopSubscriptionRepository;
@@ -68,6 +80,15 @@ public class WorkshopSubscriptionResourceIntTest {
 
     @Autowired
     private EntityManager em;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private WorkshopRepository workshopRepository;
+
+    @Autowired
+    private WorkshopDateRepository workshopDateRepository;
 
     private MockMvc restWorkshopSubscriptionMockMvc;
 
@@ -101,6 +122,16 @@ public class WorkshopSubscriptionResourceIntTest {
     @Before
     public void initTest() {
         workshopSubscription = createEntity( em );
+        USER = UserResourceIntTest.createEntity( em );
+        USER.setLangKey( "nl" );
+        userRepository.saveAndFlush( USER );
+        workshopSubscription.setUser( USER );
+        WORKSHOP_DATE = WorkshopDateResourceIntTest.createEntity( em );
+        workshopDateRepository.saveAndFlush( WORKSHOP_DATE );
+        WORKSHOP = WorkshopResourceIntTest.createEntity( em );
+        workshopRepository.saveAndFlush( WORKSHOP );
+        WORKSHOP_DATE.setWorkshop( WORKSHOP );
+        workshopSubscription.setWorkshop( WORKSHOP_DATE );
     }
 
     @Test

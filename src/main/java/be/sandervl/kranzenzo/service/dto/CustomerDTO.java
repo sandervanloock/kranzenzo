@@ -30,8 +30,6 @@ public class CustomerDTO implements Serializable {
     private Float longitude;
     private String description;
 
-    private Long addressId;
-
     public Long getId() {
         return id;
     }
@@ -111,14 +109,6 @@ public class CustomerDTO implements Serializable {
         this.description = description;
     }
 
-    public Long getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId( Long locationId ) {
-        this.addressId = locationId;
-    }
-
     @Override
     public boolean equals( Object o ) {
         if ( this == o ) {
@@ -149,7 +139,6 @@ public class CustomerDTO implements Serializable {
             ", zipCode=" + getZipCode() +
             ", province='" + getProvince() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
-            ", address=" + getAddressId() +
             "}";
     }
 }

@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.domain.Product;
 import be.sandervl.kranzenzo.domain.ProductOrder;
 import be.sandervl.kranzenzo.domain.enumeration.DeliveryType;
@@ -17,6 +18,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -46,6 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 public class ProductOrderResourceIntTest {
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant( Instant
@@ -155,8 +158,6 @@ public class ProductOrderResourceIntTest {
         List <ProductOrder> productOrderList = productOrderRepository.findAll();
         assertThat( productOrderList ).hasSize( databaseSizeBeforeCreate + 1 );
         ProductOrder testProductOrder = productOrderList.get( productOrderList.size() - 1 );
-        assertThat( testProductOrder.getCreated() ).isEqualTo( DEFAULT_CREATED );
-        assertThat( testProductOrder.getUpdated() ).isEqualTo( DEFAULT_UPDATED );
         assertThat( testProductOrder.getState() ).isEqualTo( DEFAULT_STATE );
         assertThat( testProductOrder.getDeliveryType() ).isEqualTo( DEFAULT_DELIVERY_TYPE );
         assertThat( testProductOrder.isIncludeBatteries() ).isEqualTo( DEFAULT_INCLUDE_BATTERIES );

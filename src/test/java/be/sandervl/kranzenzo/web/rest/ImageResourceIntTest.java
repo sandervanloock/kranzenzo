@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.domain.Image;
 import be.sandervl.kranzenzo.domain.image.AwsImageUpload;
 import be.sandervl.kranzenzo.repository.ImageRepository;
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -36,8 +38,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @see ImageResource
  */
-@RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@RunWith(SpringRunner.class)
+@Import(DummyS3Configuration.class)
 public class ImageResourceIntTest {
 
     private static final byte[] DEFAULT_DATA = TestUtil.createByteArray( 1, "0" );

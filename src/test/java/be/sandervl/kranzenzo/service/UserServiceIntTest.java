@@ -2,6 +2,7 @@ package be.sandervl.kranzenzo.service;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
 import be.sandervl.kranzenzo.config.Constants;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.domain.User;
 import be.sandervl.kranzenzo.repository.UserRepository;
 import be.sandervl.kranzenzo.service.dto.UserDTO;
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.auditing.AuditingHandler;
 import org.springframework.data.auditing.DateTimeProvider;
 import org.springframework.data.domain.Page;
@@ -36,6 +38,7 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 @Transactional
 public class UserServiceIntTest {
 

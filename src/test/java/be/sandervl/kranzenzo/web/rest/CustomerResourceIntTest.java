@@ -1,8 +1,13 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.domain.Customer;
+import be.sandervl.kranzenzo.domain.Location;
+import be.sandervl.kranzenzo.domain.User;
 import be.sandervl.kranzenzo.repository.CustomerRepository;
+import be.sandervl.kranzenzo.repository.LocationRepository;
+import be.sandervl.kranzenzo.repository.UserRepository;
 import be.sandervl.kranzenzo.service.dto.CustomerDTO;
 import be.sandervl.kranzenzo.service.mapper.CustomerMapper;
 import be.sandervl.kranzenzo.web.rest.errors.ExceptionTranslator;
@@ -12,9 +17,11 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -36,6 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 public class CustomerResourceIntTest {
 
     private static final String DEFAULT_STREET = "AAAAAAAAAA";
@@ -71,6 +79,15 @@ public class CustomerResourceIntTest {
     @Autowired
     private EntityManager em;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private MockMvc restCustomerMockMvc;
 
     private Customer customer;
@@ -82,19 +99,25 @@ public class CustomerResourceIntTest {
      * if they test an entity which requires the current entity.
      */
     public static Customer createEntity( EntityManager em ) {
+        User user = UserResourceIntTest.createEntity( em );
+        Location location = LocationResourceIntTest.createEntity( em );
         Customer customer = new Customer()
             .street( DEFAULT_STREET )
             .city( DEFAULT_CITY )
             .zipCode( DEFAULT_ZIP_CODE )
             .province( DEFAULT_PROVINCE )
-            .phoneNumber( DEFAULT_PHONE_NUMBER );
+            .phoneNumber( DEFAULT_PHONE_NUMBER )
+            .user( user )
+            .address( location );
         return customer;
     }
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
-        final CustomerResource customerResource = new CustomerResource( customerRepository, customerMapper );
+        final CustomerResource customerResource =
+            new CustomerResource( customerRepository, customerMapper, passwordEncoder,
+                userRepository, locationRepository );
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup( customerResource )
                                                   .setCustomArgumentResolvers( pageableArgumentResolver )
                                                   .setControllerAdvice( exceptionTranslator )
@@ -105,6 +128,8 @@ public class CustomerResourceIntTest {
     @Before
     public void initTest() {
         customer = createEntity( em );
+        userRepository.save( customer.getUser() );
+        locationRepository.save( customer.getAddress() );
     }
 
     @Test

@@ -2,6 +2,7 @@ package be.sandervl.kranzenzo.repository;
 
 import be.sandervl.kranzenzo.KranzenzoApp;
 import be.sandervl.kranzenzo.config.Constants;
+import be.sandervl.kranzenzo.config.DummyS3Configuration;
 import be.sandervl.kranzenzo.config.audit.AuditEventConverter;
 import be.sandervl.kranzenzo.domain.PersistentAuditEvent;
 import org.junit.Before;
@@ -10,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
@@ -32,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = KranzenzoApp.class)
+@Import(DummyS3Configuration.class)
 @Transactional
 public class CustomAuditEventRepositoryIntTest {
 
