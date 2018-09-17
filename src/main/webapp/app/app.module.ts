@@ -18,9 +18,11 @@ import { KranzenzoHomeModule } from './home/home.module';
 import { KranzenzoAccountModule } from './account/account.module';
 import { KranzenzoEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
-// jhipster-needle-angular-add-module-import JHipster will add new module here
 import { ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent, NavbarComponent, PageRibbonComponent } from './layouts';
 import { ShopModule } from 'app/shop/shop.module';
+import { InfoModule } from 'app/info/info.module';
+
+// jhipster-needle-angular-add-module-import JHipster will add new module here
 
 @NgModule({
     imports: [
@@ -32,7 +34,8 @@ import { ShopModule } from 'app/shop/shop.module';
         KranzenzoHomeModule,
         KranzenzoAccountModule,
         KranzenzoEntityModule,
-        ShopModule
+        ShopModule,
+        InfoModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
