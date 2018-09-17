@@ -2,6 +2,14 @@
 Main page styles
 ========================================================================== */
 
+.hipster {
+    display: inline-block;
+    width: 347px;
+    height: 497px;
+    background: url('../../content/images/hipster.png') no-repeat center top;
+    background-size: contain;
+}
+
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media only screen and (-webkit-min-device-pixel-ratio: 2),
     only screen and (min--moz-device-pixel-ratio: 2),
@@ -11,13 +19,19 @@ Main page styles
     only screen and (min-resolution: 2dppx) {
 }
 
-.homepage-image {
-    width: 1000px;
-    height: 500px;
+a:hover {
+    text-decoration: none !important;
 }
 
-.m-home_text-block {
-    text-align: left;
+.card-text {
+    max-height: 2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-img-top {
+    margin: auto;
 }
 
 .m-block__content {
@@ -39,7 +53,7 @@ Main page styles
 }
 
 .m-block__image {
-    height: 220px;
+    height: 290px;
     width: 100%;
     overflow: hidden;
     position: relative;

@@ -6,6 +6,9 @@ import { JhiLanguageService } from 'ng-jhipster';
 import { VERSION } from 'app/app.constants';
 import { JhiLanguageHelper, LoginModalService, LoginService, Principal } from 'app/core';
 import { ProfileService } from '../profiles/profile.service';
+import { TagService } from 'app/entities/tag';
+import { HttpResponse } from '@angular/common/http';
+import { ITag } from 'app/shared/model/tag.model';
 
 @Component({
     selector: 'jhi-navbar',
@@ -20,6 +23,8 @@ export class NavbarComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
 
+    tags: ITag[];
+
     constructor(
         private loginService: LoginService,
         private languageService: JhiLanguageService,
@@ -27,7 +32,8 @@ export class NavbarComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        private router: Router
+        private router: Router,
+        private tagService: TagService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -41,6 +47,17 @@ export class NavbarComponent implements OnInit {
         this.profileService.getProfileInfo().then(profileInfo => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
+        });
+        this.tagService.query().subscribe((res: HttpResponse<ITag[]>) => {
+            this.tags = res.body;
+            this.tags.filter(tag => tag.parentId != null).forEach(child => {
+                const parent = this.tags.find(p => p.id === child.parentId);
+                if (!parent.children) {
+                    parent.children = [];
+                }
+                parent.children.push(child);
+            });
+            this.tags = this.tags.filter(tag => tag.homepage);
         });
     }
 

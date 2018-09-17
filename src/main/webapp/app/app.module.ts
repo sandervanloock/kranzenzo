@@ -20,6 +20,7 @@ import { KranzenzoEntityModule } from './entities/entity.module';
 import * as moment from 'moment';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent, NavbarComponent, PageRibbonComponent } from './layouts';
+import { ShopModule } from 'app/shop/shop.module';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent,
         KranzenzoCoreModule,
         KranzenzoHomeModule,
         KranzenzoAccountModule,
-        KranzenzoEntityModule
+        KranzenzoEntityModule,
+        ShopModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
