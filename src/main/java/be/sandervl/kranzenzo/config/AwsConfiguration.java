@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.config;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.monitoring.ProfileCsmConfigurationProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -42,6 +43,7 @@ public class AwsConfiguration{
         return AmazonS3ClientBuilder.standard()
                                     .withCredentials(new ProfileCredentialsProvider("jhipster"))
                                     .withRegion(Regions.EU_WEST_1)
+                                    .withClientSideMonitoringConfigurationProvider( new ProfileCsmConfigurationProvider( "jhipster" ) )
                                     .build();
     }
 
