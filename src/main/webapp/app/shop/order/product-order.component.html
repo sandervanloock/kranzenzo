@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="this.productPopupService.close()">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="this.activeModal.close()">
             &times;
         </button>
         <form name="editForm" novalidate role="form" #editForm="ngForm" (ngSubmit)="submitForm()">
@@ -57,7 +57,7 @@
                 </fieldset>
                 <small class="user-form-legend">* verplicht</small>
                 <div class="stepper-actions">
-                    <button type="button" class="btn btn-light" (click)="this.productPopupService.close()">
+                    <button type="button" class="btn btn-light" (click)="this.activeModal.close()">
                         Terug
                     </button>
                     <button type="button" class="btn btn-primary" (click)="gotoStepTwo()" [disabled]="!(firstName.valid && lastName.valid && email.valid && emailConfirmation.valid)">
@@ -90,7 +90,7 @@
                             {{this.order.deliveryPrice}}. (€0,5/km, eerste 10 km is gratis.)
                         </small>
                     </div>
-                    <jhi-customer-address *ngIf="this.order.deliveryType === 0"
+                    <jhi-customer-address *ngIf="this.order.deliveryType === DeliveryType.DELIVERED"
                                           [customer]="this.customer"
                                           (updateDeliveryPrice)="updateDeliveryPrice($event)">
                     </jhi-customer-address>
@@ -127,7 +127,7 @@
                                     <td>Batterijen</td>
                                     <td>€ {{product.numberOfBatteries*0.5}}</td>
                                 </tr>
-                                <tr *ngIf="this.order.deliveryType === 0 && this.order.deliveryPrice">
+                                <tr *ngIf="this.order.deliveryType === DeliveryType.DELIVERED && this.order.deliveryPrice">
                                     <td>Levering</td>
                                     <td>€ {{this.order.deliveryPrice}}</td>
                                 </tr>
@@ -143,8 +143,7 @@
                         <button type="button" class="btn btn-light" (click)="this.step=1">
                             Terug
                         </button>
-                        <button type="button" class="btn btn-primary"
-                                [disabled]="(this.order.deliveryType === 0 && (!this.customer.street || !this.customer.city))"
+                        <button type="button" class="btn btn-primary" [disabled]="(this.order.deliveryType === DeliveryType.DELIVERED && (!this.customer.street || !this.customer.city))"
                                 (click)="gotoStepTree()">
                             Verder
                         </button>
@@ -179,7 +178,7 @@
                             <td>Batterijen</td>
                             <td>€ {{product.numberOfBatteries*0.5}}</td>
                         </tr>
-                        <tr *ngIf="this.order.deliveryType === 0">
+                        <tr *ngIf="this.order.deliveryType === DeliveryType.DELIVERED">
                             <td>Levering</td>
                             <td>€ {{this.order.deliveryPrice}}</td>
                         </tr>
@@ -202,23 +201,23 @@
                     <input required class="form-control" type="radio" name="paymentType"
                            [value]="1" [(ngModel)]="this.order.paymentType">
                 </div>
-                <div *ngIf="this.order.paymentType === 0">
-                    <p *ngIf="this.order.deliveryType === 0">
+                <div *ngIf="this.order.paymentType === PaymentType.CASH">
+                    <p *ngIf="this.order.deliveryType === DeliveryType.DELIVERED">
                         Gelieve € {{this.getTotalPrice()}} te betalen bij levering.
                     </p>
 
-                    <p *ngIf="this.order.deliveryType === 1">
+                    <p *ngIf="this.order.deliveryType === DeliveryType.PICKUP">
                         Gelieve € {{this.getTotalPrice()}} te betalen bij ophaling.
                     </p>
                 </div>
-                <div *ngIf="this.order.paymentType === 1">
+                <div *ngIf="this.order.paymentType === PaymentType.TRANSFER">
                     <p>Gelieve € {{this.getTotalPrice()}} over te schrijven op <b>{{this.vatNumber}}</b></p>
-                    <p *ngIf="this.order.deliveryType === 0">
+                    <p *ngIf="this.order.deliveryType === DeliveryType.DELIVERED">
                         Zodra het geld is overgemaakt zal het stuk na afspraak worden geleverd in {{customer.street}} te
                         {{customer.city}}.
                     </p>
 
-                    <p *ngIf="this.order.deliveryType === 1">
+                    <p *ngIf="this.order.deliveryType === DeliveryType.PICKUP">
                         Zodra het geld is overgemaakt zal je melding krijgen van Kranzenzo voor een afspraak te maken om
                         het
                         stuk te kunnen ophalen.
