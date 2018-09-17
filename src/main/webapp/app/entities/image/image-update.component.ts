@@ -19,6 +19,7 @@ export class ImageUpdateComponent implements OnInit {
     isSaving: boolean;
     workshops: IWorkshop[];
     products: IProduct[];
+    private _image: IImage;
 
     constructor(
         private dataUtils: JhiDataUtils,
@@ -29,8 +30,6 @@ export class ImageUpdateComponent implements OnInit {
         private elementRef: ElementRef,
         private activatedRoute: ActivatedRoute
     ) {}
-
-    private _image: IImage;
 
     get image() {
         return this._image;

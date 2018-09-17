@@ -19,6 +19,7 @@ export class WorkshopSubscriptionUpdateComponent implements OnInit {
     isSaving: boolean;
     workshopdates: IWorkshopDate[];
     created: string;
+    private _workshopSubscription: IWorkshopSubscription;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -26,8 +27,6 @@ export class WorkshopSubscriptionUpdateComponent implements OnInit {
         private workshopDateService: WorkshopDateService,
         private activatedRoute: ActivatedRoute
     ) {}
-
-    private _workshopSubscription: IWorkshopSubscription;
 
     get workshopSubscription() {
         return this._workshopSubscription;

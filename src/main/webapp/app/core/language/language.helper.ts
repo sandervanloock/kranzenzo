@@ -9,6 +9,7 @@ import { LANGUAGES } from 'app/core/language/language.constants';
 @Injectable({ providedIn: 'root' })
 export class JhiLanguageHelper {
     renderer: Renderer2 = null;
+    private _language: BehaviorSubject<string>;
 
     constructor(
         private translateService: TranslateService, // tslint:disable-next-line: no-unused-variable
@@ -20,8 +21,6 @@ export class JhiLanguageHelper {
         this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
         this.init();
     }
-
-    private _language: BehaviorSubject<string>;
 
     get language(): Observable<string> {
         return this._language.asObservable();

@@ -12,10 +12,9 @@ import { LocationService } from './location.service';
 })
 export class LocationUpdateComponent implements OnInit {
     isSaving: boolean;
+    private _location: ILocation;
 
     constructor(private locationService: LocationService, private activatedRoute: ActivatedRoute) {}
-
-    private _location: ILocation;
 
     get location() {
         return this._location;

@@ -16,6 +16,7 @@ import { LocationService } from 'app/entities/location';
 export class CustomerUpdateComponent implements OnInit {
     isSaving: boolean;
     addresses: ILocation[];
+    private _customer: ICustomer;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -23,8 +24,6 @@ export class CustomerUpdateComponent implements OnInit {
         private locationService: LocationService,
         private activatedRoute: ActivatedRoute
     ) {}
-
-    private _customer: ICustomer;
 
     get customer() {
         return this._customer;

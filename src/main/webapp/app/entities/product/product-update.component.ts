@@ -16,6 +16,7 @@ import { TagService } from 'app/entities/tag';
 export class ProductUpdateComponent implements OnInit {
     isSaving: boolean;
     tags: ITag[];
+    private _product: IProduct;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -23,8 +24,6 @@ export class ProductUpdateComponent implements OnInit {
         private tagService: TagService,
         private activatedRoute: ActivatedRoute
     ) {}
-
-    private _product: IProduct;
 
     get product() {
         return this._product;

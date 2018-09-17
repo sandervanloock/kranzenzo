@@ -26,6 +26,7 @@ export class ProductOrderUpdateComponent implements OnInit {
     products: IProduct[];
     created: string;
     updated: string;
+    private _productOrder: IProductOrder;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -35,8 +36,6 @@ export class ProductOrderUpdateComponent implements OnInit {
         private productService: ProductService,
         private activatedRoute: ActivatedRoute
     ) {}
-
-    private _productOrder: IProductOrder;
 
     get productOrder() {
         return this._productOrder;

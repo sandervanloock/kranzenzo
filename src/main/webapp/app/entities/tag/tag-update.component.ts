@@ -19,6 +19,7 @@ export class TagUpdateComponent implements OnInit {
     isSaving: boolean;
     workshops: IWorkshop[];
     products: IProduct[];
+    private _tag: ITag;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -27,8 +28,6 @@ export class TagUpdateComponent implements OnInit {
         private productService: ProductService,
         private activatedRoute: ActivatedRoute
     ) {}
-
-    private _tag: ITag;
 
     get tag() {
         return this._tag;

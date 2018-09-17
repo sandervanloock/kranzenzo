@@ -16,6 +16,7 @@ import { TagService } from 'app/entities/tag';
 export class WorkshopUpdateComponent implements OnInit {
     isSaving: boolean;
     tags: ITag[];
+    private _workshop: IWorkshop;
 
     constructor(
         private jhiAlertService: JhiAlertService,
@@ -23,8 +24,6 @@ export class WorkshopUpdateComponent implements OnInit {
         private tagService: TagService,
         private activatedRoute: ActivatedRoute
     ) {}
-
-    private _workshop: IWorkshop;
 
     get workshop() {
         return this._workshop;
