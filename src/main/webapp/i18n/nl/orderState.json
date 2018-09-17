@@ -2,10 +2,10 @@
     "kranzenzoApp": {
         "OrderState": {
             "null": "",
-            "NEW": "NEW",
-            "PAYED": "PAYED",
-            "CANCELLED": "CANCELLED",
-            "DONE": "DONE"
+            "NEW": "Nieuw",
+            "PAYED": "Betaald",
+            "CANCELLED": "Geannuleerd",
+            "DONE": "Klaar"
         }
     }
 }

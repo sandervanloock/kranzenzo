@@ -2,27 +2,28 @@
     "kranzenzoApp": {
         "product": {
             "home": {
-                "title": "Products",
-                "createLabel": "Maak een nieuwe Product",
-                "createOrEditLabel": "Maak of wijzig een Product"
+                "title": "Producten",
+                "createLabel": "Maak een nieuwe product",
+                "createOrEditLabel": "Maak of wijzig een Product",
+                "search": "Zoek voor een Product"
             },
-            "created": "A new Product is created with identifier {{ param }}",
-            "updated": "A Product is updated with identifier {{ param }}",
-            "deleted": "A Product is deleted with identifier {{ param }}",
+            "created": "Een nieuw product is gemaakt met id {{ param }}",
+            "updated": "Een product met id {{ param }} is gewijzigd",
+            "deleted": "Een product met id {{ param }} is verwijderd",
             "delete": {
-                "question": "Bent u zeker dat u Product {{ id }} wilt verwijderen?"
+                "question": "Bent u zeker dat u product {{ id }} wilt verwijderen?"
             },
             "detail": {
                 "title": "Product"
             },
-            "name": "Name",
-            "price": "Price",
-            "description": "Description",
-            "isActive": "Is Active",
-            "numberOfBatteries": "Number Of Batteries",
-            "images": "Images",
+            "name": "Naam",
+            "price": "Prijs",
+            "description": "Beschrijving",
+            "isActive": "Zichtbaar",
+            "images": "Afbeeldingen",
+            "numberOfBatteries": "Aantal batterijen",
             "orders": "Orders",
-            "tags": "Tags"
+            "tags": "Groepen"
         }
     }
 }

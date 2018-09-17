@@ -1,10 +1,11 @@
 {
-    "kranzenzoApp": {
+    "kransenzoApp": {
         "workshop": {
             "home": {
                 "title": "Workshops",
                 "createLabel": "Maak een nieuwe Workshop",
-                "createOrEditLabel": "Maak of wijzig een Workshop"
+                "createOrEditLabel": "Maak of wijzig een Workshop",
+                "search": "Search for Workshop"
             },
             "created": "A new Workshop is created with identifier {{ param }}",
             "updated": "A Workshop is updated with identifier {{ param }}",
@@ -15,17 +16,17 @@
             "detail": {
                 "title": "Workshop"
             },
-            "name": "Name",
-            "description": "Description",
-            "neededMaterials": "Needed Materials",
-            "includedInPrice": "Included In Price",
-            "durationInMinutes": "Duration In Minutes",
-            "price": "Price",
-            "maxSubscriptions": "Max Subscriptions",
-            "isActive": "Is Active",
-            "showOnHomepage": "Show On Homepage",
-            "dates": "Dates",
-            "images": "Images",
+            "name": "Naam",
+            "description": "Beschrijving",
+            "neededMaterials": "Benodigde materialen",
+            "includedInPrice": "Inbegrepen in de prijs",
+            "durationInMinutes": "Duur in minuten",
+            "price": "Prijs",
+            "maxSubscriptions": "Maximum aantal inschrijvingen",
+            "isActive": "Actief",
+            "showOnHomepage": "Toon op homepagina",
+            "dates": "Data",
+            "images": "Afbeeldingen",
             "tags": "Tags"
         }
     }

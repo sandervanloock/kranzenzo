@@ -4,7 +4,8 @@
             "home": {
                 "title": "Orders",
                 "createLabel": "Maak een nieuwe Order",
-                "createOrEditLabel": "Maak of wijzig een Order"
+                "createOrEditLabel": "Maak of wijzig een Order",
+                "search": "Zoek voor een Order"
             },
             "created": "A new Order is created with identifier {{ param }}",
             "updated": "A Order is updated with identifier {{ param }}",
@@ -15,16 +16,16 @@
             "detail": {
                 "title": "Order"
             },
-            "created": "Created",
-            "updated": "Updated",
-            "state": "State",
-            "deliveryType": "Delivery Type",
-            "includeBatteries": "Include Batteries",
-            "description": "Description",
-            "deliveryPrice": "Delivery Price",
-            "paymentType": "Payment Type",
-            "customer": "Customer",
-            "deliveryAddress": "Delivery Address",
+            "created": "Aangemaakt op",
+            "updated": "Aangepast op",
+            "state": "Status",
+            "deliveryType": "Aflever type",
+            "paymentType": "Betaalwijze",
+            "includeBatteries": "Batterijen inbegrepen",
+            "description": "Beschrijving",
+            "deliveryPrice": "Prijs voor aflevering",
+            "customer": "Klant",
+            "deliveryAddress": "Afleveradres",
             "product": "Product"
         }
     }
