@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
         this.tagService.query( {homepage: true} ).subscribe( ( data ) => {
             this.homepageTags = data.json
         } );
-        this.workshopService.find( 1 ).subscribe( ( ws ) => {
+        this.workshopService.find( 2 ).subscribe( ( ws ) => {
             this.workshop = ws;
         } )
     }
