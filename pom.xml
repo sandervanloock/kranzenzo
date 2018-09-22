@@ -604,7 +604,7 @@
                 </executions>
                 -->
                 <configuration>
-                    <repository>kransenzo</repository>
+                    <repository>kranzenzo</repository>
                     <tag>latest</tag>
                     <contextDirectory>${project.build.directory}</contextDirectory>
                 </configuration>
