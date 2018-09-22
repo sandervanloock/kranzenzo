@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "455637595802.dkr.ecr.eu-west-1.amazonaws.com/kransenzo:latest",
+    "Name": "455637595802.dkr.ecr.eu-west-1.amazonaws.com/kranzenzo:latest",
     "Update": "true"
   },
   "Volumes": [
