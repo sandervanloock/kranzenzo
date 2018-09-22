@@ -4,7 +4,10 @@ import be.sandervl.kranzenzo.KranzenzoApp;
 import be.sandervl.kranzenzo.config.ApplicationProperties;
 import be.sandervl.kranzenzo.config.Constants;
 import be.sandervl.kranzenzo.config.DummyS3Configuration;
+import be.sandervl.kranzenzo.domain.Product;
+import be.sandervl.kranzenzo.domain.ProductOrder;
 import be.sandervl.kranzenzo.domain.User;
+import be.sandervl.kranzenzo.domain.enumeration.DeliveryType;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,6 +31,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 
+import static junit.framework.TestCase.assertNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -192,4 +196,22 @@ public class MailServiceIntTest {
         mailService.sendEmail( "john.doe@example.com", "testSubject", "testContent", false, false );
     }
 
+    @Test
+    public void testOrderConfirmationMails() {
+        ProductOrder order = new ProductOrder();
+        Product product = new Product();
+        product.setName( "test-product" );
+        product.setPrice( 4F );
+        order.setProduct( product );
+        order.setId( 123L );
+        order.setDeliveryPrice( 45F );
+        order.setIncludeBatteries( false );
+        order.deliveryType( DeliveryType.PICKUP );
+        User user = new User();
+        user.setEmail( "svl@fe.com" );
+        mailService.sendOrderCreationMails( order, user );
+        verify( javaMailSender,times(2) ).send( messageCaptor.capture() );
+        MimeMessage message = messageCaptor.getValue();
+        assertNotNull( message );
+    }
 }

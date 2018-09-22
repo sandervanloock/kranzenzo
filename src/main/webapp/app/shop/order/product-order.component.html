@@ -43,12 +43,15 @@
                         <input required type="email" class="form-control" id="email" name="email"
                                aria-describedby="email" placeholder="Emailadres"
                                [(ngModel)]="this.customer.user.email"
-                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual="emailConfirmation"
+                               pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
                                #email="ngModel">
                     </div>
                     <div class="form-group">
                         <label for="email">Bevestig Emailadres*</label>
-                        <input required type="email" class="form-control" id="emailConfirmation" name="emailConfirmation" aria-describedby="emailConfirmation" placeholder="Bevestig Emailadres" [(ngModel)]="this.customer.user.confirmEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual="email" #emailConfirmation="ngModel">
+                        <input required type="email" class="form-control" id="emailConfirmation" name="emailConfirmation"
+                               aria-describedby="emailConfirmation" placeholder="Bevestig Emailadres"
+                               [(ngModel)]="this.customer.user.confirmEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                               jhiValidateEqual validateEqual="email" #emailConfirmation="ngModel">
                     </div>
                     <div class="form-group">
                         <label for="phoneNumber">Telefoonnummer</label>
@@ -77,17 +80,17 @@
                                     Ik wil mijn stuk ophalen
                                 </label>
                         <input required class="form-control" checked type="radio" name="deliveryType"
-                               [value]="1" [(ngModel)]="this.order.deliveryType">
+                               [value]="'PICKUP'" [(ngModel)]="this.order.deliveryType">
                     </div>
                     <div class="form-group">
                         <label class="form-control-label">
                             Ik wil mijn stuk thuis bezorgd
                         </label>
                         <input required class="form-control" type="radio" name="deliveryType"
-                               [value]="0" [(ngModel)]="this.order.deliveryType"/>
+                               [value]="'DELIVERED'" [(ngModel)]="this.order.deliveryType"/>
                         <small class="form-text text-muted" *ngIf="this.order.deliveryPrice">
                             Kostprijs voor levering naar {{this.customer.street}} te {{this.customer.city}} is
-                            {{this.order.deliveryPrice}}. (€0,5/km, eerste 10 km is gratis.)
+                            €{{this.order.deliveryPrice}}. (€0,5/km, eerste 10 km is gratis.)
                         </small>
                     </div>
                     <jhi-customer-address *ngIf="this.order.deliveryType === 'DELIVERED'"

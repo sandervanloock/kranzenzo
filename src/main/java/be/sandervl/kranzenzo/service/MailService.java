@@ -110,6 +110,10 @@ public class MailService {
 
     @Async
     public void sendOrderCreationMails( ProductOrder order, User user ) {
+        if(order.getProduct() == null){
+            log.warn( "Unable to send mail for order without product" );
+            return;
+        }
         if ( user != null ) {
             log.debug( "Sending confirmation mail to '{}'", user.getEmail() );
             Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
@@ -117,7 +121,7 @@ public class MailService {
             context.setVariable( USER, user );
             context.setVariable( "order", order );
             context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
-            String content = templateEngine.process( "orderConfirmationCustomer", context );
+            String content = templateEngine.process( "mail/orderConfirmationCustomer", context );
             String subject = messageSource.getMessage( "email.order.confirmation.title", null, locale );
             sendEmail( user.getEmail(), subject, content, false, true );
         }
@@ -125,7 +129,7 @@ public class MailService {
         Context context = new Context(Locale.forLanguageTag("nl"));
         context.setVariable( "orderLink", jHipsterProperties.getMail().getBaseUrl() + "#/order/" + order.getId() );
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
-        String content = templateEngine.process( "orderConfirmationClient", context );
+        String content = templateEngine.process( "mail/orderConfirmationClient", context );
         String subject = messageSource.getMessage( "email.order.confirmation.client.title", null,
             Locale.forLanguageTag( "nl" ) );
         sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
@@ -138,7 +142,7 @@ public class MailService {
         context.setVariable( USER, user );
         context.setVariable( "subscription", subscription );
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
-        String content = templateEngine.process( "workshopSubscriptionConfirmationCustomer", context );
+        String content = templateEngine.process( "mail/workshopSubscriptionConfirmationCustomer", context );
         String subject = messageSource.getMessage( "email.workshop.subscription.confirmation.title", null, locale );
         sendEmail( user.getEmail(), subject, content, false, true );
         log.debug( "Sending notification of new subscription to '{}'", applicationProperties.getMail()
@@ -148,7 +152,7 @@ public class MailService {
                                                                    .getBaseUrl() + "#/workshop-subscription/" + subscription
             .getId() );
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
-        content = templateEngine.process( "workshopSubscriptionConfirmationClient", context );
+        content = templateEngine.process( "mail/workshopSubscriptionConfirmationClient", context );
         subject = messageSource.getMessage( "email.workshop.subscription.confirmation.client.title", null,
             Locale.forLanguageTag( "nl" ) );
         sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
@@ -161,7 +165,7 @@ public class MailService {
         context.setVariable( USER, user );
         context.setVariable( "subscription", subscription );
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
-        String content = templateEngine.process( "workshopSubscriptionPayedCustomer", context );
+        String content = templateEngine.process( "mail/workshopSubscriptionPayedCustomer", context );
         String subject = messageSource.getMessage( "email.workshop.subscription.payed.customer.title", null,
             Locale.forLanguageTag( "nl" ) );
         sendEmail( user.getEmail(), subject, content, false, true );

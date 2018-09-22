@@ -9,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -69,9 +70,14 @@ public class UserDTO {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
-        this.authorities = user.getAuthorities().stream()
-                               .map( Authority::getName )
-                               .collect( Collectors.toSet() );
+        if ( user.getAuthorities() == null ) {
+            this.authorities = Collections.emptySet();
+        }
+        else {
+            this.authorities = user.getAuthorities().stream()
+                                   .map( Authority::getName )
+                                   .collect( Collectors.toSet() );
+        }
     }
 
     public Long getId() {

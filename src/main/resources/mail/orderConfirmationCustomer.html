@@ -26,11 +26,11 @@
     </tr>
     <tr th:if="${order.includeBatteries}">
         <td>Batterijen</td>
-        <td th:text="${'€'+T(be.sandervl.kransenzo.domain.Order).PRICE_FOR_BATTERIES*order.product.numberOfBatteries}">€
+        <td th:text="${'€'+T(be.sandervl.kranzenzo.config.Constants).PRICE_FOR_BATTERIES*order.product.numberOfBatteries}">€
             0.5
         </td>
     </tr>
-    <tr th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).DELIVERED)}">
+    <tr th:if="${order.deliveryType.equals(T(be.sandervl.kranzenzo.domain.enumeration.DeliveryType).DELIVERED)}">
         <td>Levering</td>
         <td th:text="${'€'+order.deliveryPrice}">{{this.deliveryPrice}}</td>
     </tr>
@@ -40,15 +40,15 @@
     </tr>
     </tbody>
 </table>
-<th:block th:if="${order.paymentType.equals(T(be.sandervl.kransenzo.domain.enumeration.PaymentType).TRANSFER)}">
-    <p th:inline="text">Gelieve € [[${order.totalPrice}]] over te schrijven op <b>[[${T(be.sandervl.kransenzo.config.Constants).VAT_NUMBER}]]</b>
+<th:block th:if="${order.paymentType.equals(T(be.sandervl.kranzenzo.domain.enumeration.PaymentType).TRANSFER)}">
+    <p th:inline="text">Gelieve € [[${order.totalPrice}]] over te schrijven op <b>[[${T(be.sandervl.kranzenzo.config.Constants).VAT_NUMBER}]]</b>
     </p>
-    <p th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).DELIVERED)}"
+    <p th:if="${order.deliveryType.equals(T(be.sandervl.kranzenzo.domain.enumeration.DeliveryType).DELIVERED)}"
        th:inline="text">
         Zodra het geld is overgemaakt zal het stuk worden geleverd in [[${order.customer.street}]] te
         [[${order.customer.city}]].
     </p>
-    <p th:if="${order.deliveryType.equals(T(be.sandervl.kransenzo.domain.enumeration.DeliveryType).PICKUP)}">
+    <p th:if="${order.deliveryType.equals(T(be.sandervl.kranzenzo.domain.enumeration.DeliveryType).PICKUP)}">
         Zodra het geld is overgemaakt zal je melding krijgen van Kranzenzo voor een afspraak te maken om het
         stuk te kunnen ophalen.
     </p>

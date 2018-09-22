@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { PRICE_BATTERIES_INCLUDED, VAT_NUMBER } from '../../app.constants';
 import { IProduct, Product } from 'app/shared/model/product.model';
@@ -12,6 +12,8 @@ import { ProductService } from 'app/entities/product';
 import { CustomerService } from 'app/entities/customer';
 import { ProductOrderService } from 'app/entities/product-order';
 import { HttpClient, HttpResponse } from '@angular/common/http';
+import { CustomerDeleteDialogComponent } from 'app/entities/customer/customer-delete-dialog.component';
+import { AfterViewInit } from '@angular/core';
 
 declare var google: any;
 
@@ -27,12 +29,11 @@ And leveraging the Creative Tim Material Bootstrap Library - http://demos.creati
     templateUrl: './product-order.component.html',
     styleUrls: ['product-order.css']
 })
-export class ProductOrderComponent implements OnInit {
-    step: number;
-    modalRef: NgbModalRef;
-    vatNumber: string;
+export class ProductOrderComponent {
+    step = 1;
+    vatNumber: string = VAT_NUMBER;
 
-    product: IProduct = new Product();
+    product: IProduct;
     customer: ICustomer = new Customer();
     order: IProductOrder = new ProductOrder();
 
@@ -48,23 +49,6 @@ export class ProductOrderComponent implements OnInit {
         private customerService: CustomerService,
         private orderService: ProductOrderService
     ) {}
-
-    ngOnInit() {
-        this.step = 1;
-        this.vatNumber = VAT_NUMBER;
-        this.order.productId = this.product.id;
-        this.customer.user = new User();
-
-        this.principal.identity().then(account => {
-            if (account) {
-                this.customer.user = account;
-            } else {
-                this.customer.user = new User();
-                this.customer.user.langKey = 'nl';
-            }
-        });
-        this.registerAuthenticationSuccess();
-    }
 
     toggleLed() {
         this.order.includeBatteries = !this.order.includeBatteries;
@@ -90,6 +74,7 @@ export class ProductOrderComponent implements OnInit {
     }
 
     submitForm() {
+        this.order.productId = this.product.id;
         this.updateCustomer()
             .flatMap(customer => {
                 this.customer = customer.body;
@@ -148,17 +133,30 @@ export class ProductOrderComponent implements OnInit {
     template: ''
 })
 export class ProductOrderPopupComponent implements OnInit, OnDestroy {
-    routeSub: any;
+    private ngbModalRef: NgbModalRef;
 
-    constructor(private route: ActivatedRoute, private modalService: NgbModal) {}
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe(params => {
-            this.modalService.open(ProductOrderComponent as Component, params['id']);
+        this.activatedRoute.data.subscribe(({ product }) => {
+            setTimeout(() => {
+                this.ngbModalRef = this.modalService.open(ProductOrderComponent as Component, { size: 'lg', backdrop: 'static' });
+                this.ngbModalRef.componentInstance.product = product;
+                this.ngbModalRef.result.then(
+                    result => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    },
+                    reason => {
+                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
+                        this.ngbModalRef = null;
+                    }
+                );
+            }, 0);
         });
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        this.ngbModalRef = null;
     }
 }

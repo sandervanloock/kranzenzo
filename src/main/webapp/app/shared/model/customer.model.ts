@@ -1,5 +1,5 @@
 import { IProductOrder } from 'app/shared/model/product-order.model';
-import { IUser } from 'app/core';
+import { IUser, User } from 'app/core';
 
 export interface ICustomer {
     id?: number;
@@ -30,5 +30,7 @@ export class Customer implements ICustomer {
         public longitude?: number,
         public description?: number,
         public orders?: IProductOrder[]
-    ) {}
+    ) {
+        this.user = user ? user : new User();
+    }
 }
