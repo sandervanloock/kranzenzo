@@ -60,4 +60,4 @@ deploy:
   env: live
   bucket_name: elasticbeanstalk-eu-west-1-455637595802
   on:
-    repo: sandervanloock/kransenzo
+    repo: sandervanloock/kranzenzo
