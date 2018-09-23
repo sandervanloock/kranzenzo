@@ -14,10 +14,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -41,6 +49,17 @@ public class ImageResource {
         this.imageRepository = imageRepository;
         this.imageMapper = imageMapper;
         this.awsImageUpload = awsImageUpload;
+    }
+
+    @PostMapping(value = "/images/raw")
+    @Timed
+    public ResponseEntity <ImageDTO> createEmptyImage( @RequestPart("file") @Valid @NotNull @NotBlank MultipartFile file )
+        throws URISyntaxException, IOException {
+        log.debug( "REST request to create raw Image : {}", file );
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setData( file.getBytes() );
+        imageDTO.setDataContentType( file.getContentType() );
+        return createImage( imageDTO );
     }
 
     /**

@@ -43,6 +43,7 @@ spring:
     http:
         multipart:
             max-request-size: 12Mb
+            max-file-size: 12Mb
     jpa:
         open-in-view: false
         hibernate:

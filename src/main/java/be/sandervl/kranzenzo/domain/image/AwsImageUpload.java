@@ -35,7 +35,7 @@ public class AwsImageUpload{
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(contentType);
         String generateFileName = generateFileName(name);
-        log.debug("Uploading file {} with generated name {} to ", s3);
+        log.debug("Uploading file {} with generated name {} to {}",name,generateFileName, s3);
         data = imageTransformationService.rotateAccordingExif(data, generateFileName,
             contentType.replace("image/", ""));
         PutObjectRequest putObjectRequest = new PutObjectRequest(s3.getBucketName(),

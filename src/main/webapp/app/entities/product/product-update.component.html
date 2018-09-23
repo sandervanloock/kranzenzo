@@ -38,7 +38,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.product.description" for="field_description">Description</label>
-                    <input type="text" class="form-control" name="description" id="field_description" [(ngModel)]="product.description" maxlength="5000"/>
+                    <textarea class="form-control" name="description" id="field_description" [(ngModel)]="product.description"
+                              maxlength="5000" rows="4"></textarea>
                     <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
                         <small class="form-text text-danger" [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
                             This field cannot be longer than 5000 characters.
@@ -74,6 +75,31 @@
                             {{tagOption.name}}
                         </option>
                     </select>
+                </div>
+                <div class="form-group">
+
+                    <div class="container">
+                        <div class="row">
+                            <label class="btn btn-primary btn-file">
+                                <span>Foto toevoegen</span>
+                                <input type="file" id="photo" name="photo" ng2FileSelect
+                                       [uploader]="uploader" (change)="onFileSelected()"/>
+                            </label>
+                        </div>
+                        <div class="row">
+                            <div *ngFor="let image of imageEndpoints" class="col">
+                                <div class="img-wraps">
+                                    <img [src]="image" class="img-fluid img-responsive"/>
+                                </div>
+                                <div style="text-align:center;">
+                                    <button (click)="onImageRemoved(image)" class="btn btn-danger my-2"
+                                            style="width:100%">
+                                        Verwijderen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div>
