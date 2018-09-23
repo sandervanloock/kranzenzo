@@ -38,21 +38,9 @@ export class CustomerUpdateComponent implements OnInit {
         this.activatedRoute.data.subscribe(({ customer }) => {
             this.customer = customer;
         });
-        this.locationService.query({ filter: 'customer-is-null' }).subscribe(
-            (res: HttpResponse<ILocation[]>) => {
-                if (!this.customer.addressId) {
-                    this.addresses = res.body;
-                } else {
-                    this.locationService.find(this.customer.addressId).subscribe(
-                        (subRes: HttpResponse<ILocation>) => {
-                            this.addresses = [subRes.body].concat(res.body);
-                        },
-                        (subRes: HttpErrorResponse) => this.onError(subRes.message)
-                    );
-                }
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
+        this.locationService
+            .query({ filter: 'customer-is-null' })
+            .subscribe((res: HttpResponse<ILocation[]>) => {}, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     previousState() {

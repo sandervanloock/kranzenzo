@@ -9,7 +9,6 @@ export interface ICustomer {
     zipCode?: number;
     province?: string;
     phoneNumber?: string;
-    addressId?: number;
     latitude?: number;
     longitude?: number;
     description?: number;
@@ -25,7 +24,6 @@ export class Customer implements ICustomer {
         public zipCode?: number,
         public province?: string,
         public phoneNumber?: string,
-        public addressId?: number,
         public latitude?: number,
         public longitude?: number,
         public description?: number,
