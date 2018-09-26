@@ -41,11 +41,15 @@ public class ProductOrderDTO implements Serializable {
 
     private CustomerDTO customer;
 
+    private ProductDTO product;
+
     private Long deliveryAddressId;
 
     private Long productId;
 
     private String productName;
+
+    private Float totalPrice;
 
     public Long getId() {
         return id;
@@ -134,6 +138,14 @@ public class ProductOrderDTO implements Serializable {
         this.customer = customer;
     }
 
+    public ProductDTO getProduct() {
+        return product;
+    }
+
+    public void setProduct( ProductDTO product ) {
+        this.product = product;
+    }
+
     public Long getDeliveryAddressId() {
         return deliveryAddressId;
     }
@@ -156,6 +168,18 @@ public class ProductOrderDTO implements Serializable {
 
     public void setProductName( String productName ) {
         this.productName = productName;
+    }
+
+    public Boolean getIncludeBatteries() {
+        return includeBatteries;
+    }
+
+    public Float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice( Float totalPrice ) {
+        this.totalPrice = totalPrice;
     }
 
     @Override

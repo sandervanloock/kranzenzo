@@ -6,17 +6,21 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="kranzenzoApp.productOrder.created">Created</span></dt>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.product">Product</span></dt>
                 <dd>
-                    <span>{{productOrder.created}}</span>
-                </dd>
-                <dt><span jhiTranslate="kranzenzoApp.productOrder.updated">Updated</span></dt>
-                <dd>
-                    <span>{{productOrder.updated}}</span>
+                    <div *ngIf="productOrder.productId">
+                        <a [routerLink]="['/product', productOrder.productId, 'view']">{{productOrder.productName}}</a>
+                    </div>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.state">State</span></dt>
                 <dd>
                     <span jhiTranslate="{{'kranzenzoApp.OrderState.' + productOrder.state}}">{{productOrder.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.customer">Customer</span></dt>
+                <dd>
+                    <div *ngIf="productOrder.customerId">
+                        <a [routerLink]="['/customer', productOrder.customerId, 'view']">{{productOrder.customer.user.firstName + ' ' + productOrder.customer.user.lastName}}</a>
+                    </div>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.deliveryType">Delivery Type</span></dt>
                 <dd>
@@ -24,37 +28,34 @@
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.includeBatteries">Include Batteries</span></dt>
                 <dd>
-                    <span>{{productOrder.includeBatteries}}</span>
+                    <span><input type="checkbox" readonly disabled [checked]="productOrder.includeBatteries"/></span>
+                </dd>
+                <dt *ngIf="productOrder.deliveryType==='DELIVERED'"><span jhiTranslate="kranzenzoApp.productOrder.deliveryAddress">Delivery Address</span></dt>
+                <dd>
+                    <span>{{productOrder.customer.description}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.description">Description</span></dt>
                 <dd>
                     <span>{{productOrder.description}}</span>
                 </dd>
-                <dt><span jhiTranslate="kranzenzoApp.productOrder.deliveryPrice">Delivery Price</span></dt>
-                <dd>
-                    <span>{{productOrder.deliveryPrice}}</span>
-                </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.paymentType">Payment Type</span></dt>
                 <dd>
                     <span jhiTranslate="{{'kranzenzoApp.PaymentType.' + productOrder.paymentType}}">{{productOrder.paymentType}}</span>
                 </dd>
-                <dt><span jhiTranslate="kranzenzoApp.productOrder.customer">Customer</span></dt>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.paymentType">Total price</span></dt>
                 <dd>
-                    <div *ngIf="productOrder.customerId">
-                        <a [routerLink]="['/customer', productOrder.customerId, 'view']">{{productOrder.customerId}}</a>
-                    </div>
+                    <span>{{productOrder.totalPrice | currency:'EUR':'symbol'}}</span>
+                    (<small>{{productOrder.product.price  | currency:'EUR':'symbol'}}</small>
+                    <small *ngIf="productOrder.deliveryType==='DELIVERED'">+ {{productOrder.deliveryPrice  | currency:'EUR':'symbol'}}</small>
+                    <small *ngIf="productOrder.includeBatteries">+ {{productOrder.product.numberOfBatteries*0.5  | currency:'EUR':'symbol'}}</small>)
                 </dd>
-                <dt><span jhiTranslate="kranzenzoApp.productOrder.deliveryAddress">Delivery Address</span></dt>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.created">Created</span></dt>
                 <dd>
-                    <div *ngIf="productOrder.deliveryAddressId">
-                        <a [routerLink]="['/location', productOrder.deliveryAddressId, 'view']">{{productOrder.deliveryAddressId}}</a>
-                    </div>
+                    <span>{{productOrder.created}}</span>
                 </dd>
-                <dt><span jhiTranslate="kranzenzoApp.productOrder.product">Product</span></dt>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.updated">Updated</span></dt>
                 <dd>
-                    <div *ngIf="productOrder.productId">
-                        <a [routerLink]="['/product', productOrder.productId, 'view']">{{productOrder.productName}}</a>
-                    </div>
+                    <span>{{productOrder.updated}}</span>
                 </dd>
             </dl>
 

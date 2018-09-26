@@ -22,7 +22,7 @@
             "deliveryType": "Aflever type",
             "paymentType": "Betaalwijze",
             "includeBatteries": "Batterijen inbegrepen",
-            "description": "Beschrijving",
+            "description": "Notities",
             "deliveryPrice": "Prijs voor aflevering",
             "customer": "Klant",
             "deliveryAddress": "Afleveradres",

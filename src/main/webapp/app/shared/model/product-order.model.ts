@@ -26,6 +26,7 @@ export interface IProductOrder {
     includeBatteries?: boolean;
     description?: string;
     deliveryPrice?: number;
+    totalPrice?: number;
     paymentType?: PaymentType;
     customerId?: number;
     deliveryAddressId?: number;
@@ -43,6 +44,7 @@ export class ProductOrder implements IProductOrder {
         public includeBatteries?: boolean,
         public description?: string,
         public deliveryPrice?: number,
+        public totalPrice?: number,
         public paymentType?: PaymentType,
         public customerId?: number,
         public deliveryAddressId?: number,
