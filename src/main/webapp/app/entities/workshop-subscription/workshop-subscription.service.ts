@@ -37,6 +37,12 @@ export class WorkshopSubscriptionService {
             .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
     }
 
+    findByWorkshopDate(workshopDateId: number): Observable<EntityArrayResponseType> {
+        return this.http
+            .get<IWorkshopSubscription[]>(`${this.resourceUrl}?workshopDate=${workshopDateId}`, { observe: 'response' })
+            .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+    }
+
     query(req?: any): Observable<EntityArrayResponseType> {
         const options = createRequestOption(req);
         return this.http

@@ -109,14 +109,17 @@ public class WorkshopSubscriptionResource {
         }
 
         WorkshopSubscription workshopSubscription = workshopSubscriptionMapper.toEntity( workshopSubscriptionDTO );
-        workshopSubscription = workshopSubscriptionRepository.save( workshopSubscription );
         SubscriptionState newState = workshopSubscription.getState();
-        SubscriptionState currentState = workshopSubscriptionRepository.getOne( workshopSubscription.getId() )
-                                                                       .getState();
-        workshopSubscription = workshopSubscriptionRepository.save( workshopSubscription );
+        SubscriptionState currentState = workshopSubscriptionRepository.findById( workshopSubscription.getId() )
+                                                                       .map( WorkshopSubscription::getState )
+                                                                       .orElse( SubscriptionState.CANCELLED );
         if ( newState.equals( SubscriptionState.PAYED ) && !currentState.equals( SubscriptionState.PAYED ) ) {
+            log.debug( "Fetch the corresponding date and workshop so the data available for the mails" );
+            workshopDateRepository.findById( workshopSubscription.getWorkshop().getId() )
+                                  .ifPresent( workshopSubscription::setWorkshop );
             mailService.sendWorkshopConfirmationMail( workshopSubscription );
         }
+        workshopSubscription = workshopSubscriptionRepository.save( workshopSubscription );
         WorkshopSubscriptionDTO result = workshopSubscriptionMapper.toDto( workshopSubscription );
         return ResponseEntity.ok()
                              .headers( HeaderUtil
