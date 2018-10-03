@@ -1,8 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { FileSelectDirective } from 'ng2-file-upload';
-
 import { KranzenzoSharedModule } from 'app/shared';
 import {
     ProductComponent,
@@ -24,8 +22,7 @@ const ENTITY_STATES = [...productRoute, ...productPopupRoute];
         ProductDetailComponent,
         ProductUpdateComponent,
         ProductDeleteDialogComponent,
-        ProductDeletePopupComponent,
-        FileSelectDirective
+        ProductDeletePopupComponent
     ],
     entryComponents: [ProductComponent, ProductUpdateComponent, ProductDeleteDialogComponent, ProductDeletePopupComponent],
     providers: [S3ImageResizePipe],

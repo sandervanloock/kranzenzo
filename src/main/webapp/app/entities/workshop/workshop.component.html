@@ -14,37 +14,21 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
                 <th><span jhiTranslate="kranzenzoApp.workshop.name">Name</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.description">Description</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.neededMaterials">Needed Materials</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.includedInPrice">Included In Price</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.durationInMinutes">Duration In Minutes</span></th>
                 <th><span jhiTranslate="kranzenzoApp.workshop.price">Price</span></th>
                 <th><span jhiTranslate="kranzenzoApp.workshop.maxSubscriptions">Max Subscriptions</span></th>
                 <th><span jhiTranslate="kranzenzoApp.workshop.isActive">Is Active</span></th>
                 <th><span jhiTranslate="kranzenzoApp.workshop.showOnHomepage">Show On Homepage</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.tags">Tags</span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let workshop of workshops ;trackBy: trackId">
-                <td><a [routerLink]="['/workshop', workshop.id, 'view' ]">{{workshop.id}}</a></td>
                 <td>{{workshop.name}}</td>
-                <td>{{workshop.description}}</td>
-                <td>{{workshop.neededMaterials}}</td>
-                <td>{{workshop.includedInPrice}}</td>
-                <td>{{workshop.durationInMinutes}}</td>
                 <td>{{workshop.price}}</td>
                 <td>{{workshop.maxSubscriptions}}</td>
-                <td>{{workshop.isActive}}</td>
-                <td>{{workshop.showOnHomepage}}</td>
-                <td>
-                    <span *ngFor="let tags of workshop.tags; let last = last">
-                            <a class="form-control-static" [routerLink]="['../tag', tags?.id, 'view' ]">{{tags.name}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
+                <td><input type="checkbox" readonly disabled [checked]="workshop.isActive"/></td>
+                <td><input type="checkbox" readonly disabled [checked]="workshop.showOnHomepage"/></td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit" [routerLink]="['/workshop', workshop.id, 'view' ]" class="btn btn-info btn-sm">

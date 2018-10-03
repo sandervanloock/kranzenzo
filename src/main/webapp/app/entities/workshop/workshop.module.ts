@@ -11,6 +11,7 @@ import {
     workshopRoute,
     WorkshopUpdateComponent
 } from './';
+import { S3ImageResizePipe } from 'app/shared/util/s3-image-resize.pipe';
 
 const ENTITY_STATES = [...workshopRoute, ...workshopPopupRoute];
 
@@ -24,6 +25,7 @@ const ENTITY_STATES = [...workshopRoute, ...workshopPopupRoute];
         WorkshopDeletePopupComponent
     ],
     entryComponents: [WorkshopComponent, WorkshopUpdateComponent, WorkshopDeleteDialogComponent, WorkshopDeletePopupComponent],
+    providers: [S3ImageResizePipe],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class KranzenzoWorkshopModule {}
