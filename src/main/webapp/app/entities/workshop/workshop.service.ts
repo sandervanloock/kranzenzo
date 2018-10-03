@@ -23,8 +23,10 @@ export class WorkshopService {
         return this.http.put<IWorkshop>(this.resourceUrl, workshop, { observe: 'response' });
     }
 
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<IWorkshop>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    find(id: number, filterDates?: boolean): Observable<EntityResponseType> {
+        return this.http.get<IWorkshop>(`${this.resourceUrl}/${id}?filterDates=${filterDates ? filterDates : false}`, {
+            observe: 'response'
+        });
     }
 
     query(req?: any): Observable<EntityArrayResponseType> {

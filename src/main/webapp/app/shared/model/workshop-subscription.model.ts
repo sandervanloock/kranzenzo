@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { IUser } from 'app/core';
 
 export const enum SubscriptionState {
     NEW = 'NEW',
@@ -12,6 +13,7 @@ export interface IWorkshopSubscription {
     state?: SubscriptionState;
     workshopDate?: string;
     workshopId?: number;
+    user?: IUser;
 }
 
 export class WorkshopSubscription implements IWorkshopSubscription {
@@ -20,6 +22,7 @@ export class WorkshopSubscription implements IWorkshopSubscription {
         public created?: Moment,
         public state?: SubscriptionState,
         public workshopDate?: string,
-        public workshopId?: number
+        public workshopId?: number,
+        public user?: IUser
     ) {}
 }

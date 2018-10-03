@@ -148,9 +148,8 @@ public class MailService {
         log.debug( "Sending notification of new subscription to '{}'", applicationProperties.getMail()
                                                                                             .getConfirmation() );
         context = new Context( Locale.forLanguageTag( "nl" ) );
-        context.setVariable( "subscriptionLink", jHipsterProperties.getMail()
-                                                                   .getBaseUrl() + "#/workshop-subscription/" + subscription
-            .getId() );
+        context.setVariable( "subscriptionLink",
+            jHipsterProperties.getMail().getBaseUrl() + "#/workshop-subscription/" + subscription.getId() + "/view" );
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
         content = templateEngine.process( "mail/workshopSubscriptionConfirmationClient", context );
         subject = messageSource.getMessage( "email.workshop.subscription.confirmation.client.title", null,

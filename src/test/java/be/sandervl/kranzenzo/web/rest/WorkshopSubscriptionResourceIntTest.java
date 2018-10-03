@@ -11,6 +11,8 @@ import be.sandervl.kranzenzo.repository.UserRepository;
 import be.sandervl.kranzenzo.repository.WorkshopDateRepository;
 import be.sandervl.kranzenzo.repository.WorkshopRepository;
 import be.sandervl.kranzenzo.repository.WorkshopSubscriptionRepository;
+import be.sandervl.kranzenzo.service.MailService;
+import be.sandervl.kranzenzo.service.UserService;
 import be.sandervl.kranzenzo.service.dto.WorkshopSubscriptionDTO;
 import be.sandervl.kranzenzo.service.mapper.WorkshopSubscriptionMapper;
 import be.sandervl.kranzenzo.web.rest.errors.ExceptionTranslator;
@@ -90,9 +92,16 @@ public class WorkshopSubscriptionResourceIntTest {
     @Autowired
     private WorkshopDateRepository workshopDateRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MailService mailService;
+
     private MockMvc restWorkshopSubscriptionMockMvc;
 
     private WorkshopSubscription workshopSubscription;
+
 
     /**
      * Create an entity for this test.
@@ -111,7 +120,7 @@ public class WorkshopSubscriptionResourceIntTest {
     public void setup() {
         MockitoAnnotations.initMocks( this );
         final WorkshopSubscriptionResource workshopSubscriptionResource =
-            new WorkshopSubscriptionResource( workshopSubscriptionRepository, workshopSubscriptionMapper );
+            new WorkshopSubscriptionResource( workshopSubscriptionRepository, workshopSubscriptionMapper, userService, workshopDateRepository, workshopRepository, mailService );
         this.restWorkshopSubscriptionMockMvc = MockMvcBuilders.standaloneSetup( workshopSubscriptionResource )
                                                               .setCustomArgumentResolvers( pageableArgumentResolver )
                                                               .setControllerAdvice( exceptionTranslator )

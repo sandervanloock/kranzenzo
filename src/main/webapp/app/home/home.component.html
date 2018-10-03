@@ -1,11 +1,11 @@
-<div class="container-fluid center-block col-lg-offset-2 col-lg-10" style="text-align:center;">
+<div class="container-fluid center-block col-lg-offset-2 col-lg-10">
     <h1>Welkom bij Kranzenzo</h1>
 
-    <div class="row mt-5 m-home_first-block">
-        <div class="col-md-4 visible-md">
+    <div class="row mt-5 mb-2 m-home_first-block">
+        <div class="visible-md">
             <img src="../../content/images/logov2.png" class="img-fluid"/>
         </div>
-        <div class="col m-home_text-block">
+        <div class="m-home_text-block">
             <p>
                 Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke
                 materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="row mt-5 mb-5 m-home_first-block">
+    <div class="row my-2 mb-5 m-home_first-block" *ngIf="homepageTags && homepageTags.length">
         <div class="col-lg-4 col-sm-6 col-xs-12" *ngFor="let tag of homepageTags">
             <a routerLink="/shop/tags" routerLinkActive="active" [queryParams]="{parentId: tag.id}" class="card-image-link">
                 <div class="m-block__image">
@@ -52,11 +52,12 @@
         <img src="https://dscehdfist861.cloudfront.net/800x1150/Moederdag-folder_01-1.jpg" alt="Moederdag">
     </div>-->
 
-    <div class="row mt-5" *ngIf="workshop">
+    <div class="row my-2" *ngIf="workshop">
         <h4>Nieuw, workshops!</h4>
         <p>
             Sinds kort worden er workshops georganiseerd zodat jullie zelf een eigen Kranzenzo werk kunnen maken. De
-            plaatsen zijn beperkt, dus schrijf je zo snel mogelijk in. </p>
+            plaatsen zijn beperkt, dus schrijf je zo snel mogelijk in.
+        </p>
         <button type="button" class="btn btn-primary btn-lg btn-block" [routerLink]="['/kranzenzo-workshop', workshop.id]">
             Schrijf je hier in
         </button>

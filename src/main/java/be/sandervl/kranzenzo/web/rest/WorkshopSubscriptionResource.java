@@ -1,7 +1,14 @@
 package be.sandervl.kranzenzo.web.rest;
 
+import be.sandervl.kranzenzo.domain.User;
 import be.sandervl.kranzenzo.domain.WorkshopSubscription;
+import be.sandervl.kranzenzo.domain.enumeration.SubscriptionState;
+import be.sandervl.kranzenzo.repository.WorkshopDateRepository;
+import be.sandervl.kranzenzo.repository.WorkshopRepository;
 import be.sandervl.kranzenzo.repository.WorkshopSubscriptionRepository;
+import be.sandervl.kranzenzo.service.MailService;
+import be.sandervl.kranzenzo.service.UserService;
+import be.sandervl.kranzenzo.service.dto.UserDTO;
 import be.sandervl.kranzenzo.service.dto.WorkshopSubscriptionDTO;
 import be.sandervl.kranzenzo.service.mapper.WorkshopSubscriptionMapper;
 import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
@@ -15,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +38,18 @@ public class WorkshopSubscriptionResource {
     private final WorkshopSubscriptionRepository workshopSubscriptionRepository;
 
     private final WorkshopSubscriptionMapper workshopSubscriptionMapper;
+    private final UserService userService;
+    private final WorkshopDateRepository workshopDateRepository;
+    private final WorkshopRepository workshopRepository;
+    private final MailService mailService;
 
-    public WorkshopSubscriptionResource( WorkshopSubscriptionRepository workshopSubscriptionRepository, WorkshopSubscriptionMapper workshopSubscriptionMapper ) {
+    public WorkshopSubscriptionResource( WorkshopSubscriptionRepository workshopSubscriptionRepository, WorkshopSubscriptionMapper workshopSubscriptionMapper, UserService userService, WorkshopDateRepository workshopDateRepository, WorkshopRepository workshopRepository, MailService mailService ) {
         this.workshopSubscriptionRepository = workshopSubscriptionRepository;
         this.workshopSubscriptionMapper = workshopSubscriptionMapper;
+        this.userService = userService;
+        this.workshopDateRepository = workshopDateRepository;
+        this.workshopRepository = workshopRepository;
+        this.mailService = mailService;
     }
 
     /**
@@ -52,7 +68,23 @@ public class WorkshopSubscriptionResource {
         }
 
         WorkshopSubscription workshopSubscription = workshopSubscriptionMapper.toEntity( workshopSubscriptionDTO );
-        workshopSubscription = workshopSubscriptionRepository.save( workshopSubscription );
+        workshopSubscription.setState( SubscriptionState.NEW );
+        workshopSubscription.setCreated( ZonedDateTime.now() );
+        UserDTO userDTO = workshopSubscriptionDTO.getUser();
+        //fetch customer eager so all information for sending the email is present on the order
+        User user = userService.findUserByEmail( userDTO.getEmail() )
+                               .orElseGet( () -> {
+                                   userDTO.setLogin( userDTO.getEmail() );
+                                   return userService.createUser( userDTO );
+                               } );
+        workshopSubscription.setUser( user );
+        log.debug( "Fetch the corresponding date and workshop so the data available for the mails" );
+        workshopDateRepository.findById( workshopSubscription.getWorkshop().getId() )
+                              .ifPresent( workshopDate -> {
+                                  workshopSubscriptionRepository.save( workshopSubscription );
+                                  workshopSubscription.setWorkshop( workshopDate );
+                                  mailService.sendWorkshopSubscriptionMails( workshopSubscription );
+                              } );
         WorkshopSubscriptionDTO result = workshopSubscriptionMapper.toDto( workshopSubscription );
         return ResponseEntity.created( new URI( "/api/workshop-subscriptions/" + result.getId() ) )
                              .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
@@ -78,6 +110,13 @@ public class WorkshopSubscriptionResource {
 
         WorkshopSubscription workshopSubscription = workshopSubscriptionMapper.toEntity( workshopSubscriptionDTO );
         workshopSubscription = workshopSubscriptionRepository.save( workshopSubscription );
+        SubscriptionState newState = workshopSubscription.getState();
+        SubscriptionState currentState = workshopSubscriptionRepository.getOne( workshopSubscription.getId() )
+                                                                       .getState();
+        workshopSubscription = workshopSubscriptionRepository.save( workshopSubscription );
+        if ( newState.equals( SubscriptionState.PAYED ) && !currentState.equals( SubscriptionState.PAYED ) ) {
+            mailService.sendWorkshopConfirmationMail( workshopSubscription );
+        }
         WorkshopSubscriptionDTO result = workshopSubscriptionMapper.toDto( workshopSubscription );
         return ResponseEntity.ok()
                              .headers( HeaderUtil
@@ -92,9 +131,15 @@ public class WorkshopSubscriptionResource {
      */
     @GetMapping("/workshop-subscriptions")
     @Timed
-    public List <WorkshopSubscriptionDTO> getAllWorkshopSubscriptions() {
+    public List <WorkshopSubscriptionDTO> getAllWorkshopSubscriptions( @RequestParam(value = "workshopDate", required = false) Long workshopDateId ) {
         log.debug( "REST request to get all WorkshopSubscriptions" );
-        List <WorkshopSubscription> workshopSubscriptions = workshopSubscriptionRepository.findAll();
+        List <WorkshopSubscription> workshopSubscriptions;
+        if ( workshopDateId == null ) {
+            workshopSubscriptions = workshopSubscriptionRepository.findAll();
+        }
+        else{
+            workshopSubscriptions = workshopSubscriptionRepository.findByWorkshopId( workshopDateId );
+        }
         return workshopSubscriptionMapper.toDto( workshopSubscriptions );
     }
 

@@ -21,6 +21,7 @@ import * as moment from 'moment';
 import { ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent, NavbarComponent, PageRibbonComponent } from './layouts';
 import { ShopModule } from 'app/shop/shop.module';
 import { InfoModule } from 'app/info/info.module';
+import { WorkshopModule } from 'app/workshop/workshop.module';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -35,7 +36,8 @@ import { InfoModule } from 'app/info/info.module';
         KranzenzoAccountModule,
         KranzenzoEntityModule,
         ShopModule,
-        InfoModule
+        InfoModule,
+        WorkshopModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
