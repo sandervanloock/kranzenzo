@@ -26,9 +26,11 @@ public interface WorkshopRepository extends JpaRepository <Workshop, Long> {
     @Query(value = "select distinct workshop from Workshop workshop left join fetch workshop.tags left join fetch workshop.images left join fetch workshop.dates")
     List <Workshop> findAllWithEagerRelationships();
 
+    @Query(value = "select distinct workshop from Workshop workshop left join fetch workshop.tags left join fetch workshop.images left join fetch workshop.dates where workshop.showOnHomepage = 1 and workshop.isActive=1")
+    List <Workshop> findByShowOnHomepageAndIsActive();
+
     @Query("select workshop from Workshop workshop left join fetch workshop.tags left join fetch workshop.images left join fetch workshop.dates where workshop.id =:id")
     Optional <Workshop> findOneWithEagerRelationships( @Param("id") Long id );
 
     Workshop findByDatesIsContaining( WorkshopDate workshop );
-
 }

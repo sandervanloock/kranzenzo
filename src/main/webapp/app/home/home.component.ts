@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
         this.tagService.query({ homepage: true }).subscribe((data: HttpResponse<ITag[]>) => {
             this.homepageTags = data.body;
         });
-        this.workshopService.find(1).subscribe((ws: HttpResponse<IWorkshop>) => {
+        this.workshopService.getHomepageWorkshop().subscribe((ws: HttpResponse<IWorkshop>) => {
             this.workshop = ws.body;
         });
     }

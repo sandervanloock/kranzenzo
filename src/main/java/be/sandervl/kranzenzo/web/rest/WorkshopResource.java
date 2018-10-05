@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.domain.Workshop;
+import be.sandervl.kranzenzo.domain.WorkshopDate;
 import be.sandervl.kranzenzo.domain.enumeration.SubscriptionState;
 import be.sandervl.kranzenzo.repository.WorkshopRepository;
 import be.sandervl.kranzenzo.repository.WorkshopSubscriptionRepository;
@@ -20,7 +21,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -104,6 +109,37 @@ public class WorkshopResource {
         log.debug( "REST request to get all Workshops" );
         List <Workshop> workshops = workshopRepository.findAllWithEagerRelationships();
         return workshopMapper.toDto( workshops );
+    }
+
+    /**
+     * GET  /workshop/homepage : get the workshop that should appear on the homepage.
+     */
+    @GetMapping("/workshops/homepage")
+    @Timed
+    public ResponseEntity <WorkshopDTO> getHomepageWorkshop() {
+        log.debug( "REST request to get all Workshops" );
+        ZonedDateTime now = ZonedDateTime.now( ZoneId.systemDefault() );
+        return workshopRepository.findByShowOnHomepageAndIsActive()
+                                 .stream()
+                                 .min( Comparator.comparing( w -> getClosestWorkshopDateFrom( now, w ) ) )
+                                 .map( workshopMapper::toDto )
+                                 .map( ResponseEntity::ok )
+                                 .orElseGet( () -> ResponseEntity.notFound().build() );
+    }
+
+    /*
+    For all dates of the workshop, return the closest date, that is the date that lies closest to the given date.
+    If the workshop date is in the past, return the largest date possible.
+     */
+    private ZonedDateTime getClosestWorkshopDateFrom( ZonedDateTime now, Workshop workshop ) {
+        return
+            workshop.getDates()
+                    .stream()
+                    .map( WorkshopDate::getDate )
+                    .filter( date -> date.isAfter( now ) )
+                    .min( ( d1, d2 ) -> -1 * Math
+                        .toIntExact( ChronoUnit.HOURS.between( d1, now ) - ChronoUnit.HOURS.between( d2, now ) ) )
+                    .orElse( Instant.ofEpochMilli( Long.MAX_VALUE ).atZone( ZoneId.systemDefault() ) );
     }
 
     /**
