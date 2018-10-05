@@ -35,29 +35,34 @@
                     </div>
                 </div>
                 <h4 jhiTranslate="kranzenzoApp.workshop.dates">Data</h4>
-                <small>Voeg data voor deze workshop toe</small>
-                <button type="button" class="btn btn-primary" (click)="addWorkshopDate()">
-                    <fa-icon [icon]="'plus'"></fa-icon>&nbsp;<span>Toevoegen</span>
-                </button>
-                <div class="form-group" *ngFor="let workshopDate of this.workshopDates; let i = index">
+                <div>
+                    <button type="button" class="btn btn-primary" (click)="addWorkshopDate()">
+                        <fa-icon [icon]="'plus'"></fa-icon>&nbsp;<span>Toevoegen</span>
+                    </button>
+                    <small>Voeg data voor deze workshop toe</small>
+                </div>
+                <div class="form-group">
                     <div class="mt-2">
-                        <div class="d-flex">
-                            <input [id]="'field_date'+i" type="datetime-local" class="form-control" [name]="'dates'+i" [(ngModel)]="this.workshopDates[i]" required/>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col" *ngFor="let workshopDate of this.workshopDates; let i = index">
+                                    <input [id]="'field_date'+i" type="datetime-local" class="form-control" [name]="'dates'+i" [(ngModel)]="this.workshopDates[i]" required/>
+                                    <div [hidden]="!(editForm.controls.date?.dirty && editForm.controls.date?.invalid)">
+                                        <small class="form-text text-danger" [hidden]="!editForm.controls.date?.errors?.required" jhiTranslate="entity.validation.required">
+                                            This field is required.
+                                        </small>
+                                        <small class="form-text text-danger" [hidden]="!editForm.controls.date?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                                            This field should be a date and time.
+                                        </small>
+                                    </div>
+                                    <div style="text-align:center;">
+                                        <button type="button" (click)="removeWorkshopDate(i)" class="btn btn-danger my-2" style="width:100%">
+                                            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Verwijderen</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div [hidden]="!(editForm.controls.date?.dirty && editForm.controls.date?.invalid)">
-                            <small class="form-text text-danger" [hidden]="!editForm.controls.date?.errors?.required" jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                            <small class="form-text text-danger" [hidden]="!editForm.controls.date?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
-                                This field should be a date and time.
-                            </small>
-                        </div>
-                    </div>
-                    <div style="text-align:center;">
-                        <button type="button" (click)="removeWorkshopDate(i)" class="btn btn-danger my-2"
-                                style="width:100%">
-                            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Verwijderen</span>
-                        </button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -132,8 +137,7 @@
                                     <img [src]="image" class="img-fluid img-responsive"/>
                                 </div>
                                 <div style="text-align:center;">
-                                    <button (click)="onImageRemoved(image)" class="btn btn-danger my-2"
-                                            style="width:100%">
+                                    <button (click)="onImageRemoved(image)" class="btn btn-danger my-2" style=" width:100%">
                                         <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Verwijderen</span>
                                     </button>
                                 </div>
