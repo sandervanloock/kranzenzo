@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -15,6 +15,7 @@ import { S3ImageResizePipe } from 'app/shared/util/s3-image-resize.pipe';
 import { WorkshopDate } from 'app/shared/model/workshop-date.model';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import moment = require('moment');
+import { ImageUploadComponent } from 'app/shared/image/image-upload/image-upload.component';
 
 @Component({
     selector: 'jhi-workshop-update',
@@ -24,19 +25,15 @@ import moment = require('moment');
 export class WorkshopUpdateComponent implements OnInit {
     isSaving: boolean;
     tags: ITag[];
-    imageEndpoints: string[] = [];
     workshopDates: string[] = [];
-    uploader: FileUploader;
-
+    @ViewChild(ImageUploadComponent) private imageUpload: ImageUploadComponent;
     private _workshop: IWorkshop;
 
     constructor(
         private jhiAlertService: JhiAlertService,
         private workshopService: WorkshopService,
         private tagService: TagService,
-        private activatedRoute: ActivatedRoute,
-        private authServer: AuthServerProvider,
-        private s3ImageResizePipe: S3ImageResizePipe
+        private activatedRoute: ActivatedRoute
     ) {}
 
     get workshop() {
@@ -58,28 +55,7 @@ export class WorkshopUpdateComponent implements OnInit {
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
-        const headers = [
-            {
-                name: 'Authorization',
-                value: `Bearer ${this.authServer.getToken()}`
-            }
-        ];
-        this.uploader = new FileUploader({
-            url: '/api/images/raw',
-            itemAlias: 'file',
-            authTokenHeader: this.authServer.getToken(),
-            headers
-        });
-        this.uploader.onCompleteItem = (item: any, response: any, status: any) => {
-            this.onImageUploadFinished(response);
-        };
         if (this.workshop) {
-            if (!this.workshop.images) {
-                this.workshop.images = [];
-            }
-            this.workshop.images.forEach((image: IImage) => {
-                this.imageEndpoints.push(this.s3ImageResizePipe.transform(image.endpoint, '250x250'));
-            });
             if (!this.workshop.dates) {
                 this.workshop.dates = [];
             }
@@ -94,6 +70,7 @@ export class WorkshopUpdateComponent implements OnInit {
     }
 
     save() {
+        this.workshop.images = this.imageUpload.images;
         this.isSaving = true;
         this.workshopDates.forEach((workshopDate, i) => {
             if (i < this.workshop.dates.length) {
@@ -106,30 +83,6 @@ export class WorkshopUpdateComponent implements OnInit {
             this.subscribeToSaveResponse(this.workshopService.update(this.workshop));
         } else {
             this.subscribeToSaveResponse(this.workshopService.create(this.workshop));
-        }
-    }
-
-    onFileSelected() {
-        this.uploader.uploadAll();
-    }
-
-    onImageRemoved(imageEndpoint: String) {
-        this.workshop.images.forEach((image: IImage, index: number) => {
-            if (this.s3ImageResizePipe.transform(image.endpoint, '250x250') === imageEndpoint) {
-                this.workshop.images.splice(index, 1);
-                this.imageEndpoints.splice(index, 1);
-            }
-        });
-    }
-
-    onImageUploadFinished($event: any) {
-        const parsedJson = JSON.parse($event);
-        const id = parsedJson.id;
-        if (id) {
-            const image = new Image(id);
-            image.endpoint = parsedJson.endpoint;
-            this.workshop.images.push(image);
-            this.imageEndpoints.push(this.s3ImageResizePipe.transform(image.endpoint, '250x250'));
         }
     }
 

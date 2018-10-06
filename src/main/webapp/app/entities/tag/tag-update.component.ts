@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { IWorkshop } from 'app/shared/model/workshop.model';
 import { WorkshopService } from 'app/entities/workshop';
 import { IProduct } from 'app/shared/model/product.model';
 import { ProductService } from 'app/entities/product';
+import { ImageUploadComponent } from 'app/shared/image/image-upload/image-upload.component';
 
 @Component({
     selector: 'jhi-tag-update',
@@ -19,6 +20,8 @@ export class TagUpdateComponent implements OnInit {
     isSaving: boolean;
     workshops: IWorkshop[];
     products: IProduct[];
+    tags: ITag[];
+    @ViewChild(ImageUploadComponent) private imageUpload: ImageUploadComponent;
     private _tag: ITag;
 
     constructor(
@@ -54,6 +57,9 @@ export class TagUpdateComponent implements OnInit {
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
+        this.tagService.query().subscribe((res: HttpResponse<ITag[]>) => {
+            this.tags = res.body;
+        });
     }
 
     previousState() {
@@ -61,6 +67,7 @@ export class TagUpdateComponent implements OnInit {
     }
 
     save() {
+        this.tag.image = this.imageUpload.images.length ? this.imageUpload.images[0] : null;
         this.isSaving = true;
         if (this.tag.id !== undefined) {
             this.subscribeToSaveResponse(this.tagService.update(this.tag));

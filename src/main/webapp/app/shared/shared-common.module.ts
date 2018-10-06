@@ -4,6 +4,8 @@ import { FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent, Kra
 import { S3ImageResizePipe } from 'app/shared/util/s3-image-resize.pipe';
 import { EqualValidatorDirective } from 'app/shared/util/equal-validator.directive';
 import { FloorPipe } from 'app/shared/util/floor.pipe';
+import { ImageUploadComponent } from 'app/shared/image/image-upload/image-upload.component';
+import { FileSelectDirective } from 'ng2-file-upload';
 
 @NgModule({
     imports: [KranzenzoSharedLibsModule],
@@ -13,7 +15,9 @@ import { FloorPipe } from 'app/shared/util/floor.pipe';
         JhiAlertErrorComponent,
         S3ImageResizePipe,
         EqualValidatorDirective,
-        FloorPipe
+        FloorPipe,
+        ImageUploadComponent,
+        FileSelectDirective
     ],
     exports: [
         KranzenzoSharedLibsModule,
@@ -22,7 +26,9 @@ import { FloorPipe } from 'app/shared/util/floor.pipe';
         JhiAlertErrorComponent,
         S3ImageResizePipe,
         EqualValidatorDirective,
-        FloorPipe
+        FloorPipe,
+        ImageUploadComponent,
+        FileSelectDirective
     ]
 })
 export class KranzenzoSharedCommonModule {}
