@@ -9,9 +9,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A Workshop.
@@ -64,7 +62,8 @@ public class Workshop implements Serializable {
     @OneToMany(mappedBy = "workshop")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonIgnore
-    private Set <WorkshopDate> dates = new HashSet <>();
+    @OrderBy("jhi_date")
+    private List <WorkshopDate> dates = new ArrayList <>(  );
 
     @OneToMany(mappedBy = "workshop")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -204,15 +203,15 @@ public class Workshop implements Serializable {
         this.showOnHomepage = showOnHomepage;
     }
 
-    public Set <WorkshopDate> getDates() {
+    public List <WorkshopDate> getDates() {
         return dates;
     }
 
-    public void setDates( Set <WorkshopDate> workshopDates ) {
+    public void setDates( List<WorkshopDate> workshopDates ) {
         this.dates = workshopDates;
     }
 
-    public Workshop dates( Set <WorkshopDate> workshopDates ) {
+    public Workshop dates( List <WorkshopDate> workshopDates ) {
         this.dates = workshopDates;
         return this;
     }

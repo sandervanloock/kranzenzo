@@ -4,9 +4,7 @@ import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A DTO for the Workshop entity.
@@ -44,7 +42,7 @@ public class WorkshopDTO implements Serializable {
 
     private Set <ImageDTO> images = new HashSet <>();
 
-    private Set <WorkshopDateDTO> dates = new HashSet <>();
+    private List<WorkshopDateDTO> dates = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -140,10 +138,10 @@ public class WorkshopDTO implements Serializable {
     public void setImages( Set <ImageDTO> images ) {
         this.images = images;
     }
-    public Set <WorkshopDateDTO> getDates() {
+    public List <WorkshopDateDTO> getDates() {
         return dates;
     }
-    public void setDates( Set <WorkshopDateDTO> dates ) {
+    public void setDates( List <WorkshopDateDTO> dates ) {
         this.dates = dates;
     }
 

@@ -157,14 +157,16 @@ public class WorkshopResource {
                               .map( workshop -> {
                                   if ( workshop.getDates() != null && !workshop.getDates().isEmpty() && BooleanUtils.toBoolean( filterDates ) ) {
                                       log.debug( "Filter out past dates and dates with max subscriptions" );
-                                      workshop.setDates( workshop.getDates()
-                                                                 .stream()
-                                                                 .filter( date -> date.getDate().isAfter( ZonedDateTime
-                                                                     .now() ) )
-                                                                 .filter( date -> workshopSubscriptionRepository
-                                                                     .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
-                                                                     .getMaxSubscriptions() )
-                                                                 .collect( Collectors.toSet() ) );
+                                      List <WorkshopDate> filteredDates =
+                                          workshop.getDates()
+                                                  .stream()
+                                                  .filter( date -> date.getDate()
+                                                                       .isAfter( ZonedDateTime.now() ) )
+                                                  .filter( date -> workshopSubscriptionRepository
+                                                      .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
+                                                      .getMaxSubscriptions() )
+                                                  .collect( Collectors.toList() );
+                                      workshop.setDates( filteredDates );
                                   }
                                   return workshop;
                               } )
