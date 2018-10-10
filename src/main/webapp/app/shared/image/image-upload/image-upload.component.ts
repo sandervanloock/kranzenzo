@@ -69,8 +69,6 @@ export class ImageUploadComponent implements OnInit {
             const image = new Image(id);
             image.endpoint = parsedJson.endpoint;
             this._images.push(image);
-            // remove the last preview thumbnail
-            this.imageEndpoints.splice(this.imageEndpoints.length - 1, 1);
             this.imageEndpoints.push(this.s3ImageResizePipe.transform(image.endpoint, '250x250'));
         }
     }
