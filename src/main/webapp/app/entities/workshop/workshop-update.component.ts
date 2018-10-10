@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
@@ -8,13 +9,8 @@ import { IWorkshop } from 'app/shared/model/workshop.model';
 import { WorkshopService } from './workshop.service';
 import { ITag } from 'app/shared/model/tag.model';
 import { TagService } from 'app/entities/tag';
-import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
-import { IImage, Image } from 'app/shared/model/image.model';
-import { AuthServerProvider } from 'app/core/auth/auth-jwt.service';
-import { S3ImageResizePipe } from 'app/shared/util/s3-image-resize.pipe';
 import { WorkshopDate } from 'app/shared/model/workshop-date.model';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import moment = require('moment');
 import { ImageUploadComponent } from 'app/shared/image/image-upload/image-upload.component';
 
 @Component({

@@ -1,4 +1,6 @@
 import { Moment } from 'moment';
+import { ICustomer } from 'app/shared/model/customer.model';
+import { IProduct } from 'app/shared/model/product.model';
 
 export const enum OrderState {
     NEW = 'NEW',
@@ -29,9 +31,11 @@ export interface IProductOrder {
     totalPrice?: number;
     paymentType?: PaymentType;
     customerId?: number;
+    customer?: ICustomer;
     deliveryAddressId?: number;
     productName?: string;
     productId?: number;
+    product?: IProduct;
 }
 
 export class ProductOrder implements IProductOrder {
@@ -47,9 +51,11 @@ export class ProductOrder implements IProductOrder {
         public totalPrice?: number,
         public paymentType?: PaymentType,
         public customerId?: number,
+        public customer?: ICustomer,
         public deliveryAddressId?: number,
         public productName?: string,
-        public productId?: number
+        public productId?: number,
+        public product?: IProduct
     ) {
         this.includeBatteries = this.includeBatteries || false;
     }
