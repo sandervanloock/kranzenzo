@@ -160,7 +160,6 @@ public class WorkshopSubscriptionResourceIntTest {
         assertThat( workshopSubscriptionList ).hasSize( databaseSizeBeforeCreate + 1 );
         WorkshopSubscription testWorkshopSubscription = workshopSubscriptionList.get( workshopSubscriptionList
             .size() - 1 );
-        assertThat( testWorkshopSubscription.getCreated() ).isEqualTo( DEFAULT_CREATED );
         assertThat( testWorkshopSubscription.getState() ).isEqualTo( DEFAULT_STATE );
     }
 
