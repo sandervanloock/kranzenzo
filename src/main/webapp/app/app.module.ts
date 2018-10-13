@@ -22,6 +22,7 @@ import { ActiveMenuDirective, ErrorComponent, FooterComponent, JhiMainComponent,
 import { ShopModule } from 'app/shop/shop.module';
 import { InfoModule } from 'app/info/info.module';
 import { WorkshopModule } from 'app/workshop/workshop.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
@@ -37,7 +38,8 @@ import { WorkshopModule } from 'app/workshop/workshop.module';
         KranzenzoEntityModule,
         ShopModule,
         InfoModule,
-        WorkshopModule
+        WorkshopModule,
+        BrowserAnimationsModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [JhiMainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],

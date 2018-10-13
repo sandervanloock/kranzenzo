@@ -6,6 +6,7 @@ import { NgJhipsterModule } from 'ng-jhipster';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatButtonModule } from '@angular/material';
 
 @NgModule({
     imports: [
@@ -18,8 +19,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
         }),
         InfiniteScrollModule,
         CookieModule.forRoot(),
-        FontAwesomeModule
+        FontAwesomeModule,
+        MatButtonModule
     ],
-    exports: [FormsModule, CommonModule, NgbModule, NgJhipsterModule, InfiniteScrollModule, FontAwesomeModule]
+    exports: [FormsModule, CommonModule, NgbModule, NgJhipsterModule, InfiniteScrollModule, FontAwesomeModule, MatButtonModule]
 })
 export class KranzenzoSharedLibsModule {}
