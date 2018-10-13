@@ -55,7 +55,9 @@ export class ProductUpdateComponent implements OnInit {
     }
 
     save() {
-        this.product.images = this.imageUpload.images;
+        if (this.imageUpload) {
+            this.product.images = this.imageUpload.images;
+        }
         this.isSaving = true;
         if (this.product.id !== undefined) {
             this.subscribeToSaveResponse(this.productService.update(this.product));

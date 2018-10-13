@@ -24,7 +24,11 @@ export class WorkshopService {
     }
 
     find(id: number, filterDates?: boolean): Observable<EntityResponseType> {
-        return this.http.get<IWorkshop>(`${this.resourceUrl}/${id}?filterDates=${filterDates ? filterDates : false}`, {
+        let url = `${this.resourceUrl}/${id}`;
+        if (filterDates) {
+            url += `?filterDates=${filterDates ? filterDates : false}`;
+        }
+        return this.http.get<IWorkshop>(url, {
             observe: 'response'
         });
     }

@@ -67,7 +67,9 @@ export class TagUpdateComponent implements OnInit {
     }
 
     save() {
-        this.tag.image = this.imageUpload.images.length ? this.imageUpload.images[0] : null;
+        if (this.imageUpload) {
+            this.tag.image = this.imageUpload.images.length ? this.imageUpload.images[0] : null;
+        }
         this.isSaving = true;
         if (this.tag.id !== undefined) {
             this.subscribeToSaveResponse(this.tagService.update(this.tag));

@@ -66,7 +66,9 @@ export class WorkshopUpdateComponent implements OnInit {
     }
 
     save() {
-        this.workshop.images = this.imageUpload.images;
+        if (this.imageUpload) {
+            this.workshop.images = this.imageUpload.images;
+        }
         this.isSaving = true;
         this.workshopDates.forEach((workshopDate, i) => {
             if (i < this.workshop.dates.length) {

@@ -6,6 +6,7 @@ import { of } from 'rxjs';
 import { KranzenzoTestModule } from '../../../test.module';
 import { WorkshopDateDetailComponent } from 'app/entities/workshop-date/workshop-date-detail.component';
 import { WorkshopDate } from 'app/shared/model/workshop-date.model';
+import { Observable } from 'rxjs/Observable';
 
 describe('Component Tests', () => {
     describe('WorkshopDate Management Detail Component', () => {
@@ -14,6 +15,9 @@ describe('Component Tests', () => {
         const route = ({ data: of({ workshopDate: new WorkshopDate(123) }) } as any) as ActivatedRoute;
 
         beforeEach(() => {
+            route.params = Observable.create(function(observer) {
+                observer.next(123);
+            });
             TestBed.configureTestingModule({
                 imports: [KranzenzoTestModule],
                 declarations: [WorkshopDateDetailComponent],
