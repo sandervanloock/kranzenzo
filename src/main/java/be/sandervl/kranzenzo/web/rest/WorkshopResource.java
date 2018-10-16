@@ -117,7 +117,7 @@ public class WorkshopResource {
     @GetMapping("/workshops/homepage")
     @Timed
     public ResponseEntity <WorkshopDTO> getHomepageWorkshop() {
-        log.debug( "REST request to get all Workshops" );
+        log.debug( "REST request to get homepage Workshops" );
         ZonedDateTime now = ZonedDateTime.now( ZoneId.systemDefault() );
         return workshopRepository.findByShowOnHomepageAndIsActive()
                                  .stream()
