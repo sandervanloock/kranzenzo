@@ -37,7 +37,8 @@ import {
     faUser,
     faUserPlus,
     faWrench,
-    faQuoteRight
+    faQuoteRight,
+    faShoppingCart
 } from '@fortawesome/free-solid-svg-icons';
 
 // Imports all fontawesome core and solid icons
@@ -78,5 +79,6 @@ library.add(faSearch);
 library.add(faTrashAlt);
 library.add(faAsterisk);
 library.add(faQuoteRight);
+library.add(faShoppingCart);
 
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here

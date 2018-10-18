@@ -85,7 +85,6 @@ Main page styles
     color: white;
 }
 
-blockquote {
-    border-left: none;
-    margin: 0;
+section:nth-child(odd) {
+    background-color: #d8d6d6;
 }

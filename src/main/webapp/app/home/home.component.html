@@ -1,42 +1,65 @@
 <div class="hero-image">
+    <!-- https://www.w3schools.com/howto/howto_css_hero_image.asp -->
     <div class="hero-text">
         <h1>Welkom bij Kranzenzo</h1>
         <p>Zelfgemaakte duurzame kransen aan een scherpe prijs</p>
-        <button routerLink="/shop" routerLinkActive="active">Ga naar de webshop</button>
+        <button routerLink="/shop" routerLinkActive="active" class="btn btn-primary">
+            <fa-icon icon="shopping-cart"></fa-icon> Ga naar de webshop
+        </button>
     </div>
 </div>
 
+<!-- Section: Workshops -->
+<section class="text-center py-5 px-2" *ngIf="workshop">
+    <h2 class="h1-responsive font-weight-bold my-3">Workshop: {{workshop.name}}</h2>
+    <div class="workshops">
+        <p>
+            {{workshop.description}}
+        </p>
+        <button type="button" class="btn btn-primary" [routerLink]="['/kranzenzo-workshop', workshop.id]">
+            <fa-icon icon="pencil-alt"></fa-icon> Schrijf je hier in
+        </button>
+    </div>
+</section>
+<!-- End Section: Workshops -->
 
-<div class="container-fluid center-block col-lg-offset-2 col-lg-10">
+<!-- Section: Testimonials v.2 https://mdbootstrap.com/angular/sections/testimonials/#v-2 -->
+<section class="text-center py-5 px-2">
+    <!-- Section heading -->
+    <h2 class="h1-responsive font-weight-bold my-3">Wie ben ik?</h2>
+    <div class="testimonial">
+        <!--Avatar-->
+        <div class="avatar mx-auto mb-4">
+            <img src="https://mdbootstrap.com/img/Photos/Avatars/img%20(30).jpg" class="rounded-circle img-fluid" alt="First sample avatar image">
+        </div>
+        <!--Content-->
+        <p>
+            <fa-icon [icon]="'quote-right'"></fa-icon> Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke
+            materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en
+            creativiteit maak ik unieke, goedkope en duurzame stukken. De stukken hebben een uniek karakter en
+            worden gemaakt van gerecycleerd materiaal. </p>
+        <p>
+            Ik probeer de prijs zo laag mogelijk te houden omdat ik het vooral heel graag doe en er ook anderen blij
+            wil mee maken. Ik maak ook decostukken naar wens/volgens thema/speciale gelegenheid. </p>
+        <p>
+            Gratis levering binnen een straal van 10 km. </p>
+        <p>
+            Via mijn webwinkel kan je mijn producten bekijken en bestellen. Jullie zijn uiteraard steeds welkom bij
+            mij thuis na een telefoontje op het nummer 0477 45 75 20 of via mijn mailadres:
+            <a href="mailto:annemie.rousseau@telenet.be">annemie.rousseau@telenet.be</a>
+        </p>
+        <h4 class="font-weight-bold">Annemie Rousseau</h4>
+        <h6 class="font-weight-bold my-3">Kranzenzo</h6>
+    </div>
+</section>
+<!-- Section: Testimonials v.2 -->
 
-    <section class="m-home_text-block my-5">
-        <blockquote>
-            <div class="row">
-                <!--based on https://codepen.io/nikhil/pen/pJBMPp-->
-                <div class="col-sm-8 col-sm-offset-2">
-                    <fa-icon [icon]="'faQuoteRight'"></fa-icon>
-                    <p>
-                        Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met
-                        natuurlijke materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met
-                        heel veel passie en creativiteit maak ik unieke, goedkope en duurzame stukken. De stukken hebben
-                        een uniek karakter en worden gemaakt van gerecycleerd materiaal. </p>
-                    <p>
-                        Ik probeer de prijs zo laag mogelijk te houden omdat ik het vooral heel graag doe en er ook
-                        anderen blij wil mee maken. Ik maak ook decostukken naar wens/volgens thema/speciale
-                        gelegenheid. </p>
-                    <p>
-                        Gratis levering binnen een straal van 10 km. </p>
-                    <p>
-                        Via mijn webwinkel kan je mijn producten bekijken en bestellen. Jullie zijn uiteraard steeds
-                        welkom bij mij thuis na een telefoontje op het nummer 0477 45 75 20 of via mijn mailadres.</p>
-                    <small><a href="mailto:annemie.rousseau@telenet.be">annemie.rousseau@telenet.be</a></small>
-                </div>
-            </div>
-        </blockquote>
-    </section>
-
-    <section class="row my-2 mb-5 m-home_first-block" *ngIf="homepageTags && homepageTags.length">
-        <div class="col" *ngFor="let tag of homepageTags">
+<!-- Section Homepage tags -->
+<section class="text-center py-5 px-2" *ngIf="homepageTags && homepageTags.length">
+    <!-- Section heading -->
+    <h2 class="h1-responsive font-weight-bold my-3">Categorieën</h2>
+    <div class="tags row">
+        <div class="col-md-4" *ngFor="let tag of homepageTags">
             <a routerLink="/shop/tags" routerLinkActive="active" [queryParams]="{parentId: tag.id}" class="card-image-link">
                 <div class="m-block__image">
                     <picture *ngIf="tag.image">
@@ -58,31 +81,22 @@
                 </div>
             </a>
         </div>
-    </section>
-
-    <!--<div>
-        <img src="https://dscehdfist861.cloudfront.net/800x1150/Moederdag-folder_01-1.jpg" alt="Moederdag">
-    </div>-->
-
-    <div class="row my-2" *ngIf="workshop">
-        <h4>Nieuw, workshops!</h4>
-        <p>
-            Sinds kort worden er workshops georganiseerd zodat jullie zelf een eigen Kranzenzo werk kunnen maken. De
-            plaatsen zijn beperkt, dus schrijf je zo snel mogelijk in. </p>
-        <button type="button" class="btn btn-primary btn-lg btn-block" [routerLink]="['/kranzenzo-workshop', workshop.id]">
-            Schrijf je hier in
-        </button>
     </div>
+</section>
+<!-- End Section Homepage tags -->
 
-    <!--<div>
-        <ngb-carousel *ngIf="homepageImages">
-            <ng-template ngbSlide *ngFor="let image of homepageImages">
-                <img [src]="image.url" class="homepage-image" [alt]="image.caption">
-                &lt;!&ndash;<div class="carousel-caption">&ndash;&gt;
-                &lt;!&ndash;<h3>{{image.caption}}</h3>&ndash;&gt;
-                &lt;!&ndash;<p>{{image.subcaption}}</p>&ndash;&gt;
-                &lt;!&ndash;</div>&ndash;&gt;
-            </ng-template>
-        </ngb-carousel>
-    </div>-->
-</div>
+<!--<div>
+       <img src="https://dscehdfist861.cloudfront.net/800x1150/Moederdag-folder_01-1.jpg" alt="Moederdag">
+   </div>-->
+
+<!--<div>
+    <ngb-carousel *ngIf="homepageImages">
+        <ng-template ngbSlide *ngFor="let image of homepageImages">
+            <img [src]="image.url" class="homepage-image" [alt]="image.caption">
+            &lt;!&ndash;<div class="carousel-caption">&ndash;&gt;
+            &lt;!&ndash;<h3>{{image.caption}}</h3>&ndash;&gt;
+            &lt;!&ndash;<p>{{image.subcaption}}</p>&ndash;&gt;
+            &lt;!&ndash;</div>&ndash;&gt;
+        </ng-template>
+    </ngb-carousel>
+</div>-->
