@@ -1,3 +1,18 @@
+<section class="jumbotron text-center" style="margin-bottom: 0">
+    <div class="container">
+        <h1 class="jumbotron-heading">
+            <fa-icon icon="shopping-cart"></fa-icon>
+            Kies een categorie
+        </h1>
+        <p class="lead text-muted">
+            Maak je keuze </p>
+        <!--<p>-->
+        <!--<a href="#" class="btn btn-primary my-2">Main call to action</a>-->
+        <!--<a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
+        <!--</p>-->
+    </div>
+</section>
+
 <div class="row">
     <div class="col-xl-6" *ngFor="let tag of tags" style="margin-top:20px;">
         <a routerLink="/shop" routerLinkActive="active" [queryParams]="{tag: tag.name}" class="card-image-link">

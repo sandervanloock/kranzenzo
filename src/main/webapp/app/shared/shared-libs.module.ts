@@ -8,6 +8,8 @@ import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatButtonModule, MatInputModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
     imports: [
@@ -23,7 +25,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         FontAwesomeModule,
         MatButtonModule,
         MatInputModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatSelectModule,
+        MatCardModule
     ],
     exports: [
         FormsModule,
@@ -34,7 +38,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
         FontAwesomeModule,
         MatButtonModule,
         MatInputModule,
-        MatFormFieldModule
+        MatFormFieldModule,
+        MatSelectModule,
+        MatCardModule
     ]
 })
 export class KranzenzoSharedLibsModule {}
