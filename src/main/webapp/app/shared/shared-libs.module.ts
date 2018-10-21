@@ -10,6 +10,8 @@ import { MatButtonModule, MatInputModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     imports: [
@@ -27,7 +29,9 @@ import { MatCardModule } from '@angular/material/card';
         MatInputModule,
         MatFormFieldModule,
         MatSelectModule,
-        MatCardModule
+        MatCardModule,
+        MatRadioModule,
+        MatCheckboxModule
     ],
     exports: [
         FormsModule,
@@ -40,7 +44,9 @@ import { MatCardModule } from '@angular/material/card';
         MatInputModule,
         MatFormFieldModule,
         MatSelectModule,
-        MatCardModule
+        MatCardModule,
+        MatRadioModule,
+        MatCheckboxModule
     ]
 })
 export class KranzenzoSharedLibsModule {}

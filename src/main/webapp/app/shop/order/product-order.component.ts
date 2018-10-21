@@ -1,19 +1,17 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { JhiEventManager } from 'ng-jhipster';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { PRICE_BATTERIES_INCLUDED, VAT_NUMBER } from '../../app.constants';
-import { IProduct, Product } from 'app/shared/model/product.model';
+import { IProduct } from 'app/shared/model/product.model';
 import { Customer, ICustomer } from 'app/shared/model/customer.model';
-import { LoginModalService, Principal, User, UserService } from 'app/core';
+import { LoginModalService, Principal, UserService } from 'app/core';
 import { DeliveryType, IProductOrder, ProductOrder } from 'app/shared/model/product-order.model';
 import { ProductService } from 'app/entities/product';
 import { CustomerService } from 'app/entities/customer';
 import { ProductOrderService } from 'app/entities/product-order';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { CustomerDeleteDialogComponent } from 'app/entities/customer/customer-delete-dialog.component';
-import { AfterViewInit } from '@angular/core';
 
 declare var google: any;
 
@@ -29,7 +27,7 @@ And leveraging the Creative Tim Material Bootstrap Library - http://demos.creati
     templateUrl: './product-order.component.html',
     styleUrls: ['product-order.css']
 })
-export class ProductOrderComponent {
+export class ProductOrderComponent implements OnInit {
     step = 1;
     vatNumber: string = VAT_NUMBER;
 
@@ -42,13 +40,17 @@ export class ProductOrderComponent {
         private principal: Principal,
         private eventManager: JhiEventManager,
         private productService: ProductService,
-        public activeModal: NgbActiveModal,
+        private changeDetectorRef: ChangeDetectorRef,
         private route: ActivatedRoute,
         private http: HttpClient,
         private userService: UserService,
         private customerService: CustomerService,
         private orderService: ProductOrderService
-    ) {}
+    ) {
+        this.product = route.snapshot.data.product;
+    }
+
+    ngOnInit(): void {}
 
     toggleLed() {
         this.order.includeBatteries = !this.order.includeBatteries;
@@ -91,14 +93,6 @@ export class ProductOrderComponent {
             );
     }
 
-    gotoStepTwo() {
-        this.step = 2;
-    }
-
-    gotoStepTree() {
-        this.step = 3;
-    }
-
     private handleFailedOrder() {
         this.eventManager.broadcast({
             name: 'productOrderCompleted',
@@ -108,11 +102,11 @@ export class ProductOrderComponent {
 
     updateDeliveryPrice(price: number) {
         this.order.deliveryPrice = price;
+        this.changeDetectorRef.detectChanges();
     }
 
     private handleSuccessfulOrder(order: IProductOrder) {
         this.order = order;
-        this.activeModal.close();
         this.eventManager.broadcast({
             name: 'productOrderCompleted',
             content: { type: 'success', msg: 'product.submitted.success' }

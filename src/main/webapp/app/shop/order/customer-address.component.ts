@@ -7,7 +7,8 @@ declare var $: any;
 
 @Component({
     selector: 'jhi-customer-address',
-    templateUrl: './customer-address.component.html'
+    templateUrl: './customer-address.component.html',
+    styleUrls: ['customer-order.css']
 })
 export class CustomerAddressComponent implements OnInit {
     @Input() customer: ICustomer;

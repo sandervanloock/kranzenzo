@@ -1,9 +1,8 @@
 import { Route } from '@angular/router';
 import { OverviewComponent } from './overview.component';
 import { ProductDetailComponent } from './product-detail.component';
-import { ProductOrderPopupComponent } from './order/product-order.component';
+import { ProductOrderComponent } from './order/product-order.component';
 import { TagOverviewComponent } from './tag-overview.component';
-import { CustomerResolve } from 'app/entities/customer/customer.route';
 import { ProductResolve } from 'app/entities/product';
 
 export const SHOP_ROUTE: Route[] = [
@@ -33,14 +32,13 @@ export const SHOP_ROUTE: Route[] = [
     },
     {
         path: 'shop/product/:id/order',
-        component: ProductOrderPopupComponent,
+        component: ProductOrderComponent,
         resolve: {
             product: ProductResolve
         },
         data: {
             authorities: ['USER_USER'],
             pageTitle: 'home.title'
-        },
-        outlet: 'popup'
+        }
     }
 ];
