@@ -85,9 +85,9 @@ public class ProductResource {
     @Timed
     public List <ProductDTO> getAllProducts( @RequestParam(required = false, defaultValue = "false") boolean eagerload,
                                              @RequestParam(required = false, name = "activeOnly") Boolean activeOnly,
-                                             @RequestParam(required = false, name = "tagName") String tagName ) {
+                                             @RequestParam(required = false, name = "tag") Long tagId ) {
         log.debug( "REST request to get all Products" );
-        return productService.findAll(activeOnly,tagName);
+        return productService.findAll( activeOnly, tagId );
     }
 
     /**

@@ -5,7 +5,6 @@ import be.sandervl.kranzenzo.repository.ImageRepository;
 import be.sandervl.kranzenzo.repository.ProductRepository;
 import be.sandervl.kranzenzo.service.dto.ProductDTO;
 import be.sandervl.kranzenzo.service.mapper.ProductMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -73,7 +72,7 @@ public class ProductService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll(Boolean activeOnly, String tagName){
+    public List <ProductDTO> findAll( Boolean activeOnly, Long tagId ) {
         log.debug( "Request to get all Products" );
         List<Product> products;
         if ( activeOnly != null ) {
@@ -83,8 +82,8 @@ public class ProductService {
             products = productRepository.findAllWithEagerRelationships();
         }
         return products.stream()
-                       .filter(p -> StringUtils.isBlank(tagName) ||
-                           p.getTags().stream().anyMatch(t -> t.getName().equalsIgnoreCase(tagName)))
+                       .filter( p -> tagId != null ||
+                           p.getTags().stream().anyMatch( t -> t.getId() == tagId ) )
                        .map(productMapper::toDto)
                        .collect(Collectors.toCollection(LinkedList::new));
     }

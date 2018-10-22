@@ -14,18 +14,19 @@
 </section>
 
 <!--Navbar-->
-<div class="navbar-shop">
-    <mat-form-field class="col" [floatLabel]="'auto'" class="m-2">
+<div class="navbar-shop row">
+    <mat-form-field [floatLabel]="'auto'" class="m-2 col-4">
         <mat-label>Zoek een product</mat-label>
         <input matInput [(ngModel)]="searchState.query" (ngModelChange)="reloadState()">
     </mat-form-field>
-    <!--<mat-form-field class="col" *ngFor="let tag of tags">-->
-    <!--<mat-select [placeholder]="tag.name" [(ngModel)]="searchState.tagId">-->
-    <!--<mat-option [value]="subTag.id" *ngFor="let subTag of tag.children">-->
-    <!--{{subTag.name}}-->
-    <!--</mat-option>-->
-    <!--</mat-select>-->
-    <!--</mat-form-field>-->
+    <mat-form-field class="m-2 col-4">
+        <mat-select placeholder="Categorie" [(ngModel)]="searchState.tagId" (ngModelChange)="reloadState()">
+            <mat-option [value]="tag.id" *ngFor="let tag of tags">
+                {{tag.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div>{{items.length}} resultaten</div>
 </div><!--/.Navbar-->
 
 <div class="row" style="visibility: visible; animation-name: fadeIn;">
