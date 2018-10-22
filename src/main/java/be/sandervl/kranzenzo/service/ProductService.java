@@ -82,7 +82,7 @@ public class ProductService {
             products = productRepository.findAllWithEagerRelationships();
         }
         return products.stream()
-                       .filter( p -> tagId != null ||
+                       .filter( p -> tagId == null ||
                            p.getTags().stream().anyMatch( t -> t.getId() == tagId ) )
                        .map(productMapper::toDto)
                        .collect(Collectors.toCollection(LinkedList::new));
