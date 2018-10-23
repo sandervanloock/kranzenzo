@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
 import { PRICE_BATTERIES_INCLUDED, VAT_NUMBER } from '../../app.constants';
 import { IProduct } from 'app/shared/model/product.model';
@@ -11,7 +12,7 @@ import { DeliveryType, IProductOrder, ProductOrder } from 'app/shared/model/prod
 import { ProductService } from 'app/entities/product';
 import { CustomerService } from 'app/entities/customer';
 import { ProductOrderService } from 'app/entities/product-order';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { ORDER_DELIVERY_ORIGIN, PRICE_PER_KILOMETER_PER_KM } from '../../app.constants';
 
 declare var google: any;
 
@@ -45,7 +46,8 @@ export class ProductOrderComponent implements OnInit {
         private http: HttpClient,
         private userService: UserService,
         private customerService: CustomerService,
-        private orderService: ProductOrderService
+        private orderService: ProductOrderService,
+        private snackBar: MatSnackBar
     ) {
         this.product = route.snapshot.data.product;
     }
@@ -80,32 +82,62 @@ export class ProductOrderComponent implements OnInit {
         this.updateCustomer()
             .flatMap(customer => {
                 this.customer = customer.body;
+                this.customer.user.confirmEmail = this.customer.user.email;
                 this.order.customerId = this.customer.id;
-                return this.orderService.create(this.order);
+                if (this.order.id) {
+                    return this.orderService.update(this.order);
+                } else {
+                    return this.orderService.create(this.order);
+                }
             })
             .subscribe(
                 (order: HttpResponse<IProductOrder>) => {
                     this.handleSuccessfulOrder(order.body);
                 },
                 error => {
-                    this.handleFailedOrder();
+                    this.handleFailedOrder(error);
                 }
             );
     }
 
-    private handleFailedOrder() {
+    private handleFailedOrder(error) {
+        console.error(error);
+        const snackBarRef = this.snackBar.open('Er ging iets, probeer later opnieuw of contacteer annemie.rousseau@telenet.be');
         this.eventManager.broadcast({
             name: 'productOrderCompleted',
             content: { type: 'error', msg: 'product.submitted.error' }
         });
     }
 
-    updateDeliveryPrice(price: number) {
-        this.order.deliveryPrice = price;
-        this.changeDetectorRef.detectChanges();
+    updateDeliveryPrice() {
+        const directionsService = new google.maps.DirectionsService();
+        directionsService.route(
+            {
+                origin: ORDER_DELIVERY_ORIGIN,
+                destination: { lat: this.customer.latitude, lng: this.customer.longitude },
+                waypoints: [],
+                optimizeWaypoints: true,
+                travelMode: 'DRIVING'
+            },
+            (response, status) => {
+                if (status === 'OK') {
+                    if (response.routes.length && response.routes[0].legs.length) {
+                        const distance = response.routes[0].legs[0].distance.value;
+                        const distanceWithDiscount = Math.max(0, distance - 10000);
+                        const price = Math.round(distanceWithDiscount / 1000 * PRICE_PER_KILOMETER_PER_KM * 100) / 100;
+                        console.log('Delivery price for distance ' + distance + ' is ' + price);
+                        this.order.deliveryPrice = price;
+                        this.changeDetectorRef.detectChanges();
+                    }
+                } else {
+                    console.error('Directions request failed due to ' + status);
+                }
+            }
+        );
     }
 
     private handleSuccessfulOrder(order: IProductOrder) {
+        const snackBarRef = this.snackBar.open('Bestelling gelukt, bekijk je email voor de bevestiging');
         this.order = order;
         this.eventManager.broadcast({
             name: 'productOrderCompleted',
@@ -119,38 +151,5 @@ export class ProductOrderComponent implements OnInit {
         } else {
             return this.customerService.update(this.customer);
         }
-    }
-}
-
-@Component({
-    selector: 'jhi-product-order-popup',
-    template: ''
-})
-export class ProductOrderPopupComponent implements OnInit, OnDestroy {
-    private ngbModalRef: NgbModalRef;
-
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private modalService: NgbModal) {}
-
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ product }) => {
-            setTimeout(() => {
-                this.ngbModalRef = this.modalService.open(ProductOrderComponent as Component, { size: 'lg', backdrop: 'static' });
-                this.ngbModalRef.componentInstance.product = product;
-                this.ngbModalRef.result.then(
-                    result => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
-                        this.ngbModalRef = null;
-                    },
-                    reason => {
-                        this.router.navigate([{ outlets: { popup: null } }], { replaceUrl: true, queryParamsHandling: 'merge' });
-                        this.ngbModalRef = null;
-                    }
-                );
-            }, 0);
-        });
-    }
-
-    ngOnDestroy() {
-        this.ngbModalRef = null;
     }
 }

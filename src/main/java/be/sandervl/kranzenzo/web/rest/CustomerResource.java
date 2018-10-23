@@ -97,6 +97,7 @@ public class CustomerResource {
 
         Customer customer = customerMapper.toEntity( customerDTO );
         setUserLoginAndPassword( customer );
+        setUserLocation(customer);
         customer = customerRepository.save( customer );
         CustomerDTO result = customerMapper.toDto( customer );
         return ResponseEntity.ok()

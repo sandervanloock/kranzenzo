@@ -58,5 +58,6 @@ export class ProductOrder implements IProductOrder {
         public product?: IProduct
     ) {
         this.includeBatteries = this.includeBatteries || false;
+        this.deliveryPrice = this.deliveryPrice || 0;
     }
 }

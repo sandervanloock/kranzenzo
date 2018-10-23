@@ -74,18 +74,18 @@ public class ProductService {
     @Transactional(readOnly = true)
     public List <ProductDTO> findAll( Boolean activeOnly, Long tagId ) {
         log.debug( "Request to get all Products" );
-        List<Product> products;
+        List <Product> products;
         if ( activeOnly != null ) {
             products = productRepository.findAllByIsActive( activeOnly );
         }
-        else {
+        else{
             products = productRepository.findAllWithEagerRelationships();
         }
         return products.stream()
                        .filter( p -> tagId == null ||
-                           p.getTags().stream().anyMatch( t -> t.getId() == tagId ) )
-                       .map(productMapper::toDto)
-                       .collect(Collectors.toCollection(LinkedList::new));
+                           p.getTags().stream().anyMatch( t -> t.getId().equals( tagId ) ) )
+                       .map( productMapper::toDto )
+                       .collect( Collectors.toCollection( LinkedList::new ) );
     }
 
     /**
