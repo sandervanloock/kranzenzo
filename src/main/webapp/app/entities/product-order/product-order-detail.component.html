@@ -32,6 +32,10 @@
                 </dd>
                 <dt *ngIf="productOrder.deliveryType==='DELIVERED'"><span jhiTranslate="kranzenzoApp.productOrder.deliveryAddress">Delivery Address</span></dt>
                 <dd>
+                    <address>
+                        {{productOrder.customer.street}} <br/>
+                        {{productOrder.customer.zipCode}} {{productOrder.customer.city}}
+                    </address>
                     <span>{{productOrder.customer.description}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.description">Description</span></dt>
@@ -51,11 +55,11 @@
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.created">Created</span></dt>
                 <dd>
-                    <span>{{productOrder.created}}</span>
+                    <span>{{productOrder.created | date: 'medium'}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.productOrder.updated">Updated</span></dt>
                 <dd>
-                    <span>{{productOrder.updated}}</span>
+                    <span>{{productOrder.updated | date: 'medium'}}</span>
                 </dd>
             </dl>
 
