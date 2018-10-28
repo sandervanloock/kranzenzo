@@ -42,4 +42,12 @@
             </button>
         </div>
     </div>
+    <div>
+            <ngb-carousel *ngIf="product?.images.length">
+                    <ng-template ngbSlide *ngFor="let image of product.images">
+                        <img [src]="image.endpoint | s3ImageResize: '800x400'" width="100%">
+                        <div class="carousel-caption"></div>
+                    </ng-template>
+                </ngb-carousel>
+    </div>
 </div>
