@@ -23,10 +23,10 @@ declare var $: any;
     ]
 })
 export class CustomerAddressComponent implements OnInit, ControlValueAccessor, Validator {
-    textInput: string = '';
+    textInput = '';
 
     private searchBox: any;
-    private invalidAddressError: boolean = false;
+    private invalidAddressError = false;
     private output: ICustomer;
 
     private propagateChange = (_: any) => {};
@@ -61,7 +61,7 @@ export class CustomerAddressComponent implements OnInit, ControlValueAccessor, V
 
     onChange(event): void {
         if (!this.textInput) {
-            //reset state
+            // reset state
             this.output.street = undefined;
             this.output.city = undefined;
             this.output.zipCode = undefined;
