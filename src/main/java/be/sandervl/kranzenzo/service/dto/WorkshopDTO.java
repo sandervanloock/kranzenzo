@@ -42,7 +42,7 @@ public class WorkshopDTO implements Serializable {
 
     private Set <ImageDTO> images = new HashSet <>();
 
-    private List<WorkshopDateDTO> dates = new ArrayList<>();
+    private Set<WorkshopDateDTO> dates = new HashSet <>();
 
     public Long getId() {
         return id;
@@ -138,10 +138,10 @@ public class WorkshopDTO implements Serializable {
     public void setImages( Set <ImageDTO> images ) {
         this.images = images;
     }
-    public List <WorkshopDateDTO> getDates() {
+    public Set <WorkshopDateDTO> getDates() {
         return dates;
     }
-    public void setDates( List <WorkshopDateDTO> dates ) {
+    public void setDates( Set <WorkshopDateDTO> dates ) {
         this.dates = dates;
     }
 

@@ -63,7 +63,7 @@ public class Workshop implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonIgnore
     @OrderBy("jhi_date")
-    private List <WorkshopDate> dates = new ArrayList <>(  );
+    private Set <WorkshopDate> dates = new HashSet <>(  );
 
     @OneToMany(mappedBy = "workshop")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -203,15 +203,15 @@ public class Workshop implements Serializable {
         this.showOnHomepage = showOnHomepage;
     }
 
-    public List <WorkshopDate> getDates() {
+    public Set <WorkshopDate> getDates() {
         return dates;
     }
 
-    public void setDates( List<WorkshopDate> workshopDates ) {
+    public void setDates( Set<WorkshopDate> workshopDates ) {
         this.dates = workshopDates;
     }
 
-    public Workshop dates( List <WorkshopDate> workshopDates ) {
+    public Workshop dates( Set <WorkshopDate> workshopDates ) {
         this.dates = workshopDates;
         return this;
     }

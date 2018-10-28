@@ -49,9 +49,14 @@
             </div>
             <hr class="my-4">
             <h5>Data</h5>
-            <div class="list-group" role="group" aria-label="Inschrijvingen">
-                <a href="#" class="list-group-item list-group-item-action" [routerLink]="['/', { outlets: { popup: 'kranzenzo-workshop/'+ workshop.id + '/subscription/'+date.id} }]" replaceUrl="true" role="button" *ngFor="let date of workshop.dates">
+            <div class="list-group" role="group" aria-label="Inschrijvingen" *ngIf="workshop.dates.length">
+                <a href="#" class="list-group-item list-group-item-action"
+                 [routerLink]="['/', { outlets: { popup: 'kranzenzo-workshop/'+ workshop.id + '/subscription/'+date.id} }]" 
+                 replaceUrl="true" role="button" *ngFor="let date of workshop.dates">
                     {{date.date | date:'dd-MM-yyyy HH:mm'}} </a>
+            </div>
+            <div class="" *ngIf="!workshop.dates.length">
+                <h4>Helaas, alle data zijn volzet.</h4>
             </div>
         </div>
         <div *ngIf="workshop.tags.length">

@@ -28,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -157,7 +158,7 @@ public class WorkshopResource {
                               .map( workshop -> {
                                   if ( workshop.getDates() != null && !workshop.getDates().isEmpty() && BooleanUtils.toBoolean( filterDates ) ) {
                                       log.debug( "Filter out past dates and dates with max subscriptions" );
-                                      List <WorkshopDate> filteredDates =
+                                      Set <WorkshopDate> filteredDates =
                                           workshop.getDates()
                                                   .stream()
                                                   .filter( date -> date.getDate()
@@ -165,7 +166,7 @@ public class WorkshopResource {
                                                   .filter( date -> workshopSubscriptionRepository
                                                       .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
                                                       .getMaxSubscriptions() )
-                                                  .collect( Collectors.toList() );
+                                                  .collect( Collectors.toSet() );
                                       workshop.setDates( filteredDates );
                                   }
                                   return workshop;
