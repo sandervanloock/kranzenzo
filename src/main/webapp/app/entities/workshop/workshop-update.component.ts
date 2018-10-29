@@ -85,7 +85,11 @@ export class WorkshopUpdateComponent implements OnInit {
     }
 
     addWorkshopDate() {
-        this.workshopDates.push(moment().format(DATE_TIME_FORMAT));
+        this.workshopDates.push(
+            moment()
+                .startOf('hour')
+                .format(DATE_TIME_FORMAT)
+        );
     }
 
     removeWorkshopDate(index) {

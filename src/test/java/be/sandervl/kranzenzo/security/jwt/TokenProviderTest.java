@@ -9,6 +9,8 @@ import io.jsonwebtoken.security.Keys;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.core.env.Environment;
+import org.springframework.mock.env.MockEnvironment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,11 +32,13 @@ public class TokenProviderTest {
     private Key key;
     private JHipsterProperties jHipsterProperties;
     private TokenProvider tokenProvider;
+    private Environment environment;
 
     @Before
     public void setup() {
         jHipsterProperties = Mockito.mock( JHipsterProperties.class );
-        tokenProvider = new TokenProvider( jHipsterProperties );
+        environment = new MockEnvironment();
+        tokenProvider = new TokenProvider( jHipsterProperties, environment );
         key = Keys.hmacShaKeyFor( Decoders.BASE64
             .decode( "fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8" ) );
 

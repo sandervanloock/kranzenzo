@@ -1,9 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FileUploader } from 'ng2-file-upload/ng2-file-upload';
 import { IImage, Image } from '../../model/image.model';
 import { AuthServerProvider } from '../../../core/auth/auth-jwt.service';
 import { S3ImageResizePipe } from '../../util/s3-image-resize.pipe';
-import { Input } from '@angular/core';
 
 @Component({
     selector: 'jhi-image-upload',
@@ -35,9 +34,11 @@ export class ImageUploadComponent implements OnInit {
         this.uploader.onCompleteItem = (item: any, response: any, status: any) => {
             this.onImageUploadFinished(response);
         };
-        this._images.forEach((image: IImage) => {
-            this.imageEndpoints.push(this.s3ImageResizePipe.transform(image.endpoint, '250x250'));
-        });
+        if (this._images) {
+            this._images.forEach((image: IImage) => {
+                this.imageEndpoints.push(this.s3ImageResizePipe.transform(image.endpoint, '250x250'));
+            });
+        }
     }
 
     get images() {

@@ -1,11 +1,14 @@
 package be.sandervl.kranzenzo.security.jwt;
 
+import com.google.common.io.Files;
 import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,12 +18,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 import java.util.stream.Collectors;
+
+import static be.sandervl.kranzenzo.config.Constants.CREDENTIALS_PATH;
 
 @Component
 public class TokenProvider {
@@ -28,18 +37,27 @@ public class TokenProvider {
     private static final String AUTHORITIES_KEY = "auth";
     private final Logger log = LoggerFactory.getLogger( TokenProvider.class );
     private final JHipsterProperties jHipsterProperties;
+    private final Environment environment;
     private Key key;
     private long tokenValidityInMilliseconds;
     private long tokenValidityInMillisecondsForRememberMe;
 
-    public TokenProvider( JHipsterProperties jHipsterProperties ) {
+    public TokenProvider( JHipsterProperties jHipsterProperties, Environment environment ) {
         this.jHipsterProperties = jHipsterProperties;
+        this.environment = environment;
     }
 
     @PostConstruct
-    public void init() {
+    public void init() throws IOException {
         byte[] keyBytes;
         String secret = jHipsterProperties.getSecurity().getAuthentication().getJwt().getSecret();
+        if ( Arrays.asList( environment.getActiveProfiles() ).stream().anyMatch( profile -> profile
+            .equalsIgnoreCase( "prod" ) ) ) {
+            StringBuilder sb = new StringBuilder();
+            Files.readLines( new File( CREDENTIALS_PATH ), Charset.defaultCharset() ).forEach( sb::append );
+            Map <String, Object> objects = new JacksonJsonParser().parseMap( sb.toString() );
+            secret = (String) objects.get( "jhipster.security.authentication.jwt.base64-secret" );
+        }
         if ( !StringUtils.isEmpty( secret ) ) {
             log.warn( "Warning: the JWT key used is not Base64-encoded. " +
                 "We recommend using the `jhipster.security.authentication.jwt.base64-secret` key for optimum security." );
