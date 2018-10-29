@@ -46,8 +46,8 @@ before_deploy:
 - export PATH=$PATH:$HOME/.local/bin
 - eval $(aws ecr get-login --no-include-email --region eu-west-1)
 - "./mvnw verify -Pprod -DskipTests dockerfile:build"
-- docker tag kransenzo:latest 455637595802.dkr.ecr.eu-west-1.amazonaws.com/kransenzo:latest
-- docker push 455637595802.dkr.ecr.eu-west-1.amazonaws.com/kransenzo:latest
+- docker tag kranzenzo:latest 455637595802.dkr.ecr.eu-west-1.amazonaws.com/kranzenzo:latest
+- docker push 455637595802.dkr.ecr.eu-west-1.amazonaws.com/kranzenzo:latest
 deploy:
   on:
     branch: master
@@ -60,4 +60,4 @@ deploy:
   env: live
   bucket_name: elasticbeanstalk-eu-west-1-455637595802
   on:
-    repo: sandervanloock/kransenzo
+    repo: sandervanloock/kranzenzo
