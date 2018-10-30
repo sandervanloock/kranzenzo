@@ -1,32 +1,89 @@
-import {Routes} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes } from '@angular/router';
+import { UserRouteAccessService } from 'app/core';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Customer, ICustomer } from 'app/shared/model/customer.model';
+import { CustomerService } from './customer.service';
+import { CustomerComponent } from './customer.component';
+import { CustomerDetailComponent } from './customer-detail.component';
+import { CustomerUpdateComponent } from './customer-update.component';
+import { CustomerDeletePopupComponent } from './customer-delete-dialog.component';
 
-import {UserRouteAccessService} from '../../shared';
+@Injectable({ providedIn: 'root' })
+export class CustomerResolve implements Resolve<ICustomer> {
+    constructor(private service: CustomerService) {}
 
-import {CustomerComponent} from './customer.component';
-import {CustomerDetailComponent} from './customer-detail.component';
-import {CustomerPopupComponent} from './customer-dialog.component';
-import {CustomerDeletePopupComponent} from './customer-delete-dialog.component';
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        const id = route.params['id'] ? route.params['id'] : null;
+        if (id) {
+            return this.service.find(id).pipe(map((customer: HttpResponse<Customer>) => customer.body));
+        }
+        return of(new Customer());
+    }
+}
 
-export const customerRoute: Routes = [{
-    path: 'customer', component: CustomerComponent, data: {
-        authorities: ['ROLE_USER'], pageTitle: 'kransenzoApp.customer.home.title'
-    }, canActivate: [UserRouteAccessService]
-}, {
-    path: 'customer/:id', component: CustomerDetailComponent, data: {
-        authorities: ['ROLE_USER'], pageTitle: 'kransenzoApp.customer.home.title'
-    }, canActivate: [UserRouteAccessService]
-}];
+export const customerRoute: Routes = [
+    {
+        path: 'customer',
+        component: CustomerComponent,
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kranzenzoApp.customer.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'customer/:id/view',
+        component: CustomerDetailComponent,
+        resolve: {
+            customer: CustomerResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kranzenzoApp.customer.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'customer/new',
+        component: CustomerUpdateComponent,
+        resolve: {
+            customer: CustomerResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kranzenzoApp.customer.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'customer/:id/edit',
+        component: CustomerUpdateComponent,
+        resolve: {
+            customer: CustomerResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kranzenzoApp.customer.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
+];
 
-export const customerPopupRoute: Routes = [{
-    path: 'customer-new', component: CustomerPopupComponent, data: {
-        authorities: ['ROLE_USER'], pageTitle: 'kransenzoApp.customer.home.title'
-    }, canActivate: [UserRouteAccessService], outlet: 'popup'
-}, {
-    path: 'customer/:id/edit', component: CustomerPopupComponent, data: {
-        authorities: ['ROLE_USER'], pageTitle: 'kransenzoApp.customer.home.title'
-    }, canActivate: [UserRouteAccessService], outlet: 'popup'
-}, {
-    path: 'customer/:id/delete', component: CustomerDeletePopupComponent, data: {
-        authorities: ['ROLE_USER'], pageTitle: 'kransenzoApp.customer.home.title'
-    }, canActivate: [UserRouteAccessService], outlet: 'popup'
-}];
+export const customerPopupRoute: Routes = [
+    {
+        path: 'customer/:id/delete',
+        component: CustomerDeletePopupComponent,
+        resolve: {
+            customer: CustomerResolve
+        },
+        data: {
+            authorities: ['ROLE_USER'],
+            pageTitle: 'kranzenzoApp.customer.home.title'
+        },
+        canActivate: [UserRouteAccessService],
+        outlet: 'popup'
+    }
+];

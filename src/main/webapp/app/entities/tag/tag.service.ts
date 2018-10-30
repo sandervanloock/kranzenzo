@@ -1,87 +1,38 @@
-import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {Observable} from 'rxjs/Rx';
-import {SERVER_API_URL} from '../../app.constants';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {Tag} from './tag.model';
-import {createRequestOption, ResponseWrapper} from '../../shared';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { ITag } from 'app/shared/model/tag.model';
 
-@Injectable()
+type EntityResponseType = HttpResponse<ITag>;
+type EntityArrayResponseType = HttpResponse<ITag[]>;
+
+@Injectable({ providedIn: 'root' })
 export class TagService {
-
     private resourceUrl = SERVER_API_URL + 'api/tags';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/tags';
 
-    constructor( private http: Http ) {
+    constructor(private http: HttpClient) {}
+
+    create(tag: ITag): Observable<EntityResponseType> {
+        return this.http.post<ITag>(this.resourceUrl, tag, { observe: 'response' });
     }
 
-    create( tag: Tag ): Observable<Tag> {
-        const copy = this.convert( tag );
-        return this.http.post( this.resourceUrl, copy ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    update(tag: ITag): Observable<EntityResponseType> {
+        return this.http.put<ITag>(this.resourceUrl, tag, { observe: 'response' });
     }
 
-    update( tag: Tag ): Observable<Tag> {
-        const copy = this.convert( tag );
-        return this.http.put( this.resourceUrl, copy ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    find(id: number): Observable<EntityResponseType> {
+        return this.http.get<ITag>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 
-    find( id: number ): Observable<Tag> {
-        return this.http.get( `${this.resourceUrl}/${id}` ).map( ( res: Response ) => {
-            const jsonResponse = res.json();
-            return this.convertItemFromServer( jsonResponse );
-        } );
+    query(req?: any): Observable<EntityArrayResponseType> {
+        const options = createRequestOption(req);
+        return this.http.get<ITag[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
-    query( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        if ( req && req.homepage ) {
-            options.params.set( 'homepage', req.homepage );
-        }
-        if ( req && req.parentId ) {
-            options.params.set( 'parentId', req.parentId );
-        }
-        return this.http.get( this.resourceUrl, options )
-            .map( ( res: Response ) => this.convertResponse( res ) );
-    }
-
-    delete( id: number ): Observable<Response> {
-        return this.http.delete( `${this.resourceUrl}/${id}` );
-    }
-
-    search( req?: any ): Observable<ResponseWrapper> {
-        const options = createRequestOption( req );
-        return this.http.get( this.resourceSearchUrl, options )
-            .map( ( res: any ) => this.convertResponse( res ) );
-    }
-
-    private convertResponse( res: Response ): ResponseWrapper {
-        const jsonResponse = res.json();
-        const result = [];
-        for ( let i = 0; i < jsonResponse.length; i++ ) {
-            result.push( this.convertItemFromServer( jsonResponse[i] ) );
-        }
-        return new ResponseWrapper( res.headers, result, res.status );
-    }
-
-    /**
-     * Convert a returned JSON object to Tag.
-     */
-    private convertItemFromServer( json: any ): Tag {
-        const entity: Tag = Object.assign( new Tag(), json );
-        return entity;
-    }
-
-    /**
-     * Convert a Tag to a JSON which can be sent to the server.
-     */
-    private convert( tag: Tag ): Tag {
-        const copy: Tag = Object.assign( {}, tag );
-        return copy;
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
     }
 }

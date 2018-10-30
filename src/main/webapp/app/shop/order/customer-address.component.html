@@ -1,14 +1,10 @@
-<div class="form-group">
-    <label>Adres</label>
+<mat-form-field class="md-form" style="width: 100%">
     <!--small class="form-text text-danger"
            [hidden]="this.customer.street == null && this.customer.city == null">
         Dit is geen geldig adres
     </small-->
-    <input required aria-describedby="address"
-           id="address" name="address" class="form-control" type="text" autocomplete="off"
-           [(ngModel)]="this.customer.description"
-           #address="ngModel">
-    <small class="form-text text-muted">
-        Geef straat, nummer, (bus), en stad
-    </small>
-</div>
+    <input matInput required aria-describedby="address"
+           id="address" name="address" class="form-control" type="text" autocomplete="off" [value]="textInput"
+            (change)="onChange($event)" placeholder="Straat, nummer (bus) en stad">
+    <!--<mat-hint align="start">Geef straat, nummer (bus) en stad</mat-hint>-->
+</mat-form-field>

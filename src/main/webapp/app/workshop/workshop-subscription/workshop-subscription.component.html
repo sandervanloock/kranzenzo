@@ -1,43 +1,100 @@
-<div class="modal-content" *ngIf="workshop && workshopDate">
-    <div class="modal-header">
-        <h5 class="modal-title">
-            Inschrijving voor {{workshop.name}} op {{workshopDate.date | date:'dd-MM-yyyy HH:mm'}} </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="this.workshopPopupService.close()">
-            &times;
-        </button>
+<main class="mt-5 pt-4">
+    <div class="container wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
+
+        <!-- Heading -->
+        <h2 class="my-5 h2 text-center">Inschrijving voor {{workshop.name}} op {{workshopDate.date | date:'dd-MM-yyyy HH:mm'}}</h2>
+
+        <!--Grid row-->
+        <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-8 mb-4">
+
+                <!--Card-->
+                <div class="card">
+
+                    <!--Card content-->
+                    <form class="card-body" name="editForm" role="form" #editForm="ngForm" (ngSubmit)="submitForm()">
+
+                        <!--Grid row-->
+                        <div class="row">
+
+                            <!--Grid column-->
+                            <div class="col-md-6 mb-2">
+
+                                <!--firstName-->
+                                <mat-form-field class="md-form input-full-width ">
+                                    <input matInput type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="this.user.firstName" #firstName="ngModel" placeholder="Voornaam" required style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAfBJREFUWAntVk1OwkAUZkoDKza4Utm61iP0AqyIDXahN2BjwiHYGU+gizap4QDuegWN7lyCbMSlCQjU7yO0TOlAi6GwgJc0fT/fzPfmzet0crmD7HsFBAvQbrcrw+Gw5fu+AfOYvgylJ4TwCoVCs1ardYTruqfj8fgV5OUMSVVT93VdP9dAzpVvm5wJHZFbg2LQ2pEYOlZ/oiDvwNcsFoseY4PBwMCrhaeCJyKWZU37KOJcYdi27QdhcuuBIb073BvTNL8ln4NeeR6NRi/wxZKQcGurQs5oNhqLshzVTMBewW/LMU3TTNlO0ieTiStjYhUIyi6DAp0xbEdgTt+LE0aCKQw24U4llsCs4ZRJrYopB6RwqnpA1YQ5NGFZ1YQ41Z5S8IQQdP5laEBRJcD4Vj5DEsW2gE6s6g3d/YP/g+BDnT7GNi2qCjTwGd6riBzHaaCEd3Js01vwCPIbmWBRx1nwAN/1ov+/drgFWIlfKpVukyYihtgkXNp4mABK+1GtVr+SBhJDbBIubVw+Cd/TDgKO2DPiN3YUo6y/nDCNEIsqTKH1en2tcwA9FKEItyDi3aIh8Gl1sRrVnSDzNFDJT1bAy5xpOYGn5fP5JuL95ZjMIn1ya7j5dPGfv0A5eAnpZUY3n5jXcoec5J67D9q+VuAPM47D3XaSeL4AAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                                </mat-form-field>
+
+                            </div>
+                            <!--Grid column-->
+
+                            <!--Grid column-->
+                            <div class="col-md-6 mb-2">
+
+                                <!--lastName-->
+                                <mat-form-field class="md-form input-full-width ">
+                                    <input matInput type="text" id="lastName" name="lastName" class="form-control" required [(ngModel)]="this.user.lastName" #lastName="ngModel" placeholder="Naam">
+                                </mat-form-field>
+
+                            </div>
+                            <!--Grid column-->
+
+                        </div>
+                        <!--Grid row-->
+                        <!--email-->
+                        <mat-form-field class="md-form input-full-width ">
+                            <input name="email" matInput type="email" id="email" class="form-control" placeholder="Email" [(ngModel)]="this.user.email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel">
+                        </mat-form-field>
+
+                        <!--email-->
+                        <mat-form-field class="md-form input-full-width ">
+                            <input name="confirmEmail" matInput type="text" id="confirmEmail" class="form-control" placeholder="Bevestig email" [(ngModel)]="this.user.confirmEmail" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual validateEqual="email" #emailConfirmation="ngModel">
+                        </mat-form-field>
+
+                        <hr>
+
+                        <button class="btn btn-primary btn-lg btn-block waves-effect waves-light" type="submit" [disabled]="!editForm.form.valid">
+                            Bevestigen
+                        </button>
+
+                    </form>
+
+                </div>
+                <!--/.Card-->
+
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-4 mb-4">
+
+                <!-- Heading -->
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Je Inschrijving</span>
+                    <span class="badge badge-secondary badge-pill" *ngIf="false">3</span>
+                </h4>
+
+                <!-- Cart -->
+                <ul class="list-group mb-3 z-depth-1">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">Inschrijving voor {{workshop.name}}</h6>
+                        </div>
+                        <span class="text-muted">{{workshop.price | currency:'EUR':'symbol'}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Totaal</span> <strong>{{workshop.price | currency:'EUR':'symbol'}}</strong>
+                    </li>
+                </ul>
+                <!-- Cart -->
+
+            </div>
+            <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
     </div>
-    <form name="editForm" novalidate role="form" #editForm="ngForm" (ngSubmit)="submitForm()">
-        <div class="modal-body">
-            <fieldset class="form-group">
-                <h2>Geef je gegevens</h2>
-                <div class="form-group">
-                    <label for="lastName">Voornaam*</label>
-                    <input required type="text" class="form-control" id="firstName" aria-describedby="firstName" placeholder="Voornaam" name="firstName" [(ngModel)]="this.user.firstName" #firstName="ngModel">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Naam*</label>
-                    <input required type="text" class="form-control" id="lastName" aria-describedby="lastName" placeholder="Naam" name="lastName" [(ngModel)]="this.user.lastName" #lastName="ngModel">
-                </div>
-                <div class="form-group">
-                    <label for="email">Emailadres*</label>
-                    <input required type="email" class="form-control" id="email" name="email" aria-describedby="email" placeholder="Emailadres" [(ngModel)]="this.user.email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual="emailConfirmation" #email="ngModel">
-                </div>
-                <div class="form-group">
-                    <label for="email">Bevestig Emailadres*</label>
-                    <input required type="email" class="form-control" id="emailConfirmation" name="emailConfirmation" aria-describedby="emailConfirmation" placeholder="Bevestig Emailadres" [(ngModel)]="this.user.confirmEmail" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual="email" #emailConfirmation="ngModel">
-                </div>
-            </fieldset>
-        </div>
-        <div class="modal-footer">
-            <legend>
-                <small class="user-form-legend">* verplicht</small>
-            </legend>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-hidden="true" (click)="this.workshopPopupService.close()">
-                Sluiten
-            </button>
-            <button type="submit" class="btn btn-success" [disabled]="!(firstName.valid && lastName.valid && email.valid && emailConfirmation.valid)">
-                Verzenden
-            </button>
-        </div>
-    </form>
-</div>
+</main>

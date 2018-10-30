@@ -1,45 +1,24 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {Location} from './location.model';
-import {LocationService} from './location.service';
+import { ILocation } from 'app/shared/model/location.model';
 
-@Component( {
-                selector: 'jhi-location-detail', templateUrl: './location-detail.component.html'
-            } )
-export class LocationDetailComponent implements OnInit, OnDestroy {
+@Component({
+    selector: 'jhi-location-detail',
+    templateUrl: './location-detail.component.html'
+})
+export class LocationDetailComponent implements OnInit {
+    location: ILocation;
 
-    location: Location;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor( private eventManager: JhiEventManager, private locationService: LocationService, private route: ActivatedRoute ) {
-    }
+    constructor(private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe( ( params ) => {
-            this.load( params['id'] );
-        } );
-        this.registerChangeInLocations();
+        this.activatedRoute.data.subscribe(({ location }) => {
+            this.location = location;
+        });
     }
 
-    load( id ) {
-        this.locationService.find( id ).subscribe( ( location ) => {
-            this.location = location;
-        } );
-    }
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy( this.eventSubscriber );
-    }
-
-    registerChangeInLocations() {
-        this.eventSubscriber = this.eventManager.subscribe( 'locationListModification', ( response ) => this.load( this.location.id ) );
     }
 }

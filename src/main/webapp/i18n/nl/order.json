@@ -1,32 +1,32 @@
 {
-  "kransenzoApp": {
-    "order": {
-      "home": {
-        "title": "Orders",
-        "createLabel": "Maak een nieuwe Order",
-        "createOrEditLabel": "Maak of wijzig een Order",
-        "search": "Zoek voor een Order"
-      },
-      "created": "A new Order is created with identifier {{ param }}",
-      "updated": "A Order is updated with identifier {{ param }}",
-      "deleted": "A Order is deleted with identifier {{ param }}",
-      "delete": {
-        "question": "Bent u zeker dat u Order {{ id }} wilt verwijderen?"
-      },
-      "detail": {
-        "title": "Order"
-      },
-      "created": "Aangemaakt op",
-      "updated": "Aangepast op",
-      "state": "Status",
-      "deliveryType": "Aflever type",
-        "paymentType": "Betaalwijze",
-      "includeBatteries": "Batterijen inbegrepen",
-      "description": "Beschrijving",
-      "deliveryPrice": "Prijs voor aflevering",
-      "customer": "Klant",
-      "deliveryAddress": "Afleveradres",
-      "product": "Product"
+    "kranzenzoApp": {
+        "productOrder": {
+            "home": {
+                "title": "Orders",
+                "createLabel": "Maak een nieuwe Order",
+                "createOrEditLabel": "Maak of wijzig een Order",
+                "search": "Zoek voor een Order"
+            },
+            "created": "A new Order is created with identifier {{ param }}",
+            "updated": "A Order is updated with identifier {{ param }}",
+            "deleted": "A Order is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Bent u zeker dat u Order {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Order"
+            },
+            "created": "Aangemaakt op",
+            "updated": "Aangepast op",
+            "state": "Status",
+            "deliveryType": "Aflever type",
+            "paymentType": "Betaalwijze",
+            "includeBatteries": "Batterijen inbegrepen",
+            "description": "Notities",
+            "deliveryPrice": "Prijs voor aflevering",
+            "customer": "Klant",
+            "deliveryAddress": "Afleveradres",
+            "product": "Product"
+        }
     }
-  }
 }

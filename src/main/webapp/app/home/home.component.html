@@ -1,30 +1,72 @@
-<div class="container-fluid center-block col-lg-offset-2 col-lg-10" style="text-align:center;">
-    <h1>Welkom bij Kranzenzo</h1>
-
-    <div class="row mt-5 m-home_first-block">
-        <div class="col-md-4 visible-md">
-            <img src="../../content/images/logov2.png" class="img-fluid"/>
-        </div>
-        <div class="col m-home_text-block">
-            <p>
-                Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke
-                materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en
-                creativiteit maak ik unieke, goedkope en duurzame stukken. De stukken hebben een uniek karakter en
-                worden gemaakt van gerecycleerd materiaal. </p>
-            <p>
-                Ik probeer de prijs zo laag mogelijk te houden omdat ik het vooral heel graag doe en er ook anderen blij
-                wil mee maken. Ik maak ook decostukken naar wens/volgens thema/speciale gelegenheid. </p>
-            <p>
-                Gratis levering binnen een straal van 10 km. </p>
-            <p>
-                Via mijn webwinkel kan je mijn producten bekijken en bestellen. Jullie zijn uiteraard steeds welkom bij
-                mij thuis na een telefoontje op het nummer 0477 45 75 20 of via mijn mailadres:
-                <a href="mailto:annemie.rousseau@telenet.be">annemie.rousseau@telenet.be</a>. </p>
-        </div>
+<div class="hero-image">
+    <!-- https://www.w3schools.com/howto/howto_css_hero_image.asp -->
+    <div class="hero-text">
+        <h1>Welkom bij Kranzenzo</h1>
+        <p>Zelfgemaakte duurzame kransen aan een scherpe prijs</p>
+        <button routerLink="/shop" routerLinkActive="active" class="btn btn-primary">
+            <fa-icon icon="shopping-cart"></fa-icon> Ga naar de webshop
+        </button>
     </div>
+</div>
 
-    <div class="row mt-5 mb-5 m-home_first-block">
-        <div class="col-lg-4 col-sm-6 col-xs-12" *ngFor="let tag of homepageTags">
+<!-- Section: Homepage image -->
+<section class="text-center py-5 px-2">
+    <div>
+        <img src="https://images.kranzenzo.be/800x1150/kerstopendeur.PNG" alt="Kerstnocturne">
+    </div>
+</section><!-- Homepage image -->
+
+<!-- Section: Workshops -->
+<section class="text-center py-5 px-2" *ngIf="workshop">
+    <h2 class="h1-responsive font-weight-bold my-3">Workshop: {{workshop.name}}</h2>
+    <div class="workshops">
+        <p>
+            {{workshop.description}}
+        </p>
+        <button type="button" class="btn btn-primary" [routerLink]="['/kranzenzo-workshop', workshop.id]">
+            <fa-icon icon="pencil-alt"></fa-icon> Schrijf je hier in
+        </button>
+    </div>
+</section>
+<!-- End Section: Workshops -->
+
+<!-- Section: Testimonials v.2 https://mdbootstrap.com/angular/sections/testimonials/#v-2 -->
+<section class="text-center py-5 px-2">
+    <!-- Section heading -->
+    <h2 class="h1-responsive font-weight-bold my-3">Wie ben ik?</h2>
+    <div class="testimonial">
+        <!--Avatar-->
+        <div class="avatar mx-auto mb-4">
+            <img src="https://images.kranzenzo.be/250x250/info-avatar.jpg" class="rounded-circle img-fluid" alt="First sample avatar image">
+        </div>
+        <!--Content-->
+        <p>
+            <fa-icon [icon]="'quote-right'"></fa-icon> Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke
+            materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en
+            creativiteit maak ik unieke, goedkope en duurzame stukken. De stukken hebben een uniek karakter en
+            worden gemaakt van gerecycleerd materiaal. </p>
+        <p>
+            Ik probeer de prijs zo laag mogelijk te houden omdat ik het vooral heel graag doe en er ook anderen blij
+            wil mee maken. Ik maak ook decostukken naar wens/volgens thema/speciale gelegenheid. </p>
+        <p>
+            Gratis levering binnen een straal van 10 km. </p>
+        <p>
+            Via mijn webwinkel kan je mijn producten bekijken en bestellen. Jullie zijn uiteraard steeds welkom bij
+            mij thuis na een telefoontje op het nummer 0477 45 75 20 of via mijn mailadres:
+            <a href="mailto:annemie.rousseau@telenet.be">annemie.rousseau@telenet.be</a>
+        </p>
+        <h4 class="font-weight-bold">Annemie Rousseau</h4>
+        <h6 class="font-weight-bold my-3">Kranzenzo</h6>
+    </div>
+</section>
+<!-- Section: Testimonials v.2 -->
+
+<!-- Section Homepage tags -->
+<section class="text-center py-5 px-2" *ngIf="homepageTags && homepageTags.length">
+    <!-- Section heading -->
+    <h2 class="h1-responsive font-weight-bold my-3">Categorieën</h2>
+    <div class="tags row">
+        <div class="col-md-4" *ngFor="let tag of homepageTags">
             <a routerLink="/shop/tags" routerLinkActive="active" [queryParams]="{parentId: tag.id}" class="card-image-link">
                 <div class="m-block__image">
                     <picture *ngIf="tag.image">
@@ -47,31 +89,21 @@
             </a>
         </div>
     </div>
+</section>
+<!-- End Section Homepage tags -->
 
-    <div>
-        <img src="https://images.kranzenzo.be/800x1150/briefallerheiligen.jpg" alt="Allerheiligen">
-    </div>
+<!--<div>
+       <img src="https://dscehdfist861.cloudfront.net/800x1150/Moederdag-folder_01-1.jpg" alt="Moederdag">
+   </div>-->
 
-    <div class="row mt-5" *ngIf="workshop">
-        <h4>Workshop Herfstbord </h4>
-        <p>
-            We maken een fijn herfstbordje dat op tafel kan gezet worden of kan opgehangen worden. Het rieten bord is afgewerkt met een fijne rand van gedroogde hortensia en kunstbloempjes en - fruit.
-            Een kaarsenhoudertje maakt het geheel compleet. Variatie is een geschilderd bord. Bord kan rind of vierkantig zijn.
-        </p>
-        <button type="button" class="btn btn-primary btn-lg btn-block" [routerLink]="['/kranzenzo-workshop', workshop.id]">
-            Schrijf je hier in
-        </button>
-    </div>
-
-    <!--<div>
-        <ngb-carousel *ngIf="homepageImages">
-            <ng-template ngbSlide *ngFor="let image of homepageImages">
-                <img [src]="image.url" class="homepage-image" [alt]="image.caption">
-                &lt;!&ndash;<div class="carousel-caption">&ndash;&gt;
-                &lt;!&ndash;<h3>{{image.caption}}</h3>&ndash;&gt;
-                &lt;!&ndash;<p>{{image.subcaption}}</p>&ndash;&gt;
-                &lt;!&ndash;</div>&ndash;&gt;
-            </ng-template>
-        </ngb-carousel>
-    </div>-->
-</div>
+<!--<div>
+    <ngb-carousel *ngIf="homepageImages">
+        <ng-template ngbSlide *ngFor="let image of homepageImages">
+            <img [src]="image.url" class="homepage-image" [alt]="image.caption">
+            &lt;!&ndash;<div class="carousel-caption">&ndash;&gt;
+            &lt;!&ndash;<h3>{{image.caption}}</h3>&ndash;&gt;
+            &lt;!&ndash;<p>{{image.subcaption}}</p>&ndash;&gt;
+            &lt;!&ndash;</div>&ndash;&gt;
+        </ng-template>
+    </ngb-carousel>
+</div>-->

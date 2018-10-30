@@ -14,6 +14,14 @@
             "otherEntityName": "product",
             "ownerSide": false,
             "otherEntityRelationshipName": "tags"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "image",
+            "otherEntityName": "Image",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "tag"
         }
     ],
     "fields": [
@@ -23,6 +31,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "homepage",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20171212225539",

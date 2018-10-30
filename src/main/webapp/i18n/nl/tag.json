@@ -1,26 +1,26 @@
 {
-  "kransenzoApp": {
-    "tag": {
-      "home": {
-          "title": "Groepen",
-          "createLabel": "Maak een nieuwe groep",
-          "createOrEditLabel": "Maak of wijzig een groep",
-          "search": "Zoek een groep"
-      },
-        "created": "Een nieuwe groep is aangemaakt met id {{ param }}",
-        "updated": "Een groep met id {{ param }} is gewijzigd",
-        "deleted": "Een groep met id {{ param }} is verwijderd",
-        "delete": {
-          "question": "Bent u zeker dat u groep {{ id }} wilt verwijderen?"
-      },
-      "detail": {
-          "title": "Groep"
-      },
-        "name": "Naam",
-        "tags": "Groepen",
-        "image": "Afbeelding",
-        "homepage": "Toon op homepagina",
-        "parent": "Hoofdgroep"
+    "kranzenzoApp": {
+        "tag": {
+            "home": {
+                "title": "Groepen",
+                "createLabel": "Maak een nieuwe groep",
+                "createOrEditLabel": "Maak of wijzig een groep",
+                "search": "Zoek een groep"
+            },
+            "created": "Een nieuwe groep is aangemaakt met id {{ param }}",
+            "updated": "Een groep met id {{ param }} is gewijzigd",
+            "deleted": "Een groep met id {{ param }} is verwijderd",
+            "delete": {
+                "question": "Bent u zeker dat u groep {{ id }} wilt verwijderen?"
+            },
+            "detail": {
+                "title": "Groep"
+            },
+            "name": "Naam",
+            "tags": "Groepen",
+            "image": "Afbeelding",
+            "homepage": "Toon op homepagina",
+            "parent": "Hoofdgroep"
+        }
     }
-  }
 }

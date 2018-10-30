@@ -1,14 +1,12 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {KransenzoSharedModule} from '../shared';
-
-import {HOME_ROUTE, HomeComponent} from './';
+import { KranzenzoSharedModule } from 'app/shared';
+import { HOME_ROUTE, HomeComponent } from './';
 
 @NgModule({
-              imports: [KransenzoSharedModule, RouterModule.forChild( HOME_ROUTE )], declarations: [HomeComponent], entryComponents: [],
-    providers: [
-    ],
+    imports: [KranzenzoSharedModule, RouterModule.forChild([HOME_ROUTE])],
+    declarations: [HomeComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class KransenzoHomeModule {}
+export class KranzenzoHomeModule {}

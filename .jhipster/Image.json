@@ -22,6 +22,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "endpoint",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20171212225538",

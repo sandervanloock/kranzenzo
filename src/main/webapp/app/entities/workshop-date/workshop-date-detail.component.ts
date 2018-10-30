@@ -1,55 +1,43 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {WorkshopDate} from './workshop-date.model';
-import {WorkshopDateService} from './workshop-date.service';
-import {WorkshopSubscription, WorkshopSubscriptionService} from '../workshop-subscription';
+import { IWorkshopDate } from 'app/shared/model/workshop-date.model';
+import { IWorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
+import { WorkshopSubscriptionService } from 'app/entities/workshop-subscription';
+import { Subscription } from 'rxjs/Subscription';
 
-@Component( {
-                selector: 'jhi-workshop-date-detail', templateUrl: './workshop-date-detail.component.html'
-            } )
-export class WorkshopDateDetailComponent implements OnInit, OnDestroy {
+@Component({
+    selector: 'jhi-workshop-date-detail',
+    templateUrl: './workshop-date-detail.component.html'
+})
+export class WorkshopDateDetailComponent implements OnInit {
+    workshopDate: IWorkshopDate;
+    subscriptions: IWorkshopSubscription[];
 
-    workshopDate: WorkshopDate;
-    subscriptions: WorkshopSubscription[];
     private subscription: Subscription;
-    private eventSubscriber: Subscription;
 
     constructor(
-        private eventManager: JhiEventManager,
-        private workshopDateService: WorkshopDateService,
+        private activatedRoute: ActivatedRoute,
         private subscriptionService: WorkshopSubscriptionService,
-        private route: ActivatedRoute ) {
-    }
+        private route: ActivatedRoute
+    ) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe( ( params ) => {
-            this.load( params['id'] );
-        } );
-        this.registerChangeInWorkshopDates();
-    }
-
-    load( id ) {
-        this.workshopDateService.find( id ).subscribe( ( workshopDate ) => {
-            this.workshopDate = workshopDate;
-        } );
-        this.subscriptionService.findByWorkshopDate( id ).subscribe( ( subscriptions ) => {
-            this.subscriptions = subscriptions.json;
-        } )
+        this.subscription = this.route.params.subscribe(params => {
+            this.load(params['id']);
+        });
     }
 
     previousState() {
         window.history.back();
     }
 
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy( this.eventSubscriber );
-    }
-
-    registerChangeInWorkshopDates() {
-        this.eventSubscriber = this.eventManager.subscribe( 'workshopDateListModification', ( response ) => this.load( this.workshopDate.id ) );
+    private load(id: any) {
+        this.activatedRoute.data.subscribe(({ workshopDate }) => {
+            this.workshopDate = workshopDate;
+        });
+        this.subscriptionService.findByWorkshopDate(id).subscribe(subscriptions => {
+            this.subscriptions = subscriptions.body;
+        });
     }
 }

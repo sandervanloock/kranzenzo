@@ -1,46 +1,24 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Rx';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {Workshop} from './workshop.model';
-import {WorkshopService} from './workshop.service';
+import { IWorkshop } from 'app/shared/model/workshop.model';
 
-@Component( {
-                selector: 'jhi-workshop-detail', templateUrl: './workshop-detail.component.html'
-            } )
-export class WorkshopDetailComponent implements OnInit, OnDestroy {
+@Component({
+    selector: 'jhi-workshop-detail',
+    templateUrl: './workshop-detail.component.html'
+})
+export class WorkshopDetailComponent implements OnInit {
+    workshop: IWorkshop;
 
-    workshop: Workshop;
-    private subscription: Subscription;
-    private eventSubscriber: Subscription;
-
-    constructor( private eventManager: JhiEventManager, private workshopService: WorkshopService, private route: ActivatedRoute ) {
-    }
+    constructor(private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
-        this.subscription = this.route.params.subscribe( ( params ) => {
-            this.load( params['id'] );
-        } );
-        this.registerChangeInWorkshops();
-    }
-
-    load( id ) {
-        this.workshopService.find( id ).subscribe( ( workshop ) => {
+        this.activatedRoute.data.subscribe(({ workshop }) => {
             this.workshop = workshop;
-        } );
+        });
     }
 
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-        this.eventManager.destroy( this.eventSubscriber );
-    }
-
-    registerChangeInWorkshops() {
-        this.eventSubscriber = this.eventManager.subscribe( 'workshopListModification', ( response ) => this.load( this.workshop.id ) );
     }
 }

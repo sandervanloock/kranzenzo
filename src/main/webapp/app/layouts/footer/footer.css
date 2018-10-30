@@ -9,7 +9,8 @@
     color: #495057;
 }
 
-.bd-footer a:hover, .bd-footer a:focus {
+.bd-footer a:hover,
+.bd-footer a:focus {
     color: #007bff;
 }
 

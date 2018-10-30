@@ -3,8 +3,8 @@
 #
 # This configuration overrides the application.yml file.
 #
-# More information on profiles: http://www.jhipster.tech/profiles/
-# More information on configuration properties: http://www.jhipster.tech/common-application-properties/
+# More information on profiles: https://www.jhipster.tech/profiles/
+# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 # ===================================================================
@@ -12,6 +12,12 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
+
+logging:
+    level:
+        ROOT: DEBUG
+        io.github.jhipster: DEBUG
+        be.sandervl.kranzenzo: DEBUG
 
 spring:
     profiles:
@@ -21,77 +27,63 @@ spring:
         restart:
             enabled: true
         livereload:
-            enabled: false # we use gulp + BrowserSync for livereload
+            enabled: false # we use Webpack dev server + BrowserSync for livereload
     jackson:
         serialization.indent_output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:h2:file:./target/h2db/db/kransenzo;DB_CLOSE_DELAY=-1
-        username: kransenzo
-        password:
+        url: jdbc:mysql://localhost:3306/kranzenzo?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: kranzenzo
+        password: kranzenzo
+        hikari:
+            auto-commit: false
     h2:
         console:
             enabled: false
-    social:
-      # see https://developers.facebook.com/docs/facebook-login/v2.2
-      facebook:
-          client-id: 1641430472579662
-          client-secret: ade01d6225f2fec3ae911fe3638a2033
     jpa:
         database-platform: io.github.jhipster.domain.util.FixedH2Dialect
         database: H2
         show-sql: true
         properties:
             hibernate.id.new_generator_mappings: true
+            hibernate.connection.provider_disables_autocommit: true
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.NoDefaultJCacheRegionFactory
-    data:
-        elasticsearch:
-            cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                    logs: target/elasticsearch/log
-                    data: target/elasticsearch/data
+            hibernate.cache.region.factory_class: io.github.jhipster.config.jcache.BeanClassLoaderAwareJCacheRegionFactory
+    liquibase:
+        contexts: dev
     mail:
         host: localhost
         port: 25
         username:
         password:
     messages:
-        cache-seconds: 1
+        cache-duration: PT1S # 1 second, see the ISO 8601 standard
     thymeleaf:
         cache: false
 
-liquibase:
-    contexts: dev
-
 # ===================================================================
-# To enable SSL, generate a certificate using:
-# keytool -genkey -alias kransenzo -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+# To enable SSL in development, uncomment the the "server.ssl" properties below.
 #
-# You can also use Let's Encrypt:
-# https://maximilian-boehm.com/hp2121/Create-a-Java-Keystore-JKS-from-Let-s-Encrypt-Certificates.htm
+# JHipster has generated a self-signed certificate, which will be used to encrypt traffic.
+# As your browser will not understand this certificate, you will need to import it.
 #
-# Then, modify the server.ssl properties so your "server" configuration looks like:
-#
-# server:
-#    port: 8443
-#    ssl:
-#        key-store: keystore.p12
-#        key-store-password: <your-password>
-#        key-store-type: PKCS12
-#        key-alias: kransenzo
+# Another (easiest) solution with Chrome is to enable the "allow-insecure-localhost" flag
+# at chrome://flags/#allow-insecure-localhost
 # ===================================================================
 server:
     port: 8080
+#    ssl:
+#        key-store: classpath:config/tls/keystore.p12
+#        key-store-password: password
+#        key-store-type: PKCS12
+#        key-alias: selfsigned
 
 # ===================================================================
 # JHipster specific properties
 #
-# Full reference is available at: http://www.jhipster.tech/common-application-properties/
+# Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 jhipster:
@@ -106,29 +98,23 @@ jhipster:
         allowed-origins: "*"
         allowed-methods: "*"
         allowed-headers: "*"
-        exposed-headers: "Authorization"
+        exposed-headers: "Authorization,Link,X-Total-Count"
         allow-credentials: true
         max-age: 1800
     security:
         authentication:
             jwt:
-                secret: my-secret-token-to-change-in-production
+                # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
+                base64-secret: mysecrettokentochangeinproductionkranzenzowebtokenmysecrettokentochangeinproductionkranzenzowebtoken
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: noreply@sandervl.be
-        base-url: http://127.0.0.1:8080
+        from: kranzenzo@localhost
+        base-url: http://localhost:9000
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
-        jmx.enabled: true
-        graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
-            enabled: false
-            host: localhost
-            port: 2003
-            prefix: kransenzo
-        prometheus: # Use the "prometheus" Maven profile to have the Prometheus dependencies
-            enabled: false
-            endpoint: /prometheusMetrics
+        jmx:
+            enabled: true
         logs: # Reports Dropwizard metrics in the logs
             enabled: false
             report-frequency: 60 # in seconds
@@ -139,14 +125,13 @@ jhipster:
             port: 5000
             queue-size: 512
 
-
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
 # to have type-safe configuration, like in the JHipsterProperties above
 #
 # More documentation is available at:
-# http://www.jhipster.tech/common-application-properties/
+# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-application:
+# application:

@@ -1,52 +1,40 @@
 /* tslint:disable max-line-length */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {OnInit} from '@angular/core';
-import {DatePipe} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Rx';
-import {JhiDataUtils, JhiDateUtils, JhiEventManager} from 'ng-jhipster';
-import {KransenzoTestModule} from '../../../test.module';
-import {MockActivatedRoute} from '../../../helpers/mock-route.service';
-import {LocationDetailComponent} from '../../../../../../main/webapp/app/entities/location/location-detail.component';
-import {LocationService} from '../../../../../../main/webapp/app/entities/location/location.service';
-import {Location} from '../../../../../../main/webapp/app/entities/location/location.model';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
-describe( 'Component Tests', () => {
+import { KranzenzoTestModule } from '../../../test.module';
+import { LocationDetailComponent } from 'app/entities/location/location-detail.component';
+import { Location } from 'app/shared/model/location.model';
 
-    describe( 'Location Management Detail Component', () => {
+describe('Component Tests', () => {
+    describe('Location Management Detail Component', () => {
         let comp: LocationDetailComponent;
         let fixture: ComponentFixture<LocationDetailComponent>;
-        let service: LocationService;
+        const route = ({ data: of({ location: new Location(123) }) } as any) as ActivatedRoute;
 
-        beforeEach( async( () => {
-            TestBed.configureTestingModule( {
-                                                imports: [KransenzoTestModule], declarations: [LocationDetailComponent], providers: [JhiDateUtils, JhiDataUtils, DatePipe, {
-                    provide: ActivatedRoute, useValue: new MockActivatedRoute( {id: 123} )
-                }, LocationService, JhiEventManager]
-                                            } ).overrideTemplate( LocationDetailComponent, '' )
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [KranzenzoTestModule],
+                declarations: [LocationDetailComponent],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
+            })
+                .overrideTemplate(LocationDetailComponent, '')
                 .compileComponents();
-        } ) );
-
-        beforeEach( () => {
-            fixture = TestBed.createComponent( LocationDetailComponent );
+            fixture = TestBed.createComponent(LocationDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get( LocationService );
-        } );
+        });
 
-        describe( 'OnInit', () => {
-            it( 'Should call load all on init', () => {
+        describe('OnInit', () => {
+            it('Should call load all on init', () => {
                 // GIVEN
-
-                spyOn( service, 'find' ).and.returnValue( Observable.of( new Location( 10 ) ) );
 
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect( service.find ).toHaveBeenCalledWith( 123 );
-                expect( comp.location ).toEqual( jasmine.objectContaining( {id: 10} ) );
-            } );
-        } );
-    } );
-
-} );
+                expect(comp.location).toEqual(jasmine.objectContaining({ id: 123 }));
+            });
+        });
+    });
+});

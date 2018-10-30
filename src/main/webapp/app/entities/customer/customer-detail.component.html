@@ -1,56 +1,47 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="customer">
+            <h2><span jhiTranslate="kranzenzoApp.customer.detail.title">Customer</span> {{customer.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kranzenzoApp.user.name">Name</span></dt>
+                <dd>
+                    <span>{{customer.user.firstName + ' ' + customer.user.lastName}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.user.email">Email</span></dt>
+                <dd>
+                    <span>{{customer.user.email}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.customer.street">Street</span></dt>
+                <dd>
+                    <span>{{customer.street}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.customer.city">City</span></dt>
+                <dd>
+                    <span>{{customer.city}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.customer.zipCode">Zip Code</span></dt>
+                <dd>
+                    <span>{{customer.zipCode}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.customer.province">Province</span></dt>
+                <dd>
+                    <span>{{customer.province}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.customer.phoneNumber">Phone Number</span></dt>
+                <dd>
+                    <span>{{customer.phoneNumber}}</span>
+                </dd>
+            </dl>
 
-<div *ngIf="customer">
-    <h2><span jhiTranslate="kransenzoApp.customer.detail.title">Customer</span> {{customer.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="userManagement.firstName">First Name</span></dt>
-        <dd>{{customer.user.firstName}}</dd>
-        <dt><span jhiTranslate="userManagement.lastName">Last Name</span></dt>
-        <dd>{{customer.user.lastName}}</dd>
-        <dt><span jhiTranslate="userManagement.email">Email</span></dt>
-        <dd>{{customer.user.email}}</dd>
-        <dd>
-            <span>{{customer.street}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.customer.street">Street</span></dt>
-        <dd>
-            <span>{{customer.street}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.customer.city">City</span></dt>
-        <dd>
-            <span>{{customer.city}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.customer.zipCode">Zip Code</span></dt>
-        <dd>
-            <span>{{customer.zipCode}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.customer.province">Province</span></dt>
-        <dd>
-            <span>{{customer.province}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.customer.phoneNumber">Phone Number</span></dt>
-        <dd>
-            <span>{{customer.phoneNumber}}</span>
-        </dd>
-        <dt><span jhiTranslate="kransenzoApp.customer.address">Address</span></dt>
-        <dd>
-            <span *ngIf="customer.description">
-                {{customer.description}}
-            </span>
-        </dd>
-    </dl>
+            <button type="submit" (click)="previousState()" class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'customer/'+ customer.id + '/edit'} }]"
-            replaceUrl="true"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+            <button type="button" [routerLink]="['/customer', customer.id, 'edit']" class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
 </div>

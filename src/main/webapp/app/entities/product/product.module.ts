@@ -1,30 +1,31 @@
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {ImageUploadModule} from 'angular2-image-upload';
-
-import {KransenzoSharedModule, S3ImageResizePipe} from '../../shared';
+import { KranzenzoSharedModule } from 'app/shared';
 import {
     ProductComponent,
     ProductDeleteDialogComponent,
     ProductDeletePopupComponent,
     ProductDetailComponent,
-    ProductDialogComponent,
-    ProductPopupComponent,
     productPopupRoute,
-    ProductPopupService,
     productRoute,
-    ProductService,
+    ProductUpdateComponent
 } from './';
+import { S3ImageResizePipe } from 'app/shared/util/s3-image-resize.pipe';
 
-const ENTITY_STATES = [...productRoute, ...productPopupRoute,];
+const ENTITY_STATES = [...productRoute, ...productPopupRoute];
 
-@NgModule( {
-               imports: [KransenzoSharedModule, RouterModule.forRoot( ENTITY_STATES, {useHash: true} ), ImageUploadModule.forRoot(),],
-               declarations: [ProductComponent, ProductDetailComponent, ProductDialogComponent, ProductDeleteDialogComponent, ProductPopupComponent, ProductDeletePopupComponent,],
-               entryComponents: [ProductComponent, ProductDialogComponent, ProductPopupComponent, ProductDeleteDialogComponent, ProductDeletePopupComponent,],
-               providers: [ProductService, ProductPopupService, S3ImageResizePipe],
-               schemas: [CUSTOM_ELEMENTS_SCHEMA]
-           } )
-export class KransenzoProductModule {
-}
+@NgModule({
+    imports: [KranzenzoSharedModule, RouterModule.forChild(ENTITY_STATES)],
+    declarations: [
+        ProductComponent,
+        ProductDetailComponent,
+        ProductUpdateComponent,
+        ProductDeleteDialogComponent,
+        ProductDeletePopupComponent
+    ],
+    entryComponents: [ProductComponent, ProductUpdateComponent, ProductDeleteDialogComponent, ProductDeletePopupComponent],
+    providers: [S3ImageResizePipe],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class KranzenzoProductModule {}

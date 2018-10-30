@@ -1,51 +1,40 @@
 /* tslint:disable max-line-length */
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {DatePipe} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs/Rx';
-import {JhiDataUtils, JhiDateUtils, JhiEventManager} from 'ng-jhipster';
-import {KransenzoTestModule} from '../../../test.module';
-import {MockActivatedRoute} from '../../../helpers/mock-route.service';
-import {TagDetailComponent} from '../../../../../../main/webapp/app/entities/tag/tag-detail.component';
-import {TagService} from '../../../../../../main/webapp/app/entities/tag/tag.service';
-import {Tag} from '../../../../../../main/webapp/app/entities/tag/tag.model';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
-describe( 'Component Tests', () => {
+import { KranzenzoTestModule } from '../../../test.module';
+import { TagDetailComponent } from 'app/entities/tag/tag-detail.component';
+import { Tag } from 'app/shared/model/tag.model';
 
-    describe( 'Tag Management Detail Component', () => {
+describe('Component Tests', () => {
+    describe('Tag Management Detail Component', () => {
         let comp: TagDetailComponent;
         let fixture: ComponentFixture<TagDetailComponent>;
-        let service: TagService;
+        const route = ({ data: of({ tag: new Tag(123) }) } as any) as ActivatedRoute;
 
-        beforeEach( async( () => {
-            TestBed.configureTestingModule( {
-                                                imports: [KransenzoTestModule], declarations: [TagDetailComponent], providers: [JhiDateUtils, JhiDataUtils, DatePipe, {
-                    provide: ActivatedRoute, useValue: new MockActivatedRoute( {id: 123} )
-                }, TagService, JhiEventManager]
-                                            } ).overrideTemplate( TagDetailComponent, '' )
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [KranzenzoTestModule],
+                declarations: [TagDetailComponent],
+                providers: [{ provide: ActivatedRoute, useValue: route }]
+            })
+                .overrideTemplate(TagDetailComponent, '')
                 .compileComponents();
-        } ) );
-
-        beforeEach( () => {
-            fixture = TestBed.createComponent( TagDetailComponent );
+            fixture = TestBed.createComponent(TagDetailComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get( TagService );
-        } );
+        });
 
-        describe( 'OnInit', () => {
-            it( 'Should call load all on init', () => {
+        describe('OnInit', () => {
+            it('Should call load all on init', () => {
                 // GIVEN
-
-                spyOn( service, 'find' ).and.returnValue( Observable.of( new Tag( 10 ) ) );
 
                 // WHEN
                 comp.ngOnInit();
 
                 // THEN
-                expect( service.find ).toHaveBeenCalledWith( 123 );
-                expect( comp.tag ).toEqual( jasmine.objectContaining( {id: 10} ) );
-            } );
-        } );
-    } );
-
-} );
+                expect(comp.tag).toEqual(jasmine.objectContaining({ id: 123 }));
+            });
+        });
+    });
+});

@@ -1,61 +1,112 @@
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8" *ngIf="product">
+<!--https://mdbootstrap.com/previews/free-templates/ecommerce/product-page.html-->
+<main class="mt-5 pt-4">
+    <div class="container dark-grey-text mt-5">
 
-        <div class="alerts" role="alert">
-            <ngb-alert *ngIf="submittedAlert" [type]="submittedAlert.type" (close)="submittedAlert = null">
-                <pre [innerHTML]="submittedAlert.msg"></pre>
-            </ngb-alert>
-        </div>
+        <!--Grid row-->
+        <div class="row wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
 
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="">{{product.name}}</a></li>
-            </ol>
-        </nav>
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
 
-        <ngb-carousel *ngIf="product.images.length">
-            <ng-template ngbSlide *ngFor="let image of product.images">
-                <img [src]="image.endpoint | s3ImageResize: '800x400'" width="100%">
-                <div class="carousel-caption">
-                    <!--<h3>First slide label</h3>-->
-                </div>
-            </ng-template>
-        </ngb-carousel>
+                <ngb-carousel *ngIf="product?.images.length">
+                    <ng-template ngbSlide *ngFor="let image of product.images">
+                        <img [src]="image.endpoint | s3ImageResize: '800x400'" width="100%">
+                        <div class="carousel-caption"></div>
+                    </ng-template>
+                </ngb-carousel>
 
-        <img class="card-img-top" *ngIf="product.images.length==0"
-             [src]="'https://via.placeholder.com/800x400?text='+product.name"/>
+                <img class="card-img-top" *ngIf="product?.images.length==0" [src]="'https://via.placeholder.com/800x400?text='+product.name"/>
 
-        <div class="jumbotron">
-            <div class="row">
-                <h1 class="display-3">
-                    {{product.name}}
-                    <span class="badge badge-secondary">{{product.price | currency:'EUR':'symbol'}}</span>
-                </h1>
             </div>
+            <!--Grid column-->
 
-            <hr class="my-4">
-            <p class="lead">{{product.description}}</p>
-            <p class="lead">
-                <a class="btn btn-primary btn-lg"
-                   [routerLink]="['/', { outlets: { popup: 'shop/product/'+ product.id + '/order'} }]"
-                   replaceUrl="true"
-                   role="button">
-                    Bestellen
-                </a>
-            </p>
+            <!--Grid column-->
+            <div class="col-md-6 mb-4">
+
+                <!--Content-->
+                <div class="p-4">
+
+                    <div class="mb-3" *ngIf="product?.tags.length">
+                        <a href="#" routerLink="/shop" [queryParams]="{tag: tag.name}" *ngFor="let tag of product.tags">
+                            <span class="badge purple mr-1">{{tag.name}}</span> </a>
+                    </div>
+
+                    <p class="lead">
+              <span class="mr-1">
+              </span> <span>{{product?.price | currency:'EUR':'symbol'}}</span>
+                    </p>
+
+                    <p class="lead font-weight-bold">{{product?.name}}</p>
+
+                    <p>{{product?.description}}</p>
+
+                    <form class="d-flex justify-content-left">
+                        <!-- Default input -->
+                        <button class="btn btn-primary btn-md my-0 p waves-effect waves-light" type="submit" routerLink="order">
+                            <fa-icon icon="shopping-cart"></fa-icon>
+                            Bestellen
+                        </button>
+
+                    </form>
+
+                </div>
+                <!--Content-->
+
+            </div>
+            <!--Grid column-->
+
         </div>
-        <div *ngIf="product.tags.length">
-            <svg class="icon icon-home" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 0h24v24H0z" fill="none"/>
-                <path d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
-            </svg>
-            <span *ngFor="let tag of product.tags">
-                    <a class="btn btn-secondary" routerLink="/shop" [queryParams]="{tag: tag.name}">{{tag.name}}</a>
-                </span>
+        <!--Grid row-->
+
+        <hr>
+
+        <!--Grid row-->
+        <div class="row d-flex justify-content-center wow fadeIn" style="visibility: visible; animation-name: fadeIn;" *ngIf="false">
+
+            <!--Grid column-->
+            <div class="col-md-6 text-center">
+
+                <h4 class="my-4 h4">Additional information</h4>
+
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta
+                    odit voluptates, quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in
+                    laborum.</p>
+
+            </div>
+            <!--Grid column-->
+
         </div>
+        <!--Grid row-->
+
+        <!--Grid row-->
+        <div class="row wow fadeIn" style="visibility: visible; animation-name: fadeIn;" *ngIf="false">
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-12 mb-4">
+
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
+
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
+
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-4 col-md-6 mb-4">
+
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
+
+            </div>
+            <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
 
     </div>
-    <div class="col-md-2"></div>
-</div>
+</main>

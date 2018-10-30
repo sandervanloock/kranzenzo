@@ -1,26 +1,32 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Workshop, WorkshopPopupService} from '../../entities/workshop';
-import {WorkshopDate} from '../../entities/workshop-date';
-import {User} from '../../shared';
-import {SubscriptionState, WorkshopSubscription, WorkshopSubscriptionService} from '../../entities/workshop-subscription';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { IUser, User } from 'app/core';
+import { Workshop } from 'app/shared/model/workshop.model';
+import { WorkshopDate } from 'app/shared/model/workshop-date.model';
+import { WorkshopSubscriptionService } from 'app/entities/workshop-subscription';
+import { SubscriptionState, WorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
+import { MatSnackBar } from '@angular/material';
 
-@Component( {
-                selector: 'jhi-workshop-subscription', templateUrl: './workshop-subscription.component.html', styles: []
-            } )
+@Component({
+    selector: 'jhi-workshop-subscription',
+    templateUrl: './workshop-subscription.component.html',
+    styleUrls: ['workshop-subscription.css']
+})
 export class WorkshopSubscriptionComponent implements OnInit {
-    user: User = new User();
+    user: IUser = new User();
     workshop: Workshop = new Workshop();
     workshopDate: WorkshopDate = new WorkshopDate();
 
-    constructor( private route: ActivatedRoute, public workshopPopupService: WorkshopPopupService, private workshopSubscriptionService: WorkshopSubscriptionService ) {
+    constructor(
+        private route: ActivatedRoute,
+        private workshopSubscriptionService: WorkshopSubscriptionService,
+        private snackBar: MatSnackBar
+    ) {
+        this.workshop = this.route.snapshot.data.workshop;
+        this.load(parseInt(this.route.snapshot.params['date'], 10));
     }
 
-    ngOnInit() {
-        this.route.children[2].params.subscribe( ( params ) => {
-            this.load( parseInt( params['date'], 10 ) );
-        } )
-    }
+    ngOnInit(): void {}
 
     submitForm() {
         const subscription = new WorkshopSubscription();
@@ -28,36 +34,19 @@ export class WorkshopSubscriptionComponent implements OnInit {
         subscription.workshopId = this.workshopDate.id;
         subscription.user = this.user;
 
-        this.workshopSubscriptionService.create( subscription ).subscribe();
-
-        this.workshopPopupService.close();
+        this.workshopSubscriptionService.create(subscription).subscribe(
+            () => {
+                const snackBarRef = this.snackBar.open('Inschrijving gelukt, bekijk je email voor de bevestiging');
+            },
+            error => {
+                const snackBarRef = this.snackBar.open('Er ging iets, probeer later opnieuw of contacteer annemie.rousseau@telenet.be');
+            }
+        );
     }
 
-    load( id: number ) {
-        this.workshopDate = this.workshop.dates.find( ( date ) => {
+    load(id: number) {
+        this.workshopDate = this.workshop.dates.find(date => {
             return date.id === id;
-        } );
-    }
-}
-
-@Component( {
-                selector: 'jhi-workshop-subscription-popup', template: ''
-            } )
-export class WorkshopSubscriptionPopupComponent implements OnInit, OnDestroy {
-
-    routeSub: any;
-
-    constructor( private route: ActivatedRoute, private workshopPopupService: WorkshopPopupService ) {
-    }
-
-    ngOnInit() {
-        this.routeSub = this.route.params.subscribe( ( params ) => {
-            this.workshopPopupService
-                .open( WorkshopSubscriptionComponent as Component, params['id'] );
-        } );
-    }
-
-    ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        });
     }
 }

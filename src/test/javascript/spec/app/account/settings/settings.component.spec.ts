@@ -1,42 +1,28 @@
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { Observable } from 'rxjs/Rx';
-import { JhiLanguageHelper } from '../../../../../../main/webapp/app/shared';
-import { KransenzoTestModule } from '../../../test.module';
-import { Principal, AccountService } from '../../../../../../main/webapp/app/shared';
-import { SettingsComponent } from '../../../../../../main/webapp/app/account/settings/settings.component';
-import { MockAccountService } from '../../../helpers/mock-account.service';
-import { MockPrincipal } from '../../../helpers/mock-principal.service';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { throwError } from 'rxjs';
+
+import { KranzenzoTestModule } from '../../../test.module';
+import { AccountService, Principal } from 'app/core';
+import { SettingsComponent } from 'app/account/settings/settings.component';
 
 describe('Component Tests', () => {
-
     describe('SettingsComponent', () => {
-
         let comp: SettingsComponent;
         let fixture: ComponentFixture<SettingsComponent>;
         let mockAuth: any;
         let mockPrincipal: any;
 
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [KransenzoTestModule],
-                declarations: [SettingsComponent],
-                providers: [
-                    {
-                        provide: Principal,
-                        useClass: MockPrincipal
-                    },
-                    {
-                        provide: AccountService,
-                        useClass: MockAccountService
-                    },
-                    {
-                        provide: JhiLanguageHelper,
-                        useValue: null
-                    },
-                ]
-            }).overrideTemplate(SettingsComponent, '')
-            .compileComponents();
-        }));
+        beforeEach(
+            async(() => {
+                TestBed.configureTestingModule({
+                    imports: [KranzenzoTestModule],
+                    declarations: [SettingsComponent],
+                    providers: []
+                })
+                    .overrideTemplate(SettingsComponent, '')
+                    .compileComponents();
+            })
+        );
 
         beforeEach(() => {
             fixture = TestBed.createComponent(SettingsComponent);
@@ -86,7 +72,7 @@ describe('Component Tests', () => {
 
         it('should notify of error upon failed save', () => {
             // GIVEN
-            mockAuth.saveSpy.and.returnValue(Observable.throw('ERROR'));
+            mockAuth.saveSpy.and.returnValue(throwError('ERROR'));
 
             // WHEN
             comp.save();

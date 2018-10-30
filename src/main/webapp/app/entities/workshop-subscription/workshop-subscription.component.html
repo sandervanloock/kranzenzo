@@ -1,67 +1,51 @@
 <div>
-    <h2>
-        <span jhiTranslate="kransenzoApp.workshopSubscription.home.title">Workshop Subscriptions</span>
-        <button class="btn btn-primary float-right jh-create-entity create-workshop-subscription" [routerLink]="['/', { outlets: { popup: ['workshop-subscription-new'] } }]">
-            <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down" jhiTranslate="kransenzoApp.workshopSubscription.home.createLabel">
+    <h2 id="page-heading">
+        <span jhiTranslate="kranzenzoApp.workshopSubscription.home.title">Workshop Subscriptions</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-workshop-subscription" [routerLink]="['/workshop-subscription/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span jhiTranslate="kranzenzoApp.workshopSubscription.home.createLabel">
             Create new Workshop Subscription
             </span>
         </button>
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'kransenzoApp.workshopSubscription.home.search' | translate }}">
-                    <button class="input-group-addon btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-addon btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
     <br/>
     <div class="table-responsive" *ngIf="workshopSubscriptions">
         <table class="table table-striped">
             <thead>
             <tr>
                 <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="kransenzoApp.workshopSubscription.created">Created</span></th>
-                <th><span jhiTranslate="kransenzoApp.workshopSubscription.state">State</span></th>
-                <th><span jhiTranslate="kransenzoApp.workshopSubscription.workshop">Workshop</span></th>
+                <th><span jhiTranslate="kranzenzoApp.workshopSubscription.created">Created</span></th>
+                <th><span jhiTranslate="kranzenzoApp.workshopSubscription.state">State</span></th>
+                <th><span jhiTranslate="kranzenzoApp.workshopSubscription.workshop">Workshop</span></th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let workshopSubscription of workshopSubscriptions ;trackBy: trackId">
-                <td>
-                    <a [routerLink]="['../workshop-subscription', workshopSubscription.id ]">{{workshopSubscription.id}}</a>
+                <td><a [routerLink]="['/workshop-subscription', workshopSubscription.id, 'view' ]">{{workshopSubscription.id}}</a>
                 </td>
                 <td>{{workshopSubscription.created | date:'medium'}}</td>
-                <td jhiTranslate="{{'kransenzoApp.SubscriptionState.' + workshopSubscription.state}}">
+                <td jhiTranslate="{{'kranzenzoApp.SubscriptionState.' + workshopSubscription.state}}">
                     {{workshopSubscription.state}}
                 </td>
                 <td>
                     <div *ngIf="workshopSubscription.workshopId">
-                        <a [routerLink]="['../workshop-date', workshopSubscription.workshopId  ]">{{workshopSubscription.workshopDate}}</a>
+                        <a [routerLink]="['../workshop-date', workshopSubscription.workshopId , 'view' ]">{{workshopSubscription.workshopDate}}</a>
                     </div>
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
-                        <button type="submit" [routerLink]="['../workshop-subscription', workshopSubscription.id ]" class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
+                        <button type="submit" [routerLink]="['/workshop-subscription', workshopSubscription.id, 'view' ]" class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'workshop-subscription/'+ workshopSubscription.id + '/edit'} }]" replaceUrl="true" class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
+                        <button type="submit" [routerLink]="['/workshop-subscription', workshopSubscription.id, 'edit']" class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'workshop-subscription/'+ workshopSubscription.id + '/delete'} }]" replaceUrl="true" class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
+                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'workshop-subscription/'+ workshopSubscription.id + '/delete'} }]" replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>
                     </div>

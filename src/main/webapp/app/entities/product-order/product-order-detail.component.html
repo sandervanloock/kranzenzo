@@ -1,0 +1,90 @@
+<div class="row justify-content-center">
+    <div class="col-8 row">
+        <div class="col-6" *ngIf="productOrder">
+            <h2><span jhiTranslate="kranzenzoApp.productOrder.detail.title">Product Order</span> {{productOrder.id}}
+            </h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.product">Product</span></dt>
+                <dd>
+                    <div *ngIf="productOrder.productId">
+                        <a [routerLink]="['/product', productOrder.productId, 'view']">{{productOrder.productName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.state">State</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'kranzenzoApp.OrderState.' + productOrder.state}}">{{productOrder.state}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.customer">Customer</span></dt>
+                <dd>
+                    <div *ngIf="productOrder.customerId">
+                        <a [routerLink]="['/customer', productOrder.customerId, 'view']">{{productOrder.customer.user.firstName
+                            + ' ' + productOrder.customer.user.lastName}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.deliveryType">Delivery Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'kranzenzoApp.DeliveryType.' + productOrder.deliveryType}}">{{productOrder.deliveryType}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.includeBatteries">Include Batteries</span></dt>
+                <dd>
+                    <span><input type="checkbox" readonly disabled [checked]="productOrder.includeBatteries" /></span>
+                </dd>
+                <dt *ngIf="productOrder.deliveryType==='DELIVERED'"><span jhiTranslate="kranzenzoApp.productOrder.deliveryAddress">Delivery
+                        Address</span></dt>
+                <dd>
+                    <address>
+                        {{productOrder.customer.street}} <br />
+                        {{productOrder.customer.zipCode}} {{productOrder.customer.city}}
+                    </address>
+                    <span>{{productOrder.customer.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.description">Description</span></dt>
+                <dd>
+                    <span>{{productOrder.description}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.paymentType">Payment Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'kranzenzoApp.PaymentType.' + productOrder.paymentType}}">{{productOrder.paymentType}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.paymentType">Total price</span></dt>
+                <dd>
+                    <span>{{productOrder.totalPrice | currency:'EUR':'symbol'}}</span>
+                    (<small>{{productOrder.product.price | currency:'EUR':'symbol'}}</small>
+                    <small *ngIf="productOrder.deliveryType==='DELIVERED'">+ {{productOrder.deliveryPrice |
+                        currency:'EUR':'symbol'}}</small>
+                    <small *ngIf="productOrder.includeBatteries">+ {{productOrder.product.numberOfBatteries*0.5 |
+                        currency:'EUR':'symbol'}}</small>)
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.created">Created</span></dt>
+                <dd>
+                    <span>{{productOrder.created | date: 'medium'}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.productOrder.updated">Updated</span></dt>
+                <dd>
+                    <span>{{productOrder.updated | date: 'medium'}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit" (click)="previousState()" class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button" [routerLink]="['/product-order', productOrder.id, 'edit']" class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+        <div class="col-6">
+                <div style="margin-top:15rem;">
+                    <ngb-carousel *ngIf="productOrder?.product.images.length" class="mt-5">
+                        <ng-template ngbSlide *ngFor="let image of productOrder?.product.images">
+                            <img [src]="image.endpoint | s3ImageResize: '400x200'" width="100%">
+                            <div class="carousel-caption">
+                            </div>
+                        </ng-template>
+                    </ngb-carousel>
+                </div>
+            </div>
+    </div>
+</div>

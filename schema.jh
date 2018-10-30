@@ -8,10 +8,12 @@ entity Product {
 
 entity Image {
     data ImageBlob required
+    endpoint String
 }
 
 entity Tag {
 	name String required
+	homepage Boolean
 }
 
 entity Customer {
@@ -45,7 +47,7 @@ entity Workshop{
     includedInPrice String maxlength(5000)
     durationInMinutes Integer required
     price Float min(0)
-    maxSubscriptions Integer 
+    maxSubscriptions Integer
     isActive Boolean
     showOnHomepage Boolean
 }

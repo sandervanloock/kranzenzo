@@ -1,41 +1,28 @@
-import {async, ComponentFixture, fakeAsync, inject, TestBed, tick} from '@angular/core/testing';
-import {ElementRef, Renderer} from '@angular/core';
-import {Observable} from 'rxjs/Rx';
-import {JhiLanguageService} from 'ng-jhipster';
-import {MockLanguageService} from '../../../helpers/mock-language.service';
-import {KransenzoTestModule} from '../../../test.module';
-import {EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE, LoginModalService} from '../../../../../../main/webapp/app/shared';
-import {Register} from '../../../../../../main/webapp/app/account/register/register.service';
-import {RegisterComponent} from '../../../../../../main/webapp/app/account/register/register.component';
+import { async, ComponentFixture, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { of, throwError } from 'rxjs';
+
+import { JhiLanguageService } from 'ng-jhipster';
+import { MockLanguageService } from '../../../helpers/mock-language.service';
+import { KranzenzoTestModule } from '../../../test.module';
+import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared';
+import { Register } from 'app/account/register/register.service';
+import { RegisterComponent } from 'app/account/register/register.component';
 
 describe('Component Tests', () => {
-
     describe('RegisterComponent', () => {
         let fixture: ComponentFixture<RegisterComponent>;
         let comp: RegisterComponent;
 
-        beforeEach(async(() => {
-            TestBed.configureTestingModule({
-                imports: [KransenzoTestModule],
-                declarations: [RegisterComponent],
-                providers: [
-                    Register,
-                    {
-                        provide: LoginModalService,
-                        useValue: null
-                    },
-                    {
-                        provide: Renderer,
-                        useValue: null
-                    },
-                    {
-                        provide: ElementRef,
-                        useValue: null
-                    }
-                ]
-            }).overrideTemplate(RegisterComponent, '')
-            .compileComponents();
-        }));
+        beforeEach(
+            async(() => {
+                TestBed.configureTestingModule({
+                    imports: [KranzenzoTestModule],
+                    declarations: [RegisterComponent]
+                })
+                    .overrideTemplate(RegisterComponent, '')
+                    .compileComponents();
+            })
+        );
 
         beforeEach(() => {
             fixture = TestBed.createComponent(RegisterComponent);
@@ -52,17 +39,20 @@ describe('Component Tests', () => {
             expect(comp.doNotMatch).toEqual('ERROR');
         });
 
-        it('should update success to OK after creating an account',
-            inject([Register, JhiLanguageService],
+        it(
+            'should update success to OK after creating an account',
+            inject(
+                [Register, JhiLanguageService],
                 fakeAsync((service: Register, mockTranslate: MockLanguageService) => {
-                    spyOn(service, 'save').and.returnValue(Observable.of({}));
+                    spyOn(service, 'save').and.returnValue(of({}));
                     comp.registerAccount.password = comp.confirmPassword = 'password';
 
                     comp.register();
                     tick();
 
                     expect(service.save).toHaveBeenCalledWith({
-                        password: 'password', langKey: 'nl', customer: {}
+                        password: 'password',
+                        langKey: 'nl'
                     });
                     expect(comp.success).toEqual(true);
                     expect(comp.registerAccount.langKey).toEqual('nl');
@@ -74,15 +64,17 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should notify of user existence upon 400/login already in use',
-            inject([Register],
+        it(
+            'should notify of user existence upon 400/login already in use',
+            inject(
+                [Register],
                 fakeAsync((service: Register) => {
-                    spyOn(service, 'save').and.returnValue(Observable.throw({
-                        status: 400,
-                        json() {
-                            return {type : LOGIN_ALREADY_USED_TYPE}
-                        }
-                    }));
+                    spyOn(service, 'save').and.returnValue(
+                        throwError({
+                            status: 400,
+                            error: { type: LOGIN_ALREADY_USED_TYPE }
+                        })
+                    );
                     comp.registerAccount.password = comp.confirmPassword = 'password';
 
                     comp.register();
@@ -95,15 +87,17 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should notify of email existence upon 400/email address already in use',
-            inject([Register],
+        it(
+            'should notify of email existence upon 400/email address already in use',
+            inject(
+                [Register],
                 fakeAsync((service: Register) => {
-                    spyOn(service, 'save').and.returnValue(Observable.throw({
-                        status: 400,
-                        json() {
-                            return {type : EMAIL_ALREADY_USED_TYPE}
-                        }
-                    }));
+                    spyOn(service, 'save').and.returnValue(
+                        throwError({
+                            status: 400,
+                            error: { type: EMAIL_ALREADY_USED_TYPE }
+                        })
+                    );
                     comp.registerAccount.password = comp.confirmPassword = 'password';
 
                     comp.register();
@@ -116,12 +110,16 @@ describe('Component Tests', () => {
             )
         );
 
-        it('should notify of generic error',
-            inject([Register],
+        it(
+            'should notify of generic error',
+            inject(
+                [Register],
                 fakeAsync((service: Register) => {
-                    spyOn(service, 'save').and.returnValue(Observable.throw({
-                        status: 503
-                    }));
+                    spyOn(service, 'save').and.returnValue(
+                        throwError({
+                            status: 503
+                        })
+                    );
                     comp.registerAccount.password = comp.confirmPassword = 'password';
 
                     comp.register();

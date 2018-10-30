@@ -1,21 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {JhiLanguageService} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JhiLanguageService } from 'ng-jhipster';
 
-import {ProfileService} from '../profiles/profile.service';
-import {JhiLanguageHelper, LoginModalService, LoginService, Principal, ResponseWrapper} from '../../shared';
-
-import {VERSION} from '../../app.constants';
-import {DeactivateService} from '../../account/deactivate/deactivate.service';
-import {Tag, TagService} from '../../entities/tag';
+import { VERSION } from 'app/app.constants';
+import { JhiLanguageHelper, LoginModalService, LoginService, Principal } from 'app/core';
+import { ProfileService } from '../profiles/profile.service';
 
 @Component({
     selector: 'jhi-navbar',
     templateUrl: './navbar.component.html',
-    styleUrls: [
-        'navbar.css'
-    ]
+    styleUrls: ['navbar.css']
 })
 export class NavbarComponent implements OnInit {
     inProduction: boolean;
@@ -24,7 +19,6 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
-    tags: Tag[];
 
     constructor(
         private loginService: LoginService,
@@ -33,39 +27,25 @@ export class NavbarComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        private router: Router,
-        private deactivateService: DeactivateService,
-        private tagService: TagService
+        private router: Router
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
     }
 
     ngOnInit() {
-        this.languageHelper.getAll().then((languages) => {
+        this.languageHelper.getAll().then(languages => {
             this.languages = languages;
         });
 
-        this.profileService.getProfileInfo().then((profileInfo) => {
+        this.profileService.getProfileInfo().then(profileInfo => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
-        this.tagService.query().subscribe( ( res: ResponseWrapper ) => {
-            this.tags = res.json;
-            this.tags.filter( ( tag ) => tag.parentId != null )
-                .forEach( ( child ) => {
-                    const parent = this.tags.find( ( p ) => p.id === child.parentId );
-                    if ( !parent.children ) {
-                        parent.children = [];
-                    }
-                    parent.children.push( child )
-                } );
-            this.tags = this.tags.filter( ( tag ) => tag.homepage );
-        } );
     }
 
     changeLanguage(languageKey: string) {
-      this.languageService.changeLanguage(languageKey);
+        this.languageService.changeLanguage(languageKey);
     }
 
     collapseNavbar() {
@@ -84,13 +64,6 @@ export class NavbarComponent implements OnInit {
         this.collapseNavbar();
         this.loginService.logout();
         this.router.navigate(['']);
-    }
-
-    deactivate() {
-        this.collapseNavbar();
-        this.deactivateService.get( this.principal.getEmail() ).subscribe();
-        this.loginService.logout();
-        this.router.navigate( [''] );
     }
 
     toggleNavbar() {

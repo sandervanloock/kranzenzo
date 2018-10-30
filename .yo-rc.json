@@ -2,8 +2,8 @@
   "generator-jhipster": {
     "applicationType": "monolith",
     "gitHubOrganization": "sandervanloock",
-    "baseName": "kransenzo",
-    "packageName": "be.sandervl.kransenzo",
+      "baseName": "kranzenzo",
+      "packageName": "be.sandervl.kranzenzo",
     "serverPort": 8080,
     "serviceDiscoveryType": false,
     "authenticationType": "jwt",
@@ -14,7 +14,7 @@
     "databaseType": "sql",
     "devDatabaseType": "h2Disk",
     "prodDatabaseType": "mysql",
-    "searchEngine": "elasticsearch",
+      "searchEngine": "",
     "enableSwaggerCodegen": false,
     "messageBroker": false,
     "buildTool": "maven",
@@ -29,8 +29,8 @@
       "nl"
     ],
     "clientFramework": "angularX",
-    "jhipsterVersion": "4.11.1",
-    "packageFolder": "be/sandervl/kransenzo",
+      "jhipsterVersion": "5.3.1",
+      "packageFolder": "be/sandervl/kranzenzo",
     "jwtSecretKey": "522be5f3b99d70057b3473799fcee40a9a3926fa",
     "jhiPrefix": "jhi"
   }

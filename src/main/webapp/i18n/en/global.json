@@ -1,24 +1,21 @@
 {
     "global": {
-        "title": "Kransenzo",
+        "title": "Kranzenzo",
         "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
         "menu": {
             "home": "Home",
-            "shop": "Webshop",
-            "contact": "Contact",
-            "faq": "FAQ",
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entities",
-              "product": "Product",
-              "image": "Image",
-              "tag": "Tag",
-              "customer": "Customer",
-              "order": "Order",
-              "location": "Location",
-                "workshopSubscription": "Workshop Subscription",
-                "workshopDate": "Workshop Date",
+                "product": "Product",
+                "image": "Image",
+                "tag": "Tag",
+                "customer": "Customer",
+                "productOrder": "Product Order",
+                "location": "Location",
                 "workshop": "Workshop",
+                "workshopDate": "Workshop Date",
+                "workshopSubscription": "Workshop Subscription",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -27,7 +24,6 @@
                 "password": "Password",
                 "sessions": "Sessions",
                 "login": "Sign in",
-                "deactivate": "Deactivate",
                 "logout": "Sign out",
                 "register": "Register"
             },
@@ -49,6 +45,8 @@
         "form": {
             "username": "Username",
             "username.placeholder": "Your username",
+            "currentpassword": "Current password",
+            "currentpassword.placeholder": "Current password",
             "newpassword": "New password",
             "newpassword.placeholder": "New password",
             "confirmpassword": "New password confirmation",
@@ -128,7 +126,8 @@
             "maxbytes": "This field cannot be more than {{ max }} bytes.",
             "pattern": "This field should follow pattern for {{ pattern }}.",
             "number": "This field should be a number.",
-            "datetimelocal": "This field should be a date and time."
+            "datetimelocal": "This field should be a date and time.",
+            "patternLogin": "This field can only contain letters, digits and e-mail addresses."
         }
     },
     "error": {
@@ -139,7 +138,8 @@
         "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
         "userexists": "Login name already used!",
         "emailexists": "Email is already in use!",
-        "idexists": "A new {{ entityName }} cannot already have an ID"
+        "idexists": "A new {{ entityName }} cannot already have an ID",
+        "idnull": "Invalid ID"
     },
     "footer": "This is your footer"
 }

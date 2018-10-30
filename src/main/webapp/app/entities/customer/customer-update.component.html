@@ -1,0 +1,68 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+            <h2 id="jhi-customer-heading" jhiTranslate="kranzenzoApp.customer.home.createOrEditLabel">Create or edit a
+                Customer</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!customer.id">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" [(ngModel)]="customer.id" readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="user.firstName" jhiTranslate="kranzenzoApp.user.firstName">Voornaam</label>
+                    <input type="text" class="form-control" id="user.firstName" name="user.firstName" [(ngModel)]="customer.user.firstName"/>
+                </div>
+                <div class="form-group">
+                    <label for="user.lastName" jhiTranslate="kranzenzoApp.user.name">Achternaam</label>
+                    <input type="text" class="form-control" id="user.lastName" name="user.lastName" [(ngModel)]="customer.user.lastName"/>
+                </div>
+                <div class="form-group">
+                    <label for="user.email" jhiTranslate="kranzenzoApp.user.email">ID</label>
+                    <input type="email" class="form-control" id="user.email" name="user.email" [(ngModel)]="customer.user.email"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.customer.street" for="field_street">Street</label>
+                    <input type="text" class="form-control" name="street" id="field_street" [(ngModel)]="customer.street"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.customer.city" for="field_city">City</label>
+                    <input type="text" class="form-control" name="city" id="field_city" [(ngModel)]="customer.city"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.customer.zipCode" for="field_zipCode">Zip
+                        Code</label>
+                    <input type="number" class="form-control" name="zipCode" id="field_zipCode" [(ngModel)]="customer.zipCode" min="1000" jhiMin="1000" max="9999" jhiMax="9999"/>
+                    <div [hidden]="!(editForm.controls.zipCode?.dirty && editForm.controls.zipCode?.invalid)">
+                        <small class="form-text text-danger" [hidden]="!editForm.controls.zipCode?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1000 }">
+                            This field should be at least 1000.
+                        </small>
+                        <small class="form-text text-danger" [hidden]="!editForm.controls.zipCode?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 9999 }">
+                            This field cannot be more than 9999.
+                        </small>
+                        <small class="form-text text-danger" [hidden]="!editForm.controls.zipCode?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.customer.province" for="field_province">Province</label>
+                    <input type="text" class="form-control" name="province" id="field_province" [(ngModel)]="customer.province"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.customer.phoneNumber" for="field_phoneNumber">Phone
+                        Number</label>
+                    <input type="text" class="form-control" name="phoneNumber" id="field_phoneNumber" [(ngModel)]="customer.phoneNumber"/>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
