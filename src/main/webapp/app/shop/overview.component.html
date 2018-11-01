@@ -39,14 +39,23 @@
             </mat-card-header>
             <mat-card-content>
                 <picture *ngIf="item.images.length">
-                    <source media="(min-width: 1200px)" class="card-img-top" [srcset]="item.images[0].endpoint | s3ImageResize: '400x200'">
-                    <source media="(min-width: 992px)" class="card-img-top" [srcset]="item.images[0].endpoint | s3ImageResize: '800x400'">
-                    <img mat-card-image [src]="item.images[0].endpoint | s3ImageResize: '400x200'" class="card-img-top" [alt]="item.name">
+                    <source media="(min-width: 1200px)" class="card-img-top" 
+                    [attr.lazyLoad]="item.images[0].endpoint | s3ImageResize: '400x200'"
+                    attr.defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo">
+                    <source media="(min-width: 992px)" class="card-img-top" 
+                    [attr.lazyLoad]="item.images[0].endpoint | s3ImageResize: '800x400'"
+                    attr.defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo">
+                    <img mat-card-image [lazyLoad]="item.images[0].endpoint | s3ImageResize: '400x200'"
+                        defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo"
+                         class="card-img-top" [alt]="item.name" offset="300">
                 </picture>
                 <picture *ngIf="item.images.length==0">
-                    <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text='+item.name">
-                    <source media="(max-width: 992px)" class="card-img-top" [srcset]="'https://via.placeholder.com/800x400?text='+item.name">
-                    <img mat-card-image [src]="'https://via.placeholder.com/400x200?text='+item.name" class="card-img-top" [alt]="item.name">
+                    <source media="(min-width: 1200px)" class="card-img-top" 
+                    [srcset]="'https://via.placeholder.com/400x200?text='+item.name">
+                    <source media="(max-width: 992px)" class="card-img-top" 
+                    [srcset]="'https://via.placeholder.com/800x400?text='+item.name">
+                    <img mat-card-image [lazyLoad]="'https://via.placeholder.com/400x200?text='+item.name" 
+                        class="card-img-top" [alt]="item.name"  offset="300">
                 </picture>
                 <p class="card-text">
                     {{item.description ? item.description : '&nbsp;'}} </p>

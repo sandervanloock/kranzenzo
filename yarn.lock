@@ -7599,6 +7599,11 @@ ng-jhipster@0.5.4:
     "@ngx-translate/core" "^10.0.1"
     "@ngx-translate/http-loader" "^3.0.1"
 
+ng-lazyload-image@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ng-lazyload-image/-/ng-lazyload-image-4.0.0.tgz#2d0cf0f95c66417c14c2c27211a879820bae71b3"
+  integrity sha512-D2d+kfVRoapP1arFnResQGcQgYs2zrMmQTY46kBeuCvXYOvnZFCTZDItW/ub7UDcaUgRtT1yQbeqy3mmqb+ssg==
+
 ng2-file-upload@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/ng2-file-upload/-/ng2-file-upload-1.3.0.tgz#d90f8f568f62383462175f8bdfa0096b131f277a"
