@@ -110,30 +110,32 @@ export class ProductOrderComponent implements OnInit {
     }
 
     updateDeliveryPrice() {
-        const directionsService = new google.maps.DirectionsService();
-        directionsService.route(
-            {
-                origin: ORDER_DELIVERY_ORIGIN,
-                destination: { lat: this.customer.latitude, lng: this.customer.longitude },
-                waypoints: [],
-                optimizeWaypoints: true,
-                travelMode: 'DRIVING'
-            },
-            (response, status) => {
-                if (status === 'OK') {
-                    if (response.routes.length && response.routes[0].legs.length) {
-                        const distance = response.routes[0].legs[0].distance.value;
-                        const distanceWithDiscount = Math.max(0, distance - 10000);
-                        const price = Math.round(distanceWithDiscount / 1000 * PRICE_PER_KILOMETER_PER_KM * 100) / 100;
-                        console.log('Delivery price for distance ' + distance + ' is ' + price);
-                        this.order.deliveryPrice = price;
-                        this.changeDetectorRef.detectChanges();
+        if (this.customer.latitude && this.customer.longitude) {
+            const directionsService = new google.maps.DirectionsService();
+            directionsService.route(
+                {
+                    origin: ORDER_DELIVERY_ORIGIN,
+                    destination: { lat: this.customer.latitude, lng: this.customer.longitude },
+                    waypoints: [],
+                    optimizeWaypoints: true,
+                    travelMode: 'DRIVING'
+                },
+                (response, status) => {
+                    if (status === 'OK') {
+                        if (response.routes.length && response.routes[0].legs.length) {
+                            const distance = response.routes[0].legs[0].distance.value;
+                            const distanceWithDiscount = Math.max(0, distance - 10000);
+                            const price = Math.round(distanceWithDiscount / 1000 * PRICE_PER_KILOMETER_PER_KM * 100) / 100;
+                            console.log('Delivery price for distance ' + distance + ' is ' + price);
+                            this.order.deliveryPrice = price;
+                            this.changeDetectorRef.detectChanges();
+                        }
+                    } else {
+                        console.error('Directions request failed due to ' + status);
                     }
-                } else {
-                    console.error('Directions request failed due to ' + status);
                 }
-            }
-        );
+            );
+        }
     }
 
     private handleSuccessfulOrder(order: IProductOrder) {

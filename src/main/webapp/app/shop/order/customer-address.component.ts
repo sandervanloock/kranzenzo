@@ -112,6 +112,7 @@ export class CustomerAddressComponent implements OnInit, ControlValueAccessor, V
                 this.output.latitude = place.geometry.location.lat();
                 this.output.longitude = place.geometry.location.lng();
             }
+            this.output.description = place.formatted_address;
             this.textInput = place.formatted_address;
             this.invalidAddressError = false;
         } else {
