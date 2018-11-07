@@ -43,7 +43,7 @@ module.exports = ( options ) => webpackMerge( commonConfig( {env: ENV} ),
         main: './src/main/webapp/app/app.main'
     },
     output: {
-        path: utils.root('target/www'),
+        path: utils.root( 'target/classes/www' ),
         filename: 'app/[name].bundle.js',
         chunkFilename: 'app/[id].chunk.js'
     },
