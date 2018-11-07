@@ -38,6 +38,8 @@ export class ImageUploadComponent implements OnInit {
             this._images.forEach((image: IImage) => {
                 this.imageEndpoints.push(this.s3ImageResizePipe.transform(image.endpoint, '250x250'));
             });
+        } else {
+            this._images = [];
         }
     }
 
