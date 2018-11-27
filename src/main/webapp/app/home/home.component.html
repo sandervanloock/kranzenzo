@@ -12,9 +12,17 @@
 <!-- Section: Homepage image -->
 <section class="text-center py-5 px-2">
     <div>
-        <img class="img-fluid" src="https://images.kranzenzo.be/800x1150/kerstopendeur.PNG" alt="Kerstnocturne">
+        <img class="img-fluid" src="https://images.kranzenzo.be/800x1150/kerstopendagen.jpeg" alt="Opening December">
+        <p>
+            Ho ho ho!
+            Tijdens de maand december is kranzenzo elke dag , behalve
+            Zondag en maandag , open van 15 u tot 19 u om uw kerstdecoratie of geschenken aan te kopen.
+            Wij doen ook mee aan de eindejaarstombola van skwinkel waarmee je aankoopbons van deelnemende handelaars
+            kan winnen.
+        </p>
     </div>
-</section><!-- Homepage image -->
+</section>
+<!-- Homepage image -->
 
 <!-- Section: Workshops -->
 <section class="text-center py-5 px-2" *ngIf="workshop">
@@ -24,7 +32,8 @@
             {{workshop.description}}
         </p>
         <div>
-            <img class="img-fluid" *ngIf="workshop.images" [src]="workshop.images[0].endpoint | s3ImageResize: '800x400'" [alt]="workshop.name">
+            <img class="img-fluid" *ngIf="workshop.images" [src]="workshop.images[0].endpoint | s3ImageResize: '800x400'"
+                [alt]="workshop.name">
         </div>
         <div class="mt-3">
             <button type="button" class="btn btn-primary" [routerLink]="['/kranzenzo-workshop', workshop.id]">
@@ -46,10 +55,12 @@
         </div>
         <!--Content-->
         <p>
-            <fa-icon [icon]="'quote-right'"></fa-icon> Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is creatief bezigzijn met natuurlijke
+            <fa-icon [icon]="'quote-right'"></fa-icon> Na een burnout na 30 jaar in het onderwijs gestaan te hebben, is
+            creatief bezigzijn met natuurlijke
             materialen mijn therapie geweest. Uiteindelijk is het nu mijn beroep geworden. Met heel veel passie en
             creativiteit maak ik unieke, goedkope en duurzame stukken. De stukken hebben een uniek karakter en
-            worden gemaakt van gerecycleerd materiaal. </p>
+            worden gemaakt van gerecycleerd materiaal.
+        </p>
         <p>
             Ik probeer de prijs zo laag mogelijk te houden omdat ik het vooral heel graag doe en er ook anderen blij
             wil mee maken. Ik maak ook decostukken naar wens/volgens thema/speciale gelegenheid. </p>
