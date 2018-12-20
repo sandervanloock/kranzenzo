@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IUser, User } from 'app/core';
 import { Workshop } from 'app/shared/model/workshop.model';
-import { WorkshopDate } from 'app/shared/model/workshop-date.model';
+import { IWorkshopDate, WorkshopDate } from 'app/shared/model/workshop-date.model';
 import { WorkshopSubscriptionService } from 'app/entities/workshop-subscription';
 import { SubscriptionState, WorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
 import { MatSnackBar } from '@angular/material';
+import { WorkshopService } from 'app/entities/workshop';
 
 @Component({
     selector: 'jhi-workshop-subscription',
@@ -19,11 +20,21 @@ export class WorkshopSubscriptionComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
+        private workshopService: WorkshopService,
         private workshopSubscriptionService: WorkshopSubscriptionService,
         private snackBar: MatSnackBar
     ) {
-        this.workshop = this.route.snapshot.data.workshop;
-        this.load(parseInt(this.route.snapshot.params['date'], 10));
+        if (this.route.snapshot.data.workshop) {
+            this.workshop = this.route.snapshot.data.workshop;
+        } else {
+            this.workshopService.find(this.route.snapshot.params['id'], true).subscribe(workshop => {
+                this.workshop = workshop.body;
+            });
+        }
+
+        if (this.route.snapshot.params['date']) {
+            this.load(parseInt(this.route.snapshot.params['date'], 10));
+        }
     }
 
     ngOnInit(): void {}
@@ -47,6 +58,12 @@ export class WorkshopSubscriptionComponent implements OnInit {
     load(id: number) {
         this.workshopDate = this.workshop.dates.find(date => {
             return date.id === id;
+        });
+    }
+
+    chooseDate(pickedDate: IWorkshopDate) {
+        this.workshopDate = this.workshop.dates.find(date => {
+            return pickedDate === date;
         });
     }
 }

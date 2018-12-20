@@ -47,17 +47,14 @@
                     <form class="d-flex justify-content-left">
                         <!-- Default input -->
 
-
-                        <div class="list-group" role="group" aria-label="Inschrijvingen" *ngIf="workshop?.dates.length">
-                            <button class="btn btn-primary btn-md my-0 p waves-effect waves-light"
-                            [routerLink]="'subscription/'+date.id"
-                            *ngFor="let date of workshop.dates"
-                                type="submit" routerLink="order">
+                        <div class="list-group" role="group" aria-label="Inschrijvingen" *ngIf="workshop && workshop.dates.length !== 0">
+                            <button class="btn btn-primary btn-md my-0 p waves-effect waves-light" [routerLink]="'subscription/'"
+                                    type="submit" routerLink="order">
                                 <fa-icon icon="pencil-alt"></fa-icon>
-                                {{date.date | date:'dd-MM-yyyy HH:mm'}}
+                                Inschrijven
                             </button>
                         </div>
-                        <div class="" *ngIf="!workshop?.dates.length">
+                        <div class="" *ngIf="workshop && workshop.dates.length === 0">
                             <h4>Helaas, alle data zijn volzet. Je kan niet meer inschrijven.</h4>
                         </div>
 

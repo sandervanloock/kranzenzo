@@ -13,6 +13,14 @@ export const SHOP_ROUTE: Route[] = [
         }
     },
     {
+        path: 'kranzenzo-workshop/:id/subscription',
+        component: WorkshopSubscriptionComponent,
+        data: {
+            authorities: [],
+            pageTitle: 'home.title'
+        }
+    },
+    {
         path: 'kranzenzo-workshop/:id/subscription/:date',
         component: WorkshopSubscriptionComponent,
         resolve: {
