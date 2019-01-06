@@ -5,7 +5,7 @@ import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { IProduct } from 'app/shared/model/product.model';
 import { Principal } from 'app/core';
-import { ProductService } from './product.service';
+import { ProductService, SearchState } from './product.service';
 
 @Component({
     selector: 'jhi-product',
@@ -13,7 +13,6 @@ import { ProductService } from './product.service';
 })
 export class ProductComponent implements OnInit, OnDestroy {
     products: IProduct[];
-    productsFiltered: IProduct[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
@@ -26,18 +25,9 @@ export class ProductComponent implements OnInit, OnDestroy {
     ) {}
 
     loadAll() {
-        if (this.currentSearch) {
-            this.productsFiltered = this.products.filter((p: IProduct) => {
-                return (
-                    (p.name != null && p.name.toLowerCase().indexOf(this.currentSearch.toLowerCase()) !== -1) ||
-                    (p.description != null && p.description.toLowerCase().indexOf(this.currentSearch.toLowerCase()) !== -1)
-                );
-            });
-            return;
-        }
-        this.productService.query().subscribe(
+        const searchState = new SearchState(this.currentSearch);
+        this.productService.search(searchState).subscribe(
             (res: HttpResponse<IProduct[]>) => {
-                this.productsFiltered = res.body;
                 this.products = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)

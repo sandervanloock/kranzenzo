@@ -1,13 +1,18 @@
 package be.sandervl.kranzenzo.web.rest;
 
+import be.sandervl.kranzenzo.domain.Product;
 import be.sandervl.kranzenzo.service.ProductService;
 import be.sandervl.kranzenzo.service.dto.ProductDTO;
 import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kranzenzo.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
+import com.querydsl.core.types.Predicate;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,9 +90,18 @@ public class ProductResource {
     @Timed
     public List <ProductDTO> getAllProducts( @RequestParam(required = false, defaultValue = "false") boolean eagerload,
                                              @RequestParam(required = false, name = "activeOnly") Boolean activeOnly,
-                                             @RequestParam(required = false, name = "tag") Long tagId ) {
+                                             @RequestParam(required = false, name = "tag") Long tagId,
+                                             Pageable page ) {
         log.debug( "REST request to get all Products" );
-        return productService.findAll( activeOnly, tagId );
+        return productService.findAll( activeOnly, tagId, page ).getContent();
+    }
+
+    @GetMapping("/products/search")
+    @Timed
+    public Page <ProductDTO> searchProducts( @QuerydslPredicate(root = Product.class) Predicate predicate,
+                                             Pageable page ) {
+        log.debug( "REST request to get all Products" );
+        return productService.search( predicate, page );
     }
 
     /**

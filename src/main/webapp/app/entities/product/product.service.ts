@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IProduct } from 'app/shared/model/product.model';
+import { map } from 'rxjs/internal/operators';
 
 type EntityResponseType = HttpResponse<IProduct>;
 type EntityArrayResponseType = HttpResponse<IProduct[]>;
@@ -32,7 +33,27 @@ export class ProductService {
         return this.http.get<IProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
+    search(state: SearchState): Observable<EntityArrayResponseType> {
+        return this.http.get<any>(this.resourceUrl + '/search?' + state.toQuery()).pipe(
+            map(
+                resp =>
+                    new HttpResponse({
+                        body: resp.content
+                    })
+            )
+        );
+        // return Observable.of( new HttpResponse( {body: []} ) );
+    }
+
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    }
+}
+
+export class SearchState {
+    constructor(public query?: string, public tagId?: number, public isActive?: boolean) {}
+
+    toQuery() {
+        return `tags=${this.tagId ? this.tagId : ''}&name=${this.query ? this.query : ''}&isActive=${this.isActive ? 'true' : ''}`;
     }
 }
