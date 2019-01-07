@@ -7,6 +7,7 @@ import { KranzenzoTestModule } from '../../../test.module';
 import { ProductComponent } from 'app/entities/product/product.component';
 import { ProductService } from 'app/entities/product/product.service';
 import { Product } from 'app/shared/model/product.model';
+import { Page } from 'app/entities/product';
 
 describe('Component Tests', () => {
     describe('Product Management Component', () => {
@@ -34,7 +35,7 @@ describe('Component Tests', () => {
             spyOn(service, 'search').and.returnValue(
                 of(
                     new HttpResponse({
-                        body: [new Product(123)],
+                        body: new Page(0, 1, [new Product(123)]),
                         headers
                     })
                 )
