@@ -5,7 +5,7 @@ import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 
 import { IProduct } from 'app/shared/model/product.model';
 import { Principal } from 'app/core';
-import { ProductService, SearchState } from './product.service';
+import { Page, ProductService, SearchState } from './product.service';
 
 @Component({
     selector: 'jhi-product',
@@ -27,8 +27,8 @@ export class ProductComponent implements OnInit, OnDestroy {
     loadAll() {
         const searchState = new SearchState(this.currentSearch);
         this.productService.search(searchState).subscribe(
-            (res: HttpResponse<IProduct[]>) => {
-                this.products = res.body;
+            (res: HttpResponse<Page<IProduct>>) => {
+                this.products = res.body.content;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );

@@ -6,9 +6,11 @@ import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IProduct } from 'app/shared/model/product.model';
 import { map } from 'rxjs/internal/operators';
+import { MatPaginatorIntl } from '@angular/material';
 
 type EntityResponseType = HttpResponse<IProduct>;
 type EntityArrayResponseType = HttpResponse<IProduct[]>;
+type EntityPageResponseType = HttpResponse<Page<IProduct>>;
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
@@ -33,12 +35,12 @@ export class ProductService {
         return this.http.get<IProduct[]>(this.resourceUrl, { params: options, observe: 'response' });
     }
 
-    search(state: SearchState): Observable<EntityArrayResponseType> {
+    search(state: SearchState): Observable<EntityPageResponseType> {
         return this.http.get<any>(this.resourceUrl + '/search?' + state.toQuery()).pipe(
             map(
                 resp =>
                     new HttpResponse({
-                        body: resp.content
+                        body: new Page(resp.number, resp.totalElements, resp.content)
                     })
             )
         );
@@ -50,10 +52,51 @@ export class ProductService {
     }
 }
 
-export class SearchState {
-    constructor(public query?: string, public tagId?: number, public isActive?: boolean) {}
+export class Page<T> {
+    constructor(public number: number, public size: number, public content: T[]) {}
+}
+
+class Pageable {
+    constructor(public page?: number, public pageSize?: number) {}
 
     toQuery() {
-        return `tags=${this.tagId ? this.tagId : ''}&name=${this.query ? this.query : ''}&isActive=${this.isActive ? 'true' : ''}`;
+        let query = '';
+        if (this.page) {
+            query += `page=${this.page}&`;
+        }
+        if (this.pageSize) {
+            query += `pageSize=${this.pageSize}&`;
+        }
+        return query;
     }
+}
+
+export class SearchState extends Pageable {
+    constructor(public query?: string, public tagId?: number, public isActive?: boolean) {
+        super();
+    }
+
+    toQuery() {
+        return (
+            super.toQuery() +
+            `tags=${this.tagId ? this.tagId : ''}&name=${this.query ? this.query : ''}&isActive=${this.isActive ? 'true' : ''}`
+        );
+    }
+}
+
+export class MatPaginatorIntlDutch extends MatPaginatorIntl {
+    itemsPerPageLabel = 'Producten per pagina';
+    nextPageLabel = 'Volgende pagina';
+    previousPageLabel = 'Vorige pagina';
+
+    getRangeLabel = function(page, pageSize, length) {
+        if (length === 0 || pageSize === 0) {
+            return '0 tot ' + length;
+        }
+        length = Math.max(length, 0);
+        const startIndex = page * pageSize;
+        // If the start index exceeds the list length, do not try and fix the end index to the end.
+        const endIndex = startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
+        return startIndex + 1 + ' - ' + endIndex + ' tot ' + length;
+    };
 }

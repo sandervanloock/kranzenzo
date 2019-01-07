@@ -40,7 +40,7 @@ public interface ProductRepository extends JpaRepository <Product, Long>, Queryd
     Page <Product> findAllByIsActive( @Param("isActive") boolean isActive, Pageable pageable );
 
     default void customize( QuerydslBindings bindings, QProduct product ) {
-        bindings.bind( product.name ).first( StringExpression::startsWithIgnoreCase );
+        bindings.bind( product.name ).first( StringExpression::containsIgnoreCase );
         bindings.bind( product.tags ).first( ( tags, value ) -> value.stream()
                                                                      .map( tags::contains )
                                                                      .reduce( BooleanExpression::or )

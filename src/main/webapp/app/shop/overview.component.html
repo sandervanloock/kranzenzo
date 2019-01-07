@@ -15,20 +15,24 @@
 
 <!--Navbar-->
 <div class="navbar-shop row">
-    <mat-form-field [floatLabel]="'auto'" class="m-2 col-4">
+    <mat-form-field [floatLabel]="'auto'" class="m-2 col-5">
         <mat-label>Zoek een product</mat-label>
-        <input matInput [(ngModel)]="searchState.query" (ngModelChange)="reloadState()">
+        <input matInput [(ngModel)]="searchState.query" (ngModelChange)="updateSearch()">
     </mat-form-field>
-    <mat-form-field class="m-2 col-4">
-        <mat-select placeholder="Categorie" [(ngModel)]="searchState.tagId" (ngModelChange)="reloadState()">
-            <mat-option value="">Geen</mat-option>
+    <mat-form-field class="m-2 col-5">
+        <mat-select placeholder="Categorie" [(ngModel)]="searchState.tagId" (ngModelChange)="updateSearch()">
+            <mat-option value=""><i>Geen Categorie</i></mat-option>
+            <hr/>
             <mat-option [value]="tag.id" *ngFor="let tag of tags">
                 {{tag.name}}
             </mat-option>
         </mat-select>
     </mat-form-field>
-    <div class="py-4 col-2">{{items.length}} resultaten</div>
 </div><!--/.Navbar-->
+
+<div class="row">
+    <mat-paginator class="mx-4" [pageIndex]="page.number" [length]="page.size" [pageSize]="20" (page)="updatePage($event)"></mat-paginator>
+</div>
 
 <div class="row" style="visibility: visible; animation-name: fadeIn;">
     <div *ngFor="let item of items" class="col-lg-3 col-md-6 mb-4">
@@ -64,4 +68,8 @@
             <!--</a>-->
         </mat-card>
     </div>
+</div>
+
+<div class="row">
+    <mat-paginator class="mx-4" [pageIndex]="page.number" [length]="page.size" [pageSize]="20" (page)="updatePage($event)"></mat-paginator>
 </div>

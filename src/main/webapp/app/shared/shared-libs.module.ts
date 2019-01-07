@@ -6,13 +6,14 @@ import { NgJhipsterModule } from 'ng-jhipster';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatButtonModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatPaginatorIntl, MatPaginatorModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatPaginatorIntlDutch } from 'app/entities/product/product.service';
 
 @NgModule({
     imports: [
@@ -33,7 +34,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatCardModule,
         MatRadioModule,
         MatCheckboxModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        MatPaginatorModule
     ],
     exports: [
         FormsModule,
@@ -49,7 +51,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
         MatCardModule,
         MatRadioModule,
         MatCheckboxModule,
-        MatSnackBarModule
-    ]
+        MatSnackBarModule,
+        MatPaginatorModule
+    ],
+    providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlDutch }]
 })
 export class KranzenzoSharedLibsModule {}
