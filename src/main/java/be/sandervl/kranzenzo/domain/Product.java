@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -46,6 +47,9 @@ public class Product implements Serializable {
     @Max(value = 10)
     @Column(name = "number_of_batteries")
     private Integer numberOfBatteries;
+
+    @Column(name = "created")
+    private ZonedDateTime created;
 
     @OneToMany(mappedBy = "product")
     @JsonIgnore
@@ -135,6 +139,19 @@ public class Product implements Serializable {
 
     public Product numberOfBatteries( Integer numberOfBatteries ) {
         this.numberOfBatteries = numberOfBatteries;
+        return this;
+    }
+
+    public ZonedDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated( ZonedDateTime created ) {
+        this.created = created;
+    }
+
+    public Product created( ZonedDateTime created ) {
+        this.created = created;
         return this;
     }
 

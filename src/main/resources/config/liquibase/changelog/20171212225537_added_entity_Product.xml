@@ -63,5 +63,13 @@
             </column>
         </addColumn>
     </changeSet>
+    
+    <changeSet id="201001121715" author="svl">
+        <addColumn tableName="product">
+            <column name="created" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

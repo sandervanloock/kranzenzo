@@ -6,7 +6,7 @@ import { NgJhipsterModule } from 'ng-jhipster';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatButtonModule, MatInputModule, MatPaginatorIntl, MatPaginatorModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatPaginatorIntl, MatPaginatorModule, MatProgressBarModule } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -35,7 +35,8 @@ import { MatPaginatorIntlDutch } from 'app/entities/product/product.service';
         MatRadioModule,
         MatCheckboxModule,
         MatSnackBarModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatProgressBarModule
     ],
     exports: [
         FormsModule,
@@ -52,7 +53,8 @@ import { MatPaginatorIntlDutch } from 'app/entities/product/product.service';
         MatRadioModule,
         MatCheckboxModule,
         MatSnackBarModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatProgressBarModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlDutch }]
 })

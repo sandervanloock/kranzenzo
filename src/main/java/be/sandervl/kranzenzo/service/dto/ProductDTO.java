@@ -2,6 +2,7 @@ package be.sandervl.kranzenzo.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -29,6 +30,8 @@ public class ProductDTO implements Serializable {
     @Min(value = 0)
     @Max(value = 10)
     private Integer numberOfBatteries;
+
+    private ZonedDateTime created;
 
     private Set <TagDTO> tags = new HashSet <>();
 
@@ -80,6 +83,14 @@ public class ProductDTO implements Serializable {
 
     public void setNumberOfBatteries( Integer numberOfBatteries ) {
         this.numberOfBatteries = numberOfBatteries;
+    }
+
+    public ZonedDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated( ZonedDateTime created ) {
+        this.created = created;
     }
 
     public Set <TagDTO> getTags() {

@@ -19,6 +19,7 @@ export class OverviewComponent implements OnInit {
     items: Product[] = [];
     page: Page<Product> = new Page<Product>(0, 0, []);
     searchState: SearchState;
+    showSpinner = true;
 
     tags: ITag[];
 
@@ -45,14 +46,17 @@ export class OverviewComponent implements OnInit {
     }
 
     reloadState() {
+        this.showSpinner = true;
         this.productService.search(this.searchState).subscribe((data: HttpResponse<Page<IProduct>>) => {
             this.page = data.body;
             this.items = data.body.content;
+            this.showSpinner = false;
         });
         this.location.go('shop', this.searchState.toQuery());
     }
 
     updatePage(event: PageEvent) {
+        window.scroll(0, 0);
         this.searchState.page = event.pageIndex;
         this.reloadState();
     }

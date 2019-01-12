@@ -125,7 +125,8 @@ public class ProductService {
 
     public Page <ProductDTO> search( Predicate predicate, Pageable page ) {
         Page <Product> result = productRepository.findAll( predicate, page );
-        return new PageImpl <>( result.stream().map( productMapper::toDto )
+        return new PageImpl <>( result.stream()
+                                      .map( productMapper::toDto )
                                       .collect( Collectors.toList() ), page, result.getTotalElements() );
     }
 }

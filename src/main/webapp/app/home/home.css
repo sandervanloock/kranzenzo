@@ -85,6 +85,6 @@ Main page styles
     color: white;
 }
 
-section:nth-child(odd) {
+section:nth-child(even) {
     background-color: #fbf5f5;
 }
