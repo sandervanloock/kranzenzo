@@ -1,10 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { JhiEventManager } from 'ng-jhipster';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Observable } from 'rxjs/Observable';
-import { PRICE_BATTERIES_INCLUDED, VAT_NUMBER } from '../../app.constants';
+import { ORDER_DELIVERY_ORIGIN, PRICE_BATTERIES_INCLUDED, PRICE_PER_KILOMETER_PER_KM, VAT_NUMBER } from '../../app.constants';
 import { IProduct } from 'app/shared/model/product.model';
 import { Customer, ICustomer } from 'app/shared/model/customer.model';
 import { LoginModalService, Principal, UserService } from 'app/core';
@@ -12,7 +12,8 @@ import { DeliveryType, IProductOrder, ProductOrder } from 'app/shared/model/prod
 import { ProductService } from 'app/entities/product';
 import { CustomerService } from 'app/entities/customer';
 import { ProductOrderService } from 'app/entities/product-order';
-import { ORDER_DELIVERY_ORIGIN, PRICE_PER_KILOMETER_PER_KM } from '../../app.constants';
+import { ProgressSpinnerDialogComponent } from 'app/shared/dialog/progress-spinner-dialog.component';
+import { ConfirmationDialogComponent } from 'app/shared/dialog/confirmation-dialog.component';
 
 declare var google: any;
 
@@ -47,7 +48,7 @@ export class ProductOrderComponent implements OnInit {
         private userService: UserService,
         private customerService: CustomerService,
         private orderService: ProductOrderService,
-        private snackBar: MatSnackBar
+        private dialog: MatDialog
     ) {
         this.product = route.snapshot.data.product;
     }
@@ -79,6 +80,10 @@ export class ProductOrderComponent implements OnInit {
 
     submitForm() {
         this.order.productId = this.product.id;
+        const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
+            panelClass: 'transparent',
+            disableClose: true
+        });
         this.updateCustomer()
             .flatMap(customer => {
                 this.customer = customer.body;
@@ -92,9 +97,11 @@ export class ProductOrderComponent implements OnInit {
             })
             .subscribe(
                 (order: HttpResponse<IProductOrder>) => {
+                    dialogRef.close();
                     this.handleSuccessfulOrder(order.body);
                 },
                 error => {
+                    dialogRef.close();
                     this.handleFailedOrder(error);
                 }
             );
@@ -102,7 +109,13 @@ export class ProductOrderComponent implements OnInit {
 
     private handleFailedOrder(error) {
         console.error(error);
-        const snackBarRef = this.snackBar.open('Er ging iets, probeer later opnieuw of contacteer annemie.rousseau@telenet.be');
+        this.dialog.open(ConfirmationDialogComponent, {
+            width: '250px',
+            data: {
+                title: 'Oeps...',
+                message: 'Er ging iets, probeer later opnieuw of contacteer annemie.rousseau@telenet.be.'
+            }
+        });
         this.eventManager.broadcast({
             name: 'productOrderCompleted',
             content: { type: 'error', msg: 'product.submitted.error' }
@@ -139,7 +152,13 @@ export class ProductOrderComponent implements OnInit {
     }
 
     private handleSuccessfulOrder(order: IProductOrder) {
-        const snackBarRef = this.snackBar.open('Bestelling gelukt, bekijk je email voor de bevestiging');
+        this.dialog.open(ConfirmationDialogComponent, {
+            width: '250px',
+            data: {
+                title: 'Joepie',
+                message: `Bestelling gelukt! Er is een e-mail verstuurd naar ${order.customer.user.email} met de bevestiging.`
+            }
+        });
         this.order = order;
         this.eventManager.broadcast({
             name: 'productOrderCompleted',

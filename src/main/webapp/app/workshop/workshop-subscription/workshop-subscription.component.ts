@@ -1,19 +1,14 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IUser, User } from 'app/core';
 import { Workshop } from 'app/shared/model/workshop.model';
 import { IWorkshopDate, WorkshopDate } from 'app/shared/model/workshop-date.model';
 import { WorkshopSubscriptionService } from 'app/entities/workshop-subscription';
-import { IWorkshopSubscription, SubscriptionState, WorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
+import { SubscriptionState, WorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { WorkshopService } from 'app/entities/workshop';
-import { ProgressSpinnerDialogComponent } from 'app/workshop/workshop-subscription/progress-spinner-dialog.component';
-
-export interface DialogData {
-    subscription: IWorkshopSubscription;
-    title: string;
-    message: string;
-}
+import { ProgressSpinnerDialogComponent } from 'app/shared/dialog/progress-spinner-dialog.component';
+import { ConfirmationDialogComponent } from 'app/shared/dialog/confirmation-dialog.component';
 
 @Component({
     selector: 'jhi-workshop-subscription',
@@ -59,10 +54,9 @@ export class WorkshopSubscriptionComponent implements OnInit {
         this.workshopSubscriptionService.create(subscription).subscribe(
             () => {
                 dialogRef.close();
-                this.dialog.open(SubscriptionConfirmationDialogComponent, {
+                this.dialog.open(ConfirmationDialogComponent, {
                     width: '250px',
                     data: {
-                        subscription,
                         title: 'Joepie',
                         message: `Inschrijving gelukt! Er is een e-mail verstuurd naar ${this.user.email} met verdere instructies.`
                     }
@@ -70,10 +64,9 @@ export class WorkshopSubscriptionComponent implements OnInit {
             },
             error => {
                 dialogRef.close();
-                this.dialog.open(SubscriptionConfirmationDialogComponent, {
+                this.dialog.open(ConfirmationDialogComponent, {
                     width: '250px',
                     data: {
-                        subscription,
                         title: 'Oeps...',
                         message: 'Er ging iets, probeer later opnieuw of contacteer annemie.rousseau@telenet.be.'
                     }
@@ -92,25 +85,5 @@ export class WorkshopSubscriptionComponent implements OnInit {
         this.workshopDate = this.workshop.dates.find(date => {
             return pickedDate === date;
         });
-    }
-}
-
-@Component({
-    selector: 'jhi-subscription-confirmation-dialog',
-    template:
-        '<h1 mat-dialog-title>{{data.title}}</h1>' +
-        '<div mat-dialog-content>{{data.message}}</div>' +
-        '<div mat-dialog-actions>' +
-        '<button mat-button (click)="onNoClick()">Sluiten</button>' +
-        '</div>'
-})
-export class SubscriptionConfirmationDialogComponent {
-    constructor(
-        public dialogRef: MatDialogRef<SubscriptionConfirmationDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData
-    ) {}
-
-    onNoClick(): void {
-        this.dialogRef.close();
     }
 }
