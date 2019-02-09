@@ -1,12 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IUser, User } from 'app/core';
 import { Workshop } from 'app/shared/model/workshop.model';
 import { IWorkshopDate, WorkshopDate } from 'app/shared/model/workshop-date.model';
 import { WorkshopSubscriptionService } from 'app/entities/workshop-subscription';
-import { SubscriptionState, WorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
-import { MatSnackBar } from '@angular/material';
+import { IWorkshopSubscription, SubscriptionState, WorkshopSubscription } from 'app/shared/model/workshop-subscription.model';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material';
 import { WorkshopService } from 'app/entities/workshop';
+import { ProgressSpinnerDialogComponent } from 'app/workshop/workshop-subscription/progress-spinner-dialog.component';
+
+export interface DialogData {
+    subscription: IWorkshopSubscription;
+    title: string;
+    message: string;
+}
 
 @Component({
     selector: 'jhi-workshop-subscription',
@@ -22,7 +29,7 @@ export class WorkshopSubscriptionComponent implements OnInit {
         private route: ActivatedRoute,
         private workshopService: WorkshopService,
         private workshopSubscriptionService: WorkshopSubscriptionService,
-        private snackBar: MatSnackBar
+        private dialog: MatDialog
     ) {
         if (this.route.snapshot.data.workshop) {
             this.workshop = this.route.snapshot.data.workshop;
@@ -45,12 +52,32 @@ export class WorkshopSubscriptionComponent implements OnInit {
         subscription.workshopId = this.workshopDate.id;
         subscription.user = this.user;
 
+        const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
+            panelClass: 'transparent',
+            disableClose: true
+        });
         this.workshopSubscriptionService.create(subscription).subscribe(
             () => {
-                const snackBarRef = this.snackBar.open('Inschrijving gelukt, bekijk je email voor de bevestiging');
+                dialogRef.close();
+                this.dialog.open(SubscriptionConfirmationDialogComponent, {
+                    width: '250px',
+                    data: {
+                        subscription,
+                        title: 'Joepie',
+                        message: `Inschrijving gelukt! Er is een e-mail verstuurd naar ${this.user.email} met verdere instructies.`
+                    }
+                });
             },
             error => {
-                const snackBarRef = this.snackBar.open('Er ging iets, probeer later opnieuw of contacteer annemie.rousseau@telenet.be');
+                dialogRef.close();
+                this.dialog.open(SubscriptionConfirmationDialogComponent, {
+                    width: '250px',
+                    data: {
+                        subscription,
+                        title: 'Oeps...',
+                        message: 'Er ging iets, probeer later opnieuw of contacteer annemie.rousseau@telenet.be.'
+                    }
+                });
             }
         );
     }
@@ -65,5 +92,25 @@ export class WorkshopSubscriptionComponent implements OnInit {
         this.workshopDate = this.workshop.dates.find(date => {
             return pickedDate === date;
         });
+    }
+}
+
+@Component({
+    selector: 'jhi-subscription-confirmation-dialog',
+    template:
+        '<h1 mat-dialog-title>{{data.title}}</h1>' +
+        '<div mat-dialog-content>{{data.message}}</div>' +
+        '<div mat-dialog-actions>' +
+        '<button mat-button (click)="onNoClick()">Sluiten</button>' +
+        '</div>'
+})
+export class SubscriptionConfirmationDialogComponent {
+    constructor(
+        public dialogRef: MatDialogRef<SubscriptionConfirmationDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData
+    ) {}
+
+    onNoClick(): void {
+        this.dialogRef.close();
     }
 }

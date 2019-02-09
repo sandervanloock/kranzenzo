@@ -22,7 +22,7 @@
                         <div class="row">
 
                             <div class="col-md-6 mb-2">
-                                <div class="subscription-group" role="group" aria-label="Inschrijvingen" *ngIf="workshop?.dates.length">
+                                <div class="subscription-group" role="group" aria-label="Inschrijvingen" *ngIf="workshop?.dates?.length">
                                     <strong class="md-2">Kies je datum</strong>
                                     <mat-radio-group class="md-form input-full-width radio-group" name="date">
                                         <mat-radio-button class="radio-button" [value]="date.id" *ngFor="let date of workshop.dates" (change)="chooseDate(date)">
