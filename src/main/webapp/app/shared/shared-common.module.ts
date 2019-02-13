@@ -6,6 +6,8 @@ import { EqualValidatorDirective } from 'app/shared/util/equal-validator.directi
 import { FloorPipe } from 'app/shared/util/floor.pipe';
 import { ImageUploadComponent } from 'app/shared/image/image-upload/image-upload.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { ConfirmationDialogComponent } from 'app/shared/dialog/confirmation-dialog.component';
+import { ProgressSpinnerDialogComponent } from 'app/shared/dialog/progress-spinner-dialog.component';
 
 @NgModule({
     imports: [KranzenzoSharedLibsModule, FileUploadModule],
@@ -16,7 +18,9 @@ import { FileUploadModule } from 'ng2-file-upload';
         S3ImageResizePipe,
         EqualValidatorDirective,
         FloorPipe,
-        ImageUploadComponent
+        ImageUploadComponent,
+        ConfirmationDialogComponent,
+        ProgressSpinnerDialogComponent
     ],
     exports: [
         KranzenzoSharedLibsModule,
@@ -26,7 +30,9 @@ import { FileUploadModule } from 'ng2-file-upload';
         S3ImageResizePipe,
         EqualValidatorDirective,
         FloorPipe,
-        ImageUploadComponent
+        ImageUploadComponent,
+        ConfirmationDialogComponent,
+        ProgressSpinnerDialogComponent
     ]
 })
 export class KranzenzoSharedCommonModule {}

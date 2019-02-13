@@ -10,7 +10,7 @@ import { ProgressSpinnerDialogComponent } from 'app/shared/dialog/progress-spinn
 
 @NgModule({
     imports: [KranzenzoSharedModule, RouterModule.forChild(SHOP_ROUTE)],
-    declarations: [WorkshopDetailComponent, WorkshopSubscriptionComponent, ConfirmationDialogComponent, ProgressSpinnerDialogComponent],
+    declarations: [WorkshopDetailComponent, WorkshopSubscriptionComponent],
     entryComponents: [WorkshopSubscriptionComponent, ConfirmationDialogComponent, ProgressSpinnerDialogComponent],
     providers: [FloorPipe]
 })

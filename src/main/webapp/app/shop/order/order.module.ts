@@ -6,7 +6,6 @@ import { ProgressSpinnerDialogComponent } from 'app/shared/dialog/progress-spinn
 
 @NgModule({
     imports: [CommonModule, KranzenzoSharedCommonModule],
-    declarations: [, ConfirmationDialogComponent, ProgressSpinnerDialogComponent],
-    entryComponents: [, ConfirmationDialogComponent, ProgressSpinnerDialogComponent]
+    entryComponents: [ConfirmationDialogComponent, ProgressSpinnerDialogComponent]
 })
 export class OrderModule {}
