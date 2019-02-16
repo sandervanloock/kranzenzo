@@ -23,9 +23,9 @@
 
                             <div class="col-md-6 mb-2">
                                 <div class="subscription-group" role="group" aria-label="Inschrijvingen" *ngIf="workshop?.dates?.length">
-                                    <strong class="md-2">Kies je datum</strong>
-                                    <mat-radio-group class="md-form input-full-width radio-group" name="date">
-                                        <mat-radio-button required class="radio-button" [value]="date.id" *ngFor="let date of workshop.dates" (change)="chooseDate(date)">
+                                    <strong class="md-2">Kies je datum *</strong>
+                                    <mat-radio-group required class="md-form input-full-width radio-group" name="date" #date="ngModel" [(ngModel)]="this.workshopDate">
+                                        <mat-radio-button required class="radio-button" [value]="date" *ngFor="let date of workshop.dates" (change)="chooseDate(date)" [checked]="this.workshopDate?.id === date.id">
                                             {{date.date | date:'dd-MM-yyyy HH:mm'}}
                                         </mat-radio-button>
                                     </mat-radio-group>
@@ -73,7 +73,7 @@
 
                         <hr>
 
-                        <button class="btn btn-primary btn-lg btn-block waves-effect waves-light" type="submit" [disabled]="!editForm.form.valid">
+                        <button class="btn btn-primary btn-lg btn-block waves-effect waves-light" type="submit" [disabled]="!editForm.form.valid || this.workshopDate.id == undefined">
                             Bevestigen
                         </button>
 

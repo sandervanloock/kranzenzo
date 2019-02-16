@@ -28,14 +28,20 @@ export class WorkshopSubscriptionComponent implements OnInit {
     ) {
         if (this.route.snapshot.data.workshop) {
             this.workshop = this.route.snapshot.data.workshop;
+            if (this.workshop.dates.length === 1) {
+                this.chooseDate(this.workshop.dates[0]);
+            }
         } else {
             this.workshopService.find(this.route.snapshot.params['id'], true).subscribe(workshop => {
                 this.workshop = workshop.body;
+                if (this.workshop.dates.length === 1) {
+                    this.chooseDate(this.workshop.dates[0]);
+                }
             });
         }
 
         if (this.route.snapshot.params['date']) {
-            this.load(parseInt(this.route.snapshot.params['date'], 10));
+            this.loadDate(parseInt(this.route.snapshot.params['date'], 10));
         }
     }
 
@@ -75,7 +81,7 @@ export class WorkshopSubscriptionComponent implements OnInit {
         );
     }
 
-    load(id: number) {
+    loadDate(id: number) {
         this.workshopDate = this.workshop.dates.find(date => {
             return date.id === id;
         });
