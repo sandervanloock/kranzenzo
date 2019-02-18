@@ -1,5 +1,6 @@
 package be.sandervl.kranzenzo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -24,6 +25,7 @@ public class Image implements Serializable {
 
     @Lob
     @Column(name = "data", nullable = false)
+    @JsonIgnore
     private byte[] data;
 
     @Column(name = "data_content_type", nullable = false)
