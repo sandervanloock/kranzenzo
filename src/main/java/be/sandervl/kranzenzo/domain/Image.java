@@ -25,7 +25,6 @@ public class Image implements Serializable {
 
     @Lob
     @Column(name = "data", nullable = false)
-    @JsonIgnore
     private byte[] data;
 
     @Column(name = "data_content_type", nullable = false)
@@ -51,6 +50,7 @@ public class Image implements Serializable {
         this.id = id;
     }
 
+    @JsonIgnore
     public byte[] getData() {
         return data;
     }
