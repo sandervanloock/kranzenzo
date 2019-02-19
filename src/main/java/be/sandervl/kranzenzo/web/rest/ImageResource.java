@@ -19,13 +19,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -131,7 +127,9 @@ public class ImageResource {
     public List <ImageDTO> getAllImages() {
         log.debug( "REST request to get all Images" );
         List <Image> images = imageRepository.findAll();
-        return imageMapper.toDto( images );
+        List <ImageDTO> imageDTOS = imageMapper.toDto( images );
+        imageDTOS.forEach( im -> im.setData( null ) );
+        return imageDTOS;
     }
 
     /**
@@ -146,6 +144,7 @@ public class ImageResource {
         log.debug( "REST request to get Image : {}", id );
         Optional <ImageDTO> imageDTO = imageRepository.findById( id )
                                                       .map( imageMapper::toDto );
+        imageDTO.ifPresent( im -> im.setData( null ) );
         return ResponseUtil.wrapOrNotFound( imageDTO );
     }
 

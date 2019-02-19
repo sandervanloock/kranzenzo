@@ -22,7 +22,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -152,9 +151,7 @@ public class ImageResourceIntTest {
                         .andExpect( status().isOk() )
                         .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
                         .andExpect( jsonPath( "$.[*].id" ).value( hasItem( image.getId().intValue() ) ) )
-                        .andExpect( jsonPath( "$.[*].dataContentType" ).value( hasItem( DEFAULT_DATA_CONTENT_TYPE ) ) )
-                        .andExpect( jsonPath( "$.[*].data" )
-                            .value( hasItem( Base64Utils.encodeToString( DEFAULT_DATA ) ) ) );
+                        .andExpect( jsonPath( "$.[*].dataContentType" ).value( hasItem( DEFAULT_DATA_CONTENT_TYPE ) ) );
     }
 
     @Test
@@ -168,8 +165,7 @@ public class ImageResourceIntTest {
                         .andExpect( status().isOk() )
                         .andExpect( content().contentType( MediaType.APPLICATION_JSON_UTF8_VALUE ) )
                         .andExpect( jsonPath( "$.id" ).value( image.getId().intValue() ) )
-                        .andExpect( jsonPath( "$.dataContentType" ).value( DEFAULT_DATA_CONTENT_TYPE ) )
-                        .andExpect( jsonPath( "$.data" ).value( Base64Utils.encodeToString( DEFAULT_DATA ) ) );
+                        .andExpect( jsonPath( "$.dataContentType" ).value( DEFAULT_DATA_CONTENT_TYPE ) );
     }
 
     @Test

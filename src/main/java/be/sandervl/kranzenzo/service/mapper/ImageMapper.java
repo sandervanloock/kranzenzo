@@ -15,7 +15,6 @@ public interface ImageMapper extends EntityMapper <ImageDTO, Image> {
     @Mapping(source = "workshop.name", target = "workshopName")
     @Mapping(source = "product.id", target = "productId")
     @Mapping(source = "product.name", target = "productName")
-    @Mapping(target = "data", ignore = true)
     ImageDTO toDto( Image image );
 
     @Mapping(source = "workshopId", target = "workshop")
