@@ -110,6 +110,10 @@ public class ProductService {
     public Optional <ProductDTO> findOne( Long id ) {
         log.debug( "Request to get Product : {}", id );
         return productRepository.findOneWithEagerRelationships( id )
+                                .map( p -> {
+                                    p.getImages().forEach( im -> im.setData( null ) );
+                                    return p;
+                                } )
                                 .map( productMapper::toDto );
     }
 
