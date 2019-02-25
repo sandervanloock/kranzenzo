@@ -31,7 +31,7 @@ public class WorkshopDate implements Serializable {
     @Column(name = "jhi_date", nullable = false)
     private ZonedDateTime date;
 
-    @OneToMany(mappedBy = "workshop")
+    @OneToMany(mappedBy = "workshop", cascade = CascadeType.REMOVE)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JsonIgnore
     private Set <WorkshopSubscription> subscriptions = new HashSet <>();

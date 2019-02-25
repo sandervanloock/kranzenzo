@@ -18,7 +18,7 @@ export class EqualValidatorDirective implements Validator {
         // value not equal
         if (e && v !== e.value) {
             return {
-                validateEqual: false
+                validateEqual: 'Opgegeven velden zijn niet gelijk'
             };
         }
         return null;

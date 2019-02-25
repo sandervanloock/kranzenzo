@@ -2,9 +2,9 @@
     <div class="container wow fadeIn" style="visibility: visible; animation-name: fadeIn;">
 
         <!-- Heading -->
-        <h2 class="my-5 h2 text-center" *ngIf="workshopDate.date">Inschrijving voor {{workshop.name}} op
+        <h2 class="my-5 h2 text-center" *ngIf="workshopDate?.date">Inschrijving voor {{workshop.name}} op
             {{workshopDate.date | date:'dd-MM-yyyy HH:mm'}}</h2>
-        <h2 class="my-5 h2 text-center" *ngIf="!workshopDate.date">Inschrijving voor {{workshop.name}}</h2>
+        <h2 class="my-5 h2 text-center" *ngIf="!workshopDate?.date">Inschrijving voor {{workshop.name}}</h2>
 
         <!--Grid row-->
         <div class="row">
@@ -16,18 +16,21 @@
                 <div class="card">
 
                     <!--Card content-->
-                    <form class="card-body" name="editForm" role="form" #editForm="ngForm" (ngSubmit)="submitForm()">
+                    <form class="card-body" name="editForm" role="form" #editForm="ngForm" (ngSubmit)="submitForm(editForm)">
 
                         <!-- Subscription buttons -->
                         <div class="row">
 
                             <div class="col-md-6 mb-2">
                                 <div class="subscription-group" role="group" aria-label="Inschrijvingen" *ngIf="workshop?.dates?.length">
-                                    <strong class="md-2">Kies je datum *</strong>
-                                    <mat-radio-group required class="md-form input-full-width radio-group" name="date" #date="ngModel" [(ngModel)]="this.workshopDate">
-                                        <mat-radio-button required class="radio-button" [value]="date" *ngFor="let date of workshop.dates" (change)="chooseDate(date)" [checked]="this.workshopDate?.id === date.id">
+                                    <div>Kies je datum *</div>
+                                    <mat-radio-group required class="md-form input-full-width radio-group mt-2" name="date" #date="ngModel" [(ngModel)]="this.workshopDate">
+                                        <mat-radio-button class="radio-button" [value]="date" *ngFor="let date of workshop.dates" (change)="chooseDate(date)" [checked]="this.workshopDate?.id === date.id">
                                             {{date.date | date:'dd-MM-yyyy HH:mm'}}
                                         </mat-radio-button>
+                                        <mat-error *ngIf="date.invalid && (editForm.form.touched || formSubmitted)">
+                                            Je moet een datum kiezen
+                                        </mat-error>
                                     </mat-radio-group>
                                 </div>
                             </div>
@@ -38,22 +41,28 @@
                         <div class="row">
 
                             <!--Grid column-->
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-6">
 
                                 <!--firstName-->
                                 <mat-form-field class="md-form input-full-width ">
-                                    <input matInput type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="this.user.firstName" #firstName="ngModel" placeholder="Voornaam" required style="background-image: url(&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAfBJREFUWAntVk1OwkAUZkoDKza4Utm61iP0AqyIDXahN2BjwiHYGU+gizap4QDuegWN7lyCbMSlCQjU7yO0TOlAi6GwgJc0fT/fzPfmzet0crmD7HsFBAvQbrcrw+Gw5fu+AfOYvgylJ4TwCoVCs1ardYTruqfj8fgV5OUMSVVT93VdP9dAzpVvm5wJHZFbg2LQ2pEYOlZ/oiDvwNcsFoseY4PBwMCrhaeCJyKWZU37KOJcYdi27QdhcuuBIb073BvTNL8ln4NeeR6NRi/wxZKQcGurQs5oNhqLshzVTMBewW/LMU3TTNlO0ieTiStjYhUIyi6DAp0xbEdgTt+LE0aCKQw24U4llsCs4ZRJrYopB6RwqnpA1YQ5NGFZ1YQ41Z5S8IQQdP5laEBRJcD4Vj5DEsW2gE6s6g3d/YP/g+BDnT7GNi2qCjTwGd6riBzHaaCEd3Js01vwCPIbmWBRx1nwAN/1ov+/drgFWIlfKpVukyYihtgkXNp4mABK+1GtVr+SBhJDbBIubVw+Cd/TDgKO2DPiN3YUo6y/nDCNEIsqTKH1en2tcwA9FKEItyDi3aIh8Gl1sRrVnSDzNFDJT1bAy5xpOYGn5fP5JuL95ZjMIn1ya7j5dPGfv0A5eAnpZUY3n5jXcoec5J67D9q+VuAPM47D3XaSeL4AAAAASUVORK5CYII=&quot;); background-repeat: no-repeat; background-attachment: scroll; background-size: 16px 18px; background-position: 98% 50%;">
+                                    <input matInput type="text" id="firstName" name="firstName" class="form-control" [(ngModel)]="this.user.firstName" #firstName="ngModel" placeholder="Voornaam" required>
+                                    <mat-error *ngIf="firstName.hasError('required') && (firstName.dirty || firstName.touched)">
+                                        Vul je voornaam in
+                                    </mat-error>
                                 </mat-form-field>
 
                             </div>
                             <!--Grid column-->
 
                             <!--Grid column-->
-                            <div class="col-md-6 mb-2">
+                            <div class="col-md-6">
 
                                 <!--lastName-->
                                 <mat-form-field class="md-form input-full-width ">
-                                    <input matInput type="text" id="lastName" name="lastName" class="form-control" required [(ngModel)]="this.user.lastName" #lastName="ngModel" placeholder="Naam">
+                                    <input matInput type="text" id="lastName" name="lastName" class="form-control" [(ngModel)]="this.user.lastName" #lastName="ngModel" placeholder="Naam" required>
+                                    <mat-error *ngIf="lastName.hasError('required') && (lastName.dirty || lastName.touched)">
+                                        Vul je naam in
+                                    </mat-error>
                                 </mat-form-field>
 
                             </div>
@@ -63,17 +72,32 @@
                         <!--Grid row-->
                         <!--email-->
                         <mat-form-field class="md-form input-full-width ">
-                            <input name="email" matInput type="email" id="email" class="form-control" placeholder="Email" [(ngModel)]="this.user.email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel">
+                            <input matInput name="email" type="email" id="email" class="form-control" placeholder="Email" [(ngModel)]="this.user.email" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" #email="ngModel">
+                            <mat-error *ngIf="email.hasError('required') && (email.dirty || email.touched)">
+                                Vul je e-mailadres in
+                            </mat-error>
+                            <mat-error *ngIf="email.hasError('pattern') && (email.dirty || email.touched)">
+                                Ongeldig e-mailadres
+                            </mat-error>
                         </mat-form-field>
 
                         <!--email-->
                         <mat-form-field class="md-form input-full-width ">
                             <input name="confirmEmail" matInput type="text" id="confirmEmail" class="form-control" placeholder="Bevestig email" [(ngModel)]="this.user.confirmEmail" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual validateEqual="email" #emailConfirmation="ngModel">
+                            <mat-error *ngIf="emailConfirmation.hasError('required') && (emailConfirmation.dirty || emailConfirmation.touched)">
+                                Vul je e-mailadres in
+                            </mat-error>
+                            <mat-error *ngIf="emailConfirmation.hasError('pattern') && (emailConfirmation.dirty || emailConfirmation.touched)">
+                                Ongeldig e-mailadres
+                            </mat-error>
+                            <mat-error *ngIf="emailConfirmation.hasError('validateEqual') && (emailConfirmation.dirty || emailConfirmation.touched)">
+                                Opgegeven e-mailadressen zijn niet gelijk
+                            </mat-error>
                         </mat-form-field>
 
                         <hr>
 
-                        <button class="btn btn-primary btn-lg btn-block waves-effect waves-light" type="submit" [disabled]="!editForm.form.valid || this.workshopDate.id == undefined">
+                        <button class="btn btn-primary btn-lg btn-block waves-effect waves-light" type="submit">
                             Bevestigen
                         </button>
 

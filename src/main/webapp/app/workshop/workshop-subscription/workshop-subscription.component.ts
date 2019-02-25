@@ -18,7 +18,8 @@ import { ConfirmationDialogComponent } from 'app/shared/dialog/confirmation-dial
 export class WorkshopSubscriptionComponent implements OnInit {
     user: IUser = new User();
     workshop: Workshop = new Workshop();
-    workshopDate: WorkshopDate = new WorkshopDate();
+    workshopDate: WorkshopDate = null;
+    formSubmitted = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -47,7 +48,11 @@ export class WorkshopSubscriptionComponent implements OnInit {
 
     ngOnInit(): void {}
 
-    submitForm() {
+    submitForm(form) {
+        this.formSubmitted = true;
+        if (!form.form.valid) {
+            return;
+        }
         const subscription = new WorkshopSubscription();
         subscription.state = SubscriptionState.NEW;
         subscription.workshopId = this.workshopDate.id;
