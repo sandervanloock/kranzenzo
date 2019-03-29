@@ -117,15 +117,18 @@ public class WorkshopResource {
      */
     @GetMapping("/workshops/homepage")
     @Timed
-    public ResponseEntity <WorkshopDTO> getHomepageWorkshop() {
+    public ResponseEntity <List <WorkshopDTO>> getHomepageWorkshops() {
         log.debug( "REST request to get homepage Workshops" );
         ZonedDateTime now = ZonedDateTime.now( ZoneId.systemDefault() );
-        return workshopRepository.findByShowOnHomepageAndIsActive()
-                                 .stream()
-                                 .min( Comparator.comparing( w -> getClosestWorkshopDateFrom( now, w ) ) )
-                                 .map( workshopMapper::toDto )
-                                 .map( ResponseEntity::ok )
-                                 .orElseGet( () -> ResponseEntity.notFound().build() );
+        List <Workshop> byShowOnHomepageAndIsActive = workshopRepository.findByShowOnHomepageAndIsActive();
+        if ( byShowOnHomepageAndIsActive.isEmpty() ) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok( byShowOnHomepageAndIsActive
+            .stream()
+            .sorted( Comparator.comparing( w -> getClosestWorkshopDateFrom( now, w ) ) )
+            .map( workshopMapper::toDto )
+            .collect( Collectors.toList() ) );
     }
 
     /*
@@ -156,7 +159,8 @@ public class WorkshopResource {
         Optional <WorkshopDTO> workshopDTO =
             workshopRepository.findOneWithEagerRelationships( id )
                               .map( workshop -> {
-                                  if ( workshop.getDates() != null && !workshop.getDates().isEmpty() && BooleanUtils.toBoolean( filterDates ) ) {
+                                  if ( workshop.getDates() != null && !workshop.getDates().isEmpty() && BooleanUtils
+                                      .toBoolean( filterDates ) ) {
                                       log.debug( "Filter out past dates and dates with max subscriptions" );
                                       Set <WorkshopDate> filteredDates =
                                           workshop.getDates()
@@ -190,6 +194,5 @@ public class WorkshopResource {
         return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
                              .build();
     }
-
 
 }

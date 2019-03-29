@@ -33,8 +33,8 @@ export class WorkshopService {
         });
     }
 
-    getHomepageWorkshop(): Observable<EntityResponseType> {
-        return this.http.get<IWorkshop>(`${this.resourceUrl}/homepage`, {
+    getHomepageWorkshops(): Observable<EntityArrayResponseType> {
+        return this.http.get<IWorkshop[]>(`${this.resourceUrl}/homepage`, {
             observe: 'response'
         });
     }

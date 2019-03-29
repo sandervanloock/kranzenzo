@@ -15,7 +15,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class HomeComponent implements OnInit {
     account: Account;
-    workshop: Workshop;
+    workshops: Workshop[] = [];
     homepageImages: HomepageImage[];
     homepageTags: Tag[];
 
@@ -42,8 +42,8 @@ export class HomeComponent implements OnInit {
         this.tagService.query({ homepage: true }).subscribe((data: HttpResponse<ITag[]>) => {
             this.homepageTags = data.body;
         });
-        this.workshopService.getHomepageWorkshop().subscribe((ws: HttpResponse<IWorkshop>) => {
-            this.workshop = ws.body;
+        this.workshopService.getHomepageWorkshops().subscribe((ws: HttpResponse<IWorkshop[]>) => {
+            this.workshops = ws.body;
         });
     }
 

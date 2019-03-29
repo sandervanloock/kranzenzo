@@ -10,7 +10,7 @@
     </div>
 </div>
 <div class="container-fluid">
-    <!-- Section: Homepage image -->
+    <!-- Section: Homepage image
     <section class="text-center py-5 px-2">
         <div>
             <img class="img-fluid" src="https://images.kranzenzo.be/800x1150/pasen-1.jpg" alt="Pasen">
@@ -18,19 +18,21 @@
     </section><!-- Homepage image -->
 
     <!-- Section: Workshops -->
-    <section class="text-center py-5 px-2" *ngIf="workshop">
-        <h2 class="h1-responsive font-weight-bold my-3">Workshop: {{workshop.name}}</h2>
-        <div class="workshops">
-            <p>
-                {{workshop.description}} </p>
-            <div>
-                <img class="img-fluid" *ngIf="workshop.images" [src]="workshop.images[0].endpoint | s3ImageResize: '800x400'" [alt]="workshop.name">
-            </div>
-            <div class="mt-3">
-                <button type="button" class="btn btn-primary" [routerLink]="['/kranzenzo-workshop', workshop.id]">
-                    <fa-icon icon="pencil-alt"></fa-icon>
-                    Schrijf je hier in
-                </button>
+    <section class="row text-center py-5 px-2" *ngIf="workshops">
+        <div class="col-md-6 workshop-wrapper" *ngFor="let workshop of workshops">
+            <h2 class="h1-responsive font-weight-bold my-3">Workshop: {{workshop.name}}</h2>
+            <div class="workshops">
+                <p>
+                    {{workshop.description}} </p>
+                <div>
+                    <img class="img-fluid" *ngIf="workshop.images" [src]="workshop.images[0].endpoint | s3ImageResize: '800x400'" [alt]="workshop.name">
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-primary" [routerLink]="['/kranzenzo-workshop', workshop.id]">
+                        <fa-icon icon="pencil-alt"></fa-icon>
+                        Schrijf je hier in
+                    </button>
+                </div>
             </div>
         </div>
     </section><!-- End Section: Workshops -->

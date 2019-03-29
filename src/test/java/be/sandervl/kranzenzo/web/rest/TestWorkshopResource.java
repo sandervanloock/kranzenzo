@@ -14,10 +14,9 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 
-import java.time.Instant;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -68,8 +67,8 @@ public class TestWorkshopResource {
             dto.setId( ((Workshop) args.getArgument( 0 )).getId() );
             return dto;
         } );
-        ResponseEntity <WorkshopDTO> response = workshopResource.getHomepageWorkshop();
+        ResponseEntity <List <WorkshopDTO>> response = workshopResource.getHomepageWorkshops();
 
-        assertEquals( ws3.getId(), response.getBody().getId() );
+        assertEquals( ws3.getId(), response.getBody().get( 0 ).getId() );
     }
 }
