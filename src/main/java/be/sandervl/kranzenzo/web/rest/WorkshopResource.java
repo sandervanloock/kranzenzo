@@ -108,7 +108,11 @@ public class WorkshopResource {
     @Timed
     public List <WorkshopDTO> getAllWorkshops( @RequestParam(required = false, defaultValue = "false") boolean eagerload ) {
         log.debug( "REST request to get all Workshops" );
-        List <Workshop> workshops = workshopRepository.findAllWithEagerRelationships();
+        List <Workshop> workshops = workshopRepository.findAllWithEagerRelationships()
+                                                      .stream()
+                                                      .peek( workshop -> workshop.getImages()
+                                                                                 .forEach( im -> im.setData( null ) ) )
+                                                      .collect( Collectors.toList() );
         return workshopMapper.toDto( workshops );
     }
 
@@ -127,6 +131,7 @@ public class WorkshopResource {
         return ResponseEntity.ok( byShowOnHomepageAndIsActive
             .stream()
             .sorted( Comparator.comparing( w -> getClosestWorkshopDateFrom( now, w ) ) )
+            .peek( workshop -> workshop.getImages().forEach( im -> im.setData( null ) ) )
             .map( workshopMapper::toDto )
             .collect( Collectors.toList() ) );
     }
@@ -165,11 +170,8 @@ public class WorkshopResource {
                                       Set <WorkshopDate> filteredDates =
                                           workshop.getDates()
                                                   .stream()
-                                                  .filter( date -> date.getDate()
-                                                                       .isAfter( ZonedDateTime.now() ) )
-                                                  .filter( date -> workshopSubscriptionRepository
-                                                      .countByWorkshopAndState( date, SubscriptionState.PAYED ) < workshop
-                                                      .getMaxSubscriptions() )
+                                                  .filter( date -> date.getDate().isAfter( ZonedDateTime.now() ) )
+                                                  .filter( date -> filterMaxSubscriptions( workshop, date ) )
                                                   .collect( Collectors.toSet() );
                                       workshop.setDates( filteredDates );
                                   }
@@ -177,6 +179,12 @@ public class WorkshopResource {
                               } )
                               .map( workshopMapper::toDto );
         return ResponseUtil.wrapOrNotFound( workshopDTO );
+    }
+
+    private boolean filterMaxSubscriptions( Workshop workshop, WorkshopDate date ) {
+        return workshop.getMaxSubscriptions() == null ||
+            workshopSubscriptionRepository.countByWorkshopAndState( date, SubscriptionState.PAYED )
+                < workshop.getMaxSubscriptions();
     }
 
     /**
