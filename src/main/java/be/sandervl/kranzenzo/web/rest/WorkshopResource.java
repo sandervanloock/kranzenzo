@@ -175,6 +175,7 @@ public class WorkshopResource {
                                                   .collect( Collectors.toSet() );
                                       workshop.setDates( filteredDates );
                                   }
+                                  workshop.getImages().forEach( im -> im.setData( null ) );
                                   return workshop;
                               } )
                               .map( workshopMapper::toDto );
