@@ -75,8 +75,10 @@ public class ImageResource {
 
         Image image = imageMapper.toEntity( imageDTO );
         String imageName = String.valueOf(UUID.randomUUID());
-        awsImageUpload.uploadToS3( file.getBytes(), imageName, imageDTO.getDataContentType() )
-                      .ifPresent(image::setEndpoint);
+        if ( file != null && file.getBytes() != null ) {
+            awsImageUpload.uploadToS3( file.getBytes(), imageName, imageDTO.getDataContentType() )
+                          .ifPresent( image::setEndpoint );
+        }
         image = imageRepository.save( image );
         ImageDTO result = imageMapper.toDto( image );
         return ResponseEntity.created( new URI( "/api/images/" + result.getId() ) )
@@ -106,8 +108,10 @@ public class ImageResource {
             awsImageUpload.deleteFromS3( image.getEndpoint() );
         }
         String imageName = String.valueOf( UUID.randomUUID() );
-        awsImageUpload.uploadToS3( file.getBytes(), imageName, imageDTO.getDataContentType() )
-                      .ifPresent( image::setEndpoint );
+        if ( file != null && file.getBytes() != null ) {
+            awsImageUpload.uploadToS3( file.getBytes(), imageName, imageDTO.getDataContentType() )
+                          .ifPresent( image::setEndpoint );
+        }
         image = imageRepository.save( image );
         ImageDTO result = imageMapper.toDto( image );
         return ResponseEntity.ok()
