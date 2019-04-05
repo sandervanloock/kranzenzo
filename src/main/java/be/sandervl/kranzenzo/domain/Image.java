@@ -22,10 +22,6 @@ public class Image implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Lob
-    @Column(name = "data", nullable = false)
-    private byte[] data;
-
     @Column(name = "data_content_type", nullable = false)
     private String dataContentType;
 
@@ -47,19 +43,6 @@ public class Image implements Serializable {
 
     public void setId( Long id ) {
         this.id = id;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData( byte[] data ) {
-        this.data = data;
-    }
-
-    public Image data( byte[] data ) {
-        this.data = data;
-        return this;
     }
 
     public String getEndpoint() {
@@ -139,7 +122,7 @@ public class Image implements Serializable {
     public String toString() {
         return "Image{" +
             "id=" + getId() +
-            ", data='" + getData() + "'" +
+            ", url='" + getEndpoint() + "'" +
             ", dataContentType='" + getDataContentType() + "'" +
             "}";
     }

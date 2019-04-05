@@ -1,6 +1,5 @@
 package be.sandervl.kranzenzo.service.dto;
 
-import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,8 +11,6 @@ public class ImageDTO implements Serializable {
     private Long id;
     private String endpoint;
 
-    @Lob
-    private byte[] data;
     private String dataContentType;
 
     private Long workshopId;
@@ -38,14 +35,6 @@ public class ImageDTO implements Serializable {
 
     public void setEndpoint( String endpoint ) {
         this.endpoint = endpoint;
-    }
-
-    public byte[] getData() {
-        return data;
-    }
-
-    public void setData( byte[] data ) {
-        this.data = data;
     }
 
     public String getDataContentType() {
@@ -113,7 +102,6 @@ public class ImageDTO implements Serializable {
     public String toString() {
         return "ImageDTO{" +
             "id=" + getId() +
-            ", data='" + getData() + "'" +
             ", workshop=" + getWorkshopId() +
             ", workshop='" + getWorkshopName() + "'" +
             ", product=" + getProductId() +

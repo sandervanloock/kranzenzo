@@ -79,7 +79,6 @@ public class ImageResourceIntTest {
      */
     public static Image createEntity( EntityManager em ) {
         Image image = new Image()
-            .data( DEFAULT_DATA )
             .dataContentType( DEFAULT_DATA_CONTENT_TYPE );
         return image;
     }
@@ -116,7 +115,6 @@ public class ImageResourceIntTest {
         List <Image> imageList = imageRepository.findAll();
         assertThat( imageList ).hasSize( databaseSizeBeforeCreate + 1 );
         Image testImage = imageList.get( imageList.size() - 1 );
-        assertThat( testImage.getData() ).isEqualTo( DEFAULT_DATA );
         assertThat( testImage.getDataContentType() ).isEqualTo( DEFAULT_DATA_CONTENT_TYPE );
     }
 
@@ -189,7 +187,6 @@ public class ImageResourceIntTest {
         // Disconnect from session so that the updates on updatedImage are not directly saved in db
         em.detach( updatedImage );
         updatedImage
-            .data( UPDATED_DATA )
             .dataContentType( UPDATED_DATA_CONTENT_TYPE );
         ImageDTO imageDTO = imageMapper.toDto( updatedImage );
 
@@ -202,7 +199,6 @@ public class ImageResourceIntTest {
         List <Image> imageList = imageRepository.findAll();
         assertThat( imageList ).hasSize( databaseSizeBeforeUpdate );
         Image testImage = imageList.get( imageList.size() - 1 );
-        assertThat( testImage.getData() ).isEqualTo( UPDATED_DATA );
         assertThat( testImage.getDataContentType() ).isEqualTo( UPDATED_DATA_CONTENT_TYPE );
     }
 

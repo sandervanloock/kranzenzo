@@ -25,10 +25,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -108,11 +105,7 @@ public class WorkshopResource {
     @Timed
     public List <WorkshopDTO> getAllWorkshops( @RequestParam(required = false, defaultValue = "false") boolean eagerload ) {
         log.debug( "REST request to get all Workshops" );
-        List <Workshop> workshops = workshopRepository.findAllWithEagerRelationships()
-                                                      .stream()
-                                                      .peek( workshop -> workshop.getImages()
-                                                                                 .forEach( im -> im.setData( null ) ) )
-                                                      .collect( Collectors.toList() );
+        List <Workshop> workshops = new ArrayList <>( workshopRepository.findAllWithEagerRelationships() );
         return workshopMapper.toDto( workshops );
     }
 
@@ -131,7 +124,6 @@ public class WorkshopResource {
         return ResponseEntity.ok( byShowOnHomepageAndIsActive
             .stream()
             .sorted( Comparator.comparing( w -> getClosestWorkshopDateFrom( now, w ) ) )
-            .peek( workshop -> workshop.getImages().forEach( im -> im.setData( null ) ) )
             .map( workshopMapper::toDto )
             .collect( Collectors.toList() ) );
     }
@@ -175,7 +167,6 @@ public class WorkshopResource {
                                                   .collect( Collectors.toSet() );
                                       workshop.setDates( filteredDates );
                                   }
-                                  workshop.getImages().forEach( im -> im.setData( null ) );
                                   return workshop;
                               } )
                               .map( workshopMapper::toDto );

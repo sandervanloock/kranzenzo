@@ -24,7 +24,7 @@
             <div class="workshops">
                 <p>
                     {{workshop.description}} </p>
-                <div>
+                <div *ngIf="workshop.images && workshop.images.length">
                     <img class="img-fluid" *ngIf="workshop.images" [src]="workshop.images[0].endpoint | s3ImageResize: '800x400'" [alt]="workshop.name">
                 </div>
                 <div class="mt-3">

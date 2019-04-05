@@ -53,21 +53,21 @@ public class ImageResource {
         throws URISyntaxException, IOException {
         log.debug( "REST request to create raw Image : {}", file );
         ImageDTO imageDTO = new ImageDTO();
-        imageDTO.setData( file.getBytes() );
         imageDTO.setDataContentType( file.getContentType() );
-        return createImage( imageDTO );
+        return createImage( imageDTO, file );
     }
 
     /**
      * POST  /images : Create a new image.
      *
      * @param imageDTO the imageDTO to create
+     * @param file
      * @return the ResponseEntity with status 201 (Created) and with body the new imageDTO, or with status 400 (Bad Request) if the image has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/images")
     @Timed
-    public ResponseEntity <ImageDTO> createImage( @Valid @RequestBody ImageDTO imageDTO ) throws URISyntaxException {
+    public ResponseEntity <ImageDTO> createImage( @Valid @RequestBody ImageDTO imageDTO, MultipartFile file ) throws URISyntaxException, IOException {
         log.debug( "REST request to save Image : {}", imageDTO );
         if ( imageDTO.getId() != null ) {
             throw new BadRequestAlertException( "A new image cannot already have an ID", ENTITY_NAME, "idexists" );
@@ -75,7 +75,7 @@ public class ImageResource {
 
         Image image = imageMapper.toEntity( imageDTO );
         String imageName = String.valueOf(UUID.randomUUID());
-        awsImageUpload.uploadToS3(imageDTO.getData(), imageName, imageDTO.getDataContentType())
+        awsImageUpload.uploadToS3( file.getBytes(), imageName, imageDTO.getDataContentType() )
                       .ifPresent(image::setEndpoint);
         image = imageRepository.save( image );
         ImageDTO result = imageMapper.toDto( image );
@@ -95,21 +95,19 @@ public class ImageResource {
      */
     @PutMapping("/images")
     @Timed
-    public ResponseEntity <ImageDTO> updateImage( @Valid @RequestBody ImageDTO imageDTO ) throws URISyntaxException {
+    public ResponseEntity <ImageDTO> updateImage( @Valid @RequestBody ImageDTO imageDTO, MultipartFile file ) throws URISyntaxException, IOException {
         log.debug( "REST request to update Image : {}", imageDTO );
         if ( imageDTO.getId() == null ) {
             throw new BadRequestAlertException( "Invalid id", ENTITY_NAME, "idnull" );
         }
 
         Image image = imageMapper.toEntity( imageDTO );
-        if (imageDTO.getData() != null){
-            if (StringUtils.isNotBlank(imageDTO.getEndpoint())){
-                awsImageUpload.deleteFromS3(image.getEndpoint());
-            }
-            String imageName = String.valueOf(UUID.randomUUID());
-            awsImageUpload.uploadToS3(imageDTO.getData(), imageName, imageDTO.getDataContentType())
-                          .ifPresent(image::setEndpoint);
+        if ( StringUtils.isNotBlank( imageDTO.getEndpoint() ) ) {
+            awsImageUpload.deleteFromS3( image.getEndpoint() );
         }
+        String imageName = String.valueOf( UUID.randomUUID() );
+        awsImageUpload.uploadToS3( file.getBytes(), imageName, imageDTO.getDataContentType() )
+                      .ifPresent( image::setEndpoint );
         image = imageRepository.save( image );
         ImageDTO result = imageMapper.toDto( image );
         return ResponseEntity.ok()
@@ -127,9 +125,7 @@ public class ImageResource {
     public List <ImageDTO> getAllImages() {
         log.debug( "REST request to get all Images" );
         List <Image> images = imageRepository.findAll();
-        List <ImageDTO> imageDTOS = imageMapper.toDto( images );
-        imageDTOS.forEach( im -> im.setData( null ) );
-        return imageDTOS;
+        return imageMapper.toDto( images );
     }
 
     /**
@@ -144,7 +140,6 @@ public class ImageResource {
         log.debug( "REST request to get Image : {}", id );
         Optional <ImageDTO> imageDTO = imageRepository.findById( id )
                                                       .map( imageMapper::toDto );
-        imageDTO.ifPresent( im -> im.setData( null ) );
         return ResponseUtil.wrapOrNotFound( imageDTO );
     }
 
