@@ -71,8 +71,8 @@
                         </mat-radio-group>
 
                         <!--address-->
-                        <jhi-customer-address *ngIf="this.order.deliveryType === 'DELIVERED'" name="customerAddress" [(ngModel)]="customer" 
-                            (ngModelChange)="updateDeliveryPrice()">
+                        <jhi-customer-address *ngIf="this.order.deliveryType === 'DELIVERED'" name="customerAddress" [(ngModel)]="customer"
+                                              (ngModelChange)="updateDeliveryPrice()">
                         </jhi-customer-address>
 
                         <div class="md-form input-full-width my-1 mx-2" *ngIf="product?.numberOfBatteries">
@@ -125,6 +125,12 @@
                         </div>
                         <span class="text-muted">{{product.price | currency:'EUR':'symbol'}}</span>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed" *ngIf="product.discount">
+                        <div>
+                            <h6 class="my-0">20% Online korting in Mei</h6>
+                        </div>
+                        <span class="text-muted">{{product.discountAmount | currency:'EUR':'symbol'}}</span>
+                    </li>
                     <li class="list-group-item d-flex justify-content-between lh-condensed" *ngIf="this.order.includeBatteries">
                         <div>
                             <h6 class="my-0">Batterijen</h6>
@@ -134,8 +140,8 @@
                         </div>
                         <span class="text-muted">{{product.numberOfBatteries*0.5 | currency:'EUR':'symbol'}}</span>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between lh-condensed" 
-                    *ngIf="this.order.deliveryType == 'DELIVERED'">
+                    <li class="list-group-item d-flex justify-content-between lh-condensed"
+                        *ngIf="this.order.deliveryType == 'DELIVERED'">
                         <div>
                             <h6 class="my-0">Levering</h6>
                             <small class="text-muted" *ngIf="this.order.deliveryPrice">€0,5/km, eerste 10 km is gratis</small>

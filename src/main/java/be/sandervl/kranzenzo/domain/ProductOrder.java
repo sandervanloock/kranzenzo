@@ -226,6 +226,9 @@ public class ProductOrder implements Serializable {
     @JsonIgnore
     public float getTotalPrice() {
         Float result = product.getPrice();
+        if ( product.hasDiscount() ) {
+            result -= product.getDiscountAmount();
+        }
         if ( deliveryType == DeliveryType.DELIVERED ) {
             result += this.deliveryPrice;
         }

@@ -7,6 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -230,6 +232,18 @@ public class Product implements Serializable {
         return this;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public double getDiscount() {
+        return LocalDate.now().getMonth().equals( Month.MAY ) ? 0.2 : 0;
+    }
+
+    public boolean hasDiscount() {
+        return getDiscount() != 0;
+    }
+
+    public int getDiscountAmount() {
+        return (int) (price * getDiscount());
+    }
 
     @Override
     public boolean equals( Object o ) {

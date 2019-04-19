@@ -61,6 +61,9 @@ export class ProductOrderComponent implements OnInit {
 
     getTotalPrice() {
         let price = this.product.price;
+        if (this.product.discount) {
+            price -= this.product.discountAmount;
+        }
         if (this.order.deliveryType === DeliveryType.DELIVERED && this.order.deliveryPrice) {
             price += this.order.deliveryPrice;
         }

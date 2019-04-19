@@ -37,6 +37,8 @@ public class ProductDTO implements Serializable {
 
     private Set<ImageDTO> images = new HashSet<>();
 
+    private double discount;
+
     public Long getId() {
         return id;
     }
@@ -107,6 +109,18 @@ public class ProductDTO implements Serializable {
 
     public void setImages( Set <ImageDTO> images ) {
         this.images = images;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount( double discount ) {
+        this.discount = discount;
+    }
+
+    public int getDiscountAmount() {
+        return (int) (price * getDiscount());
     }
 
     @Override

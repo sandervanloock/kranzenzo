@@ -9,6 +9,8 @@ export interface IProduct {
     description?: string;
     isActive?: boolean;
     numberOfBatteries?: number;
+    discount?: number;
+    discountAmount?: number;
     images?: IImage[];
     orders?: IProductOrder[];
     tags?: ITag[];

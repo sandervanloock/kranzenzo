@@ -24,6 +24,11 @@
         <td th:text="${order.product.name}">Bloemstuk</td>
         <td th:text="${'€'+order.product.price}">€50</td>
     </tr>
+    <tr th:if="${order.product.hasDiscount()}">
+        <td>Online Korting</td>
+        <td th:text="${'-€'+order.product.getDiscountAmount()}">€ 0.5
+        </td>
+    </tr>
     <tr th:if="${order.includeBatteries}">
         <td>Batterijen</td>
         <td th:text="${'€'+T(be.sandervl.kranzenzo.config.Constants).PRICE_FOR_BATTERIES*order.product.numberOfBatteries}">€
