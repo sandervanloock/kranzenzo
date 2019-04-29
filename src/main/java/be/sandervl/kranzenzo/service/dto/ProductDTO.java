@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -35,7 +36,7 @@ public class ProductDTO implements Serializable {
 
     private Set <TagDTO> tags = new HashSet <>();
 
-    private Set<ImageDTO> images = new HashSet<>();
+    private Set <ImageDTO> images = new HashSet <>();
 
     private double discount;
 
@@ -120,7 +121,7 @@ public class ProductDTO implements Serializable {
     }
 
     public int getDiscountAmount() {
-        return (int) (price * getDiscount());
+        return Optional.ofNullable( price ).map( p -> (int) (p * getDiscount()) ).orElse( 0 );
     }
 
     @Override
