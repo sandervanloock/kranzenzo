@@ -22,7 +22,7 @@ public class Image implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "data_content_type", nullable = false)
+    @Column(name = "data_content_type")
     private String dataContentType;
 
     @Column(name = "endpoint")

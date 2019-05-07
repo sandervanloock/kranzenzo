@@ -23,4 +23,8 @@
                                  referencedColumnNames="id"
                                  referencedTableName="workshop"/>
     </changeSet>
+    
+    <changeSet id="201907050939" author="svl">
+        <dropNotNullConstraint tableName="image" columnName="data_content_type"/>
+    </changeSet>
 </databaseChangeLog>
