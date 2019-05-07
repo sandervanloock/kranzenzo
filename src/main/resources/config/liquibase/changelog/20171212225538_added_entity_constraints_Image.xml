@@ -25,6 +25,6 @@
     </changeSet>
     
     <changeSet id="201907050939" author="svl">
-        <dropNotNullConstraint tableName="image" columnName="data_content_type"/>
+        <dropNotNullConstraint tableName="image" columnName="data_content_type" columnDataType="varchar(255)"/>
     </changeSet>
 </databaseChangeLog>
