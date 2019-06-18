@@ -8,12 +8,16 @@ import { CookieModule } from 'ngx-cookie';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
     MatButtonModule,
+    MatChipsModule,
     MatDialogModule,
+    MatGridListModule,
     MatInputModule,
     MatPaginatorIntl,
     MatPaginatorModule,
     MatProgressBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatSliderModule
 } from '@angular/material';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -44,7 +48,11 @@ import { MatPaginatorIntlDutch } from 'app/entities/product/product.service';
         MatCheckboxModule,
         MatPaginatorModule,
         MatProgressBarModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        MatSliderModule,
+        MatGridListModule,
+        MatChipsModule
     ],
     exports: [
         FormsModule,
@@ -64,7 +72,11 @@ import { MatPaginatorIntlDutch } from 'app/entities/product/product.service';
         MatPaginatorModule,
         MatProgressBarModule,
         MatDialogModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        MatSliderModule,
+        MatGridListModule,
+        MatChipsModule
     ],
     providers: [{ provide: MatPaginatorIntl, useClass: MatPaginatorIntlDutch }]
 })

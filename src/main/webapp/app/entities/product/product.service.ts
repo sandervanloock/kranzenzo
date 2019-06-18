@@ -72,14 +72,16 @@ class Pageable {
 }
 
 export class SearchState extends Pageable {
-    constructor(public query?: string, public tagId?: number, public isActive?: boolean) {
+    constructor(public page?: number, public name?: string, public tags?: number, public isActive?: boolean, public sort?: string) {
         super();
     }
 
     toQuery() {
         return (
             super.toQuery() +
-            `tags=${this.tagId ? this.tagId : ''}&name=${this.query ? this.query : ''}&isActive=${this.isActive ? 'true' : ''}`
+            `tags=${this.tags ? this.tags : ''}&name=${this.name ? this.name : ''}&isActive=${this.isActive ? '1' : ''}&sort=${
+                this.sort ? this.sort : ''
+            }`
         );
     }
 }

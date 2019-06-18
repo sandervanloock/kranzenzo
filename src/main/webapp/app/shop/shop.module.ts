@@ -8,10 +8,18 @@ import { ProductDetailComponent } from 'app/shop/product-detail.component';
 import { ProductOrderComponent } from 'app/shop/order/product-order.component';
 import { CustomerAddressComponent } from 'app/shop/order/customer-address.component';
 import { TagOverviewComponent } from 'app/shop/tag-overview.component';
+import { PaginatorComponent } from 'app/shop/paginator.component';
 
 @NgModule({
     imports: [KranzenzoSharedModule, LazyLoadImageModule, RouterModule.forChild(SHOP_ROUTE)],
-    declarations: [OverviewComponent, ProductDetailComponent, ProductOrderComponent, CustomerAddressComponent, TagOverviewComponent],
+    declarations: [
+        OverviewComponent,
+        ProductDetailComponent,
+        ProductOrderComponent,
+        CustomerAddressComponent,
+        TagOverviewComponent,
+        PaginatorComponent
+    ],
     entryComponents: [ProductOrderComponent]
 })
 export class ShopModule {}

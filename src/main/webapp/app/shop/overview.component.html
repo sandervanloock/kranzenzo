@@ -1,69 +1,54 @@
-<div class="container-fluid">
-    <section class="jumbotron text-center" style="margin-bottom: 0">
-        <div class="container">
-            <h1 class="jumbotron-heading">
-                <fa-icon icon="shopping-cart"></fa-icon>
-                Kranzenzo Webwinkel
-            </h1>
-            <p class="lead text-muted">
-                Maak je keuze </p>
-            <!--<p>-->
-            <!--<a href="#" class="btn btn-primary my-2">Main call to action</a>-->
-            <!--<a href="#" class="btn btn-secondary my-2">Secondary action</a>-->
-            <!--</p>-->
-        </div>
-    </section>
+<!--<mat-sidenav #sidenav mode="side" [opened]="this.breakpoint &gt; 3" class="search-container mt-3">--><!--<mat-form-field class="p-2" [floatLabel]="'auto'">--><!--<mat-label>Zoek een product</mat-label>--><!--<input matInput [(ngModel)]="searchState.name" (ngModelChange)="updateSearch()">--><!--<fa-icon icon="search" matSuffix></fa-icon>--><!--</mat-form-field>--><!--<mat-form-field class="p-2" >--><!--<mat-select placeholder="Categorie" [(ngModel)]="searchState.tags" (ngModelChange)="updateSearch()">--><!--<mat-option value=""><i>Geen Categorie</i></mat-option>--><!--<hr/>--><!--<mat-option [value]="tag.id" *ngFor="let tag of tags" style="text-transform: capitalize;">--><!--{{tag.name}}--><!--</mat-option>--><!--</mat-select>--><!--</mat-form-field>--><!--&lt;!&ndash;<div class="p-2">&ndash;&gt;--><!--&lt;!&ndash;<div>Budget</div>&ndash;&gt;--><!--&lt;!&ndash;<mat-slider min="1" max="5" step="0.5" value="1.5"></mat-slider>&ndash;&gt;--><!--&lt;!&ndash;</div>&ndash;&gt;--><!--</mat-sidenav>-->
 
-    <!--Navbar-->
-    <div class="navbar-shop row">
-        <mat-form-field [floatLabel]="'auto'" class="m-2 col-5">
-            <mat-label>Zoek een product</mat-label>
-            <input matInput [(ngModel)]="searchState.query" (ngModelChange)="updateSearch()">
-        </mat-form-field>
-        <mat-form-field class="m-2 col-5">
-            <mat-select placeholder="Categorie" [(ngModel)]="searchState.tagId" (ngModelChange)="updateSearch()">
-                <mat-option value=""><i>Geen Categorie</i></mat-option>
-                <hr/>
-                <mat-option [value]="tag.id" *ngFor="let tag of tags">
-                    {{tag.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div><!--/.Navbar-->
+<!--<p>--><!--<mat-checkbox [(ngModel)]="opened">sidenav.opened</mat-checkbox>--><!--</p>-->
 
-    <div class="row">
-        <mat-paginator class="px-4" [pageIndex]="page.number" [length]="page.size" [pageSize]="10   " (page)="updatePage($event)"></mat-paginator>
-    </div>
+<div fxLayout="row">
+    <mat-select class="col-6 p-4 mat-paginator" placeholder="Sorteer op" [(ngModel)]="searchState.sort" (ngModelChange)="updateSearch()">
+        <mat-option value="created">Recente eerst</mat-option>
+        <mat-option value="price">Prijs</mat-option>
+    </mat-select>
+</div>
 
-    <mat-progress-bar *ngIf="showSpinner" mode="indeterminate" class="my-3"></mat-progress-bar>
-    <div class="row" style="visibility: visible; animation-name: fadeIn;" *ngIf="!showSpinner">
-        <div *ngFor="let item of items" class="col-lg-3 col-md-6 mb-4">
-            <mat-card class="card" routerLink="product/{{item.id}}" style="cursor:pointer">
-                <!--<a routerLink="product/{{item.id}}" routerLinkActive="active" class="card-image-link">-->
-                <mat-card-header>
-                    <mat-card-title style="text-transform: capitalize">{{item.name}}</mat-card-title>
+<div fxLayout="row">
+    <jhi-paginator [page]="this.page" (updatePage)="updatePage($event)"></jhi-paginator>
+</div>
+
+<mat-progress-bar *ngIf="showSpinner" mode="indeterminate" class="my-3"></mat-progress-bar>
+<mat-grid-list [cols]="breakpoint" rowHeight="1:1.2" (window:resize)="onResize($event)" style="visibility: visible; animation-name: fadeIn;" *ngIf="!showSpinner">
+    <mat-grid-tile *ngFor="let item of items" class="col-lg-3 col-md-6 mb-4">
+        <mat-card class="card" routerLink="product/{{item.id}}" style="cursor:pointer">
+            <mat-card-header>
+                <div class="mat-card-header-text">
+                    <mat-card-title style="text-transform: capitalize; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                        {{item.name}}
+                    </mat-card-title>
                     <mat-card-subtitle>{{item.price | currency:'EUR':'symbol'}}</mat-card-subtitle>
-                </mat-card-header>
-                <mat-card-content>
-                    <picture *ngIf="item.images.length">
-                        <source media="(min-width: 1200px)" class="card-img-top" [attr.lazyLoad]="item.images[0].endpoint | s3ImageResize: '400x200'" attr.defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo">
-                        <source media="(min-width: 992px)" class="card-img-top" [attr.lazyLoad]="item.images[0].endpoint | s3ImageResize: '800x400'" attr.defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo">
-                        <img mat-card-image [lazyLoad]="item.images[0].endpoint | s3ImageResize: '400x200'" defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo" class="card-img-top" [alt]="item.name" offset="300">
-                    </picture>
-                    <picture *ngIf="item.images.length==0">
-                        <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text='+item.name">
-                        <source media="(max-width: 992px)" class="card-img-top" [srcset]="'https://via.placeholder.com/800x400?text='+item.name">
-                        <img mat-card-image [lazyLoad]="'https://via.placeholder.com/400x200?text='+item.name" class="card-img-top" [alt]="item.name" offset="300">
-                    </picture>
-                    <p class="card-text">
-                        {{item.description ? item.description : '&nbsp;'}} </p>
-                </mat-card-content>
-                <!--</a>-->
-            </mat-card>
-        </div>
-    </div>
+                </div>
+            </mat-card-header>
+            <picture *ngIf="item.images.length">
+                <source media="(min-width: 1200px)" class="card-img-top" [attr.lazyLoad]="item.images[0].endpoint | s3ImageResize: '400x200'" attr.defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo">
+                <source media="(min-width: 992px)" class="card-img-top" [attr.lazyLoad]="item.images[0].endpoint | s3ImageResize: '800x400'" attr.defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo">
+                <img mat-card-image [lazyLoad]="item.images[0].endpoint | s3ImageResize: '400x200'" defaultImage="https://via.placeholder.com/20x10?text=Kranzenzo" class="card-img-top" [alt]="item.name" offset="300">
+            </picture>
+            <picture *ngIf="item.images.length==0">
+                <source media="(min-width: 1200px)" class="card-img-top" [srcset]="'https://via.placeholder.com/400x200?text='+item.name">
+                <source media="(max-width: 992px)" class="card-img-top" [srcset]="'https://via.placeholder.com/800x400?text='+item.name">
+                <img mat-card-image [lazyLoad]="'https://via.placeholder.com/400x200?text='+item.name" class="card-img-top" [alt]="item.name" offset="300">
+            </picture>
+            <mat-card-content>
+                <p class="card-text">
+                    {{item.description ? item.description : '&nbsp;'}} </p>
+                <mat-chip-list class="product-categories">
+                    <mat-chip *ngFor="let tag of item.tags">{{tag.name}}</mat-chip>
+                </mat-chip-list>
+                <mat-card-footer class="float-right" *ngIf="item.created">
+                    <small class="px-2">{{item.created | date}}</small>
+                </mat-card-footer>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+</mat-grid-list>
 
-    <div class="row">
-        <mat-paginator class="px-4" [pageIndex]="page.number" [length]="page.size" [pageSize]="10" (page)="updatePage($event)"></mat-paginator>
-    </div>
+<div fxLayout="row" class="my-2">
+    <jhi-paginator [page]="this.page" (updatePage)="updatePage($event)"></jhi-paginator>
 </div>

@@ -25,47 +25,29 @@ a:hover {
 
 .card-text {
     max-height: 2rem;
+    max-width: 350px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.m-block__content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    text-shadow: 2px 2px #4a3948;
-    text-align: center;
-    z-index: 21;
-    color: white;
-    width: 300px;
+.search-container {
+    display: flex;
+    flex-direction: column;
 }
 
-.m-block__title {
-    font-size: 2.1875rem;
-    line-height: 1.8125rem;
+.card {
+    margin: 1rem;
 }
 
-.m-block__image {
-    height: 290px;
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-    display: block;
+.product-categories {
+    text-transform: capitalize;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
-.m-block__image img {
-    min-height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 1;
-}
-
-.m-block__image img:hover {
-    opacity: 0.8;
+div.mat-chip-list-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
 }

@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Principal } from 'app/core';
 import { Page, ProductService } from 'app/entities/product';
 import { IProduct, Product } from 'app/shared/model/product.model';
 import { HttpResponse } from '@angular/common/http';
-import { ITag } from 'app/shared/model/tag.model';
 import { TagService } from 'app/entities/tag';
 import { SearchState } from 'app/entities/product/product.service';
 import { PageEvent } from '@angular/material';
@@ -13,15 +12,15 @@ import { PageEvent } from '@angular/material';
 @Component({
     selector: 'jhi-overview',
     templateUrl: './overview.component.html',
-    styleUrls: ['overview.css']
+    styleUrls: ['overview.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class OverviewComponent implements OnInit {
     items: Product[] = [];
     page: Page<Product> = new Page<Product>(0, 0, []);
     searchState: SearchState;
     showSpinner = true;
-
-    tags: ITag[];
+    breakpoint: number;
 
     constructor(
         private principal: Principal,
@@ -33,11 +32,23 @@ export class OverviewComponent implements OnInit {
 
     ngOnInit() {
         const queryParams: Params = Object.assign({}, this.route.snapshot.queryParams);
-        this.searchState = new SearchState(queryParams['query'], parseInt(queryParams['tag'], 10), true);
+        this.searchState = new SearchState(
+            parseInt(queryParams['page'], 10),
+            queryParams['name'],
+            parseInt(queryParams['tags'], 10),
+            true,
+            queryParams['sort']
+        );
         this.reloadState();
-        this.tagService.query().subscribe((res: HttpResponse<ITag[]>) => {
-            this.tags = res.body;
-        });
+        this.breakpoint = this.getNumberOfBreakpointsFromWidth(window.innerWidth);
+    }
+
+    onResize(event) {
+        this.breakpoint = this.getNumberOfBreakpointsFromWidth(event.target.innerWidth);
+    }
+
+    private getNumberOfBreakpointsFromWidth(width) {
+        return width <= 650 ? 1 : width <= 800 ? 2 : width <= 995 ? 3 : 4;
     }
 
     updateSearch() {
