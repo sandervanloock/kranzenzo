@@ -6,7 +6,8 @@ language: node_js
 node_js:
     - 8.11.4
 jdk:
-    - openjdk8
+    - oraclejdk8
+dist: trusty
 sudo: false
 cache:
     directories:
@@ -22,7 +23,7 @@ env:
         -   secure: BlgGnHnsEVbYuB8981OYkiOQCQfqthAoKXjNQH3AX9y4fxqFSK4UoHNoFoUyAg8aP5yIuKlvB8Y5vCHFpZKqXMNpfgzgh0CAvT/iuQkZXhjILnIUsXaqoZCrlTFfi/vN4SuvCxGHY3pzV1hwtF5wV+uklUP6a8P3Z6zd4tlW8HWPnCootqp9vK2xPwIf9X2ei0gKlTvMunyTOeTE4+HIZeBcwT6Tp7X9Desg+ijSykHLz5kkK1LUxiqmAQ7kPQpNLLVwnSJAQtSzp/IE1AiI6jMxSHUfGeyoZSFiAtRGAKPEFMQnZp7Lo/rb96dlWB9K1FSjo1BwL91K28k0QChdYlnQ7syKfRzxoIr2TiZEzMrcZBx8+m/Bg/wLfWZcWquFZwylpGD9YutcXSPUJfUcR7jKS3OyETucjNmQmfuEMoHj6HpZGKqDREsXrEkR6CYDUnResKzBcGQqgX4ywjqgpa50FNfg3gBTevL2ubkV2b3gNoKj+BJcjKlBIh9XPGcz1+Zz5rahj99Evlp4BRDZuccEF3OPM3dOywQDiDVrhxCVVyl6lbSG1tmTp6uiXwdfh3IuFip53JxvKU0YWP4eb88RwSitZsNz9GyOF19IzFAQmzycp08fcpvds1t3WBvm0sAKQ/Qt+IwJQ4K9XUOoK4ph4o9Qml6TOrM0agAFKP8=
         -   secure: lYf4amMLXMN61BalmQvvLYhV8Pj1km1LaViVINWHO1A/T1j/qfa8vdubL3kG21OZDTPZHxEgq69/jBldN2djssVtAcn3c30zvFJUdJDzcmAQlhBFgK4aw4N8HU3d63Ey1Ky5rrnMrjYUCDvs45qD3b+7KWcGNO8mj22nHmDzljm2PjQ9bOL+rGvk7+HA05GF/v9NcXl2L3YXbayYHRCYY0ChQDfv5279pjYs2j4rlJO3Itv/n5/OYbQZ8owE4Z4lgN+boPvlqBU+/isUwE9MLS/rbS+GHhB5b1sNoCc5SPWa8qONyfTxHzM4wIB2vUF3nU/LaZtsZNqCn0PsCaLVufZQsOJTv1/0QojChob9fK5Q3kv63DfI4zh8v9aoCSBUdV+vp5AspyoJmyBTKDXXC/zk8Y70/RLcnutVhVX2NE3QXbsGsFmqGp1RkBBlCsqTPzB3lEoCjXrhYue8Bl2TpBPVJmonOu5odWMlLiMA5QFy8mRxXBmwMm+hI0M/cp5cVlBj1ytXeq7jxk/bpOcRI7dvheT9yDAXteMUds3t+A0QMLbZOtwqJGQatNBigfXFgVr2BXcdbG3HzVFCRcO7aREYLYKa/TvciPSqG2P2cTGJj5SpxBqnApU/Xs/dmIHEwIs+WstC/xiS1YCkAGR8ZKNS7J3a65+CbiFx+vdOSoY=
 before_install:
-    - jdk_switcher use openjdk8
+    - jdk_switcher use oraclejdk8
     - java -version
     - sudo /etc/init.d/mysql stop
     - sudo /etc/init.d/postgresql stop
