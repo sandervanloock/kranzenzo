@@ -8,7 +8,7 @@ import { HttpResponse } from '@angular/common/http';
 @Component({
     selector: 'jhi-tag-overview',
     templateUrl: './tag-overview.component.html',
-    styleUrls: ['overview.css']
+    styleUrls: ['overview.css', 'tag-overview.css']
 })
 export class TagOverviewComponent implements OnInit {
     tags: ITag[] = [];
