@@ -60,6 +60,7 @@ public class CacheConfiguration {
             cm.createCache( be.sandervl.kranzenzo.domain.WorkshopDate.class
                 .getName() + ".subscriptions", jcacheConfiguration );
             cm.createCache( be.sandervl.kranzenzo.domain.WorkshopSubscription.class.getName(), jcacheConfiguration );
+            cm.createCache( be.sandervl.kranzenzo.domain.HomepageSettings.class.getName(), jcacheConfiguration );
             // jhipster-needle-ehcache-add-entry
         };
     }

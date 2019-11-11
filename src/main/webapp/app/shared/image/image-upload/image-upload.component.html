@@ -3,8 +3,7 @@
     <input type="file" id="photo" name="photo" ng2FileSelect
            [uploader]="uploader" (change)="onFileSelected()"/>
 </label>
-<br/>
-<small>Voeg één foto toe voor deze groep</small>
+<br/><small>Voeg een foto toe</small>
 <div class="row">
     <div *ngFor="let image of imageEndpoints" class="col">
         <div class="mt-2">

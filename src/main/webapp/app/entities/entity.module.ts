@@ -9,13 +9,14 @@ import { KranzenzoLocationModule } from './location/location.module';
 import { KranzenzoWorkshopModule } from './workshop/workshop.module';
 import { KranzenzoWorkshopDateModule } from './workshop-date/workshop-date.module';
 import { KranzenzoWorkshopSubscriptionModule } from './workshop-subscription/workshop-subscription.module';
+import { HomepageModule } from 'app/entities/homepage/homepage.module';
 
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
     // prettier-ignore
     imports: [KranzenzoProductModule, KranzenzoImageModule, KranzenzoTagModule, KranzenzoCustomerModule, KranzenzoProductOrderModule, KranzenzoLocationModule,
-                         KranzenzoWorkshopModule, KranzenzoWorkshopDateModule, KranzenzoWorkshopSubscriptionModule,
+              KranzenzoWorkshopModule, KranzenzoWorkshopDateModule, KranzenzoWorkshopSubscriptionModule, HomepageModule,
                    /* jhipster-needle-add-entity-module - JHipster will add entity modules here */],
     declarations: [],
     entryComponents: [],

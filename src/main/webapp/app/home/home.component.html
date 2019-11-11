@@ -12,8 +12,12 @@
 <div class="container-fluid">
     <!-- Section: Homepage image -->
         <section class="text-center py-5 px-2">
-            <div>
-                <img class="img-fluid" src="https://images.kranzenzo.be/800x1150/kerstopendeur.jpg" alt="Kerstopendeur">
+            <div *ngIf="this.homepageSettings">
+                <h2>{{this.homepageSettings.title}}</h2>
+                <img *ngIf="this.homepageSettings.image" [alt]="this.homepageSettings.title" [src]="this.homepageSettings.image.endpoint | s3ImageResize: '800x1150'" class="img-fluid">
+                <p *ngIf="this.homepageSettings.description">
+                    {{this.homepageSettings.description}}
+                </p>
             </div>
         </section>
     <!-- Homepage image -->
