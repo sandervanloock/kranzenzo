@@ -2,143 +2,131 @@ package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.domain.Tag;
 import be.sandervl.kranzenzo.repository.TagRepository;
+import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kranzenzo.service.dto.TagDTO;
 import be.sandervl.kranzenzo.service.mapper.TagMapper;
-import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
-import be.sandervl.kranzenzo.web.rest.util.HeaderUtil;
-import com.codahale.metrics.annotation.Timed;
+
+import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional; 
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
- * REST controller for managing Tag.
+ * REST controller for managing {@link be.sandervl.kranzenzo.domain.Tag}.
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class TagResource {
 
+    private final Logger log = LoggerFactory.getLogger(TagResource.class);
+
     private static final String ENTITY_NAME = "tag";
-    private final Logger log = LoggerFactory.getLogger( TagResource.class );
+
+    @Value("${jhipster.clientApp.name}")
+    private String applicationName;
+
     private final TagRepository tagRepository;
 
     private final TagMapper tagMapper;
 
-    public TagResource( TagRepository tagRepository, TagMapper tagMapper ) {
+    public TagResource(TagRepository tagRepository, TagMapper tagMapper) {
         this.tagRepository = tagRepository;
         this.tagMapper = tagMapper;
     }
 
     /**
-     * POST  /tags : Create a new tag.
+     * {@code POST  /tags} : Create a new tag.
      *
-     * @param tagDTO the tagDTO to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new tagDTO, or with status 400 (Bad Request) if the tag has already an ID
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param tagDTO the tagDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new tagDTO, or with status {@code 400 (Bad Request)} if the tag has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/tags")
-    @Timed
-    public ResponseEntity <TagDTO> createTag( @Valid @RequestBody TagDTO tagDTO ) throws URISyntaxException {
-        log.debug( "REST request to save Tag : {}", tagDTO );
-        if ( tagDTO.getId() != null ) {
-            throw new BadRequestAlertException( "A new tag cannot already have an ID", ENTITY_NAME, "idexists" );
+    public ResponseEntity<TagDTO> createTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
+        log.debug("REST request to save Tag : {}", tagDTO);
+        if (tagDTO.getId() != null) {
+            throw new BadRequestAlertException("A new tag cannot already have an ID", ENTITY_NAME, "idexists");
         }
-
-        Tag tag = tagMapper.toEntity( tagDTO );
-        tag = tagRepository.save( tag );
-        TagDTO result = tagMapper.toDto( tag );
-        return ResponseEntity.created( new URI( "/api/tags/" + result.getId() ) )
-                             .headers( HeaderUtil.createEntityCreationAlert( ENTITY_NAME, result.getId().toString() ) )
-                             .body( result );
+        Tag tag = tagMapper.toEntity(tagDTO);
+        tag = tagRepository.save(tag);
+        TagDTO result = tagMapper.toDto(tag);
+        return ResponseEntity.created(new URI("/api/tags/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
     }
 
     /**
-     * PUT  /tags : Updates an existing tag.
+     * {@code PUT  /tags} : Updates an existing tag.
      *
-     * @param tagDTO the tagDTO to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated tagDTO,
-     * or with status 400 (Bad Request) if the tagDTO is not valid,
-     * or with status 500 (Internal Server Error) if the tagDTO couldn't be updated
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @param tagDTO the tagDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated tagDTO,
+     * or with status {@code 400 (Bad Request)} if the tagDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the tagDTO couldn't be updated.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/tags")
-    @Timed
-    public ResponseEntity <TagDTO> updateTag( @Valid @RequestBody TagDTO tagDTO ) throws URISyntaxException {
-        log.debug( "REST request to update Tag : {}", tagDTO );
-        if ( tagDTO.getId() == null ) {
-            throw new BadRequestAlertException( "Invalid id", ENTITY_NAME, "idnull" );
+    public ResponseEntity<TagDTO> updateTag(@Valid @RequestBody TagDTO tagDTO) throws URISyntaxException {
+        log.debug("REST request to update Tag : {}", tagDTO);
+        if (tagDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-
-        Tag tag = tagMapper.toEntity( tagDTO );
-        tag = tagRepository.save( tag );
-        TagDTO result = tagMapper.toDto( tag );
+        Tag tag = tagMapper.toEntity(tagDTO);
+        tag = tagRepository.save(tag);
+        TagDTO result = tagMapper.toDto(tag);
         return ResponseEntity.ok()
-                             .headers( HeaderUtil.createEntityUpdateAlert( ENTITY_NAME, tagDTO.getId().toString() ) )
-                             .body( result );
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, tagDTO.getId().toString()))
+            .body(result);
     }
 
     /**
-     * GET  /tags : get all the tags.
+     * {@code GET  /tags} : get all the tags.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of tags in body
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tags in body.
      */
     @GetMapping("/tags")
-    @Timed
-    public List <TagDTO> getAllTags(
-        @RequestParam(required = false, name = "homepage") Boolean homepage,
-        @RequestParam(required = false, name = "parentId") Long parentId
-    ) {
-        log.debug( "REST request to get all Tags" );
-        List <Tag> tags = tagRepository.findAll();
-        Stream<Tag> tagStream = tags.stream();
-        if ( homepage != null ) {
-            tagStream = tagStream.filter( tag -> tag.getHomepage() != null && tag.getHomepage().equals( homepage ) );
-        }
-        if ( parentId != null ) {
-            tagStream = tagStream.filter( tag -> tag.getParent() != null && tag.getParent().getId()
-                                                                               .equals( parentId ) );
-        }
-        return tagMapper.toDto( tagStream.collect( Collectors.toList() ) );
+    public List<TagDTO> getAllTags() {
+        log.debug("REST request to get all Tags");
+        List<Tag> tags = tagRepository.findAll();
+        return tagMapper.toDto(tags);
     }
 
     /**
-     * GET  /tags/:id : get the "id" tag.
+     * {@code GET  /tags/:id} : get the "id" tag.
      *
-     * @param id the id of the tagDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the tagDTO, or with status 404 (Not Found)
+     * @param id the id of the tagDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the tagDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/tags/{id}")
-    @Timed
-    public ResponseEntity <TagDTO> getTag( @PathVariable Long id ) {
-        log.debug( "REST request to get Tag : {}", id );
-        Optional <TagDTO> tagDTO = tagRepository.findById( id )
-                                                .map( tagMapper::toDto );
-        return ResponseUtil.wrapOrNotFound( tagDTO );
+    public ResponseEntity<TagDTO> getTag(@PathVariable Long id) {
+        log.debug("REST request to get Tag : {}", id);
+        Optional<TagDTO> tagDTO = tagRepository.findById(id)
+            .map(tagMapper::toDto);
+        return ResponseUtil.wrapOrNotFound(tagDTO);
     }
 
     /**
-     * DELETE  /tags/:id : delete the "id" tag.
+     * {@code DELETE  /tags/:id} : delete the "id" tag.
      *
-     * @param id the id of the tagDTO to delete
-     * @return the ResponseEntity with status 200 (OK)
+     * @param id the id of the tagDTO to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/tags/{id}")
-    @Timed
-    public ResponseEntity <Void> deleteTag( @PathVariable Long id ) {
-        log.debug( "REST request to delete Tag : {}", id );
-
-        tagRepository.deleteById( id );
-        return ResponseEntity.ok().headers( HeaderUtil.createEntityDeletionAlert( ENTITY_NAME, id.toString() ) )
-                             .build();
+    public ResponseEntity<Void> deleteTag(@PathVariable Long id) {
+        log.debug("REST request to delete Tag : {}", id);
+        tagRepository.deleteById(id);
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 }

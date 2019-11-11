@@ -1,13 +1,11 @@
 package be.sandervl.kranzenzo.service.dto;
-
+import java.time.ZonedDateTime;
+import java.io.Serializable;
+import java.util.Objects;
 import be.sandervl.kranzenzo.domain.enumeration.SubscriptionState;
 
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Objects;
-
 /**
- * A DTO for the WorkshopSubscription entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.WorkshopSubscription} entity.
  */
 public class WorkshopSubscriptionDTO implements Serializable {
 
@@ -17,17 +15,16 @@ public class WorkshopSubscriptionDTO implements Serializable {
 
     private SubscriptionState state;
 
+
     private Long workshopId;
 
     private String workshopDate;
-
-    private UserDTO user;
 
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,7 +32,7 @@ public class WorkshopSubscriptionDTO implements Serializable {
         return created;
     }
 
-    public void setCreated( ZonedDateTime created ) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 
@@ -43,7 +40,7 @@ public class WorkshopSubscriptionDTO implements Serializable {
         return state;
     }
 
-    public void setState( SubscriptionState state ) {
+    public void setState(SubscriptionState state) {
         this.state = state;
     }
 
@@ -51,7 +48,7 @@ public class WorkshopSubscriptionDTO implements Serializable {
         return workshopId;
     }
 
-    public void setWorkshopId( Long workshopDateId ) {
+    public void setWorkshopId(Long workshopDateId) {
         this.workshopId = workshopDateId;
     }
 
@@ -59,36 +56,29 @@ public class WorkshopSubscriptionDTO implements Serializable {
         return workshopDate;
     }
 
-    public void setWorkshopDate( String workshopDateDate ) {
+    public void setWorkshopDate(String workshopDateDate) {
         this.workshopDate = workshopDateDate;
     }
 
-    public UserDTO getUser() {
-        return user;
-    }
-    public void setUser( UserDTO user ) {
-        this.user = user;
-    }
-
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         WorkshopSubscriptionDTO workshopSubscriptionDTO = (WorkshopSubscriptionDTO) o;
-        if ( workshopSubscriptionDTO.getId() == null || getId() == null ) {
+        if (workshopSubscriptionDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), workshopSubscriptionDTO.getId() );
+        return Objects.equals(getId(), workshopSubscriptionDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override

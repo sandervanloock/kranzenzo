@@ -1,26 +1,26 @@
 {
-    "kranzenzoApp": {
-        "tag": {
-            "home": {
-                "title": "Groepen",
-                "createLabel": "Maak een nieuwe groep",
-                "createOrEditLabel": "Maak of wijzig een groep",
-                "search": "Zoek een groep"
-            },
-            "created": "Een nieuwe groep is aangemaakt met id {{ param }}",
-            "updated": "Een groep met id {{ param }} is gewijzigd",
-            "deleted": "Een groep met id {{ param }} is verwijderd",
-            "delete": {
-                "question": "Bent u zeker dat u groep {{ id }} wilt verwijderen?"
-            },
-            "detail": {
-                "title": "Groep"
-            },
-            "name": "Naam",
-            "tags": "Groepen",
-            "image": "Afbeelding",
-            "homepage": "Toon op homepagina",
-            "parent": "Hoofdgroep"
-        }
+  "kranzenzoApp": {
+    "tag": {
+      "home": {
+        "title": "Tags",
+        "createLabel": "Maak een nieuwe Tag",
+        "createOrEditLabel": "Maak of wijzig een Tag",
+        "notFound": "No Tags found"
+      },
+      "created": "A new Tag is created with identifier {{ param }}",
+      "updated": "A Tag is updated with identifier {{ param }}",
+      "deleted": "A Tag is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Tag {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Tag"
+      },
+      "name": "Name",
+      "homepage": "Homepage",
+      "workshops": "Workshops",
+      "products": "Products",
+      "image": "Image"
     }
+  }
 }

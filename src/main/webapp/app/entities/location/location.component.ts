@@ -1,58 +1,41 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { ILocation } from 'app/shared/model/location.model';
-import { Principal } from 'app/core';
 import { LocationService } from './location.service';
 
 @Component({
-    selector: 'jhi-location',
-    templateUrl: './location.component.html'
+  selector: 'jhi-location',
+  templateUrl: './location.component.html'
 })
 export class LocationComponent implements OnInit, OnDestroy {
-    locations: ILocation[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  locations: ILocation[];
+  eventSubscriber: Subscription;
 
-    constructor(
-        private locationService: LocationService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {}
+  constructor(protected locationService: LocationService, protected eventManager: JhiEventManager) {}
 
-    loadAll() {
-        this.locationService.query().subscribe(
-            (res: HttpResponse<ILocation[]>) => {
-                this.locations = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-    }
+  loadAll() {
+    this.locationService.query().subscribe((res: HttpResponse<ILocation[]>) => {
+      this.locations = res.body;
+    });
+  }
 
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInLocations();
-    }
+  ngOnInit() {
+    this.loadAll();
+    this.registerChangeInLocations();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnDestroy() {
+    this.eventManager.destroy(this.eventSubscriber);
+  }
 
-    trackId(index: number, item: ILocation) {
-        return item.id;
-    }
+  trackId(index: number, item: ILocation) {
+    return item.id;
+  }
 
-    registerChangeInLocations() {
-        this.eventSubscriber = this.eventManager.subscribe('locationListModification', response => this.loadAll());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  registerChangeInLocations() {
+    this.eventSubscriber = this.eventManager.subscribe('locationListModification', () => this.loadAll());
+  }
 }

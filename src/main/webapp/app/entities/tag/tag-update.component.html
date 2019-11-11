@@ -1,45 +1,44 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
             <h2 id="jhi-tag-heading" jhiTranslate="kranzenzoApp.tag.home.createOrEditLabel">Create or edit a Tag</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!tag.id">
+                <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" [(ngModel)]="tag.id" readonly/>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.tag.name" for="field_name">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="tag.name" required/>
-                    <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name').invalid && (editForm.get('name').dirty || editForm.get('name').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.tag.homepage" for="field_homepage">Homepage</label>
-                    <input type="checkbox" class="form-control" name="homepage" id="field_homepage" [(ngModel)]="tag.homepage"/>
+                    <input type="checkbox" class="form-control" name="homepage" id="field_homepage"
+                           formControlName="homepage"/>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.tag.parent" for="field_parent">Parent</label>
-                    <select class="form-control" id="field_parent" name="parent" [(ngModel)]="tag.parentId">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.tag.image" for="field_image">Image</label>
+                    <select class="form-control" id="field_image" name="image" formControlName="imageId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="tagOption.id" *ngFor="let tagOption of tags">
-                            {{tagOption.name}}
-                        </option>
+                        <option [ngValue]="ImageOption.id" *ngFor="let ImageOption of images; trackBy: trackImageById">{{ImageOption.id}}</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <jhi-image-upload [images]="tag.image ? [tag.image] : []"></jhi-image-upload>
                 </div>
             </div>
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>

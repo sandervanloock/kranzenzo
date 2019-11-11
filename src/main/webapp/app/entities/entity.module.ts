@@ -1,25 +1,47 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-
-import { KranzenzoProductModule } from './product/product.module';
-import { KranzenzoImageModule } from './image/image.module';
-import { KranzenzoTagModule } from './tag/tag.module';
-import { KranzenzoCustomerModule } from './customer/customer.module';
-import { KranzenzoProductOrderModule } from './product-order/product-order.module';
-import { KranzenzoLocationModule } from './location/location.module';
-import { KranzenzoWorkshopModule } from './workshop/workshop.module';
-import { KranzenzoWorkshopDateModule } from './workshop-date/workshop-date.module';
-import { KranzenzoWorkshopSubscriptionModule } from './workshop-subscription/workshop-subscription.module';
-
-/* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-    // prettier-ignore
-    imports: [KranzenzoProductModule, KranzenzoImageModule, KranzenzoTagModule, KranzenzoCustomerModule, KranzenzoProductOrderModule, KranzenzoLocationModule,
-                         KranzenzoWorkshopModule, KranzenzoWorkshopDateModule, KranzenzoWorkshopSubscriptionModule,
-                   /* jhipster-needle-add-entity-module - JHipster will add entity modules here */],
-    declarations: [],
-    entryComponents: [],
-    providers: [],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [
+    RouterModule.forChild([
+      {
+        path: 'product',
+        loadChildren: () => import('./product/product.module').then(m => m.KranzenzoProductModule)
+      },
+      {
+        path: 'image',
+        loadChildren: () => import('./image/image.module').then(m => m.KranzenzoImageModule)
+      },
+      {
+        path: 'tag',
+        loadChildren: () => import('./tag/tag.module').then(m => m.KranzenzoTagModule)
+      },
+      {
+        path: 'customer',
+        loadChildren: () => import('./customer/customer.module').then(m => m.KranzenzoCustomerModule)
+      },
+      {
+        path: 'product-order',
+        loadChildren: () => import('./product-order/product-order.module').then(m => m.KranzenzoProductOrderModule)
+      },
+      {
+        path: 'location',
+        loadChildren: () => import('./location/location.module').then(m => m.KranzenzoLocationModule)
+      },
+      {
+        path: 'workshop',
+        loadChildren: () => import('./workshop/workshop.module').then(m => m.KranzenzoWorkshopModule)
+      },
+      {
+        path: 'workshop-date',
+        loadChildren: () => import('./workshop-date/workshop-date.module').then(m => m.KranzenzoWorkshopDateModule)
+      },
+      {
+        path: 'workshop-subscription',
+        loadChildren: () => import('./workshop-subscription/workshop-subscription.module').then(m => m.KranzenzoWorkshopSubscriptionModule)
+      }
+      /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
+    ])
+  ]
 })
 export class KranzenzoEntityModule {}

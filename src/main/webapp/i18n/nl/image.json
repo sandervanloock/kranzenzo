@@ -1,23 +1,25 @@
 {
-    "kranzenzoApp": {
-        "image": {
-            "home": {
-                "title": "Afbeeldingen",
-                "createLabel": "Afbeelding toevoegen",
-                "createOrEditLabel": "Maak of wijzig een Afbeelding",
-                "search": "Search for Afbeelding"
-            },
-            "created": "A new Afbeelding is created with identifier {{ param }}",
-            "updated": "A Afbeelding is updated with identifier {{ param }}",
-            "deleted": "A Afbeelding is deleted with identifier {{ param }}",
-            "delete": {
-                "question": "Bent u zeker dat u Afbeelding {{ id }} wilt verwijderen?"
-            },
-            "detail": {
-                "title": "Afbeelding"
-            },
-            "data": "Data",
-            "product": "Product"
-        }
+  "kranzenzoApp": {
+    "image": {
+      "home": {
+        "title": "Images",
+        "createLabel": "Maak een nieuwe Image",
+        "createOrEditLabel": "Maak of wijzig een Image",
+        "notFound": "No Images found"
+      },
+      "created": "A new Image is created with identifier {{ param }}",
+      "updated": "A Image is updated with identifier {{ param }}",
+      "deleted": "A Image is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Image {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Image"
+      },
+      "data": "Data",
+      "endpoint": "Endpoint",
+      "workshop": "Workshop",
+      "product": "Product"
     }
+  }
 }

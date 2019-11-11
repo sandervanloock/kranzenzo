@@ -1,58 +1,41 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { ICustomer } from 'app/shared/model/customer.model';
-import { Principal } from 'app/core';
 import { CustomerService } from './customer.service';
 
 @Component({
-    selector: 'jhi-customer',
-    templateUrl: './customer.component.html'
+  selector: 'jhi-customer',
+  templateUrl: './customer.component.html'
 })
 export class CustomerComponent implements OnInit, OnDestroy {
-    customers: ICustomer[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
+  customers: ICustomer[];
+  eventSubscriber: Subscription;
 
-    constructor(
-        private customerService: CustomerService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private principal: Principal
-    ) {}
+  constructor(protected customerService: CustomerService, protected eventManager: JhiEventManager) {}
 
-    loadAll() {
-        this.customerService.query().subscribe(
-            (res: HttpResponse<ICustomer[]>) => {
-                this.customers = res.body;
-            },
-            (res: HttpErrorResponse) => this.onError(res.message)
-        );
-    }
+  loadAll() {
+    this.customerService.query().subscribe((res: HttpResponse<ICustomer[]>) => {
+      this.customers = res.body;
+    });
+  }
 
-    ngOnInit() {
-        this.loadAll();
-        this.principal.identity().then(account => {
-            this.currentAccount = account;
-        });
-        this.registerChangeInCustomers();
-    }
+  ngOnInit() {
+    this.loadAll();
+    this.registerChangeInCustomers();
+  }
 
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
+  ngOnDestroy() {
+    this.eventManager.destroy(this.eventSubscriber);
+  }
 
-    trackId(index: number, item: ICustomer) {
-        return item.id;
-    }
+  trackId(index: number, item: ICustomer) {
+    return item.id;
+  }
 
-    registerChangeInCustomers() {
-        this.eventSubscriber = this.eventManager.subscribe('customerListModification', response => this.loadAll());
-    }
-
-    private onError(errorMessage: string) {
-        this.jhiAlertService.error(errorMessage, null, null);
-    }
+  registerChangeInCustomers() {
+    this.eventSubscriber = this.eventManager.subscribe('customerListModification', () => this.loadAll());
+  }
 }

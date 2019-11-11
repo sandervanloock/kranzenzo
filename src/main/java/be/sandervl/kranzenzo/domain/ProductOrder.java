@@ -1,29 +1,23 @@
 package be.sandervl.kranzenzo.domain;
-
-import be.sandervl.kranzenzo.domain.enumeration.DeliveryType;
-import be.sandervl.kranzenzo.domain.enumeration.OrderState;
-import be.sandervl.kranzenzo.domain.enumeration.PaymentType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Objects;
 
-import static be.sandervl.kranzenzo.config.Constants.PRICE_FOR_BATTERIES;
+import be.sandervl.kranzenzo.domain.enumeration.OrderState;
+
+import be.sandervl.kranzenzo.domain.enumeration.DeliveryType;
+
+import be.sandervl.kranzenzo.domain.enumeration.PaymentType;
 
 /**
  * A ProductOrder.
  */
 @Entity
 @Table(name = "jhi_order")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class ProductOrder implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,21 +27,21 @@ public class ProductOrder implements Serializable {
     private Long id;
 
     @Column(name = "created")
-    private ZonedDateTime created = ZonedDateTime.now();
+    private ZonedDateTime created;
 
     @Column(name = "updated")
-    private ZonedDateTime updated = ZonedDateTime.now();
+    private ZonedDateTime updated;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
-    private OrderState state = OrderState.NEW;
+    private OrderState state;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "delivery_type")
-    private DeliveryType deliveryType = DeliveryType.PICKUP;
+    private DeliveryType deliveryType;
 
     @Column(name = "include_batteries")
-    private Boolean includeBatteries = false;
+    private Boolean includeBatteries;
 
     @Size(max = 5000)
     @Column(name = "description", length = 5000)
@@ -60,19 +54,20 @@ public class ProductOrder implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_type", nullable = false)
-    private PaymentType paymentType = PaymentType.CASH;
+    private PaymentType paymentType;
 
-    @ManyToOne
-    @JsonIgnoreProperties("orders")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("productOrders")
     private Customer customer;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Location deliveryAddress;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @NotNull
-    @JsonIgnoreProperties("orders")
+    @JsonIgnoreProperties("productOrders")
     private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -80,7 +75,7 @@ public class ProductOrder implements Serializable {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -88,64 +83,64 @@ public class ProductOrder implements Serializable {
         return created;
     }
 
-    public void setCreated( ZonedDateTime created ) {
-        this.created = created;
-    }
-
-    public ProductOrder created( ZonedDateTime created ) {
+    public ProductOrder created(ZonedDateTime created) {
         this.created = created;
         return this;
+    }
+
+    public void setCreated(ZonedDateTime created) {
+        this.created = created;
     }
 
     public ZonedDateTime getUpdated() {
         return updated;
     }
 
-    public void setUpdated( ZonedDateTime updated ) {
-        this.updated = updated;
-    }
-
-    public ProductOrder updated( ZonedDateTime updated ) {
+    public ProductOrder updated(ZonedDateTime updated) {
         this.updated = updated;
         return this;
+    }
+
+    public void setUpdated(ZonedDateTime updated) {
+        this.updated = updated;
     }
 
     public OrderState getState() {
         return state;
     }
 
-    public void setState( OrderState state ) {
-        this.state = state;
-    }
-
-    public ProductOrder state( OrderState state ) {
+    public ProductOrder state(OrderState state) {
         this.state = state;
         return this;
+    }
+
+    public void setState(OrderState state) {
+        this.state = state;
     }
 
     public DeliveryType getDeliveryType() {
         return deliveryType;
     }
 
-    public void setDeliveryType( DeliveryType deliveryType ) {
-        this.deliveryType = deliveryType;
-    }
-
-    public ProductOrder deliveryType( DeliveryType deliveryType ) {
+    public ProductOrder deliveryType(DeliveryType deliveryType) {
         this.deliveryType = deliveryType;
         return this;
+    }
+
+    public void setDeliveryType(DeliveryType deliveryType) {
+        this.deliveryType = deliveryType;
     }
 
     public Boolean isIncludeBatteries() {
         return includeBatteries;
     }
 
-    public ProductOrder includeBatteries( Boolean includeBatteries ) {
+    public ProductOrder includeBatteries(Boolean includeBatteries) {
         this.includeBatteries = includeBatteries;
         return this;
     }
 
-    public void setIncludeBatteries( Boolean includeBatteries ) {
+    public void setIncludeBatteries(Boolean includeBatteries) {
         this.includeBatteries = includeBatteries;
     }
 
@@ -153,112 +148,95 @@ public class ProductOrder implements Serializable {
         return description;
     }
 
-    public void setDescription( String description ) {
-        this.description = description;
-    }
-
-    public ProductOrder description( String description ) {
+    public ProductOrder description(String description) {
         this.description = description;
         return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Float getDeliveryPrice() {
         return deliveryPrice;
     }
 
-    public void setDeliveryPrice( Float deliveryPrice ) {
-        this.deliveryPrice = deliveryPrice;
-    }
-
-    public ProductOrder deliveryPrice( Float deliveryPrice ) {
+    public ProductOrder deliveryPrice(Float deliveryPrice) {
         this.deliveryPrice = deliveryPrice;
         return this;
+    }
+
+    public void setDeliveryPrice(Float deliveryPrice) {
+        this.deliveryPrice = deliveryPrice;
     }
 
     public PaymentType getPaymentType() {
         return paymentType;
     }
 
-    public void setPaymentType( PaymentType paymentType ) {
-        this.paymentType = paymentType;
-    }
-
-    public ProductOrder paymentType( PaymentType paymentType ) {
+    public ProductOrder paymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
         return this;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
     }
 
     public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer( Customer customer ) {
-        this.customer = customer;
-    }
-
-    public ProductOrder customer( Customer customer ) {
+    public ProductOrder customer(Customer customer) {
         this.customer = customer;
         return this;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public Location getDeliveryAddress() {
         return deliveryAddress;
     }
 
-    public void setDeliveryAddress( Location location ) {
-        this.deliveryAddress = location;
-    }
-
-    public ProductOrder deliveryAddress( Location location ) {
+    public ProductOrder deliveryAddress(Location location) {
         this.deliveryAddress = location;
         return this;
+    }
+
+    public void setDeliveryAddress(Location location) {
+        this.deliveryAddress = location;
     }
 
     public Product getProduct() {
         return product;
     }
 
-    public void setProduct( Product product ) {
-        this.product = product;
-    }
-
-    @Transient
-    @JsonIgnore
-    public float getTotalPrice() {
-        Float result = product.getPrice();
-        if ( deliveryType == DeliveryType.DELIVERED ) {
-            result += this.deliveryPrice;
-        }
-        if ( includeBatteries ) {
-            result += PRICE_FOR_BATTERIES * product.getNumberOfBatteries();
-        }
-        return result;
-    }
-
-    public ProductOrder product( Product product ) {
+    public ProductOrder product(Product product) {
         this.product = product;
         return this;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (!(o instanceof ProductOrder)) {
             return false;
         }
-        ProductOrder productOrder = (ProductOrder) o;
-        if ( productOrder.getId() == null || getId() == null ) {
-            return false;
-        }
-        return Objects.equals( getId(), productOrder.getId() );
+        return id != null && id.equals(((ProductOrder) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return 31;
     }
 
     @Override

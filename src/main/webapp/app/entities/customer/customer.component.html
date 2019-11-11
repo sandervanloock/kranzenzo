@@ -3,43 +3,62 @@
         <span jhiTranslate="kranzenzoApp.customer.home.title">Customers</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-customer" [routerLink]="['/customer/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span jhiTranslate="kranzenzoApp.customer.home.createLabel">
-            Create new Customer
+            <span  jhiTranslate="kranzenzoApp.customer.home.createLabel">
+            Create a new Customer
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="customers">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="customers?.length === 0">
+        <span jhiTranslate="kranzenzoApp.customer.home.notFound">No customers found</span>
+    </div>
+    <div class="table-responsive" *ngIf="customers?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-                <th><span jhiTranslate="kranzenzoApp.user.name">Naam</span></th>
-                <th><span jhiTranslate="kranzenzoApp.user.email">Email</span></th>
-                <th><span jhiTranslate="kranzenzoApp.customer.zipCode">Zip Code</span></th>
-                <th></th>
+            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.customer.street">Street</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.customer.city">City</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.customer.zipCode">Zip Code</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.customer.province">Province</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.customer.phoneNumber">Phone Number</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.customer.address">Address</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let customer of customers ;trackBy: trackId">
-                <td>{{customer.user.firstName + ' ' + customer.user.lastName}}</td>
-                <td>{{customer.user.email}}</td>
+                <td><a [routerLink]="['/customer', customer.id, 'view' ]">{{customer.id}}</a></td>
+                <td>{{customer.street}}</td>
+                <td>{{customer.city}}</td>
                 <td>{{customer.zipCode}}</td>
+                <td>{{customer.province}}</td>
+                <td>{{customer.phoneNumber}}</td>
+                <td>
+                    <div *ngIf="customer.addressId">
+                        <a [routerLink]="['/location', customer.addressId , 'view' ]" >{{customer.addressId}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit" [routerLink]="['/customer', customer.id, 'view' ]"
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/customer', customer.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit" [routerLink]="['/customer', customer.id, 'edit']"
+                        <button type="submit"
+                                [routerLink]="['/customer', customer.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'customer/'+ customer.id + '/delete'} }]"
-                                replaceUrl="true" queryParamsHandling="merge"
+                                [routerLink]="['/customer', { outlets: { popup: customer.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

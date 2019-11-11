@@ -3,22 +3,26 @@
         <span jhiTranslate="kranzenzoApp.location.home.title">Locations</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-location" [routerLink]="['/location/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span jhiTranslate="kranzenzoApp.location.home.createLabel">
-            Create new Location
+            <span  jhiTranslate="kranzenzoApp.location.home.createLabel">
+            Create a new Location
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="locations">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="locations?.length === 0">
+        <span jhiTranslate="kranzenzoApp.location.home.notFound">No locations found</span>
+    </div>
+    <div class="table-responsive" *ngIf="locations?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="kranzenzoApp.location.latitude">Latitude</span></th>
-                <th><span jhiTranslate="kranzenzoApp.location.longitude">Longitude</span></th>
-                <th><span jhiTranslate="kranzenzoApp.location.description">Description</span></th>
-                <th></th>
+            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.location.latitude">Latitude</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.location.longitude">Longitude</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.location.description">Description</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -28,20 +32,23 @@
                 <td>{{location.longitude}}</td>
                 <td>{{location.description}}</td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit" [routerLink]="['/location', location.id, 'view' ]"
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/location', location.id, 'view' ]"
                                 class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit" [routerLink]="['/location', location.id, 'edit']"
+                        <button type="submit"
+                                [routerLink]="['/location', location.id, 'edit']"
                                 class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'location/'+ location.id + '/delete'} }]"
-                                replaceUrl="true" queryParamsHandling="merge"
+                                [routerLink]="['/location', { outlets: { popup: location.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
                                 class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>

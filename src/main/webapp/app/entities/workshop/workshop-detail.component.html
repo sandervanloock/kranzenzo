@@ -9,14 +9,6 @@
                 <dd>
                     <span>{{workshop.name}}</span>
                 </dd>
-                <dt><span jhiTranslate="kranzenzoApp.workshop.price">Price</span></dt>
-                <dd>
-                    <span>{{workshop.price | currency:'EUR':'symbol'}}</span>
-                </dd>
-                <dt><span jhiTranslate="kranzenzoApp.workshop.durationInMinutes">Duration In Minutes</span></dt>
-                <dd>
-                    <span>{{workshop.durationInMinutes}}</span>
-                </dd>
                 <dt><span jhiTranslate="kranzenzoApp.workshop.description">Description</span></dt>
                 <dd>
                     <span>{{workshop.description}}</span>
@@ -29,17 +21,25 @@
                 <dd>
                     <span>{{workshop.includedInPrice}}</span>
                 </dd>
+                <dt><span jhiTranslate="kranzenzoApp.workshop.durationInMinutes">Duration In Minutes</span></dt>
+                <dd>
+                    <span>{{workshop.durationInMinutes}}</span>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.workshop.price">Price</span></dt>
+                <dd>
+                    <span>{{workshop.price}}</span>
+                </dd>
                 <dt><span jhiTranslate="kranzenzoApp.workshop.maxSubscriptions">Max Subscriptions</span></dt>
                 <dd>
                     <span>{{workshop.maxSubscriptions}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.workshop.isActive">Is Active</span></dt>
                 <dd>
-                    <span><input type="checkbox" readonly disabled [checked]="workshop.isActive"/></span>
+                    <span>{{workshop.isActive}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.workshop.showOnHomepage">Show On Homepage</span></dt>
                 <dd>
-                    <span><input type="checkbox" readonly disabled [checked]="workshop.showOnHomepage"/></span>
+                    <span>{{workshop.showOnHomepage}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.workshop.tags">Tags</span></dt>
                 <dd>
@@ -47,21 +47,17 @@
                         <a [routerLink]="['/tag', tags?.id, 'view' ]">{{tags.name}}</a>{{last ? '' : ', '}}
                     </span>
                 </dd>
-                <dt><span jhiTranslate="kranzenzoApp.workshopDate.home.title">Data</span></dt>
-                <dd>
-                    <div class="list-group" role="group" aria-label="Inschrijvingen">
-                        <a href="#" class="list-group-item list-group-item-action" [routerLink]="['/workshop-date', date.id, 'view' ]"
-                           *ngFor="let date of workshop.dates">
-                            {{date.date | date:'dd-MM-yyyy HH:mm'}} </a>
-                    </div>
-                </dd>
             </dl>
 
-            <button type="submit" (click)="previousState()" class="btn btn-info">
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-            <button type="button" [routerLink]="['/workshop', workshop.id, 'edit']" class="btn btn-primary">
+            <button type="button"
+                    [routerLink]="['/workshop', workshop.id, 'edit']"
+                    class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>

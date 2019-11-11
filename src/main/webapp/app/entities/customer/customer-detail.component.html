@@ -5,14 +5,6 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="kranzenzoApp.user.name">Name</span></dt>
-                <dd>
-                    <span>{{customer.user.firstName + ' ' + customer.user.lastName}}</span>
-                </dd>
-                <dt><span jhiTranslate="kranzenzoApp.user.email">Email</span></dt>
-                <dd>
-                    <span>{{customer.user.email}}</span>
-                </dd>
                 <dt><span jhiTranslate="kranzenzoApp.customer.street">Street</span></dt>
                 <dd>
                     <span>{{customer.street}}</span>
@@ -33,13 +25,23 @@
                 <dd>
                     <span>{{customer.phoneNumber}}</span>
                 </dd>
+                <dt><span jhiTranslate="kranzenzoApp.customer.address">Address</span></dt>
+                <dd>
+                    <div *ngIf="customer.addressId">
+                        <a [routerLink]="['/location', customer.addressId, 'view']">{{customer.addressId}}</a>
+                    </div>
+                </dd>
             </dl>
 
-            <button type="submit" (click)="previousState()" class="btn btn-info">
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-            <button type="button" [routerLink]="['/customer', customer.id, 'edit']" class="btn btn-primary">
+            <button type="button"
+                    [routerLink]="['/customer', customer.id, 'edit']"
+                    class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>

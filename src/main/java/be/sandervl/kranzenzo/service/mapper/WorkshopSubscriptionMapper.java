@@ -1,29 +1,29 @@
 package be.sandervl.kranzenzo.service.mapper;
 
-import be.sandervl.kranzenzo.domain.WorkshopSubscription;
+import be.sandervl.kranzenzo.domain.*;
 import be.sandervl.kranzenzo.service.dto.WorkshopSubscriptionDTO;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+
+import org.mapstruct.*;
 
 /**
- * Mapper for the entity WorkshopSubscription and its DTO WorkshopSubscriptionDTO.
+ * Mapper for the entity {@link WorkshopSubscription} and its DTO {@link WorkshopSubscriptionDTO}.
  */
-@Mapper(componentModel = "spring", uses = {WorkshopDateMapper.class, UserMapper.class})
-public interface WorkshopSubscriptionMapper extends EntityMapper <WorkshopSubscriptionDTO, WorkshopSubscription> {
+@Mapper(componentModel = "spring", uses = {WorkshopDateMapper.class})
+public interface WorkshopSubscriptionMapper extends EntityMapper<WorkshopSubscriptionDTO, WorkshopSubscription> {
 
     @Mapping(source = "workshop.id", target = "workshopId")
     @Mapping(source = "workshop.date", target = "workshopDate")
-    WorkshopSubscriptionDTO toDto( WorkshopSubscription workshopSubscription );
+    WorkshopSubscriptionDTO toDto(WorkshopSubscription workshopSubscription);
 
     @Mapping(source = "workshopId", target = "workshop")
-    WorkshopSubscription toEntity( WorkshopSubscriptionDTO workshopSubscriptionDTO );
+    WorkshopSubscription toEntity(WorkshopSubscriptionDTO workshopSubscriptionDTO);
 
-    default WorkshopSubscription fromId( Long id ) {
-        if ( id == null ) {
+    default WorkshopSubscription fromId(Long id) {
+        if (id == null) {
             return null;
         }
         WorkshopSubscription workshopSubscription = new WorkshopSubscription();
-        workshopSubscription.setId( id );
+        workshopSubscription.setId(id);
         return workshopSubscription;
     }
 }

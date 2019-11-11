@@ -1,19 +1,16 @@
 package be.sandervl.kranzenzo.domain;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Image.
  */
 @Entity
 @Table(name = "image")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Image implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -22,6 +19,7 @@ public class Image implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    
     @Lob
     @Column(name = "data", nullable = false)
     private byte[] data;
@@ -32,11 +30,11 @@ public class Image implements Serializable {
     @Column(name = "endpoint")
     private String endpoint;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("images")
     private Workshop workshop;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties("images")
     private Product product;
 
@@ -45,7 +43,7 @@ public class Image implements Serializable {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -53,86 +51,82 @@ public class Image implements Serializable {
         return data;
     }
 
-    public void setData( byte[] data ) {
-        this.data = data;
-    }
-
-    public Image data( byte[] data ) {
+    public Image data(byte[] data) {
         this.data = data;
         return this;
     }
 
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint( String endpoint ) {
-        this.endpoint = endpoint;
-    }
-
-    public Image endpoint( String endpoint ) {
-        this.endpoint = endpoint;
-        return this;
+    public void setData(byte[] data) {
+        this.data = data;
     }
 
     public String getDataContentType() {
         return dataContentType;
     }
 
-    public void setDataContentType( String dataContentType ) {
+    public Image dataContentType(String dataContentType) {
+        this.dataContentType = dataContentType;
+        return this;
+    }
+
+    public void setDataContentType(String dataContentType) {
         this.dataContentType = dataContentType;
     }
 
-    public Image dataContentType( String dataContentType ) {
-        this.dataContentType = dataContentType;
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public Image endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
     public Workshop getWorkshop() {
         return workshop;
     }
 
-    public void setWorkshop( Workshop workshop ) {
-        this.workshop = workshop;
-    }
-
-    public Image workshop( Workshop workshop ) {
+    public Image workshop(Workshop workshop) {
         this.workshop = workshop;
         return this;
+    }
+
+    public void setWorkshop(Workshop workshop) {
+        this.workshop = workshop;
     }
 
     public Product getProduct() {
         return product;
     }
 
-    public void setProduct( Product product ) {
-        this.product = product;
-    }
-
-    public Image product( Product product ) {
+    public Image product(Product product) {
         this.product = product;
         return this;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (!(o instanceof Image)) {
             return false;
         }
-        Image image = (Image) o;
-        if ( image.getId() == null || getId() == null ) {
-            return false;
-        }
-        return Objects.equals( getId(), image.getId() );
+        return id != null && id.equals(((Image) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return 31;
     }
 
     @Override
@@ -141,6 +135,7 @@ public class Image implements Serializable {
             "id=" + getId() +
             ", data='" + getData() + "'" +
             ", dataContentType='" + getDataContentType() + "'" +
+            ", endpoint='" + getEndpoint() + "'" +
             "}";
     }
 }

@@ -1,5 +1,3 @@
-import 'hammerjs';
-
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ProdConfig } from './blocks/config/prod.config';
 import { KranzenzoAppModule } from './app.module';
@@ -7,10 +5,11 @@ import { KranzenzoAppModule } from './app.module';
 ProdConfig();
 
 if (module['hot']) {
-    module['hot'].accept();
+  module['hot'].accept();
 }
 
 platformBrowserDynamic()
-    .bootstrapModule(KranzenzoAppModule, { preserveWhitespaces: true })
-    .then(success => console.log(`Application started`))
-    .catch(err => console.error(err));
+  .bootstrapModule(KranzenzoAppModule, { preserveWhitespaces: true })
+  // eslint-disable-next-line no-console
+  .then(() => console.log('Application started'))
+  .catch(err => console.error(err));

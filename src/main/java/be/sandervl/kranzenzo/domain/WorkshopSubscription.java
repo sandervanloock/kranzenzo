@@ -1,21 +1,18 @@
 package be.sandervl.kranzenzo.domain;
-
-import be.sandervl.kranzenzo.domain.enumeration.SubscriptionState;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Objects;
+
+import be.sandervl.kranzenzo.domain.enumeration.SubscriptionState;
 
 /**
  * A WorkshopSubscription.
  */
 @Entity
 @Table(name = "workshop_subscription")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class WorkshopSubscription implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,20 +28,16 @@ public class WorkshopSubscription implements Serializable {
     @Column(name = "state")
     private SubscriptionState state;
 
-    @ManyToOne
-    @JsonIgnoreProperties("subscriptions")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties("workshopSubscriptions")
     private WorkshopDate workshop;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,72 +45,56 @@ public class WorkshopSubscription implements Serializable {
         return created;
     }
 
-    public void setCreated( ZonedDateTime created ) {
-        this.created = created;
-    }
-
-    public WorkshopSubscription created( ZonedDateTime created ) {
+    public WorkshopSubscription created(ZonedDateTime created) {
         this.created = created;
         return this;
+    }
+
+    public void setCreated(ZonedDateTime created) {
+        this.created = created;
     }
 
     public SubscriptionState getState() {
         return state;
     }
 
-    public void setState( SubscriptionState state ) {
-        this.state = state;
-    }
-
-    public WorkshopSubscription state( SubscriptionState state ) {
+    public WorkshopSubscription state(SubscriptionState state) {
         this.state = state;
         return this;
+    }
+
+    public void setState(SubscriptionState state) {
+        this.state = state;
     }
 
     public WorkshopDate getWorkshop() {
         return workshop;
     }
 
-    public void setWorkshop( WorkshopDate workshopDate ) {
-        this.workshop = workshopDate;
-    }
-
-    public WorkshopSubscription workshop( WorkshopDate workshopDate ) {
+    public WorkshopSubscription workshop(WorkshopDate workshopDate) {
         this.workshop = workshopDate;
         return this;
     }
 
-    public User getUser() {
-        return user;
+    public void setWorkshop(WorkshopDate workshopDate) {
+        this.workshop = workshopDate;
     }
-    public void setUser( User user ) {
-        this.user = user;
-    }
-    public WorkshopSubscription user( User user ) {
-        this.user = user;
-        return this;
-    }
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (!(o instanceof WorkshopSubscription)) {
             return false;
         }
-        WorkshopSubscription workshopSubscription = (WorkshopSubscription) o;
-        if ( workshopSubscription.getId() == null || getId() == null ) {
-            return false;
-        }
-        return Objects.equals( getId(), workshopSubscription.getId() );
+        return id != null && id.equals(((WorkshopSubscription) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return 31;
     }
 
     @Override

@@ -1,18 +1,14 @@
 package be.sandervl.kranzenzo.service.dto;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Customer entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.Customer} entity.
  */
 public class CustomerDTO implements Serializable {
 
     private Long id;
-
-    private UserDTO user;
 
     private String street;
 
@@ -26,30 +22,22 @@ public class CustomerDTO implements Serializable {
 
     private String phoneNumber;
 
-    private Float latitude;
-    private Float longitude;
-    private String description;
+
+    private Long addressId;
 
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-    public void setUser( UserDTO user ) {
-        this.user = user;
     }
 
     public String getStreet() {
         return street;
     }
 
-    public void setStreet( String street ) {
+    public void setStreet(String street) {
         this.street = street;
     }
 
@@ -57,7 +45,7 @@ public class CustomerDTO implements Serializable {
         return city;
     }
 
-    public void setCity( String city ) {
+    public void setCity(String city) {
         this.city = city;
     }
 
@@ -65,7 +53,7 @@ public class CustomerDTO implements Serializable {
         return zipCode;
     }
 
-    public void setZipCode( Integer zipCode ) {
+    public void setZipCode(Integer zipCode) {
         this.zipCode = zipCode;
     }
 
@@ -73,7 +61,7 @@ public class CustomerDTO implements Serializable {
         return province;
     }
 
-    public void setProvince( String province ) {
+    public void setProvince(String province) {
         this.province = province;
     }
 
@@ -81,53 +69,37 @@ public class CustomerDTO implements Serializable {
         return phoneNumber;
     }
 
-    public void setPhoneNumber( String phoneNumber ) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public Float getLatitude() {
-        return latitude;
+    public Long getAddressId() {
+        return addressId;
     }
 
-    public void setLatitude( Float latitude ) {
-        this.latitude = latitude;
-    }
-
-    public Float getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude( Float longitude ) {
-        this.longitude = longitude;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription( String description ) {
-        this.description = description;
+    public void setAddressId(Long locationId) {
+        this.addressId = locationId;
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         CustomerDTO customerDTO = (CustomerDTO) o;
-        if ( customerDTO.getId() == null || getId() == null ) {
+        if (customerDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), customerDTO.getId() );
+        return Objects.equals(getId(), customerDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override
@@ -139,6 +111,7 @@ public class CustomerDTO implements Serializable {
             ", zipCode=" + getZipCode() +
             ", province='" + getProvince() + "'" +
             ", phoneNumber='" + getPhoneNumber() + "'" +
+            ", address=" + getAddressId() +
             "}";
     }
 }

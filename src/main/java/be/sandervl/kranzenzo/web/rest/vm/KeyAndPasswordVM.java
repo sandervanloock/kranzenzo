@@ -13,7 +13,7 @@ public class KeyAndPasswordVM {
         return key;
     }
 
-    public void setKey( String key ) {
+    public void setKey(String key) {
         this.key = key;
     }
 
@@ -21,7 +21,7 @@ public class KeyAndPasswordVM {
         return newPassword;
     }
 
-    public void setNewPassword( String newPassword ) {
+    public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
     }
 }

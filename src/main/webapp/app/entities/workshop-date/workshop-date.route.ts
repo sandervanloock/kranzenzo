@@ -1,89 +1,90 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot, Routes } from '@angular/router';
-import { UserRouteAccessService } from 'app/core';
-import { of } from 'rxjs';
+import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IWorkshopDate, WorkshopDate } from 'app/shared/model/workshop-date.model';
+import { WorkshopDate } from 'app/shared/model/workshop-date.model';
 import { WorkshopDateService } from './workshop-date.service';
 import { WorkshopDateComponent } from './workshop-date.component';
 import { WorkshopDateDetailComponent } from './workshop-date-detail.component';
 import { WorkshopDateUpdateComponent } from './workshop-date-update.component';
 import { WorkshopDateDeletePopupComponent } from './workshop-date-delete-dialog.component';
+import { IWorkshopDate } from 'app/shared/model/workshop-date.model';
 
 @Injectable({ providedIn: 'root' })
 export class WorkshopDateResolve implements Resolve<IWorkshopDate> {
-    constructor(private service: WorkshopDateService) {}
+  constructor(private service: WorkshopDateService) {}
 
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        const id = route.params['id'] ? route.params['id'] : null;
-        if (id) {
-            return this.service.find(id).pipe(map((workshopDate: HttpResponse<WorkshopDate>) => workshopDate.body));
-        }
-        return of(new WorkshopDate());
+  resolve(route: ActivatedRouteSnapshot): Observable<IWorkshopDate> {
+    const id = route.params['id'];
+    if (id) {
+      return this.service.find(id).pipe(map((workshopDate: HttpResponse<WorkshopDate>) => workshopDate.body));
     }
+    return of(new WorkshopDate());
+  }
 }
 
 export const workshopDateRoute: Routes = [
-    {
-        path: 'workshop-date',
-        component: WorkshopDateComponent,
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kranzenzoApp.workshopDate.home.title'
-        },
-        canActivate: [UserRouteAccessService]
+  {
+    path: '',
+    component: WorkshopDateComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kranzenzoApp.workshopDate.home.title'
     },
-    {
-        path: 'workshop-date/:id/view',
-        component: WorkshopDateDetailComponent,
-        resolve: {
-            workshopDate: WorkshopDateResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kranzenzoApp.workshopDate.home.title'
-        },
-        canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/view',
+    component: WorkshopDateDetailComponent,
+    resolve: {
+      workshopDate: WorkshopDateResolve
     },
-    {
-        path: 'workshop-date/new',
-        component: WorkshopDateUpdateComponent,
-        resolve: {
-            workshopDate: WorkshopDateResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kranzenzoApp.workshopDate.home.title'
-        },
-        canActivate: [UserRouteAccessService]
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kranzenzoApp.workshopDate.home.title'
     },
-    {
-        path: 'workshop-date/:id/edit',
-        component: WorkshopDateUpdateComponent,
-        resolve: {
-            workshopDate: WorkshopDateResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kranzenzoApp.workshopDate.home.title'
-        },
-        canActivate: [UserRouteAccessService]
-    }
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'new',
+    component: WorkshopDateUpdateComponent,
+    resolve: {
+      workshopDate: WorkshopDateResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kranzenzoApp.workshopDate.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: ':id/edit',
+    component: WorkshopDateUpdateComponent,
+    resolve: {
+      workshopDate: WorkshopDateResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kranzenzoApp.workshopDate.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  }
 ];
 
 export const workshopDatePopupRoute: Routes = [
-    {
-        path: 'workshop-date/:id/delete',
-        component: WorkshopDateDeletePopupComponent,
-        resolve: {
-            workshopDate: WorkshopDateResolve
-        },
-        data: {
-            authorities: ['ROLE_USER'],
-            pageTitle: 'kranzenzoApp.workshopDate.home.title'
-        },
-        canActivate: [UserRouteAccessService],
-        outlet: 'popup'
-    }
+  {
+    path: ':id/delete',
+    component: WorkshopDateDeletePopupComponent,
+    resolve: {
+      workshopDate: WorkshopDateResolve
+    },
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'kranzenzoApp.workshopDate.home.title'
+    },
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
+  }
 ];

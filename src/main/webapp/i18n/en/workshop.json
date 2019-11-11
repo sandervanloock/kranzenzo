@@ -1,32 +1,33 @@
 {
-    "kranzenzoApp": {
-        "workshop": {
-            "home": {
-                "title": "Workshops",
-                "createLabel": "Create a new Workshop",
-                "createOrEditLabel": "Create or edit a Workshop"
-            },
-            "created": "A new Workshop is created with identifier {{ param }}",
-            "updated": "A Workshop is updated with identifier {{ param }}",
-            "deleted": "A Workshop is deleted with identifier {{ param }}",
-            "delete": {
-                "question": "Are you sure you want to delete Workshop {{ id }}?"
-            },
-            "detail": {
-                "title": "Workshop"
-            },
-            "name": "Name",
-            "description": "Description",
-            "neededMaterials": "Needed Materials",
-            "includedInPrice": "Included In Price",
-            "durationInMinutes": "Duration In Minutes",
-            "price": "Price",
-            "maxSubscriptions": "Max Subscriptions",
-            "isActive": "Is Active",
-            "showOnHomepage": "Show On Homepage",
-            "dates": "Dates",
-            "images": "Images",
-            "tags": "Tags"
-        }
+  "kranzenzoApp": {
+    "workshop": {
+      "home": {
+        "title": "Workshops",
+        "createLabel": "Create a new Workshop",
+        "createOrEditLabel": "Create or edit a Workshop",
+        "notFound": "No Workshops found"
+      },
+      "created": "A new Workshop is created with identifier {{ param }}",
+      "updated": "A Workshop is updated with identifier {{ param }}",
+      "deleted": "A Workshop is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Workshop {{ id }}?"
+      },
+      "detail": {
+        "title": "Workshop"
+      },
+      "name": "Name",
+      "description": "Description",
+      "neededMaterials": "Needed Materials",
+      "includedInPrice": "Included In Price",
+      "durationInMinutes": "Duration In Minutes",
+      "price": "Price",
+      "maxSubscriptions": "Max Subscriptions",
+      "isActive": "Is Active",
+      "showOnHomepage": "Show On Homepage",
+      "dates": "Dates",
+      "images": "Images",
+      "tags": "Tags"
     }
+  }
 }

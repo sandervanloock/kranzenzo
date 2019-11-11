@@ -1,31 +1,24 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { KranzenzoSharedModule } from 'app/shared';
-import {
-    WorkshopComponent,
-    WorkshopDeleteDialogComponent,
-    WorkshopDeletePopupComponent,
-    WorkshopDetailComponent,
-    workshopPopupRoute,
-    workshopRoute,
-    WorkshopUpdateComponent
-} from './';
-import { S3ImageResizePipe } from 'app/shared/util/s3-image-resize.pipe';
+import { KranzenzoSharedModule } from 'app/shared/shared.module';
+import { WorkshopComponent } from './workshop.component';
+import { WorkshopDetailComponent } from './workshop-detail.component';
+import { WorkshopUpdateComponent } from './workshop-update.component';
+import { WorkshopDeletePopupComponent, WorkshopDeleteDialogComponent } from './workshop-delete-dialog.component';
+import { workshopRoute, workshopPopupRoute } from './workshop.route';
 
 const ENTITY_STATES = [...workshopRoute, ...workshopPopupRoute];
 
 @NgModule({
-    imports: [KranzenzoSharedModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [
-        WorkshopComponent,
-        WorkshopDetailComponent,
-        WorkshopUpdateComponent,
-        WorkshopDeleteDialogComponent,
-        WorkshopDeletePopupComponent
-    ],
-    entryComponents: [WorkshopComponent, WorkshopUpdateComponent, WorkshopDeleteDialogComponent, WorkshopDeletePopupComponent],
-    providers: [S3ImageResizePipe],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [KranzenzoSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [
+    WorkshopComponent,
+    WorkshopDetailComponent,
+    WorkshopUpdateComponent,
+    WorkshopDeleteDialogComponent,
+    WorkshopDeletePopupComponent
+  ],
+  entryComponents: [WorkshopDeleteDialogComponent]
 })
 export class KranzenzoWorkshopModule {}

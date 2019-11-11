@@ -1,29 +1,29 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-product-order-heading" jhiTranslate="kranzenzoApp.productOrder.home.createOrEditLabel">Create or
-                edit a Product Order</h2>
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-product-order-heading" jhiTranslate="kranzenzoApp.productOrder.home.createOrEditLabel">Create or edit a Product Order</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!productOrder.id">
+                <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" [(ngModel)]="productOrder.id" readonly/>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.created" for="field_created">Created</label>
                     <div class="d-flex">
-                        <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="created"/>
+                        <input id="field_created" type="datetime-local" class="form-control" name="created" formControlName="created" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.updated" for="field_updated">Updated</label>
                     <div class="d-flex">
-                        <input id="field_updated" type="datetime-local" class="form-control" name="updated" [(ngModel)]="updated"/>
+                        <input id="field_updated" type="datetime-local" class="form-control" name="updated" formControlName="updated" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.state" for="field_state">State</label>
-                    <select class="form-control" name="state" [(ngModel)]="productOrder.state" id="field_state">
+                    <select class="form-control" name="state" formControlName="state" id="field_state">
                         <option value="NEW">{{'kranzenzoApp.OrderState.NEW' | translate}}</option>
                         <option value="PAYED">{{'kranzenzoApp.OrderState.PAYED' | translate}}</option>
                         <option value="CANCELLED">{{'kranzenzoApp.OrderState.CANCELLED' | translate}}</option>
@@ -31,93 +31,90 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.deliveryType" for="field_deliveryType">Delivery
-                        Type</label>
-                    <select class="form-control" name="deliveryType" [(ngModel)]="productOrder.deliveryType" id="field_deliveryType">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.deliveryType" for="field_deliveryType">Delivery Type</label>
+                    <select class="form-control" name="deliveryType" formControlName="deliveryType" id="field_deliveryType">
                         <option value="DELIVERED">{{'kranzenzoApp.DeliveryType.DELIVERED' | translate}}</option>
                         <option value="PICKUP">{{'kranzenzoApp.DeliveryType.PICKUP' | translate}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.includeBatteries" for="field_includeBatteries">Include
-                        Batteries</label>
-                    <input type="checkbox" class="form-control" name="includeBatteries" id="field_includeBatteries" [(ngModel)]="productOrder.includeBatteries"/>
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.includeBatteries" for="field_includeBatteries">Include Batteries</label>
+                    <input type="checkbox" class="form-control" name="includeBatteries" id="field_includeBatteries"
+                           formControlName="includeBatteries"/>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.description" for="field_description">Description</label>
-                    <input type="text" class="form-control" name="description" id="field_description" [(ngModel)]="productOrder.description" maxlength="5000"/>
-                    <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
-                            This field cannot be longer than 5000 characters.
+                    <input type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"/>
+                    <div *ngIf="editForm.get('description').invalid && (editForm.get('description').dirty || editForm.get('description').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 5000 }">
+                        This field cannot be longer than 5000 characters.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.deliveryPrice" for="field_deliveryPrice">Delivery
-                        Price</label>
-                    <input type="number" class="form-control" name="deliveryPrice" id="field_deliveryPrice" [(ngModel)]="productOrder.deliveryPrice" min="0" jhiMin="0"/>
-                    <div [hidden]="!(editForm.controls.deliveryPrice?.dirty && editForm.controls.deliveryPrice?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.deliveryPrice?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.deliveryPrice" for="field_deliveryPrice">Delivery Price</label>
+                    <input type="number" class="form-control" name="deliveryPrice" id="field_deliveryPrice"
+                           formControlName="deliveryPrice"/>
+                    <div *ngIf="editForm.get('deliveryPrice').invalid && (editForm.get('deliveryPrice').dirty || editForm.get('deliveryPrice').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('deliveryPrice').errors.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 0 }">
                             This field should be at least 0.
                         </small>
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.deliveryPrice?.errors?.number" jhiTranslate="entity.validation.number">
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('deliveryPrice')?.errors?.number" jhiTranslate="entity.validation.number">
                             This field should be a number.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.paymentType" for="field_paymentType">Payment
-                        Type</label>
-                    <select class="form-control" name="paymentType" [(ngModel)]="productOrder.paymentType" id="field_paymentType" required>
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.paymentType" for="field_paymentType">Payment Type</label>
+                    <select class="form-control" name="paymentType" formControlName="paymentType" id="field_paymentType">
                         <option value="CASH">{{'kranzenzoApp.PaymentType.CASH' | translate}}</option>
                         <option value="TRANSFER">{{'kranzenzoApp.PaymentType.TRANSFER' | translate}}</option>
                     </select>
-                    <div [hidden]="!(editForm.controls.paymentType?.dirty && editForm.controls.paymentType?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.paymentType?.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
+                    <div *ngIf="editForm.get('paymentType').invalid && (editForm.get('paymentType').dirty || editForm.get('paymentType').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('paymentType').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
                         </small>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.customer" for="field_customer">Customer</label>
-                    <select class="form-control" id="field_customer" name="customer" [(ngModel)]="productOrder.customerId">
+                    <select class="form-control" id="field_customer" name="customer" formControlName="customerId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackCustomerById">
-                            {{customerOption.id}}
-                        </option>
+                        <option [ngValue]="customerOption.id" *ngFor="let customerOption of customers; trackBy: trackCustomerById">{{customerOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.deliveryAddress" for="field_deliveryAddress">Delivery
-                        Address</label>
-                    <select class="form-control" id="field_deliveryAddress" name="deliveryAddress" [(ngModel)]="productOrder.deliveryAddressId">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.deliveryAddress" for="field_deliveryAddress">Delivery Address</label>
+                    <select class="form-control" id="field_deliveryAddress" name="deliveryAddress" formControlName="deliveryAddressId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="locationOption.id" *ngFor="let locationOption of deliveryaddresses; trackBy: trackLocationById">
-                            {{locationOption.id}}
-                        </option>
+                        <option [ngValue]="locationOption.id" *ngFor="let locationOption of deliveryaddresses; trackBy: trackLocationById">{{locationOption.id}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.productOrder.product" for="field_product">Product</label>
-                    <select class="form-control" id="field_product" name="product" [(ngModel)]="productOrder.productId" required>
-                        <option *ngIf="!editForm.value.product" [ngValue]="null" selected></option>
-                        <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">
-                            {{productOption.name}}
-                        </option>
+                    <select class="form-control" id="field_product" name="product" formControlName="productId">
+                        <option *ngIf="!editForm.get('productId').value" [ngValue]="null" selected></option>
+                        <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.name}}</option>
                     </select>
                 </div>
-                <div [hidden]="!(editForm.controls.product?.dirty && editForm.controls.product?.invalid)">
-                    <small class="form-text text-danger" [hidden]="!editForm.controls.product?.errors?.required" jhiTranslate="entity.validation.required">
+                <div *ngIf="editForm.get('productId').invalid && (editForm.get('productId').dirty || editForm.get('productId').touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="editForm.get('productId').errors.required" jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>
                 </div>
             </div>
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>

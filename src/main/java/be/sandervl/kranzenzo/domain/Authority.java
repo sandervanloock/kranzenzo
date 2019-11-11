@@ -2,14 +2,14 @@ package be.sandervl.kranzenzo.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * An authority (a security role) used by Spring Security.
@@ -31,27 +31,24 @@ public class Authority implements Serializable {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (!(o instanceof Authority)) {
             return false;
         }
-
-        Authority authority = (Authority) o;
-
-        return !(name != null ? !name.equals( authority.name ) : authority.name != null);
+        return Objects.equals(name, ((Authority) o).name);
     }
 
     @Override
     public int hashCode() {
-        return name != null ? name.hashCode() : 0;
+        return Objects.hashCode(name);
     }
 
     @Override

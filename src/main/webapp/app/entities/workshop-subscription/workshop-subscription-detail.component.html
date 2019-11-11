@@ -1,33 +1,35 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="workshopSubscription">
-            <h2><span jhiTranslate="kranzenzoApp.workshopSubscription.detail.title">Workshop Subscription</span></h2>
+            <h2><span jhiTranslate="kranzenzoApp.workshopSubscription.detail.title">Workshop Subscription</span> {{workshopSubscription.id}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="kranzenzoApp.workshopSubscription.created">Created</span></dt>
+                <dd>
+                    <span>{{workshopSubscription.created}}</span>
+                </dd>
                 <dt><span jhiTranslate="kranzenzoApp.workshopSubscription.state">State</span></dt>
                 <dd>
                     <span jhiTranslate="{{'kranzenzoApp.SubscriptionState.' + workshopSubscription.state}}">{{workshopSubscription.state}}</span>
                 </dd>
-                <dt><span>Naam</span></dt>
+                <dt><span jhiTranslate="kranzenzoApp.workshopSubscription.workshop">Workshop</span></dt>
                 <dd>
-                    {{workshopSubscription.user.firstName}} {{workshopSubscription.user.lastName}}
-                </dd>
-                <dt><span>Email</span></dt>
-                <dd>
-                    {{workshopSubscription.user.email}}
-                </dd>
-                <dt><span jhiTranslate="kranzenzoApp.workshopSubscription.created">Created</span></dt>
-                <dd>
-                    <span>{{workshopSubscription.created | date:'medium'}}</span>
+                    <div *ngIf="workshopSubscription.workshopId">
+                        <a [routerLink]="['/workshop-date', workshopSubscription.workshopId, 'view']">{{workshopSubscription.workshopDate}}</a>
+                    </div>
                 </dd>
             </dl>
 
-            <button type="submit" (click)="previousState()" class="btn btn-info">
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-            <button type="button" [routerLink]="['/workshop-subscription', workshopSubscription.id, 'edit']" class="btn btn-primary">
+            <button type="button"
+                    [routerLink]="['/workshop-subscription', workshopSubscription.id, 'edit']"
+                    class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>

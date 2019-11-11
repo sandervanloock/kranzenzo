@@ -1,13 +1,10 @@
 package be.sandervl.kranzenzo.service.dto;
-
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the Location entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.Location} entity.
  */
 public class LocationDTO implements Serializable {
 
@@ -25,11 +22,12 @@ public class LocationDTO implements Serializable {
 
     private String description;
 
+
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -37,7 +35,7 @@ public class LocationDTO implements Serializable {
         return latitude;
     }
 
-    public void setLatitude( Float latitude ) {
+    public void setLatitude(Float latitude) {
         this.latitude = latitude;
     }
 
@@ -45,7 +43,7 @@ public class LocationDTO implements Serializable {
         return longitude;
     }
 
-    public void setLongitude( Float longitude ) {
+    public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
 
@@ -53,29 +51,29 @@ public class LocationDTO implements Serializable {
         return description;
     }
 
-    public void setDescription( String description ) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         LocationDTO locationDTO = (LocationDTO) o;
-        if ( locationDTO.getId() == null || getId() == null ) {
+        if (locationDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), locationDTO.getId() );
+        return Objects.equals(getId(), locationDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override

@@ -1,15 +1,15 @@
 package be.sandervl.kranzenzo.service.dto;
 
 import be.sandervl.kranzenzo.config.Constants;
+
 import be.sandervl.kranzenzo.domain.Authority;
 import be.sandervl.kranzenzo.domain.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+
+import javax.validation.constraints.*;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,7 @@ public class UserDTO {
 
     private boolean activated = false;
 
-    @Size(min = 2, max = 6)
+    @Size(min = 2, max = 10)
     private String langKey;
 
     private String createdBy;
@@ -51,13 +51,13 @@ public class UserDTO {
 
     private Instant lastModifiedDate;
 
-    private Set <String> authorities;
+    private Set<String> authorities;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
     }
 
-    public UserDTO( User user ) {
+    public UserDTO(User user) {
         this.id = user.getId();
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
@@ -70,21 +70,16 @@ public class UserDTO {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
-        if ( user.getAuthorities() == null ) {
-            this.authorities = Collections.emptySet();
-        }
-        else {
-            this.authorities = user.getAuthorities().stream()
-                                   .map( Authority::getName )
-                                   .collect( Collectors.toSet() );
-        }
+        this.authorities = user.getAuthorities().stream()
+            .map(Authority::getName)
+            .collect(Collectors.toSet());
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -92,7 +87,7 @@ public class UserDTO {
         return login;
     }
 
-    public void setLogin( String login ) {
+    public void setLogin(String login) {
         this.login = login;
     }
 
@@ -100,7 +95,7 @@ public class UserDTO {
         return firstName;
     }
 
-    public void setFirstName( String firstName ) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -108,7 +103,7 @@ public class UserDTO {
         return lastName;
     }
 
-    public void setLastName( String lastName ) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -116,7 +111,7 @@ public class UserDTO {
         return email;
     }
 
-    public void setEmail( String email ) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -124,7 +119,7 @@ public class UserDTO {
         return imageUrl;
     }
 
-    public void setImageUrl( String imageUrl ) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -132,7 +127,7 @@ public class UserDTO {
         return activated;
     }
 
-    public void setActivated( boolean activated ) {
+    public void setActivated(boolean activated) {
         this.activated = activated;
     }
 
@@ -140,7 +135,7 @@ public class UserDTO {
         return langKey;
     }
 
-    public void setLangKey( String langKey ) {
+    public void setLangKey(String langKey) {
         this.langKey = langKey;
     }
 
@@ -148,7 +143,7 @@ public class UserDTO {
         return createdBy;
     }
 
-    public void setCreatedBy( String createdBy ) {
+    public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
 
@@ -156,7 +151,7 @@ public class UserDTO {
         return createdDate;
     }
 
-    public void setCreatedDate( Instant createdDate ) {
+    public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -164,7 +159,7 @@ public class UserDTO {
         return lastModifiedBy;
     }
 
-    public void setLastModifiedBy( String lastModifiedBy ) {
+    public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 
@@ -172,15 +167,15 @@ public class UserDTO {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate( Instant lastModifiedDate ) {
+    public void setLastModifiedDate(Instant lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public Set <String> getAuthorities() {
+    public Set<String> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities( Set <String> authorities ) {
+    public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
     }
 

@@ -1,15 +1,10 @@
 package be.sandervl.kranzenzo.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -17,7 +12,6 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "customer")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,10 +19,6 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Column(name = "street")
     private String street;
@@ -47,157 +37,141 @@ public class Customer implements Serializable {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @OneToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
+
     @JoinColumn(unique = true)
     private Location address;
 
     @OneToMany(mappedBy = "customer")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set <ProductOrder> orders = new HashSet <>();
+    private Set<ProductOrder> orders = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public Customer user( User user ) {
-        this.user = user;
-        return this;
-    }
-    public User getUser() {
-        return user;
-    }
-    public void setUser( User user ) {
-        this.user = user;
     }
 
     public String getStreet() {
         return street;
     }
 
-    public void setStreet( String street ) {
-        this.street = street;
-    }
-
-    public Customer street( String street ) {
+    public Customer street(String street) {
         this.street = street;
         return this;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     public String getCity() {
         return city;
     }
 
-    public void setCity( String city ) {
-        this.city = city;
-    }
-
-    public Customer city( String city ) {
+    public Customer city(String city) {
         this.city = city;
         return this;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public Integer getZipCode() {
         return zipCode;
     }
 
-    public void setZipCode( Integer zipCode ) {
-        this.zipCode = zipCode;
-    }
-
-    public Customer zipCode( Integer zipCode ) {
+    public Customer zipCode(Integer zipCode) {
         this.zipCode = zipCode;
         return this;
+    }
+
+    public void setZipCode(Integer zipCode) {
+        this.zipCode = zipCode;
     }
 
     public String getProvince() {
         return province;
     }
 
-    public void setProvince( String province ) {
-        this.province = province;
-    }
-
-    public Customer province( String province ) {
+    public Customer province(String province) {
         this.province = province;
         return this;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
     }
 
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber( String phoneNumber ) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public Customer phoneNumber( String phoneNumber ) {
+    public Customer phoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Location getAddress() {
         return address;
     }
 
-    public void setAddress( Location location ) {
-        this.address = location;
-    }
-
-    public Customer address( Location location ) {
+    public Customer address(Location location) {
         this.address = location;
         return this;
     }
 
-    public Set <ProductOrder> getOrders() {
+    public void setAddress(Location location) {
+        this.address = location;
+    }
+
+    public Set<ProductOrder> getOrders() {
         return orders;
     }
 
-    public void setOrders( Set <ProductOrder> productOrders ) {
-        this.orders = productOrders;
-    }
-
-    public Customer orders( Set <ProductOrder> productOrders ) {
+    public Customer orders(Set<ProductOrder> productOrders) {
         this.orders = productOrders;
         return this;
     }
 
-    public Customer addOrders( ProductOrder productOrder ) {
-        this.orders.add( productOrder );
-        productOrder.setCustomer( this );
+    public Customer addOrders(ProductOrder productOrder) {
+        this.orders.add(productOrder);
+        productOrder.setCustomer(this);
         return this;
     }
 
-    public Customer removeOrders( ProductOrder productOrder ) {
-        this.orders.remove( productOrder );
-        productOrder.setCustomer( null );
+    public Customer removeOrders(ProductOrder productOrder) {
+        this.orders.remove(productOrder);
+        productOrder.setCustomer(null);
         return this;
+    }
+
+    public void setOrders(Set<ProductOrder> productOrders) {
+        this.orders = productOrders;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (!(o instanceof Customer)) {
             return false;
         }
-        Customer customer = (Customer) o;
-        if ( customer.getId() == null || getId() == null ) {
-            return false;
-        }
-        return Objects.equals( getId(), customer.getId() );
+        return id != null && id.equals(((Customer) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return 31;
     }
 
     @Override

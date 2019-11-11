@@ -1,12 +1,11 @@
 package be.sandervl.kranzenzo.service.dto;
-
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A DTO for the WorkshopDate entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.WorkshopDate} entity.
  */
 public class WorkshopDateDTO implements Serializable {
 
@@ -14,6 +13,7 @@ public class WorkshopDateDTO implements Serializable {
 
     @NotNull
     private ZonedDateTime date;
+
 
     private Long workshopId;
 
@@ -23,7 +23,7 @@ public class WorkshopDateDTO implements Serializable {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -31,7 +31,7 @@ public class WorkshopDateDTO implements Serializable {
         return date;
     }
 
-    public void setDate( ZonedDateTime date ) {
+    public void setDate(ZonedDateTime date) {
         this.date = date;
     }
 
@@ -39,7 +39,7 @@ public class WorkshopDateDTO implements Serializable {
         return workshopId;
     }
 
-    public void setWorkshopId( Long workshopId ) {
+    public void setWorkshopId(Long workshopId) {
         this.workshopId = workshopId;
     }
 
@@ -47,29 +47,29 @@ public class WorkshopDateDTO implements Serializable {
         return workshopName;
     }
 
-    public void setWorkshopName( String workshopName ) {
+    public void setWorkshopName(String workshopName) {
         this.workshopName = workshopName;
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         WorkshopDateDTO workshopDateDTO = (WorkshopDateDTO) o;
-        if ( workshopDateDTO.getId() == null || getId() == null ) {
+        if (workshopDateDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), workshopDateDTO.getId() );
+        return Objects.equals(getId(), workshopDateDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override

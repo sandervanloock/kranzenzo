@@ -1,13 +1,12 @@
 package be.sandervl.kranzenzo.service.dto;
-
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 /**
- * A DTO for the Product entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.Product} entity.
  */
 public class ProductDTO implements Serializable {
 
@@ -30,15 +29,14 @@ public class ProductDTO implements Serializable {
     @Max(value = 10)
     private Integer numberOfBatteries;
 
-    private Set <TagDTO> tags = new HashSet <>();
 
-    private Set<ImageDTO> images = new HashSet<>();
+    private Set<TagDTO> tags = new HashSet<>();
 
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,7 +44,7 @@ public class ProductDTO implements Serializable {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -54,7 +52,7 @@ public class ProductDTO implements Serializable {
         return price;
     }
 
-    public void setPrice( Float price ) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -62,7 +60,7 @@ public class ProductDTO implements Serializable {
         return description;
     }
 
-    public void setDescription( String description ) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -70,7 +68,7 @@ public class ProductDTO implements Serializable {
         return isActive;
     }
 
-    public void setIsActive( Boolean isActive ) {
+    public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -78,45 +76,37 @@ public class ProductDTO implements Serializable {
         return numberOfBatteries;
     }
 
-    public void setNumberOfBatteries( Integer numberOfBatteries ) {
+    public void setNumberOfBatteries(Integer numberOfBatteries) {
         this.numberOfBatteries = numberOfBatteries;
     }
 
-    public Set <TagDTO> getTags() {
+    public Set<TagDTO> getTags() {
         return tags;
     }
 
-    public void setTags( Set <TagDTO> tags ) {
+    public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
     }
 
-    public Set <ImageDTO> getImages() {
-        return images;
-    }
-
-    public void setImages( Set <ImageDTO> images ) {
-        this.images = images;
-    }
-
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         ProductDTO productDTO = (ProductDTO) o;
-        if ( productDTO.getId() == null || getId() == null ) {
+        if (productDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), productDTO.getId() );
+        return Objects.equals(getId(), productDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override

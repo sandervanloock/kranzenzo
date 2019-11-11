@@ -1,143 +1,120 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-workshop-heading" jhiTranslate="kranzenzoApp.workshop.home.createOrEditLabel">Create or edit a
-                Workshop</h2>
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-workshop-heading" jhiTranslate="kranzenzoApp.workshop.home.createOrEditLabel">Create or edit a Workshop</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!workshop.id">
+                <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" [(ngModel)]="workshop.id" readonly/>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.name" for="field_name">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name" [(ngModel)]="workshop.name" required maxlength="255"/>
-                    <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
+                    <input type="text" class="form-control" name="name" id="field_name"
+                           formControlName="name"/>
+                    <div *ngIf="editForm.get('name').invalid && (editForm.get('name').dirty || editForm.get('name').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
                         </small>
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.name?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 255 }">
-                            This field cannot be longer than 255 characters.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.durationInMinutes" for="field_durationInMinutes">Duration
-                        In Minutes</label>
-                    <input type="number" class="form-control" name="durationInMinutes" id="field_durationInMinutes" [(ngModel)]="workshop.durationInMinutes" required/>
-                    <div [hidden]="!(editForm.controls.durationInMinutes?.dirty && editForm.controls.durationInMinutes?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.durationInMinutes?.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.durationInMinutes?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
-                        </small>
-                    </div>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary" (click)="addWorkshopDate()">
-                        <fa-icon [icon]="'plus'"></fa-icon>&nbsp;<span>Toevoegen</span>
-                    </button>
-                    <br/>
-                    <small>Voeg data voor deze workshop toe</small>
-                </div>
-                <div class="form-group">
-                    <div class="mt-2">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col" *ngFor="let workshopDate of this.workshopDates; let i = index">
-                                    <input [id]="'field_date'+i" type="datetime-local" class="form-control" [name]="'dates'+i" [(ngModel)]="this.workshopDates[i]" required/>
-                                    <div [hidden]="!(editForm.controls.date?.dirty && editForm.controls.date?.invalid)">
-                                        <small class="form-text text-danger" [hidden]="!editForm.controls.date?.errors?.required" jhiTranslate="entity.validation.required">
-                                            This field is required.
-                                        </small>
-                                        <small class="form-text text-danger" [hidden]="!editForm.controls.date?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
-                                            This field should be a date and time.
-                                        </small>
-                                    </div>
-                                    <div style="text-align:center;">
-                                        <button type="button" (click)="removeWorkshopDate(i)" class="btn btn-danger my-2" style="width:100%">
-                                            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Verwijderen</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.price" for="field_price">Price</label>
-                    <input type="number" class="form-control" name="price" id="field_price" [(ngModel)]="workshop.price" min="0" jhiMin="0"/>
-                    <div [hidden]="!(editForm.controls.price?.dirty && editForm.controls.price?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.price?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
-                            This field should be at least 0.
-                        </small>
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.price?.errors?.number" jhiTranslate="entity.validation.number">
-                            This field should be a number.
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                        This field cannot be longer than 255 characters.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.description" for="field_description">Description</label>
-                    <textarea class="form-control" name="description" id="field_description" [(ngModel)]="workshop.description" maxlength="5000"></textarea>
-                    <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
-                            This field cannot be longer than 5000 characters.
+                    <input type="text" class="form-control" name="description" id="field_description"
+                           formControlName="description"/>
+                    <div *ngIf="editForm.get('description').invalid && (editForm.get('description').dirty || editForm.get('description').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('description').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 5000 }">
+                        This field cannot be longer than 5000 characters.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.neededMaterials" for="field_neededMaterials">Needed
-                        Materials</label>
-                    <textarea class="form-control" name="neededMaterials" id="field_neededMaterials" [(ngModel)]="workshop.neededMaterials" maxlength="5000"></textarea>
-                    <div [hidden]="!(editForm.controls.neededMaterials?.dirty && editForm.controls.neededMaterials?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.neededMaterials?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
-                            This field cannot be longer than 5000 characters.
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.neededMaterials" for="field_neededMaterials">Needed Materials</label>
+                    <input type="text" class="form-control" name="neededMaterials" id="field_neededMaterials"
+                           formControlName="neededMaterials"/>
+                    <div *ngIf="editForm.get('neededMaterials').invalid && (editForm.get('neededMaterials').dirty || editForm.get('neededMaterials').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('neededMaterials').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 5000 }">
+                        This field cannot be longer than 5000 characters.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.includedInPrice" for="field_includedInPrice">Included
-                        In Price</label>
-                    <textarea type="text" class="form-control" name="includedInPrice" id="field_includedInPrice" [(ngModel)]="workshop.includedInPrice" maxlength="5000"></textarea>
-                    <div [hidden]="!(editForm.controls.includedInPrice?.dirty && editForm.controls.includedInPrice?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.includedInPrice?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 5000 }">
-                            This field cannot be longer than 5000 characters.
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.includedInPrice" for="field_includedInPrice">Included In Price</label>
+                    <input type="text" class="form-control" name="includedInPrice" id="field_includedInPrice"
+                           formControlName="includedInPrice"/>
+                    <div *ngIf="editForm.get('includedInPrice').invalid && (editForm.get('includedInPrice').dirty || editForm.get('includedInPrice').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('includedInPrice').errors.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 5000 }">
+                        This field cannot be longer than 5000 characters.
                         </small>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.maxSubscriptions" for="field_maxSubscriptions">Max
-                        Subscriptions</label>
-                    <input type="number" class="form-control" name="maxSubscriptions" id="field_maxSubscriptions" [(ngModel)]="workshop.maxSubscriptions"/>
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.durationInMinutes" for="field_durationInMinutes">Duration In Minutes</label>
+                    <input type="number" class="form-control" name="durationInMinutes" id="field_durationInMinutes"
+                           formControlName="durationInMinutes"/>
+                    <div *ngIf="editForm.get('durationInMinutes').invalid && (editForm.get('durationInMinutes').dirty || editForm.get('durationInMinutes').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('durationInMinutes').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('durationInMinutes')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.isActive" for="field_isActive">Is
-                        Active</label>
-                    <input type="checkbox" class="form-control" name="isActive" id="field_isActive" [(ngModel)]="workshop.isActive"/>
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.price" for="field_price">Price</label>
+                    <input type="number" class="form-control" name="price" id="field_price"
+                           formControlName="price"/>
+                    <div *ngIf="editForm.get('price').invalid && (editForm.get('price').dirty || editForm.get('price').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('price').errors.min" jhiTranslate="entity.validation.min" [translateValues]="{ min: 0 }">
+                            This field should be at least 0.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('price')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.showOnHomepage" for="field_showOnHomepage">Show
-                        On Homepage</label>
-                    <input type="checkbox" class="form-control" name="showOnHomepage" id="field_showOnHomepage" [(ngModel)]="workshop.showOnHomepage"/>
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.maxSubscriptions" for="field_maxSubscriptions">Max Subscriptions</label>
+                    <input type="number" class="form-control" name="maxSubscriptions" id="field_maxSubscriptions"
+                           formControlName="maxSubscriptions"/>
                 </div>
                 <div class="form-group">
-                    <jhi-image-upload [images]="workshop.images"></jhi-image-upload>
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.isActive" for="field_isActive">Is Active</label>
+                    <input type="checkbox" class="form-control" name="isActive" id="field_isActive"
+                           formControlName="isActive"/>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.workshop.showOnHomepage" for="field_showOnHomepage">Show On Homepage</label>
+                    <input type="checkbox" class="form-control" name="showOnHomepage" id="field_showOnHomepage"
+                           formControlName="showOnHomepage"/>
+                </div>
+
                 <div class="form-group">
                     <label jhiTranslate="kranzenzoApp.workshop.tags" for="field_tags">Tags</label>
-                    <select class="form-control" id="field_tags" multiple name="tags" [(ngModel)]="workshop.tags">
-                        <option [ngValue]="getSelected(workshop.tags, tagOption)" *ngFor="let tagOption of tags; trackBy: trackTagById">
-                            {{tagOption.name}}
-                        </option>
+                    <select class="form-control" id="field_tags" multiple name="tags" formControlName="tags">
+                        <option [ngValue]="getSelected(editForm.get('tags').value, tagOption)" *ngFor="let tagOption of tags; trackBy: trackTagById">{{tagOption.name}}</option>
                     </select>
                 </div>
             </div>
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>

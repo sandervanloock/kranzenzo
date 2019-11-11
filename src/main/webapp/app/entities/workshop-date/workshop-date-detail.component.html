@@ -1,14 +1,13 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <div *ngIf="workshopDate">
-            <h2><span jhiTranslate="kranzenzoApp.workshopDate.detail.title">Workshop Date</span> {{workshopDate.id}}
-            </h2>
+            <h2><span jhiTranslate="kranzenzoApp.workshopDate.detail.title">Workshop Date</span> {{workshopDate.id}}</h2>
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
                 <dt><span jhiTranslate="kranzenzoApp.workshopDate.date">Date</span></dt>
                 <dd>
-                    <span>{{workshopDate.date | date:'medium'}}</span>
+                    <span>{{workshopDate.date}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.workshopDate.workshop">Workshop</span></dt>
                 <dd>
@@ -16,45 +15,17 @@
                         <a [routerLink]="['/workshop', workshopDate.workshopId, 'view']">{{workshopDate.workshopName}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="kranzenzoApp.workshopDate.subscriptions">Subscriptions</span></dt>
-                <dd>
-                    <table class="table table-striped" *ngIf="subscriptions && subscriptions.length">
-                        <thead>
-                        <tr>
-                            <th><span>Persoon</span></th>
-                            <th><span jhiTranslate="kranzenzoApp.workshopSubscription.state">State</span></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr *ngFor="let subscription of subscriptions">
-                            <td>{{subscription.user.firstName}} {{subscription.user.lastName}}</td>
-                            <td jhiTranslate="{{'kranzenzoApp.SubscriptionState.' + subscription.state}}">
-                                {{subscription.state}}
-                            </td>
-                            <td class="text-right">
-                                <div class="btn-group flex-btn-group-container">
-                                    <button type="submit" [routerLink]="['../../../workshop-subscription', subscription.id, 'view' ]" class="btn btn-info btn-sm">
-                                        <fa-icon [icon]="'eye'"></fa-icon>
-                                        <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                                    </button>
-                                    <button type="submit" [routerLink]="['../../../workshop-subscription', subscription.id, 'edit']" class="btn btn-primary btn-sm">
-                                        <fa-icon [icon]="'pencil-alt'"></fa-icon>
-                                        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </dd>
             </dl>
 
-            <button type="submit" (click)="previousState()" class="btn btn-info">
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-            <button type="button" [routerLink]="['/workshop-date', workshopDate.id, 'edit']" class="btn btn-primary">
+            <button type="button"
+                    [routerLink]="['/workshop-date', workshopDate.id, 'edit']"
+                    class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>

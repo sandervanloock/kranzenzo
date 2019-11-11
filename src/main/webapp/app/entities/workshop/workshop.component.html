@@ -3,43 +3,71 @@
         <span jhiTranslate="kranzenzoApp.workshop.home.title">Workshops</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-workshop" [routerLink]="['/workshop/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span jhiTranslate="kranzenzoApp.workshop.home.createLabel">
-            Create new Workshop
+            <span  jhiTranslate="kranzenzoApp.workshop.home.createLabel">
+            Create a new Workshop
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="workshops">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="workshops?.length === 0">
+        <span jhiTranslate="kranzenzoApp.workshop.home.notFound">No workshops found</span>
+    </div>
+    <div class="table-responsive" *ngIf="workshops?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-                <th><span jhiTranslate="kranzenzoApp.workshop.name">Name</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.price">Price</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.maxSubscriptions">Max Subscriptions</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.isActive">Is Active</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshop.showOnHomepage">Show On Homepage</span></th>
-                <th></th>
+            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.name">Name</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.description">Description</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.neededMaterials">Needed Materials</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.includedInPrice">Included In Price</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.durationInMinutes">Duration In Minutes</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.price">Price</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.maxSubscriptions">Max Subscriptions</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.isActive">Is Active</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.showOnHomepage">Show On Homepage</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshop.tags">Tags</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let workshop of workshops ;trackBy: trackId">
+                <td><a [routerLink]="['/workshop', workshop.id, 'view' ]">{{workshop.id}}</a></td>
                 <td>{{workshop.name}}</td>
+                <td>{{workshop.description}}</td>
+                <td>{{workshop.neededMaterials}}</td>
+                <td>{{workshop.includedInPrice}}</td>
+                <td>{{workshop.durationInMinutes}}</td>
                 <td>{{workshop.price}}</td>
                 <td>{{workshop.maxSubscriptions}}</td>
-                <td><input type="checkbox" readonly disabled [checked]="workshop.isActive"/></td>
-                <td><input type="checkbox" readonly disabled [checked]="workshop.showOnHomepage"/></td>
+                <td>{{workshop.isActive}}</td>
+                <td>{{workshop.showOnHomepage}}</td>
+                <td>
+                    <span *ngFor="let tags of workshop.tags; let last = last">
+                            <a class="form-control-static" [routerLink]="['/tag', tags?.id, 'view' ]">{{tags.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit" [routerLink]="['/workshop', workshop.id, 'view' ]" class="btn btn-info btn-sm">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/workshop', workshop.id, 'view' ]"
+                                class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit" [routerLink]="['/workshop', workshop.id, 'edit']" class="btn btn-primary btn-sm">
+                        <button type="submit"
+                                [routerLink]="['/workshop', workshop.id, 'edit']"
+                                class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'workshop/'+ workshop.id + '/delete'} }]" replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                        <button type="submit"
+                                [routerLink]="['/workshop', { outlets: { popup: workshop.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>

@@ -1,21 +1,15 @@
 package be.sandervl.kranzenzo.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
+
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * A Location.
  */
 @Entity
 @Table(name = "location")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Location implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -44,7 +38,7 @@ public class Location implements Serializable {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -52,60 +46,56 @@ public class Location implements Serializable {
         return latitude;
     }
 
-    public void setLatitude( Float latitude ) {
-        this.latitude = latitude;
-    }
-
-    public Location latitude( Float latitude ) {
+    public Location latitude(Float latitude) {
         this.latitude = latitude;
         return this;
+    }
+
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
     }
 
     public Float getLongitude() {
         return longitude;
     }
 
-    public void setLongitude( Float longitude ) {
-        this.longitude = longitude;
-    }
-
-    public Location longitude( Float longitude ) {
+    public Location longitude(Float longitude) {
         this.longitude = longitude;
         return this;
+    }
+
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription( String description ) {
-        this.description = description;
-    }
-
-    public Location description( String description ) {
+    public Location description(String description) {
         this.description = description;
         return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (!(o instanceof Location)) {
             return false;
         }
-        Location location = (Location) o;
-        if ( location.getId() == null || getId() == null ) {
-            return false;
-        }
-        return Objects.equals( getId(), location.getId() );
+        return id != null && id.equals(((Location) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return 31;
     }
 
     @Override

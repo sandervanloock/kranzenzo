@@ -1,23 +1,24 @@
 {
-    "kranzenzoApp": {
-        "workshopDate": {
-            "home": {
-                "title": "Workshop Dates",
-                "createLabel": "Create a new Workshop Date",
-                "createOrEditLabel": "Create or edit a Workshop Date"
-            },
-            "created": "A new Workshop Date is created with identifier {{ param }}",
-            "updated": "A Workshop Date is updated with identifier {{ param }}",
-            "deleted": "A Workshop Date is deleted with identifier {{ param }}",
-            "delete": {
-                "question": "Are you sure you want to delete Workshop Date {{ id }}?"
-            },
-            "detail": {
-                "title": "Workshop Date"
-            },
-            "date": "Date",
-            "subscriptions": "Subscriptions",
-            "workshop": "Workshop"
-        }
+  "kranzenzoApp": {
+    "workshopDate": {
+      "home": {
+        "title": "Workshop Dates",
+        "createLabel": "Create a new Workshop Date",
+        "createOrEditLabel": "Create or edit a Workshop Date",
+        "notFound": "No Workshop Dates found"
+      },
+      "created": "A new Workshop Date is created with identifier {{ param }}",
+      "updated": "A Workshop Date is updated with identifier {{ param }}",
+      "deleted": "A Workshop Date is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Workshop Date {{ id }}?"
+      },
+      "detail": {
+        "title": "Workshop Date"
+      },
+      "date": "Date",
+      "subscriptions": "Subscriptions",
+      "workshop": "Workshop"
     }
+  }
 }

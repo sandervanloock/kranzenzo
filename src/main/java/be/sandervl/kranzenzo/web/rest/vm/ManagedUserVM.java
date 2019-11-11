@@ -1,7 +1,6 @@
 package be.sandervl.kranzenzo.web.rest.vm;
 
 import be.sandervl.kranzenzo.service.dto.UserDTO;
-
 import javax.validation.constraints.Size;
 
 /**
@@ -24,13 +23,12 @@ public class ManagedUserVM extends UserDTO {
         return password;
     }
 
-    public void setPassword( String password ) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
     @Override
     public String toString() {
-        return "ManagedUserVM{" +
-            "} " + super.toString();
+        return "ManagedUserVM{" + super.toString() + "} ";
     }
 }

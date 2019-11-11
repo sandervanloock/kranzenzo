@@ -1,8 +1,32 @@
 {
-    "product": {
-        "submitted": {
-            "success": "<strong>Uw bestelling is correct ontvangen. Bekijk je mailbox voor de bevestiging van je bestelling</strong>",
-            "error": "<strong>Er ging iets mis, probeer opnieuw of contacteer ons op info@sandervl.be</strong>"
-        }
+  "kranzenzoApp": {
+    "productOrder": {
+      "home": {
+        "title": "Product Orders",
+        "createLabel": "Maak een nieuwe Product Order",
+        "createOrEditLabel": "Maak of wijzig een Product Order",
+        "notFound": "No Product Orders found"
+      },
+      "created": "A new Product Order is created with identifier {{ param }}",
+      "updated": "A Product Order is updated with identifier {{ param }}",
+      "deleted": "A Product Order is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Product Order {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Product Order"
+      },
+      "created": "Created",
+      "updated": "Updated",
+      "state": "State",
+      "deliveryType": "Delivery Type",
+      "includeBatteries": "Include Batteries",
+      "description": "Description",
+      "deliveryPrice": "Delivery Price",
+      "paymentType": "Payment Type",
+      "customer": "Customer",
+      "deliveryAddress": "Delivery Address",
+      "product": "Product"
     }
+  }
 }

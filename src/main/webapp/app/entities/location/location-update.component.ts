@@ -1,59 +1,79 @@
 import { Component, OnInit } from '@angular/core';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { ILocation } from 'app/shared/model/location.model';
+import { ILocation, Location } from 'app/shared/model/location.model';
 import { LocationService } from './location.service';
 
 @Component({
-    selector: 'jhi-location-update',
-    templateUrl: './location-update.component.html'
+  selector: 'jhi-location-update',
+  templateUrl: './location-update.component.html'
 })
 export class LocationUpdateComponent implements OnInit {
-    isSaving: boolean;
-    private _location: ILocation;
+  isSaving: boolean;
 
-    constructor(private locationService: LocationService, private activatedRoute: ActivatedRoute) {}
+  editForm = this.fb.group({
+    id: [],
+    latitude: [null, [Validators.required, Validators.min(-90), Validators.max(90)]],
+    longitude: [null, [Validators.required, Validators.min(-180), Validators.max(180)]],
+    description: []
+  });
 
-    get location() {
-        return this._location;
+  constructor(protected locationService: LocationService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.isSaving = false;
+    this.activatedRoute.data.subscribe(({ location }) => {
+      this.updateForm(location);
+    });
+  }
+
+  updateForm(location: ILocation) {
+    this.editForm.patchValue({
+      id: location.id,
+      latitude: location.latitude,
+      longitude: location.longitude,
+      description: location.description
+    });
+  }
+
+  previousState() {
+    window.history.back();
+  }
+
+  save() {
+    this.isSaving = true;
+    const location = this.createFromForm();
+    if (location.id !== undefined) {
+      this.subscribeToSaveResponse(this.locationService.update(location));
+    } else {
+      this.subscribeToSaveResponse(this.locationService.create(location));
     }
+  }
 
-    set location(location: ILocation) {
-        this._location = location;
-    }
+  private createFromForm(): ILocation {
+    return {
+      ...new Location(),
+      id: this.editForm.get(['id']).value,
+      latitude: this.editForm.get(['latitude']).value,
+      longitude: this.editForm.get(['longitude']).value,
+      description: this.editForm.get(['description']).value
+    };
+  }
 
-    ngOnInit() {
-        this.isSaving = false;
-        this.activatedRoute.data.subscribe(({ location }) => {
-            this.location = location;
-        });
-    }
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<ILocation>>) {
+    result.subscribe(() => this.onSaveSuccess(), () => this.onSaveError());
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  protected onSaveSuccess() {
+    this.isSaving = false;
+    this.previousState();
+  }
 
-    save() {
-        this.isSaving = true;
-        if (this.location.id !== undefined) {
-            this.subscribeToSaveResponse(this.locationService.update(this.location));
-        } else {
-            this.subscribeToSaveResponse(this.locationService.create(this.location));
-        }
-    }
-
-    private subscribeToSaveResponse(result: Observable<HttpResponse<ILocation>>) {
-        result.subscribe((res: HttpResponse<ILocation>) => this.onSaveSuccess(), (res: HttpErrorResponse) => this.onSaveError());
-    }
-
-    private onSaveSuccess() {
-        this.isSaving = false;
-        this.previousState();
-    }
-
-    private onSaveError() {
-        this.isSaving = false;
-    }
+  protected onSaveError() {
+    this.isSaving = false;
+  }
 }

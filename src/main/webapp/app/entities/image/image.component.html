@@ -3,22 +3,27 @@
         <span jhiTranslate="kranzenzoApp.image.home.title">Images</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-image" [routerLink]="['/image/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span jhiTranslate="kranzenzoApp.image.home.createLabel">
-            Create new Image
+            <span  jhiTranslate="kranzenzoApp.image.home.createLabel">
+            Create a new Image
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="images">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="images?.length === 0">
+        <span jhiTranslate="kranzenzoApp.image.home.notFound">No images found</span>
+    </div>
+    <div class="table-responsive" *ngIf="images?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="kranzenzoApp.image.data">Data</span></th>
-                <th><span jhiTranslate="kranzenzoApp.image.workshop">Workshop</span></th>
-                <th><span jhiTranslate="kranzenzoApp.image.product">Product</span></th>
-                <th></th>
+            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.image.data">Data</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.image.endpoint">Endpoint</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.image.workshop">Workshop</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.image.product">Product</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -27,29 +32,39 @@
                 <td>
                     <a *ngIf="image.data" (click)="openFile(image.dataContentType, image.data)">
                         <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" style="max-height: 30px;" alt="image image"/>
-                    </a> <span *ngIf="image.data">{{image.dataContentType}}, {{byteSize(image.data)}}</span>
+                    </a>
+                    <span *ngIf="image.data">{{image.dataContentType}}, {{byteSize(image.data)}}</span>
                 </td>
+                <td>{{image.endpoint}}</td>
                 <td>
                     <div *ngIf="image.workshopId">
-                        <a [routerLink]="['../workshop', image.workshopId , 'view' ]">{{image.workshopName}}</a>
+                        <a [routerLink]="['/workshop', image.workshopId , 'view' ]" >{{image.workshopName}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="image.productId">
-                        <a [routerLink]="['../product', image.productId , 'view' ]">{{image.productName}}</a>
+                        <a [routerLink]="['/product', image.productId , 'view' ]" >{{image.productName}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit" [routerLink]="['/image', image.id, 'view' ]" class="btn btn-info btn-sm">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/image', image.id, 'view' ]"
+                                class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit" [routerLink]="['/image', image.id, 'edit']" class="btn btn-primary btn-sm">
+                        <button type="submit"
+                                [routerLink]="['/image', image.id, 'edit']"
+                                class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'image/'+ image.id + '/delete'} }]" replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                        <button type="submit"
+                                [routerLink]="['/image', { outlets: { popup: image.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>

@@ -4,21 +4,21 @@ import { ActivatedRoute } from '@angular/router';
 import { IWorkshop } from 'app/shared/model/workshop.model';
 
 @Component({
-    selector: 'jhi-workshop-detail',
-    templateUrl: './workshop-detail.component.html'
+  selector: 'jhi-workshop-detail',
+  templateUrl: './workshop-detail.component.html'
 })
 export class WorkshopDetailComponent implements OnInit {
-    workshop: IWorkshop;
+  workshop: IWorkshop;
 
-    constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(protected activatedRoute: ActivatedRoute) {}
 
-    ngOnInit() {
-        this.activatedRoute.data.subscribe(({ workshop }) => {
-            this.workshop = workshop;
-        });
-    }
+  ngOnInit() {
+    this.activatedRoute.data.subscribe(({ workshop }) => {
+      this.workshop = workshop;
+    });
+  }
 
-    previousState() {
-        window.history.back();
-    }
+  previousState() {
+    window.history.back();
+  }
 }

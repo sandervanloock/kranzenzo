@@ -1,59 +1,63 @@
 <div class="row justify-content-center">
     <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
-            <h2 id="jhi-image-heading" jhiTranslate="kranzenzoApp.image.home.createOrEditLabel">Create or edit a
-                Image</h2>
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-image-heading" jhiTranslate="kranzenzoApp.image.home.createOrEditLabel">Create or edit a Image</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
-                <div class="form-group" [hidden]="!image.id">
+                <div class="form-group" [hidden]="!editForm.get('id').value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" [(ngModel)]="image.id" readonly/>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.image.data" for="field_data">Data</label>
                     <div>
-                        <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" style="max-height: 100px;" *ngIf="image.data" alt="image image"/>
-                        <div *ngIf="image.data" class="form-text text-danger clearfix">
-                            <span class="pull-left">{{image.dataContentType}}, {{byteSize(image.data)}}</span>
+                        <img [src]="'data:' + editForm.get('dataContentType').value + ';base64,' + editForm.get('data').value" style="max-height: 100px;" *ngIf="editForm.get('data').value" alt="image image"/>
+                        <div *ngIf="editForm.get('data').value" class="form-text text-danger clearfix">
+                            <span class="pull-left">{{editForm.get('dataContentType').value}}, {{byteSize(editForm.get('data').value)}}</span>
                             <button type="button" (click)="clearInputImage('data', 'dataContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
                                 <fa-icon [icon]="'times'"></fa-icon>
                             </button>
                         </div>
-                        <input type="file" id="file_data" (change)="setFileData($event, image, 'data', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                        <input type="file" id="file_data" (change)="setFileData($event, 'data', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
                     </div>
-                    <input type="hidden" class="form-control" name="data" id="field_data" [(ngModel)]="image.data" required/>
-                    <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType" [(ngModel)]="image.dataContentType"/>
-                    <div [hidden]="!(editForm.controls.data?.dirty && editForm.controls.data?.invalid)">
-                        <small class="form-text text-danger" [hidden]="!editForm.controls.data?.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
+                    <input type="hidden" class="form-control" name="data" id="field_data"
+                           formControlName="data"/>
+                    <input type="hidden" class="form-control" name="dataContentType" id="field_dataContentType"
+                           formControlName="dataContentType" />
+                    <div *ngIf="editForm.get('data').invalid && (editForm.get('data').dirty || editForm.get('data').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('data').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
                         </small>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="kranzenzoApp.image.endpoint" for="field_endpoint">Endpoint</label>
+                    <input type="text" class="form-control" name="endpoint" id="field_endpoint"
+                           formControlName="endpoint"/>
                 </div>
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.image.workshop" for="field_workshop">Workshop</label>
-                    <select class="form-control" id="field_workshop" name="workshop" [(ngModel)]="image.workshopId">
+                    <select class="form-control" id="field_workshop" name="workshop" formControlName="workshopId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="workshopOption.id" *ngFor="let workshopOption of workshops; trackBy: trackWorkshopById">
-                            {{workshopOption.name}}
-                        </option>
+                        <option [ngValue]="workshopOption.id" *ngFor="let workshopOption of workshops; trackBy: trackWorkshopById">{{workshopOption.name}}</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="kranzenzoApp.image.product" for="field_product">Product</label>
-                    <select class="form-control" id="field_product" name="product" [(ngModel)]="image.productId">
+                    <select class="form-control" id="field_product" name="product" formControlName="productId">
                         <option [ngValue]="null"></option>
-                        <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">
-                            {{productOption.name}}
-                        </option>
+                        <option [ngValue]="productOption.id" *ngFor="let productOption of products; trackBy: trackProductById">{{productOption.name}}</option>
                     </select>
                 </div>
             </div>
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                 </button>
             </div>

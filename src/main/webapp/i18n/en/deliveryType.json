@@ -1,9 +1,9 @@
 {
-    "kranzenzoApp": {
-        "DeliveryType": {
-            "null": "",
-            "DELIVERED": "DELIVERED",
-            "PICKUP": "PICKUP"
-        }
+  "kranzenzoApp": {
+    "DeliveryType": {
+      "null": "",
+      "DELIVERED": "DELIVERED",
+      "PICKUP": "PICKUP"
     }
+  }
 }

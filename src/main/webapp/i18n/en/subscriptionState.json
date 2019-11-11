@@ -1,10 +1,10 @@
 {
-    "kranzenzoApp": {
-        "SubscriptionState": {
-            "null": "",
-            "NEW": "NEW",
-            "PAYED": "PAYED",
-            "CANCELLED": "CANCELLED"
-        }
+  "kranzenzoApp": {
+    "SubscriptionState": {
+      "null": "",
+      "NEW": "NEW",
+      "PAYED": "PAYED",
+      "CANCELLED": "CANCELLED"
     }
+  }
 }

@@ -1,18 +1,14 @@
 package be.sandervl.kranzenzo.service.dto;
-
-import be.sandervl.kranzenzo.domain.enumeration.DeliveryType;
+import java.time.ZonedDateTime;
+import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.util.Objects;
 import be.sandervl.kranzenzo.domain.enumeration.OrderState;
+import be.sandervl.kranzenzo.domain.enumeration.DeliveryType;
 import be.sandervl.kranzenzo.domain.enumeration.PaymentType;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.time.ZonedDateTime;
-import java.util.Objects;
-
 /**
- * A DTO for the ProductOrder entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.ProductOrder} entity.
  */
 public class ProductOrderDTO implements Serializable {
 
@@ -37,11 +33,8 @@ public class ProductOrderDTO implements Serializable {
     @NotNull
     private PaymentType paymentType;
 
+
     private Long customerId;
-
-    private CustomerDTO customer;
-
-    private ProductDTO product;
 
     private Long deliveryAddressId;
 
@@ -49,13 +42,11 @@ public class ProductOrderDTO implements Serializable {
 
     private String productName;
 
-    private Float totalPrice;
-
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,7 +54,7 @@ public class ProductOrderDTO implements Serializable {
         return created;
     }
 
-    public void setCreated( ZonedDateTime created ) {
+    public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
 
@@ -71,7 +62,7 @@ public class ProductOrderDTO implements Serializable {
         return updated;
     }
 
-    public void setUpdated( ZonedDateTime updated ) {
+    public void setUpdated(ZonedDateTime updated) {
         this.updated = updated;
     }
 
@@ -79,7 +70,7 @@ public class ProductOrderDTO implements Serializable {
         return state;
     }
 
-    public void setState( OrderState state ) {
+    public void setState(OrderState state) {
         this.state = state;
     }
 
@@ -87,7 +78,7 @@ public class ProductOrderDTO implements Serializable {
         return deliveryType;
     }
 
-    public void setDeliveryType( DeliveryType deliveryType ) {
+    public void setDeliveryType(DeliveryType deliveryType) {
         this.deliveryType = deliveryType;
     }
 
@@ -95,7 +86,7 @@ public class ProductOrderDTO implements Serializable {
         return includeBatteries;
     }
 
-    public void setIncludeBatteries( Boolean includeBatteries ) {
+    public void setIncludeBatteries(Boolean includeBatteries) {
         this.includeBatteries = includeBatteries;
     }
 
@@ -103,7 +94,7 @@ public class ProductOrderDTO implements Serializable {
         return description;
     }
 
-    public void setDescription( String description ) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -111,7 +102,7 @@ public class ProductOrderDTO implements Serializable {
         return deliveryPrice;
     }
 
-    public void setDeliveryPrice( Float deliveryPrice ) {
+    public void setDeliveryPrice(Float deliveryPrice) {
         this.deliveryPrice = deliveryPrice;
     }
 
@@ -119,7 +110,7 @@ public class ProductOrderDTO implements Serializable {
         return paymentType;
     }
 
-    public void setPaymentType( PaymentType paymentType ) {
+    public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
 
@@ -127,30 +118,15 @@ public class ProductOrderDTO implements Serializable {
         return customerId;
     }
 
-    public void setCustomerId( Long customerId ) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
-    }
-
-    public CustomerDTO getCustomer(){
-        return customer;
-    }
-    public void setCustomer(CustomerDTO customer){
-        this.customer = customer;
-    }
-
-    public ProductDTO getProduct() {
-        return product;
-    }
-
-    public void setProduct( ProductDTO product ) {
-        this.product = product;
     }
 
     public Long getDeliveryAddressId() {
         return deliveryAddressId;
     }
 
-    public void setDeliveryAddressId( Long locationId ) {
+    public void setDeliveryAddressId(Long locationId) {
         this.deliveryAddressId = locationId;
     }
 
@@ -158,7 +134,7 @@ public class ProductOrderDTO implements Serializable {
         return productId;
     }
 
-    public void setProductId( Long productId ) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
@@ -166,41 +142,29 @@ public class ProductOrderDTO implements Serializable {
         return productName;
     }
 
-    public void setProductName( String productName ) {
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 
-    public Boolean getIncludeBatteries() {
-        return includeBatteries;
-    }
-
-    public Float getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice( Float totalPrice ) {
-        this.totalPrice = totalPrice;
-    }
-
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         ProductOrderDTO productOrderDTO = (ProductOrderDTO) o;
-        if ( productOrderDTO.getId() == null || getId() == null ) {
+        if (productOrderDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), productOrderDTO.getId() );
+        return Objects.equals(getId(), productOrderDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package be.sandervl.kranzenzo.domain;
 
 import be.sandervl.kranzenzo.config.Constants;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -16,7 +17,6 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -62,8 +62,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(nullable = false)
     private boolean activated = false;
 
-    @Size(min = 2, max = 6)
-    @Column(name = "lang_key", length = 6)
+    @Size(min = 2, max = 10)
+    @Column(name = "lang_key", length = 10)
     private String langKey;
 
     @Size(max = 256)
@@ -84,20 +84,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Instant resetDate = null;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
         name = "jhi_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
         inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @BatchSize(size = 20)
-    private Set <Authority> authorities = new HashSet <>();
+    private Set<Authority> authorities = new HashSet<>();
 
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -106,15 +106,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
     }
 
     // Lowercase the login before saving it in database
-    public void setLogin( String login ) {
-        this.login = StringUtils.lowerCase( login, Locale.ENGLISH );
+    public void setLogin(String login) {
+        this.login = StringUtils.lowerCase(login, Locale.ENGLISH);
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword( String password ) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -122,7 +122,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return firstName;
     }
 
-    public void setFirstName( String firstName ) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -130,7 +130,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return lastName;
     }
 
-    public void setLastName( String lastName ) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
@@ -138,7 +138,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return email;
     }
 
-    public void setEmail( String email ) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -146,7 +146,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return imageUrl;
     }
 
-    public void setImageUrl( String imageUrl ) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -154,7 +154,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return activated;
     }
 
-    public void setActivated( boolean activated ) {
+    public void setActivated(boolean activated) {
         this.activated = activated;
     }
 
@@ -162,7 +162,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return activationKey;
     }
 
-    public void setActivationKey( String activationKey ) {
+    public void setActivationKey(String activationKey) {
         this.activationKey = activationKey;
     }
 
@@ -170,7 +170,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return resetKey;
     }
 
-    public void setResetKey( String resetKey ) {
+    public void setResetKey(String resetKey) {
         this.resetKey = resetKey;
     }
 
@@ -178,7 +178,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return resetDate;
     }
 
-    public void setResetDate( Instant resetDate ) {
+    public void setResetDate(Instant resetDate) {
         this.resetDate = resetDate;
     }
 
@@ -186,34 +186,32 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return langKey;
     }
 
-    public void setLangKey( String langKey ) {
+    public void setLangKey(String langKey) {
         this.langKey = langKey;
     }
 
-    public Set <Authority> getAuthorities() {
+    public Set<Authority> getAuthorities() {
         return authorities;
     }
 
-    public void setAuthorities( Set <Authority> authorities ) {
+    public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (!(o instanceof User)) {
             return false;
         }
-
-        User user = (User) o;
-        return !(user.getId() == null || getId() == null) && Objects.equals( getId(), user.getId() );
+        return id != null && id.equals(((User) o).id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return 31;
     }
 
     @Override

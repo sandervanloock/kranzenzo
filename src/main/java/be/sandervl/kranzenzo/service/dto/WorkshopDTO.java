@@ -1,13 +1,12 @@
 package be.sandervl.kranzenzo.service.dto;
-
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Objects;
 
 /**
- * A DTO for the Workshop entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.Workshop} entity.
  */
 public class WorkshopDTO implements Serializable {
 
@@ -38,17 +37,14 @@ public class WorkshopDTO implements Serializable {
 
     private Boolean showOnHomepage;
 
-    private Set <TagDTO> tags = new HashSet <>();
 
-    private Set <ImageDTO> images = new HashSet <>();
-
-    private Set<WorkshopDateDTO> dates = new HashSet <>();
+    private Set<TagDTO> tags = new HashSet<>();
 
     public Long getId() {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -56,7 +52,7 @@ public class WorkshopDTO implements Serializable {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
@@ -64,7 +60,7 @@ public class WorkshopDTO implements Serializable {
         return description;
     }
 
-    public void setDescription( String description ) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -72,7 +68,7 @@ public class WorkshopDTO implements Serializable {
         return neededMaterials;
     }
 
-    public void setNeededMaterials( String neededMaterials ) {
+    public void setNeededMaterials(String neededMaterials) {
         this.neededMaterials = neededMaterials;
     }
 
@@ -80,7 +76,7 @@ public class WorkshopDTO implements Serializable {
         return includedInPrice;
     }
 
-    public void setIncludedInPrice( String includedInPrice ) {
+    public void setIncludedInPrice(String includedInPrice) {
         this.includedInPrice = includedInPrice;
     }
 
@@ -88,7 +84,7 @@ public class WorkshopDTO implements Serializable {
         return durationInMinutes;
     }
 
-    public void setDurationInMinutes( Integer durationInMinutes ) {
+    public void setDurationInMinutes(Integer durationInMinutes) {
         this.durationInMinutes = durationInMinutes;
     }
 
@@ -96,7 +92,7 @@ public class WorkshopDTO implements Serializable {
         return price;
     }
 
-    public void setPrice( Float price ) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
@@ -104,7 +100,7 @@ public class WorkshopDTO implements Serializable {
         return maxSubscriptions;
     }
 
-    public void setMaxSubscriptions( Integer maxSubscriptions ) {
+    public void setMaxSubscriptions(Integer maxSubscriptions) {
         this.maxSubscriptions = maxSubscriptions;
     }
 
@@ -112,7 +108,7 @@ public class WorkshopDTO implements Serializable {
         return isActive;
     }
 
-    public void setIsActive( Boolean isActive ) {
+    public void setIsActive(Boolean isActive) {
         this.isActive = isActive;
     }
 
@@ -120,50 +116,37 @@ public class WorkshopDTO implements Serializable {
         return showOnHomepage;
     }
 
-    public void setShowOnHomepage( Boolean showOnHomepage ) {
+    public void setShowOnHomepage(Boolean showOnHomepage) {
         this.showOnHomepage = showOnHomepage;
     }
 
-    public Set <TagDTO> getTags() {
+    public Set<TagDTO> getTags() {
         return tags;
     }
 
-    public void setTags( Set <TagDTO> tags ) {
+    public void setTags(Set<TagDTO> tags) {
         this.tags = tags;
     }
 
-    public Set <ImageDTO> getImages() {
-        return images;
-    }
-    public void setImages( Set <ImageDTO> images ) {
-        this.images = images;
-    }
-    public Set <WorkshopDateDTO> getDates() {
-        return dates;
-    }
-    public void setDates( Set <WorkshopDateDTO> dates ) {
-        this.dates = dates;
-    }
-
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         WorkshopDTO workshopDTO = (WorkshopDTO) o;
-        if ( workshopDTO.getId() == null || getId() == null ) {
+        if (workshopDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), workshopDTO.getId() );
+        return Objects.equals(getId(), workshopDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override

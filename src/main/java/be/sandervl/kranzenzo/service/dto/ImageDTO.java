@@ -1,20 +1,23 @@
 package be.sandervl.kranzenzo.service.dto;
-
-import javax.persistence.Lob;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Lob;
 
 /**
- * A DTO for the Image entity.
+ * A DTO for the {@link be.sandervl.kranzenzo.domain.Image} entity.
  */
 public class ImageDTO implements Serializable {
 
     private Long id;
-    private String endpoint;
 
+    
     @Lob
     private byte[] data;
+
     private String dataContentType;
+    private String endpoint;
+
 
     private Long workshopId;
 
@@ -28,23 +31,15 @@ public class ImageDTO implements Serializable {
         return id;
     }
 
-    public void setId( Long id ) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint( String endpoint ) {
-        this.endpoint = endpoint;
     }
 
     public byte[] getData() {
         return data;
     }
 
-    public void setData( byte[] data ) {
+    public void setData(byte[] data) {
         this.data = data;
     }
 
@@ -52,15 +47,23 @@ public class ImageDTO implements Serializable {
         return dataContentType;
     }
 
-    public void setDataContentType( String dataContentType ) {
+    public void setDataContentType(String dataContentType) {
         this.dataContentType = dataContentType;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
     public Long getWorkshopId() {
         return workshopId;
     }
 
-    public void setWorkshopId( Long workshopId ) {
+    public void setWorkshopId(Long workshopId) {
         this.workshopId = workshopId;
     }
 
@@ -68,7 +71,7 @@ public class ImageDTO implements Serializable {
         return workshopName;
     }
 
-    public void setWorkshopName( String workshopName ) {
+    public void setWorkshopName(String workshopName) {
         this.workshopName = workshopName;
     }
 
@@ -76,7 +79,7 @@ public class ImageDTO implements Serializable {
         return productId;
     }
 
-    public void setProductId( Long productId ) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
@@ -84,29 +87,29 @@ public class ImageDTO implements Serializable {
         return productName;
     }
 
-    public void setProductName( String productName ) {
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 
     @Override
-    public boolean equals( Object o ) {
-        if ( this == o ) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if ( o == null || getClass() != o.getClass() ) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
         ImageDTO imageDTO = (ImageDTO) o;
-        if ( imageDTO.getId() == null || getId() == null ) {
+        if (imageDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals( getId(), imageDTO.getId() );
+        return Objects.equals(getId(), imageDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode( getId() );
+        return Objects.hashCode(getId());
     }
 
     @Override
@@ -114,6 +117,7 @@ public class ImageDTO implements Serializable {
         return "ImageDTO{" +
             "id=" + getId() +
             ", data='" + getData() + "'" +
+            ", endpoint='" + getEndpoint() + "'" +
             ", workshop=" + getWorkshopId() +
             ", workshop='" + getWorkshopName() + "'" +
             ", product=" + getProductId() +

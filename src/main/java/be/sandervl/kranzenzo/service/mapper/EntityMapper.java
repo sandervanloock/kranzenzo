@@ -1,7 +1,6 @@
 package be.sandervl.kranzenzo.service.mapper;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Contract for a generic dto to entity mapper.
@@ -10,15 +9,13 @@ import java.util.Set;
  * @param <E> - Entity type parameter.
  */
 
-public interface EntityMapper<D, E> {
+public interface EntityMapper <D, E> {
 
-    E toEntity( D dto );
+    E toEntity(D dto);
 
-    D toDto( E entity );
+    D toDto(E entity);
 
-    List <E> toEntity( List <D> dtoList );
+    List <E> toEntity(List<D> dtoList);
 
-    Set <D> toDto( Set <E> entityList );
-
-    List <D> toDto( List <E> entityList );
+    List <D> toDto(List<E> entityList);
 }

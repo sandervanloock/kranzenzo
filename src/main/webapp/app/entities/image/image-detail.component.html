@@ -10,8 +10,13 @@
                     <div *ngIf="image.data">
                         <a (click)="openFile(image.dataContentType, image.data)">
                             <img [src]="'data:' + image.dataContentType + ';base64,' + image.data" style="max-width: 100%;" alt="image image"/>
-                        </a> {{image.dataContentType}}, {{byteSize(image.data)}}
+                        </a>
+                        {{image.dataContentType}}, {{byteSize(image.data)}}
                     </div>
+                </dd>
+                <dt><span jhiTranslate="kranzenzoApp.image.endpoint">Endpoint</span></dt>
+                <dd>
+                    <span>{{image.endpoint}}</span>
                 </dd>
                 <dt><span jhiTranslate="kranzenzoApp.image.workshop">Workshop</span></dt>
                 <dd>
@@ -27,11 +32,15 @@
                 </dd>
             </dl>
 
-            <button type="submit" (click)="previousState()" class="btn btn-info">
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
                 <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
             </button>
 
-            <button type="button" [routerLink]="['/image', image.id, 'edit']" class="btn btn-primary">
+            <button type="button"
+                    [routerLink]="['/image', image.id, 'edit']"
+                    class="btn btn-primary">
                 <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
             </button>
         </div>

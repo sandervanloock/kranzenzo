@@ -3,21 +3,25 @@
         <span jhiTranslate="kranzenzoApp.workshopDate.home.title">Workshop Dates</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-workshop-date" [routerLink]="['/workshop-date/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span jhiTranslate="kranzenzoApp.workshopDate.home.createLabel">
-            Create new Workshop Date
+            <span  jhiTranslate="kranzenzoApp.workshopDate.home.createLabel">
+            Create a new Workshop Date
             </span>
         </button>
     </h2>
+    <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>
-    <div class="table-responsive" *ngIf="workshopDates">
-        <table class="table table-striped">
+    <div class="alert alert-warning" *ngIf="workshopDates?.length === 0">
+        <span jhiTranslate="kranzenzoApp.workshopDate.home.notFound">No workshopDates found</span>
+    </div>
+    <div class="table-responsive" *ngIf="workshopDates?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshopDate.date">Date</span></th>
-                <th><span jhiTranslate="kranzenzoApp.workshopDate.workshop">Workshop</span></th>
-                <th></th>
+            <th scope="col" ><span jhiTranslate="global.field.id">ID</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshopDate.date">Date</span></th>
+            <th scope="col" ><span jhiTranslate="kranzenzoApp.workshopDate.workshop">Workshop</span></th>
+            <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -26,20 +30,28 @@
                 <td>{{workshopDate.date | date:'medium'}}</td>
                 <td>
                     <div *ngIf="workshopDate.workshopId">
-                        <a [routerLink]="['../workshop', workshopDate.workshopId , 'view' ]">{{workshopDate.workshopName}}</a>
+                        <a [routerLink]="['/workshop', workshopDate.workshopId , 'view' ]" >{{workshopDate.workshopName}}</a>
                     </div>
                 </td>
                 <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit" [routerLink]="['/workshop-date', workshopDate.id, 'view' ]" class="btn btn-info btn-sm">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/workshop-date', workshopDate.id, 'view' ]"
+                                class="btn btn-info btn-sm">
                             <fa-icon [icon]="'eye'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
-                        <button type="submit" [routerLink]="['/workshop-date', workshopDate.id, 'edit']" class="btn btn-primary btn-sm">
+                        <button type="submit"
+                                [routerLink]="['/workshop-date', workshopDate.id, 'edit']"
+                                class="btn btn-primary btn-sm">
                             <fa-icon [icon]="'pencil-alt'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
-                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'workshop-date/'+ workshopDate.id + '/delete'} }]" replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                        <button type="submit"
+                                [routerLink]="['/workshop-date', { outlets: { popup: workshopDate.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
                             <fa-icon [icon]="'times'"></fa-icon>
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                         </button>

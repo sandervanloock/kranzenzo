@@ -1,31 +1,24 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { KranzenzoSharedModule } from 'app/shared';
-import {
-    ProductComponent,
-    ProductDeleteDialogComponent,
-    ProductDeletePopupComponent,
-    ProductDetailComponent,
-    productPopupRoute,
-    productRoute,
-    ProductUpdateComponent
-} from './';
-import { S3ImageResizePipe } from 'app/shared/util/s3-image-resize.pipe';
+import { KranzenzoSharedModule } from 'app/shared/shared.module';
+import { ProductComponent } from './product.component';
+import { ProductDetailComponent } from './product-detail.component';
+import { ProductUpdateComponent } from './product-update.component';
+import { ProductDeletePopupComponent, ProductDeleteDialogComponent } from './product-delete-dialog.component';
+import { productRoute, productPopupRoute } from './product.route';
 
 const ENTITY_STATES = [...productRoute, ...productPopupRoute];
 
 @NgModule({
-    imports: [KranzenzoSharedModule, RouterModule.forChild(ENTITY_STATES)],
-    declarations: [
-        ProductComponent,
-        ProductDetailComponent,
-        ProductUpdateComponent,
-        ProductDeleteDialogComponent,
-        ProductDeletePopupComponent
-    ],
-    entryComponents: [ProductComponent, ProductUpdateComponent, ProductDeleteDialogComponent, ProductDeletePopupComponent],
-    providers: [S3ImageResizePipe],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [KranzenzoSharedModule, RouterModule.forChild(ENTITY_STATES)],
+  declarations: [
+    ProductComponent,
+    ProductDetailComponent,
+    ProductUpdateComponent,
+    ProductDeleteDialogComponent,
+    ProductDeletePopupComponent
+  ],
+  entryComponents: [ProductDeleteDialogComponent]
 })
 export class KranzenzoProductModule {}
