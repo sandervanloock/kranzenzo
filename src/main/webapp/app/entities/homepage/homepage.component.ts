@@ -12,10 +12,9 @@ import { Router } from '@angular/router';
 export class HomepageComponent implements OnInit {
     images: IImage[];
     private isSaving = false;
+    private _homepageSettings: IHomepageSetting;
 
     constructor(private homepageService: HomepageService, private router: Router) {}
-
-    private _homepageSettings: IHomepageSetting;
 
     get homepageSettings(): IHomepageSetting {
         return this._homepageSettings;
