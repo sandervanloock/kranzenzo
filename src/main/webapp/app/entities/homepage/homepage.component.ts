@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit {
     images: IImage[];
-    private isSaving = false;
+    isSaving = false;
     private _homepageSettings: IHomepageSetting;
 
     constructor(private homepageService: HomepageService, private router: Router) {}
