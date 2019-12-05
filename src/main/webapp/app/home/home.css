@@ -11,6 +11,10 @@ Main page styles
     only screen and (min-resolution: 2dppx) {
 }
 
+.homepage-description {
+    font-size: 1.25rem;
+}
+
 .homepage-image {
     width: 1000px;
     height: 500px;

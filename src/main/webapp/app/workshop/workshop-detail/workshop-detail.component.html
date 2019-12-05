@@ -37,6 +37,12 @@
                     </p>
 
                     <p class="lead font-weight-bold">{{workshop?.name}}</p>
+                    <h5>Mogelijke data</h5>
+                    <ul>
+                        <li *ngFor="let date of workshop?.dates">
+                            {{date.date | date:'dd-MM-yyyy HH:mm'}}
+                        </li>
+                    </ul>
                     <h5>Beschrijving</h5>
                     <p>{{workshop?.description}}</p>
                     <h5>Nodige materialen</h5>
