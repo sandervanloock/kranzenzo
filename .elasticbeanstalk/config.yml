@@ -3,10 +3,10 @@ branch-defaults:
     environment: prod
     group_suffix: null
 global:
-  application_name: kransenzo
+  application_name: kranzenzo
   branch: null
   default_ec2_keyname: ec2-sandervl-amazon
-  default_platform: Docker 17.06.2-ce
+  default_platform: Docker 18.09.9-ce
   default_region: eu-west-1
   include_git_submodules: true
   instance_profile: null
