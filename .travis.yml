@@ -56,7 +56,7 @@ deploy:
         secure: V03k+vnA/q9+9/8DBFVy6GVJ2Bcoz4gP7AzoMh46kHBUQGR5hCkjG3M3EoXY+kpj9COMrIgKpY+TGj3DDjHMAOXjctp5P6VE94crNd4ZFNznzAfRYcu4KcWdqp8dKLyNZ5oDhiReGS3DI6g87mKlJR+BW9L1GUYnJn5JEE/8DimwyImvlkVIOUGTIlbZvik+ulrpE+NggmqMwZ8XB58aHu7wkiOz/dj7uB56IWRMXGAYWlS4FH6zEDP2l/tyy4bQru+T7Cnyz3Gs1yLp/VmQLjNZJjgf+5V6kXft/wSbm2gWam7eTx2ddxwS9FgHSMv8rliey6E8EUc1A22D91S0soykhHDfr3G1NlBNOvaN1uoEkJamQmOi6FutHf2uk8HcIWOV77JC7Zzhyr91uI8Ah4+gY5GqVvcfS1TlVy2CBXV26vIMF2Dii6u3COGwEEAZbtw3X5it31Eicpimxn6BVcNvD/uIpMeQKozWcS69fpk7QHicNFU3kmhOk070Sm1BxhUbHapq6dm/zUqTMcz6Wh1M5LWeANbRxm7yAUIlmhBm+1jxjXCLVXSzw5+yZEz08zjb8WpGzoMM9fOXfsSUGdG5WrPTdh4ERlp7hibpXwXpNfPIVQ0ZJgrZs0wkdcrqFVCFFtMNudj1BMqA9jhHj/dO86DXI7Jtvqn4hiZ2RCo=
     region: eu-west-1
     app: kranzenzo
-    env: production
+    env: kranzenzo-prod
     bucket_name: elasticbeanstalk-eu-west-1-455637595802
     on:
         repo: sandervanloock/kranzenzo

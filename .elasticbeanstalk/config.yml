@@ -1,7 +1,10 @@
 branch-defaults:
   import-jdl:
-    environment: prod
-    group_suffix: null
+      environment: prod
+      group_suffix: null
+  master:
+      environment: kranzenzo-prod
+      group_suffix: null
 global:
   application_name: kranzenzo
   branch: null
