@@ -58,7 +58,6 @@ deploy:
     app: kransenzo
     env: live
     bucket_name: elasticbeanstalk-eu-west-1-455637595802
-    zip_file: true
     on:
         repo: sandervanloock/kranzenzo
         branch: master
