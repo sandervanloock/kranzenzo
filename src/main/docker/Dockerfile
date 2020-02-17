@@ -10,6 +10,12 @@ ENV SPRING_OUTPUT_ANSI_ENABLED=ALWAYS \
 RUN adduser -D -s /bin/sh jhipster
 WORKDIR /home/jhipster
 
+# https://candrews.integralblue.com/2019/06/trusting-aws-rds-certificates-in-docker-and-beanstalk/
+RUN curl "https://s3-us-gov-west-1.amazonaws.com/rds-downloads/rds-combined-ca-us-gov-bundle.pem" --output /etc/pki/ca-trust/source/anchors/rds-combined-ca-us-gov-bundle.pem \
+&amp;&amp; curl "https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem" --output /etc/pki/ca-trust/source/anchors/rds-combined-ca-bundle.pem \
+&amp;&amp; update-ca-trust \
+&amp;&amp; update-ca-trust force-enable
+
 ADD entrypoint.sh entrypoint.sh
 RUN chmod 755 entrypoint.sh && chown jhipster:jhipster entrypoint.sh
 USER jhipster
