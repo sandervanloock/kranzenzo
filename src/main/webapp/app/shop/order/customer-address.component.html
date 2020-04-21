@@ -1,10 +1,5 @@
 <mat-form-field class="md-form" style="width: 100%">
-    <!--small class="form-text text-danger"
-           [hidden]="this.customer.street == null && this.customer.city == null">
-        Dit is geen geldig adres
-    </small-->
-    <input matInput required aria-describedby="address"
-           id="address" name="address" class="form-control" type="text" autocomplete="off" [value]="textInput"
-            (change)="onChange($event)" placeholder="Straat, nummer (bus) en stad">
-    <!--<mat-hint align="start">Geef straat, nummer (bus) en stad</mat-hint>-->
+    <small [hidden]="!invalidAddressError" class="form-text text-danger"> Dit is geen geldig adres, gelieve zo
+        nauwkeurig mogelijk te beschrijven en een optie uit de suggesties te kiezen. </small>
+    <input matInput required aria-describedby="address" id="address" name="address" class="form-control" type="text" autocomplete="off" [value]="textInput" (change)="onChange($event)" placeholder="Geef Straat, nummer (bus) en stad. ">
 </mat-form-field>
