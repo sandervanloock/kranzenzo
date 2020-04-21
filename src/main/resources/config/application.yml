@@ -42,12 +42,12 @@ spring:
         active: #spring.profiles.active#
     http:
         multipart:
-            max-request-size: 12Mb
-            max-file-size: 12Mb
+            max-request-size: 20Mb
+            max-file-size: 20Mb
     servlet:
         multipart:
-            max-request-size: 12Mb
-            max-file-size: 12Mb
+            max-request-size: 20Mb
+            max-file-size: 20Mb
     jpa:
         open-in-view: false
         hibernate:
