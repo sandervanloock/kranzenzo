@@ -14,9 +14,9 @@ declare var $: any;
             } )
 export class CustomerAddressComponent implements OnInit, ControlValueAccessor, Validator {
     textInput = '';
+    invalidAddressError = false;
 
     private searchBox: any;
-    private invalidAddressError = false;
     private output: ICustomer;
 
     private propagateChange = (_: any) => {};
