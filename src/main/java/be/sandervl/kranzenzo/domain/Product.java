@@ -234,7 +234,7 @@ public class Product implements Serializable {
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     public double getDiscount() {
-        return LocalDate.now().getYear() == 2019 && LocalDate.now().getMonth().equals( Month.MAY ) ? 0.2 : 0;
+        return LocalDate.now().getYear() == 2020 && LocalDate.now().getMonth().equals( Month.JULY ) ? 0.1 : 0;
     }
 
     public boolean hasDiscount() {
