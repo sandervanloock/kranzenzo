@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import {Moment} from 'moment';
 
 @Component( {
-                selector: 'jhi-pickup-date', templateUrl: './pickup-date.component.html', styles: ['.date-time{ display: flex; align-items: center; justify-content: center}',]
+                selector: 'jhi-pickup-date', templateUrl: './pickup-date.component.html', styles: ['.date-time{ display: flex; align-items: center; justify-content: center}']
             } )
 export class PickupDateComponent implements OnInit {
 
