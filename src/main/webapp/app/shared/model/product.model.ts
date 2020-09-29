@@ -1,6 +1,6 @@
-import { IImage } from 'app/shared/model/image.model';
-import { IProductOrder } from 'app/shared/model/product-order.model';
-import { ITag } from 'app/shared/model/tag.model';
+import {IImage} from 'app/shared/model/image.model';
+import {IProductOrder} from 'app/shared/model/product-order.model';
+import {ITag} from 'app/shared/model/tag.model';
 
 export interface IProduct {
     id?: number;
@@ -8,6 +8,7 @@ export interface IProduct {
     price?: number;
     description?: string;
     isActive?: boolean;
+    isResell?: boolean;
     numberOfBatteries?: number;
     discount?: number;
     discountAmount?: number;
@@ -23,11 +24,12 @@ export class Product implements IProduct {
         public price?: number,
         public description?: string,
         public isActive?: boolean,
+        public isResell?: boolean,
         public numberOfBatteries?: number,
         public images?: IImage[],
         public orders?: IProductOrder[],
-        public tags?: ITag[]
-    ) {
+        public tags?: ITag[] ) {
         this.isActive = this.isActive || false;
+        this.isResell = this.isResell || false;
     }
 }

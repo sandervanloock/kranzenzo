@@ -34,6 +34,7 @@
                     <th><span jhiTranslate="kranzenzoApp.product.name">Name</span></th>
                     <th><span jhiTranslate="kranzenzoApp.product.price">Price</span></th>
                     <th><span jhiTranslate="kranzenzoApp.product.isActive">Is Active</span></th>
+                    <th><span jhiTranslate="kranzenzoApp.product.isResellHeading">Is Resell</span></th>
                     <th><span jhiTranslate="kranzenzoApp.product.tags">Tags</span></th>
                     <th></th>
                 </tr>
@@ -44,6 +45,7 @@
                     <td>{{product.name}}</td>
                     <td>{{product.price}}</td>
                     <td><input type="checkbox" readonly disabled [checked]="product.isActive" /></td>
+                <td><input [checked]="product.isResell" disabled readonly type="checkbox"/></td>
                     <td>
                         <span *ngFor="let tags of product.tags; let last = last">
                             <a class="form-control-static" [routerLink]="['../tag', tags?.id, 'view' ]">{{tags.name}}</a>{{last

@@ -63,10 +63,18 @@
             </column>
         </addColumn>
     </changeSet>
-    
+
     <changeSet id="201001121715" author="svl">
         <addColumn tableName="product">
             <column name="created" type="timestamp">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="202009291524" author="svl">
+        <addColumn tableName="product">
+            <column name="is_resell" type="bit">
                 <constraints nullable="true"/>
             </column>
         </addColumn>

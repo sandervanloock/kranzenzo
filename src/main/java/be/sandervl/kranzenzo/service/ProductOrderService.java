@@ -1,7 +1,6 @@
 package be.sandervl.kranzenzo.service;
 
 import be.sandervl.kranzenzo.domain.Customer;
-import be.sandervl.kranzenzo.domain.Product;
 import be.sandervl.kranzenzo.domain.ProductOrder;
 import be.sandervl.kranzenzo.domain.User;
 import be.sandervl.kranzenzo.domain.enumeration.OrderState;
@@ -130,10 +129,16 @@ public class ProductOrderService {
        set product inactive when state is not CANCELLED, otherwise set it active again
     */
     private void updateProductVisibility( ProductOrder order ) {
-        productRepository.findOneWithEagerRelationships( order.getProduct().getId() ).ifPresent( product -> {
-            product.setIsActive( order.getState().equals( OrderState.CANCELLED ) );
-            product = productRepository.save( product );
-            order.setProduct( product );
-        } );
+        productRepository.findOneWithEagerRelationships( order.getProduct().getId() )
+                         .ifPresent( product -> {
+                             if ( product.isIsResell() != null && product.isIsResell() ) {
+                                 product.setIsActive( true );
+                             }
+                             else{
+                                 product.setIsActive( !order.getState().equals( OrderState.CANCELLED ) );
+                             }
+                             product = productRepository.save( product );
+                             order.setProduct( product );
+                         } );
     }
 }

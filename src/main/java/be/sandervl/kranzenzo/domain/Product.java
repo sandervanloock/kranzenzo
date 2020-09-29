@@ -45,6 +45,9 @@ public class Product implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Column(name = "is_resell")
+    private Boolean isResell;
+
     @Min(value = 0)
     @Max(value = 10)
     @Column(name = "number_of_batteries")
@@ -129,6 +132,20 @@ public class Product implements Serializable {
 
     public void setIsActive( Boolean isActive ) {
         this.isActive = isActive;
+    }
+
+    public Boolean isIsResell() {
+        if ( isResell == null ) {
+            return false;
+        }
+        return isResell;
+    }
+
+    public void setIsResell( Boolean resell ) {
+        if ( resell == null ) {
+            resell = false;
+        }
+        isResell = resell;
     }
 
     public Integer getNumberOfBatteries() {

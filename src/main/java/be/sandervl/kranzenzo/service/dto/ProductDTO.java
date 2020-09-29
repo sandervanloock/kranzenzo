@@ -28,6 +28,8 @@ public class ProductDTO implements Serializable {
 
     private Boolean isActive;
 
+    private Boolean isResell;
+
     @Min(value = 0)
     @Max(value = 10)
     private Integer numberOfBatteries;
@@ -78,6 +80,14 @@ public class ProductDTO implements Serializable {
 
     public void setIsActive( Boolean isActive ) {
         this.isActive = isActive;
+    }
+
+    public Boolean isIsResell() {
+        return isResell;
+    }
+
+    public void setIsResell( Boolean resell ) {
+        isResell = resell;
     }
 
     public Integer getNumberOfBatteries() {
@@ -153,6 +163,7 @@ public class ProductDTO implements Serializable {
             ", price=" + getPrice() +
             ", description='" + getDescription() + "'" +
             ", isActive='" + isIsActive() + "'" +
+            ", isResell='" + isIsResell() + "'" +
             ", numberOfBatteries=" + getNumberOfBatteries() +
             "}";
     }

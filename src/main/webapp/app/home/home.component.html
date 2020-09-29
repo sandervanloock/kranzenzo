@@ -15,9 +15,7 @@
             <div *ngIf="this.homepageSettings">
                 <h2>{{this.homepageSettings.title}}</h2>
                 <img *ngIf="this.homepageSettings.image" [alt]="this.homepageSettings.title" [src]="this.homepageSettings.image.endpoint | s3ImageResize: '800x1150'" class="img-fluid">
-                <p *ngIf="this.homepageSettings.description" class="py-3 homepage-description">
-                    {{this.homepageSettings.description}}
-                </p>
+                <div *ngIf="this.homepageSettings.description" [innerHTML]="this.homepageSettings.description" class="py-3 homepage-description"></div>
             </div>
         </section>
     <!-- Homepage image -->

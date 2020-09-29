@@ -20,6 +20,8 @@
             "price": "Prijs",
             "description": "Beschrijving",
             "isActive": "Zichtbaar",
+            "isResell": "Kan meerdere keren verkocht worden",
+            "isResellHeading": "Multiverkoop",
             "images": "Afbeeldingen",
             "numberOfBatteries": "Aantal batterijen",
             "orders": "Orders",
