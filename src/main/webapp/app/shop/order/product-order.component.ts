@@ -1,19 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { JhiEventManager } from 'ng-jhipster';
-import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import { ORDER_DELIVERY_ORIGIN, PRICE_BATTERIES_INCLUDED, PRICE_PER_KILOMETER_PER_KM, VAT_NUMBER } from '../../app.constants';
-import { IProduct } from 'app/shared/model/product.model';
-import { Customer, ICustomer } from 'app/shared/model/customer.model';
-import { LoginModalService, Principal, UserService } from 'app/core';
-import { DeliveryType, IProductOrder, ProductOrder } from 'app/shared/model/product-order.model';
-import { ProductService } from 'app/entities/product';
-import { CustomerService } from 'app/entities/customer';
-import { ProductOrderService } from 'app/entities/product-order';
-import { ProgressSpinnerDialogComponent } from 'app/shared/dialog/progress-spinner-dialog.component';
-import { ConfirmationDialogComponent } from 'app/shared/dialog/confirmation-dialog.component';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {JhiEventManager} from 'ng-jhipster';
+import {ActivatedRoute} from '@angular/router';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {MatDialog, MatDialogRef} from '@angular/material';
+import {Observable} from 'rxjs/Observable';
+import {ORDER_DELIVERY_ORIGIN, PRICE_BATTERIES_INCLUDED, PRICE_PER_KILOMETER_PER_KM, VAT_NUMBER} from '../../app.constants';
+import {IProduct} from 'app/shared/model/product.model';
+import {Customer, ICustomer} from 'app/shared/model/customer.model';
+import {LoginModalService, Principal, UserService} from 'app/core';
+import {DeliveryType, IProductOrder, ProductOrder} from 'app/shared/model/product-order.model';
+import {ProductService} from 'app/entities/product';
+import {CustomerService} from 'app/entities/customer';
+import {ProductOrderService} from 'app/entities/product-order';
+import {ProgressSpinnerDialogComponent} from 'app/shared/dialog/progress-spinner-dialog.component';
+import {ConfirmationDialogComponent} from 'app/shared/dialog/confirmation-dialog.component';
+import {PickupDateComponent} from 'app/shop/order/pickup-date.component';
 
 declare var google: any;
 
@@ -24,11 +25,9 @@ Inspired by https://www.google.com/design/spec/components/steppers.html#steppers
 
 And leveraging the Creative Tim Material Bootstrap Library - http://demos.creative-tim.com/material-kit/index.html
  */
-@Component({
-    selector: 'jhi-product-order',
-    templateUrl: './product-order.component.html',
-    styleUrls: ['product-order.css']
-})
+@Component( {
+                selector: 'jhi-product-order', templateUrl: './product-order.component.html', styleUrls: ['product-order.css']
+            } )
 export class ProductOrderComponent implements OnInit {
     step = 1;
     vatNumber: string = VAT_NUMBER;
@@ -36,6 +35,8 @@ export class ProductOrderComponent implements OnInit {
     product: IProduct;
     customer: ICustomer = new Customer();
     order: IProductOrder = new ProductOrder();
+
+    @ViewChild( PickupDateComponent ) pickupDate;
 
     constructor(
         private loginModalService: LoginModalService,
@@ -83,21 +84,24 @@ export class ProductOrderComponent implements OnInit {
 
     submitForm() {
         this.order.productId = this.product.id;
-        const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-            panelClass: 'transparent',
-            disableClose: true
-        });
+        if ( this.order.deliveryType === DeliveryType.PICKUP ) {
+            const generatedDescriptionForPickupDate = `\nVerwachte ophaal datum op ${this.pickupDate.getSelectedDate().format( 'DD/MM/YYYY HH:mm' )}`;
+            this.order.description = this.order.description + generatedDescriptionForPickupDate;
+        }
+        const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open( ProgressSpinnerDialogComponent, {
+            panelClass: 'transparent', disableClose: true
+        } );
         this.updateCustomer()
-            .flatMap(customer => {
+            .flatMap( customer => {
                 this.customer = customer.body;
                 this.customer.user.confirmEmail = this.customer.user.email;
                 this.order.customerId = this.customer.id;
-                if (this.order.id) {
-                    return this.orderService.update(this.order);
+                if ( this.order.id ) {
+                    return this.orderService.update( this.order );
                 } else {
-                    return this.orderService.create(this.order);
+                    return this.orderService.create( this.order );
                 }
-            })
+            } )
             .subscribe(
                 (order: HttpResponse<IProductOrder>) => {
                     dialogRef.close();
@@ -155,25 +159,22 @@ export class ProductOrderComponent implements OnInit {
     }
 
     private handleSuccessfulOrder(order: IProductOrder) {
-        this.dialog.open(ConfirmationDialogComponent, {
-            width: '250px',
-            data: {
-                title: 'Joepie',
-                message: `Bestelling gelukt! Er is een e-mail verstuurd naar ${order.customer.user.email} met de bevestiging.`
+        this.dialog.open( ConfirmationDialogComponent, {
+            width: '250px', data: {
+                title: 'Joepie', message: `Bestelling gelukt! Er is een e-mail verstuurd naar ${order.customer.user.email} met de bevestiging.`
             }
-        });
+        } );
         this.order = order;
-        this.eventManager.broadcast({
-            name: 'productOrderCompleted',
-            content: { type: 'success', msg: 'product.submitted.success' }
-        });
+        this.eventManager.broadcast( {
+                                         name: 'productOrderCompleted', content: {type: 'success', msg: 'product.submitted.success'}
+                                     } );
     }
 
     private updateCustomer(): Observable<HttpResponse<ICustomer>> {
-        if (this.customer.id === undefined) {
-            return this.customerService.create(this.customer);
+        if ( this.customer.id === undefined ) {
+            return this.customerService.create( this.customer );
         } else {
-            return this.customerService.update(this.customer);
+            return this.customerService.update( this.customer );
         }
     }
 }

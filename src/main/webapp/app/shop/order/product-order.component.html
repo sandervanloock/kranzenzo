@@ -65,15 +65,15 @@
                             <mat-radio-button class="radio-button" [value]="'PICKUP'">
                                 Ik wil mijn stuk ophalen
                             </mat-radio-button>
+                            <!--pickpup date-->
+                            <jhi-pickup-date (ngModelChange)="updateDeliveryPrice()" *ngIf="this.order.deliveryType === 'PICKUP'" [(ngModel)]="customer" name="customerAddress"></jhi-pickup-date>
                             <mat-radio-button class="radio-button" [value]="'DELIVERED'">
                                 Ik wil mijn stuk thuis bezorgd
                             </mat-radio-button>
+                            <!--address-->
+                            <jhi-customer-address (ngModelChange)="updateDeliveryPrice()" *ngIf="this.order.deliveryType === 'DELIVERED'" [(ngModel)]="customer" name="customerAddress"></jhi-customer-address>
                         </mat-radio-group>
 
-                        <!--address-->
-                        <jhi-customer-address *ngIf="this.order.deliveryType === 'DELIVERED'" name="customerAddress" [(ngModel)]="customer"
-                                              (ngModelChange)="updateDeliveryPrice()">
-                        </jhi-customer-address>
 
                         <div class="md-form input-full-width my-1 mx-2" *ngIf="product?.numberOfBatteries">
                             <mat-checkbox name="includeBatteries" id="includeBatteries" [(ngModel)]="order.includeBatteries">
