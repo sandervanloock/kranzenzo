@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{email.order.confirmation.title}">JHipster activation</title>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+    <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
+</head>
+<body>
+<p th:inline="text">
+    Beste [[${user.firstName}]], </p>
+<p th:inline="text">
+    Je betaling voor [[${order.product.name}]] is goed ontvangen. </p>
+<th:block th:if="${order.deliveryType.equals(T(be.sandervl.kranzenzo.domain.enumeration.DeliveryType).PICKUP)}">
+    <p th:inline="text">
+        Hierdoor is je bestelling bevestigd en word je verwacht je bestelling op te halen op [[${order.pickupDateTime}
+        ]].</p>
+    <p th:inline="text">
+        Moest je door omstandigheden toch niet kunnen komen, laat dit dan weten via de contactgegevens die je vindt op
+        <a th:href="@{${baseUrl+'/#/contact'}}">Kranzenzo</a>. </p>
+</th:block>
+<th:block th:if="${order.deliveryType.equals(T(be.sandervl.kranzenzo.domain.enumeration.DeliveryType).DELIVERED)}">
+    <p th:inline="text">
+        Hierdoor is je bestelling bevestigd en zal [[${order.product.name}]] geleverd worden. Je zal gecontacteerd
+        worden om hiervoor een afspraak te maken. </p>
+</th:block>
+
+<span th:text="#{email.order.confirmation.text2}">Regards, </span> <br/> <em th:text="#{email.signature}">JHipster.</em>
+</body>
+</html>

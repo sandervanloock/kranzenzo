@@ -84,7 +84,9 @@ public class ProductOrderResource {
     @Timed
     public List <ProductOrderDTO> getAllProductOrders() {
         log.debug( "REST request to get all ProductOrders" );
-        return productOrderService.findAll();
+        List <ProductOrderDTO> all = productOrderService.findAll();
+        all.sort( ( a, b ) -> b.getCreated().compareTo( a.getCreated() ) );
+        return all;
     }
 
     /**

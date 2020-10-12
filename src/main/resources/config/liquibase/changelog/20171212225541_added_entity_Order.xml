@@ -60,7 +60,7 @@
         <dropDefaultValue tableName="jhi_order" columnName="updated" columnDataType="datetime"/>
 
     </changeSet>
-    
+
     <changeSet id="201801061927" author="svl">
         <addColumn tableName="jhi_order">
             <column name="delivery_price" type="${floatType}">
@@ -68,7 +68,7 @@
             </column>
         </addColumn>
     </changeSet>
-    
+
     <changeSet id="201804101725" author="svl">
         <addColumn tableName="jhi_order">
             <column name="payment_type" type="varchar(255)" defaultValue="CASH">
@@ -76,6 +76,12 @@
             </column>
         </addColumn>
     </changeSet>
-    
+
+    <changeSet id="202010122102" author="svl">
+        <addColumn tableName="jhi_order">
+            <column name="pickup_date_time" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

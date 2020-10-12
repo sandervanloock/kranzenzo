@@ -87,6 +87,7 @@ export class ProductOrderComponent implements OnInit {
         if ( this.order.deliveryType === DeliveryType.PICKUP ) {
             const generatedDescriptionForPickupDate = `\nVerwachte ophaal datum op ${this.pickupDate.getSelectedDate().format( 'DD/MM/YYYY HH:mm' )}`;
             this.order.description = this.order.description + generatedDescriptionForPickupDate;
+            this.order.pickupDateTime = this.pickupDate.getSelectedDate().format( 'DD/MM/YYYY HH:mm' );
         }
         const dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open( ProgressSpinnerDialogComponent, {
             panelClass: 'transparent', disableClose: true

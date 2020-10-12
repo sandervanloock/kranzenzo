@@ -59,6 +59,17 @@ public class ProductOrderService {
     public ProductOrderDTO save( ProductOrderDTO productOrderDTO ) {
         log.debug( "Request to save ProductOrder : {}", productOrderDTO );
         ProductOrder productOrder = productOrderMapper.toEntity( productOrderDTO );
+        OrderState newState = productOrder.getState();
+        OrderState currentState = productOrderRepository.findById( productOrderDTO.getId() )
+                                                        .map( ProductOrder::getState )
+                                                        .orElse( OrderState.CANCELLED );
+        if ( newState.equals( OrderState.PAYED ) && !currentState.equals( OrderState.PAYED ) ) {
+            log.debug( "Fetch the corresponding date and workshop so the data available for the mails" );
+            //fetch customer eager so all information for sending the email is present on the order
+            Customer customer = customerRepository.getOne( productOrder.getCustomer().getId() );
+            productRepository.findById( productOrder.getProduct().getId() ).ifPresent( productOrder::setProduct );
+            mailService.sendOrderPayedCustomer( productOrder, customer.getUser() );
+        }
         productOrder = productOrderRepository.save( productOrder );
         updateProductVisibility( productOrder );
         return productOrderMapper.toDto( productOrder );

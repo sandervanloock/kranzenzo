@@ -1,12 +1,9 @@
-import { Moment } from 'moment';
-import { ICustomer } from 'app/shared/model/customer.model';
-import { IProduct } from 'app/shared/model/product.model';
+import {Moment} from 'moment';
+import {ICustomer} from 'app/shared/model/customer.model';
+import {IProduct} from 'app/shared/model/product.model';
 
 export const enum OrderState {
-    NEW = 'NEW',
-    PAYED = 'PAYED',
-    CANCELLED = 'CANCELLED',
-    DONE = 'DONE'
+    NEW = 'NEW', PAYED = 'PAYED', CANCELLED = 'CANCELLED', DONE = 'DONE'
 }
 
 export const enum DeliveryType {
@@ -27,6 +24,7 @@ export interface IProductOrder {
     deliveryType?: DeliveryType;
     includeBatteries?: boolean;
     description?: string;
+    pickupDateTime?: string;
     deliveryPrice?: number;
     totalPrice?: number;
     paymentType?: PaymentType;

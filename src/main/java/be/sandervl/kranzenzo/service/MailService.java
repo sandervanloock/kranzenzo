@@ -156,6 +156,7 @@ public class MailService {
             Locale.forLanguageTag( "nl" ) );
         sendEmail( applicationProperties.getMail().getConfirmation(), subject, content, false, true );
     }
+
     public void sendWorkshopConfirmationMail( WorkshopSubscription subscription ) {
         User user = subscription.getUser();
         log.debug( "Sending confirmation of payed subscription to '{}'", user.getEmail() );
@@ -166,6 +167,19 @@ public class MailService {
         context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
         String content = templateEngine.process( "mail/workshopSubscriptionPayedCustomer", context );
         String subject = messageSource.getMessage( "email.workshop.subscription.payed.customer.title", null,
+            Locale.forLanguageTag( "nl" ) );
+        sendEmail( user.getEmail(), subject, content, false, true );
+    }
+
+    public void sendOrderPayedCustomer( ProductOrder order, User user ) {
+        log.debug( "Sending confirmation of payed order to '{}'", user.getEmail() );
+        Locale locale = Locale.forLanguageTag( Optional.ofNullable( user.getLangKey() ).orElse( "nl" ) );
+        Context context = new Context( locale );
+        context.setVariable( USER, user );
+        context.setVariable( BASE_URL, jHipsterProperties.getMail().getBaseUrl() );
+        context.setVariable( "order", order );
+        String content = templateEngine.process( "mail/orderPayedCustomer", context );
+        String subject = messageSource.getMessage( "email.order.payed.customer.title", null,
             Locale.forLanguageTag( "nl" ) );
         sendEmail( user.getEmail(), subject, content, false, true );
     }

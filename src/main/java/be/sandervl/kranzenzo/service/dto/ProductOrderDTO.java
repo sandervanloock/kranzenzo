@@ -26,6 +26,8 @@ public class ProductOrderDTO implements Serializable {
 
     private DeliveryType deliveryType;
 
+    private String pickupDateTime;
+
     private Boolean includeBatteries;
 
     @Size(max = 5000)
@@ -89,6 +91,14 @@ public class ProductOrderDTO implements Serializable {
 
     public void setDeliveryType( DeliveryType deliveryType ) {
         this.deliveryType = deliveryType;
+    }
+
+    public String getPickupDateTime() {
+        return pickupDateTime;
+    }
+
+    public void setPickupDateTime( String pickupDateTime ) {
+        this.pickupDateTime = pickupDateTime;
     }
 
     public Boolean isIncludeBatteries() {

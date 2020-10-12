@@ -70,6 +70,9 @@ public class ProductOrder implements Serializable {
     @JoinColumn(unique = true)
     private Location deliveryAddress;
 
+    @Column(name = "pickup_date_time")
+    private String pickupDateTime;
+
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("orders")
@@ -212,6 +215,14 @@ public class ProductOrder implements Serializable {
     public ProductOrder deliveryAddress( Location location ) {
         this.deliveryAddress = location;
         return this;
+    }
+
+    public String getPickupDateTime() {
+        return pickupDateTime;
+    }
+
+    public void setPickupDateTime( String pickupDateTime ) {
+        this.pickupDateTime = pickupDateTime;
     }
 
     public Product getProduct() {
