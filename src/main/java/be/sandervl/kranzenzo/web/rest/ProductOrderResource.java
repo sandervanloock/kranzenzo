@@ -90,6 +90,7 @@ public class ProductOrderResource {
     }
 
     /**
+     * ProductOrderResourceIntTest
      * GET  /product-orders/:id : get the "id" productOrder.
      *
      * @param id the id of the productOrderDTO to retrieve

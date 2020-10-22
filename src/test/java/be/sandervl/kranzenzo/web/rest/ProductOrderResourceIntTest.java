@@ -60,7 +60,7 @@ public class ProductOrderResourceIntTest {
     private static final ZonedDateTime UPDATED_UPDATED = ZonedDateTime.now( ZoneId.systemDefault() ).withNano( 0 );
 
     private static final OrderState DEFAULT_STATE = OrderState.NEW;
-    private static final OrderState UPDATED_STATE = OrderState.PAYED;
+    private static final OrderState UPDATED_STATE = OrderState.CANCELLED;
 
     private static final DeliveryType DEFAULT_DELIVERY_TYPE = DeliveryType.DELIVERED;
     private static final DeliveryType UPDATED_DELIVERY_TYPE = DeliveryType.PICKUP;
@@ -283,6 +283,7 @@ public class ProductOrderResourceIntTest {
             .includeBatteries( UPDATED_INCLUDE_BATTERIES )
             .description( UPDATED_DESCRIPTION )
             .deliveryPrice( UPDATED_DELIVERY_PRICE )
+            .state( OrderState.CANCELLED )
             .paymentType( UPDATED_PAYMENT_TYPE );
         ProductOrderDTO productOrderDTO = productOrderMapper.toDto( updatedProductOrder );
 
