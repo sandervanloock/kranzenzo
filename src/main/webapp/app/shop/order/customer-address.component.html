@@ -1,5 +1,7 @@
-<mat-form-field class="md-form" style="width: 100%">
-    <small [hidden]="!invalidAddressError" class="form-text text-danger"> Dit is geen geldig adres, gelieve zo
+<mat-form-field class="md-form input-full-width mb-2" style="width: 100%">
+    <small [hidden]="!this.invalidAddressError" class="form-text text-danger"> Dit is geen geldig adres, gelieve zo
         nauwkeurig mogelijk te beschrijven en een optie uit de suggesties te kiezen. </small>
-    <input matInput required aria-describedby="address" id="address" name="address" class="form-control" type="text" autocomplete="off" [value]="textInput" (change)="onChange($event)" placeholder="Geef Straat, nummer (bus) en stad. ">
+    <input matInput required aria-describedby="address" id="address" name="address" class="form-control" type="text" autocomplete="off" [value]="textInput"
+           (change)="onChange($event)" placeholder="Geef Straat, nummer (bus) en stad. ">
+    <mat-error *ngIf="this.invalidAddressError">Dit is geen geldig adres, gelieve zo nauwkeurig mogelijk te beschrijven en een optie uit de suggesties te kiezen.</mat-error>
 </mat-form-field>

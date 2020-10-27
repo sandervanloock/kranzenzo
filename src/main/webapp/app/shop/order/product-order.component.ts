@@ -161,7 +161,7 @@ export class ProductOrderComponent implements OnInit {
 
     private handleSuccessfulOrder(order: IProductOrder) {
         this.dialog.open( ConfirmationDialogComponent, {
-            width: '250px', data: {
+            width: '500px', height: '500px', disableClose: true, data: {
                 title: 'Joepie', message: `Bestelling gelukt! Er is een e-mail verstuurd naar ${order.customer.user.email} met de bevestiging.`
             }
         } );

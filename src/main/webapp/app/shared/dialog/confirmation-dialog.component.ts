@@ -1,5 +1,6 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {Router} from '@angular/router';
 
 export interface DialogData {
     title: string;
@@ -10,15 +11,16 @@ export interface DialogData {
     selector: 'jhi-confirmation-dialog',
     template:
         '<h1 mat-dialog-title>{{data.title}}</h1>' +
-        '<div mat-dialog-content>{{data.message}}</div>' +
-        '<div mat-dialog-actions>' +
+        '<mat-dialog-content>{{data.message}}</mat-dialog-content>' +
+        '<mat-dialog-actions align="end">' +
         '<button mat-button (click)="onNoClick()">Sluiten</button>' +
-        '</div>'
+        '</mat-dialog-actions>'
 })
 export class ConfirmationDialogComponent {
-    constructor(public dialogRef: MatDialogRef<ConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    constructor( private router: Router, public dialogRef: MatDialogRef<ConfirmationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
     onNoClick(): void {
         this.dialogRef.close();
+        this.router.navigate(['']);
     }
 }

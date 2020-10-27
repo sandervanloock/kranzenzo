@@ -146,7 +146,7 @@ public class ProductOrderService {
                                  product.setIsActive( true );
                              }
                              else{
-                                 product.setIsActive( !order.getState().equals( OrderState.CANCELLED ) );
+                                 product.setIsActive( order.getState().equals( OrderState.CANCELLED ) );
                              }
                              product = productRepository.save( product );
                              order.setProduct( product );

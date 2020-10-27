@@ -50,8 +50,9 @@
                         </mat-form-field>
 
                         <!--email-->
-                        <mat-form-field class="md-form input-full-width ">
+                        <mat-form-field class="md-form input-full-width mb-2">
                             <input name="confirmEmail" matInput type="text" id="confirmEmail" class="form-control" placeholder="Bevestig email" [(ngModel)]="this.customer.user.confirmEmail" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" jhiValidateEqual validateEqual="email" #emailConfirmation="ngModel">
+                            <mat-error *ngIf="emailConfirmation.invalid && emailConfirmation.errors.validateEqual">{{emailConfirmation.errors.validateEqual}}</mat-error>
                         </mat-form-field>
 
                         <!--phone-->

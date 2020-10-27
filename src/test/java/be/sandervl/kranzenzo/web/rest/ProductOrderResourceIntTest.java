@@ -9,6 +9,7 @@ import be.sandervl.kranzenzo.domain.enumeration.OrderState;
 import be.sandervl.kranzenzo.domain.enumeration.PaymentType;
 import be.sandervl.kranzenzo.repository.ProductOrderRepository;
 import be.sandervl.kranzenzo.service.ProductOrderService;
+import be.sandervl.kranzenzo.service.ProductService;
 import be.sandervl.kranzenzo.service.dto.ProductOrderDTO;
 import be.sandervl.kranzenzo.service.mapper.ProductOrderMapper;
 import be.sandervl.kranzenzo.web.rest.errors.ExceptionTranslator;
@@ -87,6 +88,9 @@ public class ProductOrderResourceIntTest {
     private ProductOrderService productOrderService;
 
     @Autowired
+    private ProductService productService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -129,7 +133,7 @@ public class ProductOrderResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks( this );
-        final ProductOrderResource productOrderResource = new ProductOrderResource( productOrderService );
+        final ProductOrderResource productOrderResource = new ProductOrderResource( productOrderService, productService );
         this.restProductOrderMockMvc = MockMvcBuilders.standaloneSetup( productOrderResource )
                                                       .setCustomArgumentResolvers( pageableArgumentResolver )
                                                       .setControllerAdvice( exceptionTranslator )

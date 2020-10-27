@@ -1,6 +1,8 @@
 package be.sandervl.kranzenzo.web.rest;
 
 import be.sandervl.kranzenzo.service.ProductOrderService;
+import be.sandervl.kranzenzo.service.ProductService;
+import be.sandervl.kranzenzo.service.dto.ProductDTO;
 import be.sandervl.kranzenzo.service.dto.ProductOrderDTO;
 import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kranzenzo.web.rest.util.HeaderUtil;
@@ -27,9 +29,11 @@ public class ProductOrderResource {
     private static final String ENTITY_NAME = "productOrder";
     private final Logger log = LoggerFactory.getLogger( ProductOrderResource.class );
     private final ProductOrderService productOrderService;
+    private final ProductService productService;
 
-    public ProductOrderResource( ProductOrderService productOrderService ) {
+    public ProductOrderResource( ProductOrderService productOrderService, ProductService productService ) {
         this.productOrderService = productOrderService;
+        this.productService = productService;
     }
 
     /**
@@ -45,6 +49,11 @@ public class ProductOrderResource {
         log.debug( "REST request to save ProductOrder : {}", productOrderDTO );
         if ( productOrderDTO.getId() != null ) {
             throw new BadRequestAlertException( "A new productOrder cannot already have an ID", ENTITY_NAME, "idexists" );
+        }
+        ProductDTO productDTO = productService.findOne( productOrderDTO.getProduct().getId() )
+                                              .orElseThrow( () -> new BadRequestAlertException( "Product not found", ENTITY_NAME, "unknownId" ) );
+        if ( Boolean.FALSE.equals( productDTO.isIsActive() ) ) {
+            throw new BadRequestAlertException( "Product not active", ENTITY_NAME, "productNotActive" );
         }
         ProductOrderDTO result = productOrderService.create( productOrderDTO );
         return ResponseEntity.created( new URI( "/api/product-orders/" + result.getId() ) )

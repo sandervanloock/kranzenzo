@@ -13,8 +13,8 @@ declare var $: any;
     }]
             } )
 export class CustomerAddressComponent implements OnInit, ControlValueAccessor, Validator {
-    textInput = '';
-    invalidAddressError = false;
+    public textInput = '';
+    public invalidAddressError = false;
 
     private searchBox: any;
     private output: ICustomer;
@@ -24,15 +24,15 @@ export class CustomerAddressComponent implements OnInit, ControlValueAccessor, V
     constructor() {}
 
     ngOnInit() {
-        const input = document.getElementById('address');
-        const options = { componentRestrictions: { country: 'be' } };
-        this.searchBox = new google.maps.places.Autocomplete(input, options);
-        this.searchBox.addListener('place_changed', () => this.updateAddress());
-        google.maps.event.addDomListener(input, 'keydown', function(event) {
-            if (event.keyCode === 13) {
+        const input = document.getElementById( 'address' );
+        const options = {componentRestrictions: {country: 'be'}};
+        this.searchBox = new google.maps.places.Autocomplete( input, options );
+        this.searchBox.addListener( 'place_changed', () => this.updateAddressFromSearchBox() );
+        google.maps.event.addDomListener( input, 'keydown', function( event ) {
+            if ( event.keyCode === 13 ) {
                 event.preventDefault();
             }
-        });
+        } );
     }
 
     registerOnChange(fn: any): void {
@@ -66,18 +66,41 @@ export class CustomerAddressComponent implements OnInit, ControlValueAccessor, V
         // if successful, the coordinates will be calculated and the address will be valid afterwards.
         // TODO try to fetch suggestion here manually
         // }
-        if ( this.isValidAddress() ) {
+        this.fetchGeocodes().then( res => {
+            this.updateAddress( res );
+            console.log( 'manual fetch', res );
+            if ( !this.isValidAddress() ) {
+                Promise.reject( 'Address is INVALID' );
+            }
+            console.log( this.textInput, 'Address is VALID' );
             this.invalidAddressError = false;
-        } else {
-            this.invalidAddressError = true;
-        }
 
-        console.log( 'setting address to ' + this.textInput );
+            console.log( 'setting address to ' + this.textInput );
         // update the form
-        this.propagateChange( this.output );
+            this.propagateChange( this.output );
+        } ).catch( err => {
+            console.error( 'Address is INVALID', err );
+            this.invalidAddressError = true;
+            // update the form
+            this.propagateChange( this.output );
+        } );
     }
 
-    // passed or failed from the onChange method
+    private async fetchGeocodes() {
+        const res = await fetch( `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyC4x6KxHhrA2XjAcOMCqeKBri1_fW-kdl4
+        &language=nl
+        &region=be
+        &components=country:be
+        &address=${encodeURIComponent( this.textInput )}` );
+        const resData = await res.json();
+        const output = resData.results;
+        if ( output.length !== 1 ) {
+            return Promise.reject( 'No unique address found' );
+        }
+        return output[0];
+    }
+
+// passed or failed from the onChange method
     public validate( c: FormControl ) {
         return this.output && this.isValidAddress() ? null : {
             invalidAddressError: {
@@ -86,15 +109,16 @@ export class CustomerAddressComponent implements OnInit, ControlValueAccessor, V
         };
     }
 
-    // returns null when valid else the validation object
-    // in this case we're checking if the json parsing has
-
     private isValidAddress() {
-        return this.output.latitude !== undefined && this.output.longitude !== undefined;
+        return this.output.latitude !== undefined && this.output.longitude !== undefined && this.output.street !== undefined && this.output.street !== '';
     }
 
-    private updateAddress() {
+    private updateAddressFromSearchBox() {
         const place = this.searchBox.getPlace();
+        this.updateAddress( place );
+    }
+
+    private updateAddress( place ) {
         if ( place != null ) {
             // as defined in https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding
             this.output.street = place.address_components
@@ -103,26 +127,29 @@ export class CustomerAddressComponent implements OnInit, ControlValueAccessor, V
                 .reverse()
                 .join( ' ' );
             this.output.city = place.address_components
-                .filter(attr => attr.types.filter(type => type === 'locality').length > 0)
-                .map(attr => attr.long_name)
+                .filter( attr => attr.types.filter( type => type === 'locality' ).length > 0 )
+                .map( attr => attr.long_name )
                 .join();
             this.output.province = place.address_components
-                .filter(attr => attr.types.filter(type => type === 'administrative_area_level_2').length > 0)
-                .map(attr => attr.long_name)
+                .filter( attr => attr.types.filter( type => type === 'administrative_area_level_2' ).length > 0 )
+                .map( attr => attr.long_name )
                 .join();
             this.output.zipCode = place.address_components
-                .filter(attr => attr.types.filter(type => type === 'postal_code').length > 0)
-                .map(attr => attr.long_name)
+                .filter( attr => attr.types.filter( type => type === 'postal_code' ).length > 0 )
+                .map( attr => attr.long_name )
                 .join();
-            if (place.geometry && place.geometry.location) {
-                this.output.latitude = place.geometry.location.lat();
-                this.output.longitude = place.geometry.location.lng();
+            if ( place.geometry && place.geometry.location ) {
+                this.output.latitude = this.isFunction( place.geometry.location.lat ) ? place.geometry.location.lat() : place.geometry.location.lat;
+                this.output.longitude = this.isFunction( place.geometry.location.lng ) ? place.geometry.location.lng() : place.geometry.location.lng;
             }
             this.output.description = place.formatted_address;
             this.textInput = place.formatted_address;
         }
-
         // update the form
         this.propagateChange( this.output );
+    }
+
+    private isFunction( functionToCheck ) {
+        return functionToCheck && {}.toString.call( functionToCheck ) === '[object Function]';
     }
 }
