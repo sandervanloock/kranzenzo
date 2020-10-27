@@ -1,6 +1,7 @@
 import {Component, forwardRef, OnInit} from '@angular/core';
 import {ICustomer} from 'app/shared/model/customer.model';
 import {ControlValueAccessor, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator} from '@angular/forms';
+import {SERVER_API_URL} from 'app/app.constants';
 
 declare var google: any;
 declare var $: any;
@@ -87,11 +88,7 @@ export class CustomerAddressComponent implements OnInit, ControlValueAccessor, V
     }
 
     private async fetchGeocodes() {
-        const res = await fetch( `https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyC4x6KxHhrA2XjAcOMCqeKBri1_fW-kdl4
-        &language=nl
-        &region=be
-        &components=country:be
-        &address=${encodeURIComponent( this.textInput )}` );
+        const res = await fetch( `${SERVER_API_URL}/api/google/geocoding?term=${encodeURIComponent( this.textInput )}` );
         const resData = await res.json();
         const output = resData.results;
         if ( output.length !== 1 ) {
