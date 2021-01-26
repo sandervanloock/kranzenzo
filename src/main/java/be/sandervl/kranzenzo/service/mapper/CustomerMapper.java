@@ -13,10 +13,10 @@ public interface CustomerMapper extends EntityMapper <CustomerDTO, Customer> {
     @Mapping(target = "latitude", source = "address.latitude")
     @Mapping(target = "longitude", source = "address.longitude")
     @Mapping(target = "description", source = "address.description")
-    @Mapping(source = "user", target = "user", qualifiedByName = "userToUserDTO")
+    @Mapping(source = "user", target = "user")
     CustomerDTO toDto( Customer customer );
 
-    @Mapping(source = "user", target = "user", qualifiedByName = "userDTOToUser")
+    @Mapping(source = "user", target = "user")
     @Mapping(source = "latitude", target = "address.latitude")
     @Mapping(source = "longitude", target = "address.longitude")
     @Mapping(source = "description", target = "address.description")

@@ -50,7 +50,7 @@ public class ProductOrderResource {
         if ( productOrderDTO.getId() != null ) {
             throw new BadRequestAlertException( "A new productOrder cannot already have an ID", ENTITY_NAME, "idexists" );
         }
-        ProductDTO productDTO = productService.findOne( productOrderDTO.getProduct().getId() )
+        ProductDTO productDTO = productService.findOne( productOrderDTO.getProductId() )
                                               .orElseThrow( () -> new BadRequestAlertException( "Product not found", ENTITY_NAME, "unknownId" ) );
         if ( Boolean.FALSE.equals( productDTO.isIsActive() ) ) {
             throw new BadRequestAlertException( "Product not active", ENTITY_NAME, "productNotActive" );
