@@ -4,7 +4,8 @@ services:
     - docker
 language: node_js
 node_js:
-    - 8.11.4
+    - 14.16.0
+python: 3.6.1
 jdk:
     - oraclejdk8
 dist: trusty
@@ -17,7 +18,7 @@ cache:
         - "$HOME/.yarn-cache"
 env:
     global:
-        - NODE_VERSION=8.11.4
+        - NODE_VERSION=14.16.0
         - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
         - SPRING_JPA_SHOW_SQL=false
         -   secure: BlgGnHnsEVbYuB8981OYkiOQCQfqthAoKXjNQH3AX9y4fxqFSK4UoHNoFoUyAg8aP5yIuKlvB8Y5vCHFpZKqXMNpfgzgh0CAvT/iuQkZXhjILnIUsXaqoZCrlTFfi/vN4SuvCxGHY3pzV1hwtF5wV+uklUP6a8P3Z6zd4tlW8HWPnCootqp9vK2xPwIf9X2ei0gKlTvMunyTOeTE4+HIZeBcwT6Tp7X9Desg+ijSykHLz5kkK1LUxiqmAQ7kPQpNLLVwnSJAQtSzp/IE1AiI6jMxSHUfGeyoZSFiAtRGAKPEFMQnZp7Lo/rb96dlWB9K1FSjo1BwL91K28k0QChdYlnQ7syKfRzxoIr2TiZEzMrcZBx8+m/Bg/wLfWZcWquFZwylpGD9YutcXSPUJfUcR7jKS3OyETucjNmQmfuEMoHj6HpZGKqDREsXrEkR6CYDUnResKzBcGQqgX4ywjqgpa50FNfg3gBTevL2ubkV2b3gNoKj+BJcjKlBIh9XPGcz1+Zz5rahj99Evlp4BRDZuccEF3OPM3dOywQDiDVrhxCVVyl6lbSG1tmTp6uiXwdfh3IuFip53JxvKU0YWP4eb88RwSitZsNz9GyOF19IzFAQmzycp08fcpvds1t3WBvm0sAKQ/Qt+IwJQ4K9XUOoK4ph4o9Qml6TOrM0agAFKP8=
