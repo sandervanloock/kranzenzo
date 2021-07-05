@@ -72,17 +72,20 @@ class Pageable {
 }
 
 export class SearchState extends Pageable {
-    constructor(public page?: number, public name?: string, public tags?: number, public isActive?: boolean, public sort?: string) {
+    constructor(
+        public page?: number,
+        public name?: string,
+        public nameAsInteger?: string,
+        public tags?: number,
+        public isActive?: boolean,
+        public sort?: string
+    ) {
         super();
     }
 
     toQuery() {
-        return (
-            super.toQuery() +
-            `tags=${this.tags ? this.tags : ''}&name=${this.name ? this.name : ''}&isActive=${this.isActive ? '1' : ''}&sort=${
-                this.sort ? this.sort : ''
-            }`
-        );
+        const query = `&query=${this.name ? this.name.trim() : ''}&sort=${this.sort ? this.sort : ''}`;
+        return super.toQuery() + query.trim();
     }
 }
 

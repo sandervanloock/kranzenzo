@@ -4,6 +4,9 @@
     <option name="SPRING_BOOT_MAIN_CLASS" value="be.sandervl.kranzenzo.KranzenzoApp" />
     <option name="ACTIVE_PROFILES" value="dev" />
     <option name="ALTERNATIVE_JRE_PATH" />
-    <method />
+    <option name="SHORTEN_COMMAND_LINE" value="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
   </configuration>
 </component>

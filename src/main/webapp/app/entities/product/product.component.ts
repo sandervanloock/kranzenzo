@@ -25,7 +25,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     ) {}
 
     loadAll() {
-        const searchState = new SearchState(0, this.currentSearch);
+        const searchState = new SearchState(0, this.currentSearch, this.currentSearch);
         this.productService.search(searchState).subscribe(
             (res: HttpResponse<Page<IProduct>>) => {
                 this.products = res.body.content;

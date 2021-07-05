@@ -1,19 +1,16 @@
 package be.sandervl.kranzenzo.web.rest;
 
-import be.sandervl.kranzenzo.domain.Product;
 import be.sandervl.kranzenzo.service.ProductService;
 import be.sandervl.kranzenzo.service.dto.ProductDTO;
 import be.sandervl.kranzenzo.web.rest.errors.BadRequestAlertException;
 import be.sandervl.kranzenzo.web.rest.util.HeaderUtil;
 import com.codahale.metrics.annotation.Timed;
-import com.querydsl.core.types.Predicate;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ResponseEntity;
@@ -103,14 +100,14 @@ public class ProductResource {
 
     @GetMapping("/products/search")
     @Timed
-    public Page <ProductDTO> searchProducts( @QuerydslPredicate(root = Product.class) Predicate predicate,
-                                             @PageableDefault(size = 10)
-                                             @SortDefault.SortDefaults({
-                                                 @SortDefault(sort = "created", direction = Sort.Direction.DESC),
-                                                 @SortDefault(sort = "name", direction = Sort.Direction.ASC)
-                                             }) Pageable page ) {
-        log.debug( "REST request to get all Products" );
-        return productService.search( predicate, page );
+    public Page<ProductDTO> searchProducts(@RequestParam String query,
+                                           @PageableDefault(size = 10)
+                                           @SortDefault.SortDefaults({
+                                               @SortDefault(sort = "created", direction = Sort.Direction.DESC),
+                                               @SortDefault(sort = "name", direction = Sort.Direction.ASC)
+                                           }) Pageable customPage) {
+        log.debug("REST request to get all Products");
+        return productService.search(query, customPage);
     }
 
     /**

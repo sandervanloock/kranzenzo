@@ -27,24 +27,26 @@ public interface ProductRepository extends JpaRepository <Product, Long>, Queryd
 
     @Query(value = "select distinct product from Product product left join fetch product.tags  left join fetch product.images",
         countQuery = "select count(distinct product) from Product product")
-    Page <Product> findAllWithEagerRelationships( Pageable pageable );
+    Page<Product> findAllWithEagerRelationships(Pageable pageable);
 
     @Query(value = "select distinct product from Product product left join fetch product.tags left join fetch product.images")
-    List <Product> findAllWithEagerRelationships();
+    List<Product> findAllWithEagerRelationships();
 
     @Query("select product from Product product left join fetch product.tags left join fetch product.images where product.id =:id")
-    Optional <Product> findOneWithEagerRelationships( @Param("id") Long id );
+    Optional<Product> findOneWithEagerRelationships(@Param("id") Long id);
 
     @Query(value = "select distinct product from Product product left join fetch product.tags left join fetch product.images where product.isActive = :isActive",
         countQuery = "select count(distinct product) from Product product where product.isActive = :isActive")
-    Page <Product> findAllByIsActive( @Param("isActive") boolean isActive, Pageable pageable );
+    Page<Product> findAllByIsActive(@Param("isActive") boolean isActive, Pageable pageable);
 
-    default void customize( QuerydslBindings bindings, QProduct product ) {
-        bindings.bind( product.name ).first( StringExpression::containsIgnoreCase );
-        bindings.bind( product.tags ).first( ( tags, value ) -> value.stream()
-                                                                     .map( tags::contains )
-                                                                     .reduce( BooleanExpression::or )
-                                                                     .orElse( Expressions.FALSE ) );
+    Page<Product> findAllByNameIsLikeOrNameAsInteger(String name, int nameAsInteger, Pageable pageable);
+
+    default void customize(QuerydslBindings bindings, QProduct product) {
+        bindings.bind(product.name).first(StringExpression::containsIgnoreCase);
+        bindings.bind(product.tags).first((tags, value) -> value.stream()
+            .map(tags::contains)
+            .reduce(BooleanExpression::or)
+            .orElse(Expressions.FALSE));
     }
 
 }

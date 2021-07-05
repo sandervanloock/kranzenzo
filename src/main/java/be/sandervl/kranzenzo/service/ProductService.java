@@ -5,7 +5,7 @@ import be.sandervl.kranzenzo.repository.ImageRepository;
 import be.sandervl.kranzenzo.repository.ProductRepository;
 import be.sandervl.kranzenzo.service.dto.ProductDTO;
 import be.sandervl.kranzenzo.service.mapper.ProductMapper;
-import com.querydsl.core.types.Predicate;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -47,25 +47,34 @@ public class ProductService {
      * @return the persisted entity
      */
     public ProductDTO save( ProductDTO productDTO ) {
-        log.debug( "Request to save Product : {}", productDTO );
-        final Product product = productMapper.toEntity( productDTO );
+        log.debug("Request to save Product : {}", productDTO);
+        final Product product = productMapper.toEntity(productDTO);
+        product.setNameAsInteger(getNameAsInteger(product.getName(), 0));
         //unlink existing images
-        productRepository.findOneWithEagerRelationships( productDTO.getId() )
-                         .ifPresent( existing -> existing.getImages()
-                                                         .stream()
-                                                         .filter( image -> !product.getImages().contains( image ) )
-                                                         .peek( image -> image.setProduct( null ) )
-                                                         .forEach( imageRepository::save ) );
+        productRepository.findOneWithEagerRelationships(productDTO.getId())
+            .ifPresent(existing -> existing.getImages()
+                .stream()
+                .filter(image -> !product.getImages().contains(image))
+                .peek(image -> image.setProduct(null))
+                .forEach(imageRepository::save));
         //link new images
-        productRepository.save( product )
-                         .getImages()
-                         .stream()
-                         .filter( image -> image.getId() != null )
-                         //get image from database
-                         .map( image -> imageRepository.getOne( image.getId() ) )
-                         .peek( image -> image.setProduct( product ) )
-                         .forEach( imageRepository::save );
-        return productMapper.toDto( product );
+        productRepository.save(product)
+            .getImages()
+            .stream()
+            .filter(image -> image.getId() != null)
+            //get image from database
+            .map(image -> imageRepository.getOne(image.getId()))
+            .peek(image -> image.setProduct(product))
+            .forEach(imageRepository::save);
+        return productMapper.toDto(product);
+    }
+
+    private int getNameAsInteger(String name, int defaultValue) {
+        try {
+            return Integer.parseInt(name);
+        } catch (NumberFormatException nfe) {
+            return defaultValue;
+        }
     }
 
     /**
@@ -74,21 +83,20 @@ public class ProductService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page <ProductDTO> findAll( Boolean activeOnly, Long tagId, Pageable page ) {
-        log.debug( "Request to get all Products" );
-        Page <Product> products;
-        if ( activeOnly != null ) {
-            products = productRepository.findAllByIsActive( activeOnly, page );
+    public Page<ProductDTO> findAll(Boolean activeOnly, Long tagId, Pageable page) {
+        log.debug("Request to get all Products");
+        Page<Product> products;
+        if (activeOnly != null) {
+            products = productRepository.findAllByIsActive(activeOnly, page);
+        } else {
+            products = productRepository.findAllWithEagerRelationships(page);
         }
-        else{
-            products = productRepository.findAllWithEagerRelationships( page );
-        }
-        List <ProductDTO> productDtos = products.stream()
-                                                .filter( p -> tagId == null ||
-                                                    p.getTags().stream().anyMatch( t -> t.getId().equals( tagId ) ) )
-                                                .map( productMapper::toDto )
-                                                .collect( Collectors.toCollection( LinkedList::new ) );
-        return new PageImpl <>( productDtos, page, productRepository.count() );
+        List<ProductDTO> productDtos = products.stream()
+            .filter(p -> tagId == null ||
+                p.getTags().stream().anyMatch(t -> t.getId().equals(tagId)))
+            .map(productMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+        return new PageImpl<>(productDtos, page, productRepository.count());
     }
 
     /**
@@ -118,15 +126,18 @@ public class ProductService {
      *
      * @param id the id of the entity
      */
-    public void delete( Long id ) {
-        log.debug( "Request to delete Product : {}", id );
-        productRepository.deleteById( id );
+    public void delete(Long id) {
+        log.debug("Request to delete Product : {}", id);
+        productRepository.deleteById(id);
     }
 
-    public Page <ProductDTO> search( Predicate predicate, Pageable page ) {
-        Page <Product> result = productRepository.findAll( predicate, page );
-        return new PageImpl <>( result.stream()
-                                      .map( productMapper::toDto )
-                                      .collect( Collectors.toList() ), page, result.getTotalElements() );
+    public Page<ProductDTO> search(String query, Pageable page) {
+        if (StringUtils.isEmpty(query.trim())) {
+            return findAllWithEagerRelationships(page);
+        }
+        Page<Product> result = productRepository.findAllByNameIsLikeOrNameAsInteger("%" + query + "%", getNameAsInteger(query, -1), page);
+        return new PageImpl<>(result.stream()
+            .map(productMapper::toDto)
+            .collect(Collectors.toList()), page, result.getTotalElements());
     }
 }

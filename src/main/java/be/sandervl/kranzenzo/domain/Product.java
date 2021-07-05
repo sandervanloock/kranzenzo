@@ -34,6 +34,11 @@ public class Product implements Serializable {
     private String name;
 
     @NotNull
+    @Min(value = 0)
+    @Column(name = "name_as_integer", nullable = false)
+    private Integer nameAsInteger;
+
+    @NotNull
     @DecimalMin(value = "0")
     @Column(name = "price", nullable = false)
     private Float price;
@@ -86,24 +91,32 @@ public class Product implements Serializable {
         return name;
     }
 
-    public void setName( String name ) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Product name( String name ) {
+    public Product name(String name) {
         this.name = name;
         return this;
+    }
+
+    public Integer getNameAsInteger() {
+        return nameAsInteger;
+    }
+
+    public void setNameAsInteger(Integer nameAsInteger) {
+        this.nameAsInteger = nameAsInteger;
     }
 
     public Float getPrice() {
         return price;
     }
 
-    public void setPrice( Float price ) {
+    public void setPrice(Float price) {
         this.price = price;
     }
 
-    public Product price( Float price ) {
+    public Product price(Float price) {
         this.price = price;
         return this;
     }

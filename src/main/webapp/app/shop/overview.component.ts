@@ -35,6 +35,7 @@ export class OverviewComponent implements OnInit {
         this.searchState = new SearchState(
             parseInt(queryParams['page'], 10),
             queryParams['name'],
+            queryParams['nameAsInteger'],
             parseInt(queryParams['tags'], 10),
             true,
             queryParams['sort']

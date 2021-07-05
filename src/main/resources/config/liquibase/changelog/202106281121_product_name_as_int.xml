@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity Product.
+    -->
+    <changeSet id="202106281121-1" author="svl">
+        <addColumn tableName="product">
+            <column name="name_as_integer" type="bigint" defaultValue="0"></column>
+        </addColumn>
+        <sql>
+            update product
+            set name_as_integer = CONVERT(name, UNSIGNED)
+            where 1=1
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
