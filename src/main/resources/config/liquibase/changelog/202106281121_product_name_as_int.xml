@@ -17,8 +17,11 @@
     -->
     <changeSet id="202106281121-1" author="svl">
         <addColumn tableName="product">
-            <column name="name_as_integer" type="bigint" defaultValue="0"></column>
+            <column name="name_as_integer" type="integer" defaultValue="0"/>
         </addColumn>
+    </changeSet>
+
+    <changeSet id="20210706-1" author="svl" dbms="mysql">
         <sql>
             update product
             set name_as_integer = CONVERT(name, UNSIGNED)
