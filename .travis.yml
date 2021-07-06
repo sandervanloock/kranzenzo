@@ -46,7 +46,7 @@ before_deploy:
     - docker --version
     - if ! [ -x "$(command -v aws)" ]; then curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" ; unzip awscliv2.zip ; sudo ./aws/install ; fi
     - export PATH=$PATH:$HOME/.local/bin
-    - eval $(aws ecr get-login --no-include-email --region eu-west-1)
+    - eval $(aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 455637595802.dkr.ecr.eu-west-1.amazonaws.com)
     - "./mvnw verify -Pprod -B -DskipTests dockerfile:build"
     - docker tag kranzenzo:latest 455637595802.dkr.ecr.eu-west-1.amazonaws.com/kranzenzo:latest
     - docker push 455637595802.dkr.ecr.eu-west-1.amazonaws.com/kranzenzo:latest
