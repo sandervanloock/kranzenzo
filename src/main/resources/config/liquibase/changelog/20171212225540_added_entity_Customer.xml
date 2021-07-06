@@ -59,6 +59,7 @@
 	</changeSet>
 
     <changeSet id="201725122356" author="svl">
+        <dropForeignKeyConstraint baseTableName="customer" constraintName="fk_customer_user"/>
         <dropColumn tableName="customer" columnName="user_id"/>
         <addColumn tableName="customer">
             <column name="user_id" type="bigint">
