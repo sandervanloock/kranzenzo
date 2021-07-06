@@ -100,7 +100,8 @@ public class ProductResourceIntTest {
      */
     public static Product createEntity( EntityManager em ) {
         Product product = new Product()
-            .name( DEFAULT_NAME )
+            .name(DEFAULT_NAME)
+            .nameAsInteger(0)
             .price( DEFAULT_PRICE )
             .description( DEFAULT_DESCRIPTION )
             .isActive( DEFAULT_IS_ACTIVE )

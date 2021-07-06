@@ -108,6 +108,11 @@ public class Product implements Serializable {
         this.nameAsInteger = nameAsInteger;
     }
 
+    public Product nameAsInteger(int nameAsInteger) {
+        this.nameAsInteger = nameAsInteger;
+        return this;
+    }
+
     public Float getPrice() {
         return price;
     }
