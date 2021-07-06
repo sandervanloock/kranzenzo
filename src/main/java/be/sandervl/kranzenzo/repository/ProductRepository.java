@@ -39,7 +39,7 @@ public interface ProductRepository extends JpaRepository <Product, Long>, Queryd
         countQuery = "select count(distinct product) from Product product where product.isActive = :isActive")
     Page<Product> findAllByIsActive(@Param("isActive") boolean isActive, Pageable pageable);
 
-    Page<Product> findAllByNameIsLikeOrNameAsInteger(String name, int nameAsInteger, Pageable pageable);
+    Page<Product> findAllByNameIsLikeOrNameAsIntegerOrderByNameAsIntegerAsc(String name, int nameAsInteger, Pageable pageable);
 
     default void customize(QuerydslBindings bindings, QProduct product) {
         bindings.bind(product.name).first(StringExpression::containsIgnoreCase);

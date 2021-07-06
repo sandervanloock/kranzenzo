@@ -135,7 +135,7 @@ public class ProductService {
         if (StringUtils.isEmpty(query.trim())) {
             return findAllWithEagerRelationships(page);
         }
-        Page<Product> result = productRepository.findAllByNameIsLikeOrNameAsInteger("%" + query + "%", getNameAsInteger(query, -1), page);
+        Page<Product> result = productRepository.findAllByNameIsLikeOrNameAsIntegerOrderByNameAsIntegerAsc("%" + query + "%", getNameAsInteger(query, -1), page);
         return new PageImpl<>(result.stream()
             .map(productMapper::toDto)
             .collect(Collectors.toList()), page, result.getTotalElements());

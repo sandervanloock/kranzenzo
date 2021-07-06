@@ -21,9 +21,9 @@
         </addColumn>
     </changeSet>
 
-    <changeSet id="20210706-1" author="svl" dbms="mysql">
+    <changeSet id="20210706-1" author="svl" dbms="mysql" failOnError="false">
         <sql>
-            update product
+            update ignore product
             set name_as_integer = CONVERT(name, UNSIGNED)
             where 1=1
         </sql>
