@@ -44,7 +44,7 @@ notifications:
         on_start: false
 before_deploy:
     - docker --version
-    - pip install --user awscli
+    - if ! [ -x "$(command -v aws)" ]; then curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" ; unzip awscliv2.zip ; sudo ./aws/install ; fi
     - export PATH=$PATH:$HOME/.local/bin
     - eval $(aws ecr get-login --no-include-email --region eu-west-1)
     - "./mvnw verify -Pprod -B -DskipTests dockerfile:build"
