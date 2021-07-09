@@ -8,9 +8,7 @@ import be.sandervl.kranzenzo.service.mapper.ProductMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +24,10 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductService {
 
-    private final Logger log = LoggerFactory.getLogger( ProductService.class );
+    private final Logger log = LoggerFactory.getLogger(ProductService.class);
 
     private final ProductRepository productRepository;
-
     private final ProductMapper productMapper;
-
     private final ImageRepository imageRepository;
 
     public ProductService( ProductRepository productRepository, ProductMapper productMapper, ImageRepository imageRepository ) {
@@ -131,11 +127,19 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public Page<ProductDTO> search(String query, Pageable page) {
+    public Page<ProductDTO> search(String query, Boolean isActive, Integer tagId, Pageable page) {
+        Page<Product> result;
         if (StringUtils.isEmpty(query.trim())) {
-            return findAllWithEagerRelationships(page);
+            result = productRepository.findAllByIsActiveOrTagsContaining(isActive, tagId, page);
+        } else {
+            int nameAsInteger = getNameAsInteger(query, -1);
+            if (nameAsInteger == -1) {
+                result = productRepository.searchWithName("%" + query + "%", isActive, tagId, page);
+            } else {
+                PageRequest customPageWithSorting = PageRequest.of(page.getPageNumber(), page.getPageSize(), Sort.Direction.ASC, "name_as_integer");
+                result = productRepository.searchWithNameAsInteger("%" + query + "%", nameAsInteger, isActive, tagId, customPageWithSorting);
+            }
         }
-        Page<Product> result = productRepository.findAllByNameIsLikeOrNameAsIntegerOrderByNameAsIntegerAsc("%" + query + "%", getNameAsInteger(query, -1), page);
         return new PageImpl<>(result.stream()
             .map(productMapper::toDto)
             .collect(Collectors.toList()), page, result.getTotalElements());

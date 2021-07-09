@@ -39,7 +39,54 @@ public interface ProductRepository extends JpaRepository <Product, Long>, Queryd
         countQuery = "select count(distinct product) from Product product where product.isActive = :isActive")
     Page<Product> findAllByIsActive(@Param("isActive") boolean isActive, Pageable pageable);
 
-    Page<Product> findAllByNameIsLikeOrNameAsIntegerOrderByNameAsIntegerAsc(String name, int nameAsInteger, Pageable pageable);
+    @Query(nativeQuery = true,
+        value = "select distinct p.* " +
+            "from product p " +
+            "left outer join product_tags pt on p.id = pt.products_id " +
+            "where " +
+            "(:isActive is null or p.is_active = :isActive) and " +
+            "(:tagId is null or pt.tags_id = :tagId)",
+        countQuery = "select count(distinct p.id) " +
+            "from product p " +
+            "left outer join product_tags pt on p.id = pt.products_id " +
+            "where " +
+            "(:isActive is null or p.is_active = :isActive) and " +
+            "(:tagId is null or pt.tags_id = :tagId)")
+    Page<Product> findAllByIsActiveOrTagsContaining(@Param("isActive") Boolean isActive, @Param("tagId") Integer tagId, Pageable pageable);
+
+    @Query(nativeQuery = true,
+        value = "select distinct p.* " +
+            "from product p " +
+            "left outer join product_tags pt on p.id = pt.products_id " +
+            "where " +
+            "(:name is null or p.name = :name) and " +
+            "(:isActive is null or p.is_active = :isActive) and " +
+            "(:tagId is null or pt.tags_id = :tagId)",
+        countQuery = "select count(distinct p.id) " +
+            "from product p " +
+            "left outer join product_tags pt on p.id = pt.products_id " +
+            "where " +
+            "(:name is null or p.name = :name) and " +
+            "(:isActive is null or p.is_active = :isActive) and " +
+            "(:tagId is null or pt.tags_id = :tagId)")
+    Page<Product> searchWithName(@Param("name") String name, @Param("isActive") Boolean isActive, @Param("tagId") Integer tagId, Pageable pageable);
+
+    @Query(nativeQuery = true,
+        value = "select distinct p.* " +
+            "from product p " +
+            "left outer join product_tags pt on p.id = pt.products_id " +
+            "where " +
+            "(p.name like :name or p.name_as_integer = :nameAsInteger) and " +
+            "(:isActive is null or p.is_active = :isActive) and " +
+            "(:tagId is null or pt.tags_id = :tagId) ",
+        countQuery = "select count(distinct p.id) " +
+            "from product p " +
+            "left outer join product_tags pt on p.id = pt.products_id " +
+            "where " +
+            "(p.name like :name or p.name_as_integer = :nameAsInteger) and " +
+            "(:isActive is null or p.is_active = :isActive) and " +
+            "(:tagId is null or pt.tags_id = :tagId)")
+    Page<Product> searchWithNameAsInteger(@Param("name") String name, @Param("nameAsInteger") int nameAsInteger, @Param("isActive") Boolean isActive, @Param("tagId") Integer tagId, Pageable pageable);
 
     default void customize(QuerydslBindings bindings, QProduct product) {
         bindings.bind(product.name).first(StringExpression::containsIgnoreCase);

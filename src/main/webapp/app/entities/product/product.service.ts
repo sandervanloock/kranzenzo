@@ -84,7 +84,9 @@ export class SearchState extends Pageable {
     }
 
     toQuery() {
-        const query = `&query=${this.name ? this.name.trim() : ''}&sort=${this.sort ? this.sort : ''}`;
+        const query = `tags=${this.tags ? this.tags : ''}&query=${this.name ? this.name.trim() : ''}&isActive=${
+            this.isActive ? '1' : ''
+        }&sort=${this.sort ? this.sort : ''}`;
         return super.toQuery() + query.trim();
     }
 }

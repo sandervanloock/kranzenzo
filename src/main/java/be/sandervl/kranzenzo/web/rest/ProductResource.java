@@ -100,14 +100,16 @@ public class ProductResource {
 
     @GetMapping("/products/search")
     @Timed
-    public Page<ProductDTO> searchProducts(@RequestParam String query,
+    public Page<ProductDTO> searchProducts(@RequestParam(required = false) String query,
+                                           @RequestParam(required = false) Boolean isActive,
+                                           @RequestParam(required = false) Integer tags,
                                            @PageableDefault(size = 10)
                                            @SortDefault.SortDefaults({
                                                @SortDefault(sort = "created", direction = Sort.Direction.DESC),
                                                @SortDefault(sort = "name", direction = Sort.Direction.ASC)
                                            }) Pageable customPage) {
         log.debug("REST request to get all Products");
-        return productService.search(query, customPage);
+        return productService.search(query, isActive, tags, customPage);
     }
 
     /**
