@@ -23,11 +23,41 @@ import { ShopModule } from 'app/shop/shop.module';
 import { InfoModule } from 'app/info/info.module';
 import { WorkshopModule } from 'app/workshop/workshop.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgcCookieConsentConfig, NgcCookieConsentModule } from 'ngx-cookieconsent';
 
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
+const cookieConfig: NgcCookieConsentConfig = {
+    cookie: {
+        domain: window.location.hostname
+    },
+    palette: {
+        popup: {
+            background: '#353d47'
+        },
+        button: {
+            background: '#007bff'
+        }
+    },
+    theme: 'classic',
+    type: 'opt-out',
+    content: {
+        header: 'Cookies gebruikt op de website!',
+        message: 'Deze website maakt gebruik van cookies om uw ervaring te verbeteren.',
+        dismiss: 'Ik snap het!',
+        allow: 'Cookies toestaan',
+        deny: 'Afwijzen',
+        link: 'Meer weten?',
+        href: 'https://www.cookiesandyou.com',
+        close: '&#x274c;',
+        policy: 'Cookie Policy',
+        target: '_blank'
+    }
+};
+
 @NgModule({
     imports: [
+        NgcCookieConsentModule.forRoot(cookieConfig),
         BrowserModule,
         KranzenzoAppRoutingModule,
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-' }),

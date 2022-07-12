@@ -1,3 +1,4 @@
 /* after changing this file run 'yarn run webpack:build' */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 @import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~cookieconsent/build/cookieconsent.min.css';

@@ -40,6 +40,7 @@ import {
     faQuoteRight,
     faShoppingCart
 } from '@fortawesome/free-solid-svg-icons';
+import 'cookieconsent/build/cookieconsent.min';
 
 // Imports all fontawesome core and solid icons
 
